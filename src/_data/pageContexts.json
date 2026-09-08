@@ -1,0 +1,57 @@
+{
+  "_about": {
+    "purpose": "Hand-written context for the notes export. Every entry is keyed by the page URL a note was taken on (exactly as it appears in the address bar, with the trailing slash).",
+    "howItWorks": [
+      "Article contexts are derived automatically from article frontmatter and headings by src/_data/noteContexts.js, so a new article gets a usable context the moment it is added - nothing needs to be written here.",
+      "An entry here is merged on top of that derived context: whatever you write wins, everything you leave out stays derived.",
+      "Keys beginning with an underscore are ignored, so this note and the example below never reach the export."
+    ],
+    "fields": {
+      "title": "Overrides the page title used as the section heading in the export.",
+      "summary": "One or two sentences on what the page covers. Falls back to the article description.",
+      "keyIdeas": "Array of strings: the claims a discussion should be anchored to.",
+      "openQuestions": "Array of strings: unsettled points worth pushing on.",
+      "related": "Array of page URLs (or {title, url} objects) worth reading alongside this one.",
+      "guidance": "Free text passed to the reader of the export - e.g. 'be skeptical of the linearity assumption here'."
+    },
+    "validation": "The build fails if a /topics/<slug>/ key here does not match a live article, so renamed or retired articles surface immediately."
+  },
+
+  "_example": {
+    "summary": "Copy this block, rename the key to the page URL, and delete what you do not need.",
+    "keyIdeas": ["The one claim the article is built on."],
+    "openQuestions": ["What the article leaves unresolved."],
+    "related": ["/topics/some-other-article/"],
+    "guidance": "Anything the export's reader should know before responding."
+  },
+
+  "/": {
+    "title": "Home",
+    "summary": "Landing page for the Learn Mechanistic Interpretability textbook: what the curriculum covers and where to start reading."
+  },
+
+  "/topics/": {
+    "title": "Topics",
+    "summary": "The curriculum map - every block and every article in the recommended reading order."
+  },
+
+  "/glossary/": {
+    "title": "Glossary",
+    "summary": "Definitions of mechanistic interpretability terms, collected from the glossary entries declared in each article's frontmatter, with links to the articles that introduce them."
+  },
+
+  "/about/": {
+    "title": "About",
+    "summary": "What this textbook is, who it is for, and how it is maintained."
+  },
+
+  "/search/": {
+    "title": "Search",
+    "summary": "Full-text search across every article in the curriculum."
+  },
+
+  "/notes/": {
+    "title": "My Notes",
+    "summary": "The reader's own notes hub: every note taken across the site, plus the export that produced this document."
+  }
+}

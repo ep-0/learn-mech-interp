@@ -100,6 +100,7 @@ function validate() {
   const { blocks } = scanBlocks();
   const refs = JSON.parse(fs.readFileSync("src/_data/references.json", "utf-8"));
   const redirects = JSON.parse(fs.readFileSync("src/_data/redirects.json", "utf-8"));
+  const pageContexts = JSON.parse(fs.readFileSync("src/_data/pageContexts.json", "utf-8"));
 
   // 1. Check for duplicate reference titles and URLs
   const titleToKeys = new Map();
@@ -243,6 +244,26 @@ function validate() {
     const destinationSlug = redirect.to?.match(/^\/topics\/([^/]+)\/$/)?.[1];
     if (!destinationSlug || !allArticleSlugs.has(destinationSlug)) {
       errors.push(`Redirect destination is not a live topic: ${redirect.to}`);
+    }
+  }
+
+  // 10. Hand-written note contexts must point at pages that exist, so a renamed
+  //     or retired article surfaces here rather than in a silent export.
+  for (const [url, context] of Object.entries(pageContexts)) {
+    if (url.startsWith("_")) continue;  // documentation keys
+
+    if (!url.startsWith("/") || !url.endsWith("/")) {
+      errors.push(`pageContexts.json: key "${url}" must be a page URL with a leading and trailing slash`);
+      continue;
+    }
+    if (!context || typeof context !== "object" || Array.isArray(context)) {
+      errors.push(`pageContexts.json: "${url}" must map to an object`);
+      continue;
+    }
+
+    const contextSlug = url.match(/^\/topics\/([^/]+)\/$/)?.[1];
+    if (contextSlug && !allArticleSlugs.has(contextSlug)) {
+      errors.push(`pageContexts.json: "${url}" does not match a live article`);
     }
   }
 

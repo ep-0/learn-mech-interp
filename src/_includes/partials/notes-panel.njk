@@ -1,0 +1,36 @@
+{# Reading-notes drawer. Rendered on every page except the notes hub itself;
+   stays inert until notes-panel.js wires it up. #}
+<aside id="notes-panel" class="notes-panel" aria-label="Reading notes" hidden>
+  <div class="notes-panel-header">
+    <h2 class="notes-panel-title">Notes on this page</h2>
+    <div class="notes-panel-header-actions">
+      <a href="/notes/" class="notes-panel-link">All notes</a>
+      <button type="button" class="notes-panel-close" aria-label="Close notes panel">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <form class="notes-composer" novalidate>
+    <blockquote class="notes-quote" hidden>
+      <span class="notes-quote-text"></span>
+      <button type="button" class="notes-quote-clear" aria-label="Drop the quoted passage">&times;</button>
+    </blockquote>
+    <label class="visually-hidden" for="notes-composer-input">New note</label>
+    <textarea id="notes-composer-input" class="notes-composer-input" rows="3"
+      placeholder="Write a note. Select text in the article first to quote it."></textarea>
+    <div class="notes-composer-actions">
+      <span class="notes-composer-hint" aria-live="polite"></span>
+      <button type="submit" class="btn btn-primary notes-btn">Save note</button>
+    </div>
+  </form>
+
+  <div class="notes-panel-list" role="list"></div>
+
+  <div class="notes-panel-footer">
+    <button type="button" class="notes-btn notes-btn-quiet notes-panel-export">Copy page notes for Claude</button>
+    <span class="notes-panel-status" aria-live="polite"></span>
+  </div>
+</aside>

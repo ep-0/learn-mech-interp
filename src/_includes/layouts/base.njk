@@ -64,12 +64,13 @@
   <link rel="stylesheet" href="/css/base.css?v={{ buildId }}">
   <link rel="stylesheet" href="/css/layout.css?v={{ buildId }}">
   <link rel="stylesheet" href="/css/components.css?v={{ buildId }}">
+  <link rel="stylesheet" href="/css/notes.css?v={{ buildId }}">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css" crossorigin>
   <link rel="stylesheet" href="/css/katex-overrides.css?v={{ buildId }}">
   <link rel="stylesheet" href="/css/prism-theme.css?v={{ buildId }}">
 </head>
-<body>
+<body data-page-url="{{ page.url }}" data-page-title="{{ resolvedTitle | default(site.name) }}">
   <a href="#main-content" class="skip-link">Skip to content</a>
   {% include "partials/header.njk" %}
   <div class="page-layout">
@@ -81,9 +82,18 @@
   {% if page.url != "/" %}
     {% include "partials/footer.njk" %}
   {% endif %}
+  {% if page.url != "/notes/" %}
+    {% include "partials/notes-panel.njk" %}
+  {% endif %}
   <script src="/js/nav-toggle.js?v={{ buildId }}"></script>
   <script src="/js/sidebar-toggle.js?v={{ buildId }}"></script>
   <script src="/js/toc-progress.js?v={{ buildId }}"></script>
   <script src="/js/theme-toggle.js?v={{ buildId }}"></script>
+  <script src="/js/notes-store.js?v={{ buildId }}"></script>
+  {% if page.url == "/notes/" %}
+    <script src="/js/notes-page.js?v={{ buildId }}"></script>
+  {% else %}
+    <script src="/js/notes-panel.js?v={{ buildId }}"></script>
+  {% endif %}
 </body>
 </html>

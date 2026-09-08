@@ -4,6 +4,11 @@ An open-source textbook on mechanistic interpretability, covering transformer in
 
 **[Start reading &rarr;](https://learnmechinterp.com/)**
 
+Notes can be taken while reading -- a drawer on every page, a hub at
+[`/notes/`](https://learnmechinterp.com/notes/) that collects them, and an export that carries each
+article's context along so the notes can be discussed with an assistant afterwards. Notes are stored in
+your own browser and never leave it.
+
 ## Contributing
 
 This is an open-source project and contributions are welcome. Whether it's fixing a typo, improving an explanation, or writing a new article, all help is appreciated.

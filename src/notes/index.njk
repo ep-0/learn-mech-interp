@@ -1,0 +1,104 @@
+---
+title: My Notes
+layout: layouts/base.njk
+description: Every note you have taken while reading, in one place, with an export that carries each article's context into a conversation with Claude.
+permalink: /notes/
+eleventyExcludeFromCollections: true
+noindex: true
+---
+<div class="notes-page">
+  <h1>My Notes</h1>
+  <p class="notes-page-description">
+    Every note you have written while reading, grouped by the article it belongs to. Notes live in this
+    browser only — nothing is uploaded. Editing a note here changes the same note in the panel on the
+    article, and vice versa.
+  </p>
+
+  <noscript>
+    <p class="notes-callout">Notes need JavaScript: they are stored in your browser, not on a server.</p>
+  </noscript>
+
+  <section class="notes-section" aria-labelledby="notes-new-heading">
+    <h2 id="notes-new-heading">New note</h2>
+    <form class="notes-composer notes-page-composer" novalidate>
+      <label class="visually-hidden" for="notes-page-input">Note text</label>
+      <textarea id="notes-page-input" class="notes-composer-input" rows="4"
+        placeholder="A thought, a question, something to come back to…"></textarea>
+      <div class="notes-composer-actions notes-page-composer-actions">
+        <label class="notes-field">
+          <span class="notes-field-label">Attach to</span>
+          <select class="notes-page-target">
+            <option value="">No page — a general note</option>
+          </select>
+        </label>
+        <button type="submit" class="btn btn-primary notes-btn">Save note</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="notes-section" aria-labelledby="notes-all-heading">
+    <div class="notes-toolbar">
+      <h2 id="notes-all-heading">All notes</h2>
+      <div class="notes-toolbar-controls">
+        <label class="notes-field">
+          <span class="visually-hidden">Filter notes</span>
+          <input type="search" class="notes-filter" placeholder="Filter by text, quote, or article">
+        </label>
+        <label class="notes-field">
+          <span class="notes-field-label">Order</span>
+          <select class="notes-sort">
+            <option value="curriculum">Curriculum order</option>
+            <option value="recent">Most recently updated</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <p class="notes-count" aria-live="polite"></p>
+    <div class="notes-page-list"></div>
+  </section>
+
+  <section class="notes-section" aria-labelledby="notes-export-heading">
+    <h2 id="notes-export-heading">Export</h2>
+    <p>
+      The export wraps each note in the context it was taken in — what the article covers, where it sits
+      in the curriculum, its sections, prerequisites, terms, and cited work — so a conversation about
+      these notes can start without re-reading the textbook. That context is built at build time from
+      <code>src/_data/pageContexts.json</code> and each article's own frontmatter, so it never has to be
+      recomputed here and a newly added article is covered automatically.
+    </p>
+    <div class="notes-export-controls">
+      <label class="notes-field">
+        <span class="notes-field-label">Format</span>
+        <select class="notes-export-format">
+          <option value="context">Markdown with context — for Claude</option>
+          <option value="plain">Markdown — notes only</option>
+          <option value="json">JSON — backup</option>
+        </select>
+      </label>
+      <button type="button" class="btn btn-primary notes-btn notes-export-copy">Copy</button>
+      <button type="button" class="btn btn-secondary notes-btn notes-export-download">Download</button>
+      <span class="notes-export-status" aria-live="polite"></span>
+    </div>
+    <p class="notes-export-scope"></p>
+    <details class="notes-preview">
+      <summary>Preview the export</summary>
+      <pre class="notes-preview-body"><code></code></pre>
+    </details>
+  </section>
+
+  <section class="notes-section" aria-labelledby="notes-data-heading">
+    <h2 id="notes-data-heading">Backup and restore</h2>
+    <p>
+      Notes are stored in this browser's local storage, so clearing site data removes them. Download the
+      JSON backup to keep a copy, and load it back here on another browser.
+    </p>
+    <div class="notes-data-controls">
+      <label class="notes-field">
+        <span class="notes-field-label">Import JSON</span>
+        <input type="file" class="notes-import" accept="application/json,.json">
+      </label>
+      <button type="button" class="notes-btn notes-btn-quiet notes-btn-danger notes-clear">Delete all notes</button>
+      <span class="notes-data-status" aria-live="polite"></span>
+    </div>
+  </section>
+</div>

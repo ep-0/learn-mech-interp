@@ -35,12 +35,17 @@ src/
   _data/
     learningPath.js                # Computed from filesystem (do not edit)
     glossary.js                    # Computed from article frontmatter (do not edit)
+    noteContexts.js                # Computed: article context for the notes export (do not edit)
     references.json                # Centralized bibliography
+    pageContexts.json              # Hand-written context overrides for the notes export
   _includes/
     layouts/                       # Nunjucks layouts
     partials/                      # Reusable template fragments
   glossary/
     index.njk                      # Glossary page
+  notes/
+    index.njk                      # Reading-notes hub (client-side, localStorage)
+  notes-context.njk                # Emits /notes-context.json for the notes export
   index.njk                        # Home page
 lib/
   scanBlocks.js                    # Filesystem scanner (shared by data files and config)
@@ -50,7 +55,7 @@ ARTICLE_GUIDELINES.md              # Tone, structure, and content rules for arti
 
 Key points:
 - **`learningPath.js` and `glossary.js` are computed from the filesystem.** You never edit them directly. The sidebar, topics page, prev/next navigation, and glossary all update automatically when you add or modify articles.
-- **`references.json`** is the only data file you edit by hand (to add new citations).
+- **`references.json` and `pageContexts.json` are the data files you edit by hand** -- the first to add citations, the second to sharpen the context that ships with exported reading notes. Everything else under `_data/` is computed.
 - **URLs are flat.** An article at `src/topics/probing/probing-classifiers/index.md` is served at `/topics/probing-classifiers/`, not `/topics/probing/probing-classifiers/`.
 
 ## Adding a new article
@@ -151,6 +156,7 @@ Run `npm run build`. The build-time validator checks:
 - All `{% cite "key" %}` keys exist in `references.json`
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
+- Every `/topics/<slug>/` key in `pageContexts.json` matches a live article
 
 If the build fails, the error message will tell you exactly what to fix.
 
@@ -176,6 +182,53 @@ If the build fails, the error message will tell you exactly what to fix.
 2. Block `order` must be contiguous with existing blocks. If there are currently 12 blocks (orders 1--12), a new block should be order 13 (appending) or you need to renumber existing blocks to insert it.
 
 3. Add at least one article inside the block directory.
+
+## Reading notes
+
+Readers can take notes as they read: a drawer on every page (the notes button in the header, or `Alt+N`)
+and a hub at `/notes/` that lists every note. Both read and write one `localStorage` record, so a note
+edited in either place is the same note -- notes written on the hub with **Attach to: no page** belong to
+no article and stay off the drawers.
+
+The point of the feature is the export. Each note is wrapped in the context of the page it was taken on --
+what the article covers, where it sits in the curriculum, its sections, prerequisites, glossary terms and
+cited work -- so the result can be pasted into a conversation and discussed without re-reading the textbook.
+
+That context is assembled at build time, never in the browser:
+
+```
+src/_data/pageContexts.json   hand-written overrides, keyed by page URL
+        +
+article frontmatter, headings, prerequisites, glossary, citations
+        |
+src/_data/noteContexts.js     merges the two (your text wins field by field)
+        |
+/notes-context.json           fetched once, on the first export
+```
+
+**Adding an article needs no work here.** Its context is derived from what the article already declares,
+so it is covered as soon as it exists.
+
+**To sharpen a page's context by hand**, add an entry to `src/_data/pageContexts.json` keyed by the page
+URL, with the trailing slash:
+
+```json
+"/topics/induction-heads/": {
+  "summary": "Two heads composing into a pattern-copying circuit, and how far the ICL claim actually goes.",
+  "keyIdeas": ["The prefix-matching and copying steps are separable."],
+  "openQuestions": ["How much of in-context learning do induction heads really account for?"],
+  "related": ["/topics/ioi-circuit/"],
+  "guidance": "Be skeptical of the phase-change-implies-causation reading."
+}
+```
+
+Every field is optional and merges on top of the derived context, so writing `summary` alone leaves the
+sections, prerequisites and citations in place. Keys starting with `_` are documentation and are ignored;
+the file's own `_about` entry describes each field. Non-article pages (`/`, `/glossary/`, `/about/`, ...)
+have no frontmatter to derive from, so their context comes entirely from this file.
+
+The build fails if a `/topics/<slug>/` key here does not match a live article, which is what keeps the file
+honest when an article is renamed or retired.
 
 ## Build-time validation
 
