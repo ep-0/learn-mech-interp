@@ -122,7 +122,7 @@ $$\mathbf{x}' = \mathbf{x} + \alpha \mathbf{v}_\text{truth}$$
 
 <figure>
   <img src="images/iti_architecture.png" alt="Diagram of a transformer layer showing where ITI intervenes: after a selected attention head's output, the activation is shifted by adding alpha times the truth direction vector v before being passed to the MLP.">
-  <figcaption>ITI modifies the forward pass by shifting selected attention head outputs along the truth direction. The intervention $\mathbf{x}' = \mathbf{x} + \alpha\mathbf{v}$ is applied at the heads identified as most truth-informative. From Li et al., <em>Inference-Time Intervention</em>. {% cite "li2023iti" %}</figcaption>
+  <figcaption>ITI modifies the forward pass by shifting selected attention head outputs along the truth direction. The intervention adds <em>&alpha;</em><strong>v</strong> to the activation, at the heads identified as most truth-informative. From Li et al., <em>Inference-Time Intervention</em>. {% cite "li2023iti" %}</figcaption>
 </figure>
 
 On TruthfulQA, ITI improved LLaMA-65B from 32.5% to 65.1% on the MC1 (multiple-choice) metric, while maintaining most of the model's helpfulness. The intervention is applied at inference time with no retraining, making it practical and reversible.

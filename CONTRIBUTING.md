@@ -161,6 +161,7 @@ Run `npm run build`. The build-time validator checks:
 - The prerequisite graph is acyclic, no article lists itself, and no prerequisite is reachable through another one on the same list
 - All `{% cite "key" %}` keys exist in `references.json`
 - The learning plan schedules every article exactly once, and its article and lesson references resolve
+- No TeX reaches the built pages unrendered
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
 - Every `/topics/<slug>/` key in `pageContexts.json` matches a live article
@@ -327,7 +328,9 @@ honest when an article is renamed or retired.
 
 `src/_data/lessonPlan.json` drives the ordered lessons at `/plan/`. It coexists with the topics page: topics shows what exists, the plan gives one route through it, built on retrieval practice, spaced revisiting, and interleaving.
 
-Each lesson carries `articles` (what to read), `revisit` (earlier lessons to retrieve from memory before reopening anything), `practice` (applied work that is deliberately not on this site), and one `synthesis` question. Consolidation lessons have no articles at all.
+Each lesson carries `orientation` (what the material is eventually for, read before the articles), `articles` (what to read), `revisit` (earlier lessons to retrieve from memory before reopening anything), `practice` (applied work that is deliberately not on this site), and one `synthesis` question. Consolidation lessons have no articles at all. Each part also has an entry in `partIntros`.
+
+`usedIn` is computed rather than written: it names later lessons whose reading directly depends on something read in this one, taken from the site's prerequisite graph. Regenerate it rather than editing it by hand.
 
 Revisits use expanding intervals: a study lesson points back two, five, and twelve study lessons, and a consolidation lesson sweeps everything since the previous one plus two older lessons.
 
@@ -336,6 +339,7 @@ The build keeps the plan and the curriculum in sync:
 - every article is scheduled in exactly one lesson
 - every scheduled slug is a real article
 - every revisited lesson exists and comes earlier in the order
+- every lesson has an orientation, every part has an intro, and every forward link points later
 
 So **adding an article means adding it to a lesson**, or the build fails and names the article. That is deliberate: a plan that silently omits new material is worse than no plan.
 
@@ -348,6 +352,18 @@ SKIP_VALIDATION=1 npm start
 ```
 
 Do not merge to `main` with validation disabled. CI will catch it.
+
+## Math
+
+Math is written as `$inline$` and `$$display$$` and rendered to HTML at build time by KaTeX. The stylesheet and fonts are served from this site rather than a CDN, because without those rules the MathML copy KaTeX emits for screen readers becomes visible and every formula appears twice.
+
+**Math renders only where Markdown runs.** Three places it silently does not, all of which the build now catches:
+
+- **Inside a raw HTML block.** A hand-written `<figure>` with a `<figcaption>` bypasses Markdown entirely. Write the caption's notation as HTML, or as prose.
+- **In a data file rendered through Nunjucks**, such as `lessonPlan.json`. Pipe the string through the `mdInline` filter, which runs one line of Markdown including math.
+- **When the closing `$` is followed by a digit**, which the parser rejects so that prices are not read as formulas. Bring the digits inside the math or reword.
+
+After every build, the output HTML is scanned for TeX that reached the page as source, and the build fails naming the file and the formula. The check ignores KaTeX's `annotation` element, where the original TeX is stored deliberately, and only flags spans containing a command or a sub- or superscript, so prose about `$X` is not a false positive.
 
 ## Shortcode reference
 

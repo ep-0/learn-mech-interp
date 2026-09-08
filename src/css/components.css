@@ -2032,3 +2032,33 @@
     margin-left: 0;
   }
 }
+
+/* Lesson orientation: what this material is eventually for, read before the
+   articles rather than after them. */
+.plan-part-intro {
+  margin: 0 0 var(--spacing-md);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.plan-orientation {
+  margin: var(--spacing-sm) 0 0;
+  padding-left: var(--spacing-md);
+  border-left: 3px solid var(--color-border-strong);
+  line-height: 1.6;
+}
+
+.plan-forward {
+  margin: var(--spacing-sm) 0 0;
+  font-size: var(--font-size-small);
+  color: var(--color-text-secondary);
+}
+
+.plan-forward-label {
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+  margin-right: 0.4rem;
+}
