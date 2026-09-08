@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "mechanistic-interpretability",
+    "title": "Mechanistic Interpretability",
+    "description": "The core curriculum: from transformer internals through features, circuits, and safety applications.",
+    "order": 1,
+    "hue": 232
+  }
+]

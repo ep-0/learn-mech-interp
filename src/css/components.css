@@ -708,9 +708,90 @@
   margin: 0 0 var(--spacing-sm, 0.5rem) 0;
 }
 
+/* Textbook grouping: one collapsible, colour-coded shelf per textbook.
+   --textbook-hue is set inline per group from _textbooks.json, so a new
+   textbook only needs a hue to get a consistent palette in both themes. */
+.sidebar-textbook {
+  --textbook-accent: hsl(var(--textbook-hue) var(--textbook-saturation) var(--textbook-accent-lightness));
+  --textbook-surface: hsl(var(--textbook-hue) var(--textbook-saturation) var(--textbook-surface-lightness) / var(--textbook-surface-alpha));
+  --textbook-surface-open: hsl(var(--textbook-hue) var(--textbook-saturation) var(--textbook-surface-lightness) / var(--textbook-surface-open-alpha));
+  --textbook-edge: hsl(var(--textbook-hue) var(--textbook-saturation) var(--textbook-accent-lightness) / var(--textbook-edge-alpha));
+
+  margin-bottom: 0.6rem;
+  padding: 0.3rem 0.45rem;
+  border: 0;
+  border-left: 3px solid var(--textbook-edge);
+  border-radius: var(--radius-md, 4px);
+  background: var(--textbook-surface);
+  transition: background var(--transition-fast, 150ms ease);
+}
+
+.sidebar-textbook[open] {
+  background: var(--textbook-surface-open);
+  padding-bottom: 0.5rem;
+}
+
+.sidebar-textbook-title {
+  font-size: var(--font-size-small, 0.875rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--textbook-accent);
+  margin: 0;
+  padding: 0.15rem 0;
+  line-height: var(--line-height-tight, 1.2);
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  gap: 0.5rem;
+}
+
+.sidebar-textbook-title::-webkit-details-marker {
+  display: none;
+}
+
+.sidebar-textbook-title::after {
+  content: "›";
+  color: var(--textbook-accent);
+  transform: rotate(0deg);
+  transition: transform var(--transition-fast, 150ms ease);
+}
+
+.sidebar-textbook[open] > .sidebar-textbook-title::after {
+  transform: rotate(90deg);
+}
+
+.sidebar-textbook-body {
+  margin-top: 0.4rem;
+  padding-left: 0.35rem;
+}
+
+/* Inside a textbook, hover and active states borrow the textbook's hue so an
+   article always reads as belonging to the book above it. */
+.sidebar-textbook .sidebar-topics a:hover {
+  color: var(--textbook-accent);
+  background: hsl(var(--textbook-hue) var(--textbook-saturation) var(--textbook-surface-lightness) / var(--textbook-hover-alpha));
+}
+
+.sidebar-textbook .sidebar-topics a.sidebar-active,
+.sidebar-textbook .sidebar-topics a[aria-current="page"] {
+  color: var(--textbook-accent);
+  background: hsl(var(--textbook-hue) var(--textbook-saturation) var(--textbook-surface-lightness) / var(--textbook-active-alpha));
+}
+
 .sidebar-block {
   border: 0;
   margin-bottom: 0.75rem;
+}
+
+.sidebar-textbook .sidebar-block {
+  margin-bottom: 0.4rem;
+}
+
+.sidebar-textbook .sidebar-block:last-child {
+  margin-bottom: 0;
 }
 
 .sidebar-block-title {
@@ -1295,6 +1376,41 @@
   margin: 0 0 var(--spacing-xl, 2rem) 0;
   font-size: 1.0625rem;
   line-height: 1.6;
+}
+
+/* Textbook grouping on the curriculum map, colour-matched to the sidebar. */
+.learning-path-textbook {
+  --textbook-accent: hsl(var(--textbook-hue) var(--textbook-saturation) var(--textbook-accent-lightness));
+  --textbook-edge: hsl(var(--textbook-hue) var(--textbook-saturation) var(--textbook-accent-lightness) / var(--textbook-edge-alpha));
+  --textbook-badge: hsl(var(--textbook-hue) var(--textbook-saturation) 45%);
+
+  margin-bottom: var(--spacing-2xl, 3rem);
+  scroll-margin-top: 5rem;
+}
+
+.learning-path-textbook:last-child {
+  margin-bottom: 0;
+}
+
+.learning-path-textbook-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem 0;
+  padding-left: 0.65rem;
+  border-left: 3px solid var(--textbook-edge);
+  color: var(--textbook-accent);
+}
+
+.learning-path-textbook-description {
+  margin: 0 0 var(--spacing-lg, 1.5rem) 0;
+  padding-left: calc(0.65rem + 3px);
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.6));
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.learning-path-textbook .learning-path-block-number {
+  background: var(--textbook-badge);
 }
 
 .learning-path-blocks {

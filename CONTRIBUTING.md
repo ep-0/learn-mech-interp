@@ -26,8 +26,9 @@ The site will be available at `http://localhost:8080/learn-mech-interp/`.
 ```
 src/
   topics/
+    _textbooks.json                # Textbook metadata: slug, title, order, sidebar hue
     <block-slug>/
-      _block.json                  # Block metadata: { "title": "...", "order": N }
+      _block.json                  # Block metadata: { "title": "...", "textbook": "...", "order": N }
       <article-slug>/
         index.md                   # Article content with frontmatter
         images/                    # Article-specific images (optional)
@@ -50,7 +51,8 @@ ARTICLE_GUIDELINES.md              # Tone, structure, and content rules for arti
 
 Key points:
 - **`learningPath.js` and `glossary.js` are computed from the filesystem.** You never edit them directly. The sidebar, topics page, prev/next navigation, and glossary all update automatically when you add or modify articles.
-- **`references.json`** is the only data file you edit by hand (to add new citations).
+- **`references.json`** and **`_textbooks.json`** are the only data files you edit by hand (to add new citations and new textbooks).
+- **Articles nest three deep: textbook -> block -> article.** A textbook is a self-contained course; blocks are its chapters. The sidebar renders that hierarchy as nested collapsible sections, each textbook tinted with its own colour.
 - **URLs are flat.** An article at `src/topics/probing/probing-classifiers/index.md` is served at `/topics/probing-classifiers/`, not `/topics/probing/probing-classifiers/`.
 
 ## Adding a new article
@@ -59,9 +61,9 @@ Key points:
 
 First identify the reusable technique or concept being taught. A paper is a source, not an organizing unit: split its contributions among the existing concept articles that own them, and create a new article only when a concept deserves to be learned independently.
 
-Articles are grouped into thematic blocks. Each block is a directory under `src/topics/` with a `_block.json` file. Pick the block that fits your article's topic.
+Articles are grouped into thematic blocks, and blocks are grouped into textbooks. Each block is a directory under `src/topics/` with a `_block.json` file that names its textbook. Pick the block that fits your article's topic.
 
-If no existing block fits, see [Adding a new block](#adding-a-new-block) below.
+If no existing block fits, see [Adding a new block](#adding-a-new-block) below. If the article belongs to a whole new course of study (a prerequisite curriculum, say, rather than another mechanistic interpretability chapter), see [Adding a new textbook](#adding-a-new-textbook).
 
 ### 2. Create the article directory
 
@@ -147,7 +149,8 @@ The build remaps nested image directories to flat output paths, so the URL does 
 Run `npm run build`. The build-time validator checks:
 
 - Required frontmatter fields (`title`, `description`, `order`)
-- Contiguous ordering within blocks (no gaps or duplicates)
+- Contiguous ordering within blocks, and of blocks within a textbook (no gaps or duplicates)
+- Every block names a textbook declared in `_textbooks.json`, and every textbook has at least one block
 - All `{% cite "key" %}` keys exist in `references.json`
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
@@ -159,6 +162,7 @@ If the build fails, the error message will tell you exactly what to fix.
 - **Content edits** (fixing errors, improving explanations, adding sections): edit `index.md` directly. Read `ARTICLE_GUIDELINES.md` if you are making substantive changes.
 - **Reordering**: change the `order` field in the affected articles. Keep orders contiguous within the block.
 - **Moving to a different block**: `git mv` the article directory, then update the `order` fields in both the source and destination blocks so they remain contiguous.
+- **Moving a block to a different textbook**: change `textbook` in its `_block.json`, then renumber the `order` fields in both the old and new textbooks so each stays contiguous.
 - **Adding glossary terms**: add entries to the `glossary:` list in the article's frontmatter. Each term must be unique across all articles.
 - **Adding citations**: add the reference to `src/_data/references.json`, then use `{% cite "key" %}` in the article.
 
@@ -169,13 +173,38 @@ If the build fails, the error message will tell you exactly what to fix.
 ```json
 {
   "title": "Block Display Title",
+  "textbook": "mechanistic-interpretability",
   "order": N
 }
 ```
 
-2. Block `order` must be contiguous with existing blocks. If there are currently 12 blocks (orders 1--12), a new block should be order 13 (appending) or you need to renumber existing blocks to insert it.
+2. `textbook` must match a `slug` in `src/topics/_textbooks.json`.
 
-3. Add at least one article inside the block directory.
+3. Block `order` is scoped to the textbook and must be contiguous within it. If the textbook currently has 12 blocks (orders 1--12), a new block should be order 13 (appending) or you need to renumber that textbook's blocks to insert it. Blocks in different textbooks number independently.
+
+4. Add at least one article inside the block directory.
+
+## Adding a new textbook
+
+A textbook is a standalone course. Reach for one when the material is not another chapter of an existing book: a prerequisites curriculum, for instance, that a reader might work through before or alongside the main sequence.
+
+1. Add an entry to `src/topics/_textbooks.json`:
+
+```json
+{
+  "slug": "textbook-slug",
+  "title": "Textbook Display Title",
+  "description": "One sentence shown under the title on the topics page.",
+  "order": N,
+  "hue": 152
+}
+```
+
+2. `order` must be contiguous across textbooks, and it sets reading order: every block of textbook 1 comes before every block of textbook 2 in the sidebar, on the topics page, and in prev/next article navigation.
+
+3. `hue` is a CSS hue angle (0--360) that colour-codes the textbook in the sidebar and on the topics page, so a reader with several books open can tell at a glance which articles belong to which. Everything else about the colour (saturation, lightness, the light and dark theme variants) is derived from tokens in `src/css/variables.css`. Pick a hue well separated from the ones already in use, and prefer deep, saturated hues over pale yellows and limes, which wash out against the page. Currently in use: 232 (indigo, Mechanistic Interpretability). Good next choices: 152 (green), 28 (amber), 340 (rose), 190 (teal), 275 (violet).
+
+4. Move or create at least one block that points at the new textbook. A textbook with no blocks fails validation.
 
 ## Build-time validation
 
