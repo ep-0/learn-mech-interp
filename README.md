@@ -8,6 +8,8 @@ Notes can be taken while reading -- a drawer on every page, a hub at `/notes/` t
 and an export that carries each article's context along so the notes can be discussed with an
 assistant afterwards. Notes are stored in your own browser and never leave it.
 
+The site has two ways in: the topics page lists the whole curriculum, and the learning plan gives an ordered route through it built on spaced retrieval practice.
+
 ## Running the site locally
 
 Requires Node.js 20 or newer (CI builds on 20; 22 works).

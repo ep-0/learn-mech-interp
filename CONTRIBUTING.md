@@ -56,7 +56,7 @@ ARTICLE_GUIDELINES.md              # Tone, structure, and content rules for arti
 
 Key points:
 - **`learningPath.js` and `glossary.js` are computed from the filesystem.** You never edit them directly. The sidebar, topics page, prev/next navigation, and glossary all update automatically when you add or modify articles.
-- **`references.json`, `_textbooks.json` and `pageContexts.json` are the data files you edit by hand** -- the first to add citations, the second to add textbooks, the third to sharpen the context that ships with exported reading notes. Everything else under `_data/` is computed.
+- **`references.json`, `_textbooks.json`, `pageContexts.json` and `lessonPlan.json` are the data files you edit by hand** -- the first to add citations, the second to add textbooks, the third to sharpen the context that ships with exported reading notes, the fourth to schedule the learning plan. Everything else under `_data/` is computed.
 - **Articles nest three deep: textbook -> block -> article.** A textbook is a self-contained course; blocks are its chapters. The sidebar renders that hierarchy as nested collapsible sections, each textbook tinted with its own colour.
 - **Prerequisites form a graph, not just a reading order.** Every article lists what to read first, those articles list their own prerequisites, and following the chain far enough always terminates in the assumed background described in [What This Book Assumes](src/topics/transformer-foundations/mi-prerequisites/index.md). The build enforces that the graph has no cycles.
 - **URLs are flat.** An article at `src/topics/probing/probing-classifiers/index.md` is served at `/topics/probing-classifiers/`, not `/topics/probing/probing-classifiers/`.
@@ -160,6 +160,7 @@ Run `npm run build`. The build-time validator checks:
 - `status` is `placeholder` or absent
 - The prerequisite graph is acyclic, no article lists itself, and no prerequisite is reachable through another one on the same list
 - All `{% cite "key" %}` keys exist in `references.json`
+- The learning plan schedules every article exactly once, and its article and lesson references resolve
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
 - Every `/topics/<slug>/` key in `pageContexts.json` matches a live article
@@ -321,6 +322,22 @@ have no frontmatter to derive from, so their context comes entirely from this fi
 
 The build fails if a `/topics/<slug>/` key here does not match a live article, which is what keeps the file
 honest when an article is renamed or retired.
+
+## The learning plan
+
+`src/_data/lessonPlan.json` drives the ordered lessons at `/plan/`. It coexists with the topics page: topics shows what exists, the plan gives one route through it, built on retrieval practice, spaced revisiting, and interleaving.
+
+Each lesson carries `articles` (what to read), `revisit` (earlier lessons to retrieve from memory before reopening anything), `practice` (applied work that is deliberately not on this site), and one `synthesis` question. Consolidation lessons have no articles at all.
+
+Revisits use expanding intervals: a study lesson points back two, five, and twelve study lessons, and a consolidation lesson sweeps everything since the previous one plus two older lessons.
+
+The build keeps the plan and the curriculum in sync:
+
+- every article is scheduled in exactly one lesson
+- every scheduled slug is a real article
+- every revisited lesson exists and comes earlier in the order
+
+So **adding an article means adding it to a lesson**, or the build fails and names the article. That is deliberate: a plan that silently omits new material is worse than no plan.
 
 ## Build-time validation
 
