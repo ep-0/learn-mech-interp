@@ -9,7 +9,7 @@ prerequisites: []
 
 This textbook assumes you can read a matrix product without stopping, treat a language model as a conditional distribution over tokens, and follow a gradient argument. It does not assume you can currently do all three. The [Mathematical Foundations](/topics/mathematical-notation-and-sets/) and [Machine Learning Foundations](/topics/supervised-learning-and-generalization/) textbooks exist to supply exactly this background, and every article here links to the specific pieces it needs.
 
-The floor beneath those textbooks is high-school algebra: manipulating expressions, solving equations, and graphing a line and a parabola. Everything above that line is covered somewhere on the site, precalculus and single-variable calculus included. What is covered of them is narrow on purpose. [Trigonometry and the Unit Circle](/topics/trigonometry-and-the-unit-circle/) exists because cosine similarity and rotary embeddings need it, and it skips solving triangles; [Counting, Factorials, and Binomial Coefficients](/topics/counting-and-combinatorics/) exists because probability starts with counting, and it skips generating functions. Each such article says what it leaves out and why.
+The floor beneath those textbooks is high-school algebra: manipulating expressions, solving equations, and graphing a line and a parabola. No programming experience is assumed at all. Everything above that line is covered somewhere on the site, precalculus, single-variable calculus, and Python included. What is covered of them is narrow on purpose. [Trigonometry and the Unit Circle](/topics/trigonometry-and-the-unit-circle/) exists because cosine similarity and rotary embeddings need it, and it skips solving triangles; [Counting, Factorials, and Binomial Coefficients](/topics/counting-and-combinatorics/) exists because probability starts with counting, and it skips generating functions. Each such article says what it leaves out and why.
 
 ## A Diagnostic
 
@@ -25,12 +25,14 @@ Each question below is answered by one article. If a question reads as obvious, 
 | What does a gradient with respect to an *activation*, rather than a parameter, tell you? | [Backpropagation and Automatic Differentiation](/topics/backpropagation-and-autodiff/) |
 | Why is $P(\text{sequence})$ a product of next-token conditionals? | [Language Modeling and Next-Token Prediction](/topics/language-modeling-and-next-token-prediction/) |
 | What is the difference between conditioning on a variable and intervening on it? | [Causal Graphs and Interventions](/topics/causal-graphs-and-interventions/) |
+| An array has shape `[batch, position, d_model]`. Which axis disappears under `.mean(axis=1)`? | [Arrays and Numerical Python](/topics/arrays-and-numerical-python/) |
+| Will caching every residual-stream activation for a batch of 32 prompts fit on one GPU? | [GPUs, Memory, and Numerical Precision](/topics/gpus-memory-and-precision/) |
 
 Getting several of these wrong is not a reason to stop. It is a reason to follow the links, and then the links on those pages, until you reach something you already know.
 
 ## Following the Prerequisite Chain
 
-Every article on this site lists what to read first, and those articles list what to read before *them*. Following that chain far enough always terminates in the assumed background above, so an article that looks impenetrable is never more than a few hops from ground you already have. The longest chain on the site runs 32 hops, from natural language autoencoders down to [Mathematical Notation, Sets, and Statements](/topics/mathematical-notation-and-sets/), which is the one article with no prerequisites at all.
+Every article on this site lists what to read first, and those articles list what to read before *them*. Following that chain far enough always terminates in the assumed background above, so an article that looks impenetrable is never more than a few hops from ground you already have. Two chains run all the way down: the mathematical one ends at [Mathematical Notation, Sets, and Statements](/topics/mathematical-notation-and-sets/), and the programming one at [Python Fundamentals](/topics/python-fundamentals/). Neither has any prerequisites, and nothing on the site sits below them.
 
 Some links lead to articles marked as planned: the topic has a fixed place in the chain, and the page states its intended scope, but the article itself is not written yet.
 

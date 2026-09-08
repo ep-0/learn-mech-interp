@@ -5,6 +5,8 @@ order: 4
 prerequisites:
   - title: "The Attention Mechanism"
     url: "/topics/attention-mechanism/"
+  - title: "Plotting and Visualizing Results"
+    url: "/topics/plotting-and-visualizing-results/"
 ---
 
 ## Attention Pattern Visualization

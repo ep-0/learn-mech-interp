@@ -6,6 +6,8 @@ status: placeholder
 prerequisites:
   - title: "Matrices as Linear Maps"
     url: "/topics/matrices-as-linear-maps/"
+  - title: "Arrays and Numerical Python"
+    url: "/topics/arrays-and-numerical-python/"
 ---
 
 ## Why this article exists
