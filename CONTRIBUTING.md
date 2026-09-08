@@ -168,7 +168,7 @@ If the build fails, the error message will tell you exactly what to fix.
 - **Moving a block to a different textbook**: change `textbook` in its `_block.json`, then renumber the `order` fields in both the old and new textbooks so each stays contiguous.
 - **Adding glossary terms**: add entries to the `glossary:` list in the article's frontmatter. Each term must be unique across all articles.
 - **Adding citations**: add the reference to `src/_data/references.json`, then use `{% cite "key" %}` in the article.
-- **Filling in a placeholder**: write the article as usual, then delete `status: placeholder` from its frontmatter and remove the "Why this article exists" and "What this article will cover" scaffolding. Keep its prerequisites unless the finished article genuinely needs different ones.
+- **Filling in a placeholder**: follow the brief on the page. The steps are under [Placeholder articles](#placeholder-articles) below.
 
 ## Prerequisites
 
@@ -197,9 +197,32 @@ prerequisites:
 ---
 ```
 
-`status` is either `placeholder` or absent; any other value fails validation. The layout renders a "Planned article" notice, the sidebar dims the entry and marks it, and the topics page tags it. The body carries the intended scope in three sections: why the article exists, what it will cover, and which articles depend on it.
+`status` is either `placeholder` or absent; any other value fails validation. The layout renders a "Planned article" notice, the sidebar dims the entry and marks it, and the topics page tags it.
 
 Placeholders count as real articles everywhere else: they take an `order` within their block, they appear in prev/next navigation, and they can be linked as prerequisites.
+
+### The brief
+
+A placeholder's body is a writing brief, in five sections:
+
+| Section | What it holds |
+|---|---|
+| Why this article exists | One paragraph tying the topic to the curriculum that needs it. |
+| Required sections | The numbered outline the finished article must cover, in order, each with two or three bullets. Headings can be reworded when writing; the content cannot be dropped. |
+| What you should be able to do afterward | Three or so concrete competencies. These are the exit criteria: if one is out of reach, the article is not finished. |
+| Sources to learn from | Three or four specific readings, each with a line on what to take from it. Chapters and sections where they are known. |
+| Where the curriculum uses it | Generated from the prerequisite graph: the articles that list this one. |
+
+The brief is written before the article, and it is what makes the article writable by someone who has just learned the material rather than only by someone who already knew it.
+
+### Writing a placeholder up
+
+1. Learn the material from the sources listed on the page.
+2. Write the article against the required sections, following `ARTICLE_GUIDELINES.md`. The outline is a contract about coverage, not about wording or section count: split or merge headings where the prose reads better, as long as nothing in the bullets goes missing.
+3. Check yourself against the exit criteria. They are the reason the brief lists them.
+4. Move any source you cite in the finished prose into `src/_data/references.json` and cite it with `{% cite "key" %}`. Sources that were only study material do not need to survive.
+5. Delete the four scaffolding sections and remove `status: placeholder` from the frontmatter.
+6. Revisit the prerequisites. Writing the article usually reveals that one is wrong or missing.
 
 ## Adding a new block
 
