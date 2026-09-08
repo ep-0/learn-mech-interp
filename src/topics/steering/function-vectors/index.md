@@ -5,6 +5,8 @@ order: 5
 prerequisites:
   - title: "Representation Control"
     url: "/topics/representation-control/"
+  - title: "In-Context Learning and Prompting"
+    url: "/topics/in-context-learning/"
 
 glossary:
   - term: "Function Vector"

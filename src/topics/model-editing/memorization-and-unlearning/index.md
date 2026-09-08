@@ -7,6 +7,8 @@ prerequisites:
     url: "/topics/fact-editing/"
   - title: "LEACE and Linear Concept Erasure"
     url: "/topics/concept-erasure/"
+  - title: "Pretraining, Fine-Tuning, and RLHF"
+    url: "/topics/pretraining-finetuning-and-rlhf/"
 glossary:
   - term: "Verbatim Memorization"
     definition: "A model's ability to reproduce a sufficiently long training sequence exactly when given an appropriate prefix or other eliciting context."

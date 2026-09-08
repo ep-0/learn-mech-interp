@@ -26,8 +26,9 @@ The site will be available at `http://localhost:8080/learn-mech-interp/`.
 ```
 src/
   topics/
+    _textbooks.json                # Textbook metadata: slug, title, order, sidebar hue
     <block-slug>/
-      _block.json                  # Block metadata: { "title": "...", "order": N }
+      _block.json                  # Block metadata: { "title": "...", "textbook": "...", "order": N }
       <article-slug>/
         index.md                   # Article content with frontmatter
         images/                    # Article-specific images (optional)
@@ -55,7 +56,9 @@ ARTICLE_GUIDELINES.md              # Tone, structure, and content rules for arti
 
 Key points:
 - **`learningPath.js` and `glossary.js` are computed from the filesystem.** You never edit them directly. The sidebar, topics page, prev/next navigation, and glossary all update automatically when you add or modify articles.
-- **`references.json` and `pageContexts.json` are the data files you edit by hand** -- the first to add citations, the second to sharpen the context that ships with exported reading notes. Everything else under `_data/` is computed.
+- **`references.json`, `_textbooks.json` and `pageContexts.json` are the data files you edit by hand** -- the first to add citations, the second to add textbooks, the third to sharpen the context that ships with exported reading notes. Everything else under `_data/` is computed.
+- **Articles nest three deep: textbook -> block -> article.** A textbook is a self-contained course; blocks are its chapters. The sidebar renders that hierarchy as nested collapsible sections, each textbook tinted with its own colour.
+- **Prerequisites form a graph, not just a reading order.** Every article lists what to read first, those articles list their own prerequisites, and following the chain far enough always terminates in the assumed background described in [What This Book Assumes](src/topics/transformer-foundations/mi-prerequisites/index.md). The build enforces that the graph has no cycles.
 - **URLs are flat.** An article at `src/topics/probing/probing-classifiers/index.md` is served at `/topics/probing-classifiers/`, not `/topics/probing/probing-classifiers/`.
 
 ## Adding a new article
@@ -64,9 +67,9 @@ Key points:
 
 First identify the reusable technique or concept being taught. A paper is a source, not an organizing unit: split its contributions among the existing concept articles that own them, and create a new article only when a concept deserves to be learned independently.
 
-Articles are grouped into thematic blocks. Each block is a directory under `src/topics/` with a `_block.json` file. Pick the block that fits your article's topic.
+Articles are grouped into thematic blocks, and blocks are grouped into textbooks. Each block is a directory under `src/topics/` with a `_block.json` file that names its textbook. Pick the block that fits your article's topic.
 
-If no existing block fits, see [Adding a new block](#adding-a-new-block) below.
+If no existing block fits, see [Adding a new block](#adding-a-new-block) below. If the article belongs to a whole new course of study (a prerequisite curriculum, say, rather than another mechanistic interpretability chapter), see [Adding a new textbook](#adding-a-new-textbook).
 
 ### 2. Create the article directory
 
@@ -152,7 +155,10 @@ The build remaps nested image directories to flat output paths, so the URL does 
 Run `npm run build`. The build-time validator checks:
 
 - Required frontmatter fields (`title`, `description`, `order`)
-- Contiguous ordering within blocks (no gaps or duplicates)
+- Contiguous ordering within blocks, and of blocks within a textbook (no gaps or duplicates)
+- Every block names a textbook declared in `_textbooks.json`, and every textbook has at least one block
+- `status` is `placeholder` or absent
+- The prerequisite graph is acyclic, no article lists itself, and no prerequisite is reachable through another one on the same list
 - All `{% cite "key" %}` keys exist in `references.json`
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
@@ -165,8 +171,64 @@ If the build fails, the error message will tell you exactly what to fix.
 - **Content edits** (fixing errors, improving explanations, adding sections): edit `index.md` directly. Read `ARTICLE_GUIDELINES.md` if you are making substantive changes.
 - **Reordering**: change the `order` field in the affected articles. Keep orders contiguous within the block.
 - **Moving to a different block**: `git mv` the article directory, then update the `order` fields in both the source and destination blocks so they remain contiguous.
+- **Moving a block to a different textbook**: change `textbook` in its `_block.json`, then renumber the `order` fields in both the old and new textbooks so each stays contiguous.
 - **Adding glossary terms**: add entries to the `glossary:` list in the article's frontmatter. Each term must be unique across all articles.
 - **Adding citations**: add the reference to `src/_data/references.json`, then use `{% cite "key" %}` in the article.
+- **Filling in a placeholder**: follow the brief on the page. The steps are under [Placeholder articles](#placeholder-articles) below.
+
+## Prerequisites
+
+The `prerequisites` list in an article's frontmatter is what the reader should have read first, and it is the site's main navigation aid after the sidebar.
+
+- **List the nearest prerequisite, not the whole chain.** If an article needs projections, link [Orthogonality and Projections](/topics/orthogonality-and-projections/), not the vectors article that projections themselves build on. The reader reaches the rest by following links from there.
+- **Aim for at most four.** A longer list usually means the article is doing too much, or that some entries are already reachable through the others.
+- **Cross-textbook links are normal.** A mechanistic interpretability article that needs the chain rule should link straight to it in Mathematical Foundations. Clicking it collapses the current textbook in the sidebar and opens the target's.
+- **If the prerequisite has no article anywhere on the site, create a placeholder for it** (below) rather than leaving the dependency unstated.
+- **The graph must stay acyclic**, and the build fails on a cycle, naming the loop.
+- **The build also rejects a prerequisite that another listed prerequisite already reaches.** If an article lists both `attention-mechanism` and `embeddings`, and attention already depends on embeddings, drop the second: the reader gets there by following the first. This is what keeps "nearest" enforceable rather than aspirational.
+
+## Placeholder articles
+
+A placeholder fixes a topic's place in the prerequisite chain before anyone writes it. Give it the frontmatter every article has, plus `status: placeholder`:
+
+```yaml
+---
+title: "Rank and Low-Rank Factorization"
+description: "One-sentence summary, same as any article."
+order: 6
+status: placeholder
+prerequisites:
+  - title: "Matrices as Linear Maps"
+    url: "/topics/matrices-as-linear-maps/"
+---
+```
+
+`status` is either `placeholder` or absent; any other value fails validation. The layout renders a "Planned article" notice, the sidebar dims the entry and marks it, and the topics page tags it.
+
+Placeholders count as real articles everywhere else: they take an `order` within their block, they appear in prev/next navigation, and they can be linked as prerequisites.
+
+### The brief
+
+A placeholder's body is a writing brief, in five sections:
+
+| Section | What it holds |
+|---|---|
+| Why this article exists | One paragraph tying the topic to the curriculum that needs it. |
+| Required sections | The numbered outline the finished article must cover, in order, each with two or three bullets. Headings can be reworded when writing; the content cannot be dropped. |
+| What you should be able to do afterward | Three or so concrete competencies. These are the exit criteria: if one is out of reach, the article is not finished. |
+| Sources to learn from | Three or four specific readings, each with a line on what to take from it. Chapters and sections where they are known. |
+| Where the curriculum uses it | Generated from the prerequisite graph: the articles that list this one. |
+
+The brief is written before the article, and it is what makes the article writable by someone who has just learned the material rather than only by someone who already knew it.
+
+### Writing a placeholder up
+
+1. Learn the material from the sources listed on the page.
+2. Write the article against the required sections, following `ARTICLE_GUIDELINES.md`. The outline is a contract about coverage, not about wording or section count: split or merge headings where the prose reads better, as long as nothing in the bullets goes missing.
+3. Check yourself against the exit criteria. They are the reason the brief lists them.
+4. Move any source you cite in the finished prose into `src/_data/references.json` and cite it with `{% cite "key" %}`. Sources that were only study material do not need to survive.
+5. Delete the four scaffolding sections and remove `status: placeholder` from the frontmatter.
+6. Revisit the prerequisites. Writing the article usually reveals that one is wrong or missing.
 
 ## Adding a new block
 
@@ -175,13 +237,40 @@ If the build fails, the error message will tell you exactly what to fix.
 ```json
 {
   "title": "Block Display Title",
+  "textbook": "mechanistic-interpretability",
   "order": N
 }
 ```
 
-2. Block `order` must be contiguous with existing blocks. If there are currently 12 blocks (orders 1--12), a new block should be order 13 (appending) or you need to renumber existing blocks to insert it.
+2. `textbook` must match a `slug` in `src/topics/_textbooks.json`.
 
-3. Add at least one article inside the block directory.
+3. Block `order` is scoped to the textbook and must be contiguous within it. If the textbook currently has 12 blocks (orders 1--12), a new block should be order 13 (appending) or you need to renumber that textbook's blocks to insert it. Blocks in different textbooks number independently.
+
+4. Add at least one article inside the block directory.
+
+## Adding a new textbook
+
+A textbook is a standalone course. Reach for one when the material is not another chapter of an existing book: a prerequisites curriculum, for instance, that a reader might work through before or alongside the main sequence.
+
+1. Add an entry to `src/topics/_textbooks.json`:
+
+```json
+{
+  "slug": "textbook-slug",
+  "title": "Textbook Display Title",
+  "description": "One sentence shown under the title on the topics page.",
+  "order": N,
+  "hue": 152
+}
+```
+
+2. `order` must be contiguous across textbooks, and it sets reading order: every block of textbook 1 comes before every block of textbook 2 in the sidebar, on the topics page, and in prev/next article navigation.
+
+3. Currently in use: 275 (violet, Mathematical Foundations), 152 (green, Machine Learning Foundations), 232 (indigo, Mechanistic Interpretability).
+
+4. `hue` is a CSS hue angle (0--360) that colour-codes the textbook in the sidebar and on the topics page, so a reader with several books open can tell at a glance which articles belong to which. Everything else about the colour (saturation, lightness, the light and dark theme variants) is derived from tokens in `src/css/variables.css`. Pick a hue well separated from the ones already in use, and prefer deep, saturated hues over pale yellows and limes, which wash out against the page. Good next choices: 28 (amber), 340 (rose), 190 (teal), 20 (terracotta).
+
+5. Move or create at least one block that points at the new textbook. A textbook with no blocks fails validation.
 
 ## Reading notes
 

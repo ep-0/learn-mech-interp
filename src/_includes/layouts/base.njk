@@ -70,7 +70,7 @@
   <link rel="stylesheet" href="/css/katex-overrides.css?v={{ buildId }}">
   <link rel="stylesheet" href="/css/prism-theme.css?v={{ buildId }}">
 </head>
-<body data-page-url="{{ page.url }}" data-page-title="{{ resolvedTitle | default(site.name) }}">
+<body data-page-url="{{ page.url }}" data-page-title="{{ resolvedTitle | default(site.name) }}" data-base-url="{{ '/' | url }}">
   <a href="#main-content" class="skip-link">Skip to content</a>
   {% include "partials/header.njk" %}
   <div class="page-layout">

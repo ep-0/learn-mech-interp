@@ -5,6 +5,8 @@ order: 6
 prerequisites:
   - title: "Addition Steering"
     url: "/topics/addition-steering/"
+  - title: "Constrained Optimization and Lagrange Multipliers"
+    url: "/topics/constrained-optimization-and-lagrange-multipliers/"
 
 glossary:
   - term: "MELBO"

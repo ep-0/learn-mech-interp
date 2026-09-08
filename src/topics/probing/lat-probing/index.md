@@ -5,6 +5,8 @@ order: 4
 prerequisites:
   - title: "Contrastive Activation Addition (CAA)"
     url: "/topics/caa-method/"
+  - title: "Principal Component Analysis"
+    url: "/topics/principal-component-analysis/"
 ---
 
 ## Reading Representations

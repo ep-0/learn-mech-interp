@@ -87,49 +87,58 @@ function extractReferences(markdown, refs) {
 }
 
 function deriveArticleContexts() {
-  const { blocks } = scanBlocks();
+  const { textbooks } = scanBlocks();
   const refs = readJson("references.json");
   const contexts = {};
 
-  for (const [blockIndex, block] of blocks.entries()) {
-    for (const [topicIndex, topic] of block.topics.entries()) {
-      const mdPath = path.join(TOPICS_DIR, block.slug, topic.slug, "index.md");
-      if (!fs.existsSync(mdPath)) continue;
+  for (const [textbookIndex, textbook] of textbooks.entries()) {
+    for (const [blockIndex, block] of textbook.blocks.entries()) {
+      for (const [topicIndex, topic] of block.topics.entries()) {
+        const mdPath = path.join(TOPICS_DIR, block.slug, topic.slug, "index.md");
+        if (!fs.existsSync(mdPath)) continue;
 
-      const { data, content } = matter(fs.readFileSync(mdPath, "utf-8"));
-      const previous = block.topics[topicIndex - 1];
-      const next = block.topics[topicIndex + 1];
+        const { data, content } = matter(fs.readFileSync(mdPath, "utf-8"));
+        const previous = block.topics[topicIndex - 1];
+        const next = block.topics[topicIndex + 1];
 
-      contexts[`/topics/${topic.slug}/`] = {
-        kind: "article",
-        url: `/topics/${topic.slug}/`,
-        title: data.title || topic.slug,
-        summary: data.description || "",
-        position: {
-          blockSlug: block.slug,
-          blockTitle: block.title,
-          blockNumber: blockIndex + 1,
-          blockCount: blocks.length,
-          articleNumber: topicIndex + 1,
-          articleCount: block.topics.length,
-        },
-        sections: extractSections(content),
-        prerequisites: (data.prerequisites || []).map((prereq) => ({
-          title: prereq.title,
-          url: prereq.url,
-        })),
-        glossary: (data.glossary || []).map((entry) => ({
-          term: entry.term,
-          definition: entry.definition,
-        })),
-        references: extractReferences(content, refs),
-        neighbours: {
-          previous: previous
-            ? { title: previous.title, url: `/topics/${previous.slug}/` }
-            : null,
-          next: next ? { title: next.title, url: `/topics/${next.slug}/` } : null,
-        },
-      };
+        contexts[`/topics/${topic.slug}/`] = {
+          kind: "article",
+          url: `/topics/${topic.slug}/`,
+          title: data.title || topic.slug,
+          summary: data.description || "",
+          // A placeholder is a writing brief, not finished prose - worth saying
+          // so, since it changes how a note about it should be read.
+          status: topic.status || "published",
+          position: {
+            textbookSlug: textbook.slug,
+            textbookTitle: textbook.title,
+            textbookNumber: textbookIndex + 1,
+            textbookCount: textbooks.length,
+            blockSlug: block.slug,
+            blockTitle: block.title,
+            blockNumber: blockIndex + 1,
+            blockCount: textbook.blocks.length,
+            articleNumber: topicIndex + 1,
+            articleCount: block.topics.length,
+          },
+          sections: extractSections(content),
+          prerequisites: (data.prerequisites || []).map((prereq) => ({
+            title: prereq.title,
+            url: prereq.url,
+          })),
+          glossary: (data.glossary || []).map((entry) => ({
+            term: entry.term,
+            definition: entry.definition,
+          })),
+          references: extractReferences(content, refs),
+          neighbours: {
+            previous: previous
+              ? { title: previous.title, url: `/topics/${previous.slug}/` }
+              : null,
+            next: next ? { title: next.title, url: `/topics/${next.slug}/` } : null,
+          },
+        };
+      }
     }
   }
 

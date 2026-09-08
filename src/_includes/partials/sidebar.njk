@@ -1,24 +1,36 @@
 <nav id="sidebar" class="sidebar" aria-label="Topics">
   <div class="sidebar-inner">
-    <h2 class="sidebar-title">Topics</h2>
-    {% for block in learningPath.blocks %}
-    {% set blockHasCurrent = false %}
-    {% for topic in block.topics %}
-      {% if page.fileSlug == topic.slug %}
-        {% set blockHasCurrent = true %}
-      {% endif %}
-    {% endfor %}
-    <details class="sidebar-block"{% if blockHasCurrent %} open{% endif %}>
-      <summary class="sidebar-block-title">{{ block.title }}</summary>
-      <ul class="sidebar-topics">
-        {% for topic in block.topics %}
-        <li>
-          <a href="/topics/{{ topic.slug }}/"{% if page.fileSlug == topic.slug %} aria-current="page" class="sidebar-active"{% endif %}>
-            {{ topic.title }}
-          </a>
-        </li>
+    <h2 class="sidebar-title">Textbooks</h2>
+    {% for textbook in learningPath.textbooks %}
+    {# A textbook opens when it holds the current article. On pages that are not
+       articles (`block` is undefined) every textbook opens, so the sidebar still
+       shows the full chapter list. #}
+    {%- set textbookHasCurrent = false -%}
+    {%- for b in textbook.blocks -%}
+      {%- if b.slug == block -%}
+        {%- set textbookHasCurrent = true -%}
+      {%- endif -%}
+    {%- endfor %}
+    <details class="sidebar-textbook" data-textbook="{{ textbook.slug }}" style="--textbook-hue: {{ textbook.hue }};"{% if textbookHasCurrent or not block %} open{% endif %}>
+      <summary class="sidebar-textbook-title">
+        <span class="sidebar-textbook-name">{{ textbook.title }}</span>
+      </summary>
+      <div class="sidebar-textbook-body">
+        {% for blockItem in textbook.blocks %}
+        <details class="sidebar-block"{% if blockItem.slug == block %} open{% endif %}>
+          <summary class="sidebar-block-title">{{ blockItem.title }}</summary>
+          <ul class="sidebar-topics">
+            {% for topic in blockItem.topics %}
+            <li>
+              <a href="/topics/{{ topic.slug }}/"{% if topic.status == "placeholder" %} data-placeholder="true"{% endif %} class="{% if page.fileSlug == topic.slug %}sidebar-active {% endif %}{% if topic.status == "placeholder" %}sidebar-topic-placeholder{% endif %}"{% if page.fileSlug == topic.slug %} aria-current="page"{% endif %}>
+                {{ topic.title }}{% if topic.status == "placeholder" %}<span class="sidebar-placeholder-mark" title="Planned article, not yet written" aria-label="planned">&#9633;</span>{% endif %}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </details>
         {% endfor %}
-      </ul>
+      </div>
     </details>
     {% endfor %}
   </div>

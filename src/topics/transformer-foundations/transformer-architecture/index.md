@@ -3,8 +3,10 @@ title: "Transformer Architecture Intro"
 description: "Following a token through a decoder-only transformer, from tokenization and embeddings to attention, MLPs, the residual stream, and output logits."
 order: 2
 prerequisites:
-  - title: "Prerequisites"
+  - title: "What This Book Assumes"
     url: "/topics/mi-prerequisites/"
+  - title: "Tokenization and Subword Vocabularies"
+    url: "/topics/tokenization/"
 glossary:
   - term: "Residual Stream"
     definition: "The central communication channel in a transformer, implemented as skip connections that allow each layer's output to be added to a running sum. All attention heads and MLP layers read from and write to this shared stream."

@@ -2,6 +2,9 @@
 title: "ARENA: Hands-On Technical Training"
 description: "How ARENA’s open curriculum complements this site with implementation-heavy exercises on transformers, causal interventions, sparse features, and circuits."
 order: 1
+prerequisites:
+  - title: "PyTorch Tensors, Modules, and Hooks"
+    url: "/topics/pytorch-and-computation-graphs/"
 ---
 
 ## What is ARENA?

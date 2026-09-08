@@ -6,8 +6,6 @@ keywords: "Jacobian lens, J-lens, J-space, logit lens, tuned lens, mechanistic i
 prerequisites:
   - title: "The Logit Lens and Tuned Lens"
     url: "/topics/logit-lens-and-tuned-lens/"
-  - title: "Direct Logit Attribution"
-    url: "/topics/direct-logit-attribution/"
 
 glossary:
   - term: "Jacobian Lens"

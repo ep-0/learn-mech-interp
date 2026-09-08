@@ -5,6 +5,8 @@ order: 2
 prerequisites:
   - title: "Crosscoders"
     url: "/topics/crosscoders/"
+  - title: "Pretraining, Fine-Tuning, and RLHF"
+    url: "/topics/pretraining-finetuning-and-rlhf/"
 
 glossary:
   - term: "Model Diffing"

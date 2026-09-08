@@ -3,10 +3,10 @@ title: "Probes in Production"
 description: "Taking activation probes from benchmark experiments to deployed monitors: long-context aggregation, cascades, ensembles, and distribution shift."
 order: 6
 prerequisites:
-  - title: "Probing Classifiers"
-    url: "/topics/probing-classifiers/"
   - title: "Attention Probes"
     url: "/topics/attention-probes/"
+  - title: "Distribution Shift and Held-Out Evaluation"
+    url: "/topics/distribution-shift-and-evaluation/"
 
 glossary:
   - term: "Cascade Classifier"

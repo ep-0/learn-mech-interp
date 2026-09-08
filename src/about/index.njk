@@ -6,17 +6,20 @@ permalink: /about/
 ---
 {% set totalTopics = collections.learningPath | length %}
 {% set totalBlocks = learningPath.blocks | length %}
+{% set totalTextbooks = learningPath.textbooks | length %}
 
 <div class="about-page">
   <h1>About</h1>
 
   <p class="about-lead">Learn Mechanistic Interpretability is an open-source textbook on how language models compute what they compute: what is inside a transformer, the techniques researchers use to reverse-engineer it, and what the field currently does and does not know.</p>
 
-  <p>Mechanistic interpretability lives in papers, blog posts, and code repositories, and the order it was published in is not the order that makes it easiest to learn. The material here is arranged as a path instead. There are {{ totalTopics }} articles across {{ totalBlocks }} blocks, and each one assumes only what came before it.</p>
+  <p>Mechanistic interpretability lives in papers, blog posts, and code repositories, and the order it was published in is not the order that makes it easiest to learn. The material here is arranged as a path instead: {{ totalTopics }} articles across {{ totalBlocks }} chapters in {{ totalTextbooks }} textbooks, each article listing what to read first.</p>
 
   <h2>Structure and Content</h2>
 
-  <p>The articles run from transformer fundamentals through probing, steering, and circuit analysis to safety applications, then finish with the tooling the field uses. You can read straight through, or start wherever you need and follow the "Read first" links backwards to fill in the gaps. The <a href="/topics/">topics page</a> lays out the whole map, the <a href="/glossary/">glossary</a> collects the vocabulary, and <a href="/search/">search</a> covers the full text of every article.</p>
+  <p>The mechanistic interpretability textbook runs from transformer fundamentals through probing, steering, and circuit analysis to safety applications, then finishes with the tooling the field uses. Two shorter textbooks sit underneath it: Mathematical Foundations and Machine Learning Foundations, which supply the linear algebra, calculus, probability, causal inference, and deep learning the main book uses without re-deriving.</p>
+
+  <p>You can read straight through, or start wherever you need and follow the "Read first" links backwards. Those links form a chain: an article's prerequisites have prerequisites of their own, and following them far enough always lands on high-school algebra and a first course in calculus, which is the only background assumed anywhere on the site. Some articles are marked as planned, meaning the topic holds a place in that chain but has not been written yet. The <a href="/topics/">topics page</a> lays out the whole map, the <a href="/glossary/">glossary</a> collects the vocabulary, and <a href="/search/">search</a> covers the full text of every article.</p>
 
   <p>Each article is about a technique, a concept, or an idea, not about a paper. One influential paper might become a single article, or several, or none, depending on how much of it generalizes beyond its own experiments.</p>
 

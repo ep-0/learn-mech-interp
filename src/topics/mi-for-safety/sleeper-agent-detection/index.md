@@ -6,6 +6,8 @@ order: 2
 prerequisites:
   - title: "The Refusal Direction"
     url: "/topics/refusal-direction/"
+  - title: "Probes in Production"
+    url: "/topics/probes-in-production/"
 
 glossary:
   - term: "Sleeper Agent"

@@ -5,6 +5,8 @@ order: 5
 prerequisites:
   - title: "SAE Variants, Evaluation, and Limitations"
     url: "/topics/sae-variants-and-evaluation/"
+  - title: "KL Divergence and Mutual Information"
+    url: "/topics/kl-divergence-and-mutual-information/"
 glossary:
   - term: "Temporal Feature Analysis"
     definition: "A feature-extraction objective that decomposes each representation into a context-predictable component and a residual component containing information not predicted from earlier context."

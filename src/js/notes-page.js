@@ -105,7 +105,9 @@
     if (note.pageUrl) {
       var open = document.createElement("a");
       open.className = "notes-btn notes-btn-quiet";
-      open.href = note.heading && note.heading.id ? note.pageUrl + "#" + note.heading.id : note.pageUrl;
+      open.href = store.withBase(
+        note.heading && note.heading.id ? note.pageUrl + "#" + note.heading.id : note.pageUrl
+      );
       open.textContent = "Open in article";
       actions.appendChild(open);
     }
@@ -180,7 +182,7 @@
 
     if (group.url) {
       var link = document.createElement("a");
-      link.href = group.url;
+      link.href = store.withBase(group.url);
       link.textContent = pageTitleFor(group.url, group.title);
       heading.appendChild(link);
     } else {
@@ -195,7 +197,8 @@
 
     if (context && context.position) {
       bits.push(
-        "Block " + context.position.blockNumber + " · " + context.position.blockTitle
+        (context.position.textbookTitle ? context.position.textbookTitle + " · " : "") +
+          context.position.blockTitle
       );
     } else if (!group.url) {
       bits.push("Not tied to a page");
@@ -305,7 +308,13 @@
     urls.sort(function (a, b) {
       var pa = contexts.pages[a].position;
       var pb = contexts.pages[b].position;
-      if (pa && pb) return pa.blockNumber - pb.blockNumber || pa.articleNumber - pb.articleNumber;
+      if (pa && pb) {
+        return (
+          (pa.textbookNumber || 0) - (pb.textbookNumber || 0) ||
+          pa.blockNumber - pb.blockNumber ||
+          pa.articleNumber - pb.articleNumber
+        );
+      }
       if (pa) return -1;
       if (pb) return 1;
       return a < b ? -1 : 1;

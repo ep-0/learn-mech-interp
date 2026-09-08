@@ -3,8 +3,10 @@ title: "The Superposition Hypothesis"
 description: "How neural networks fit more features than dimensions, when that compression becomes worthwhile, and why the resulting interference produces polysemantic neurons."
 order: 3
 prerequisites:
-  - title: "The Attention Mechanism"
-    url: "/topics/attention-mechanism/"
+  - title: "The Linear Representation Hypothesis"
+    url: "/topics/linear-representation-hypothesis/"
+  - title: "Geometry in High Dimensions"
+    url: "/topics/high-dimensional-geometry/"
 
 glossary:
   - term: "Feature (in MI)"

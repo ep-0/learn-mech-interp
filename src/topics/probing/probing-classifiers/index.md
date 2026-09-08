@@ -5,6 +5,8 @@ order: 1
 prerequisites:
   - title: "The Logit Lens and Tuned Lens"
     url: "/topics/logit-lens-and-tuned-lens/"
+  - title: "Classification Metrics, Thresholds, and ROC"
+    url: "/topics/classification-metrics-and-thresholds/"
 
 glossary:
   - term: "Linear Probe"

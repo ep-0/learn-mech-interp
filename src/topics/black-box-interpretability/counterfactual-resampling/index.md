@@ -3,8 +3,10 @@ title: "Counterfactual Resampling"
 description: "Testing which steps in a reasoning trace affect the final answer by resampling continuations after individual steps are removed or replaced."
 order: 1
 prerequisites:
-  - title: "Activation Patching"
+  - title: "Activation Patching and Causal Interventions"
     url: "/topics/activation-patching/"
+  - title: "Statistical Uncertainty and Hypothesis Testing"
+    url: "/topics/hypothesis-testing-and-uncertainty/"
 
 glossary:
   - term: "Counterfactual Resampling"

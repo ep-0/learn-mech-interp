@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://learnmechinterp.com/sitemap.xml
+Sitemap: https://ep-0.github.io/learn-mech-interp/sitemap.xml

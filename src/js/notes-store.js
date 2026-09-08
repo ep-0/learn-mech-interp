@@ -17,6 +17,22 @@
   var contextsPromise = null;
   var listeners = [];
 
+  // The site may be served from a subdirectory (GitHub Pages project sites set
+  // pathPrefix). EleventyHtmlBasePlugin rewrites href and src attributes at
+  // build time but never JavaScript strings, so paths built here - the context
+  // fetch, and links the hub creates at runtime - resolve against this instead.
+  function baseUrl() {
+    var base = document.body && document.body.getAttribute("data-base-url");
+    if (!base) return "/";
+    return base.slice(-1) === "/" ? base : base + "/";
+  }
+
+  function withBase(path) {
+    if (!path) return baseUrl();
+    if (/^(?:[a-z]+:)?\/\//i.test(path)) return path;
+    return baseUrl() + String(path).replace(/^\/+/, "");
+  }
+
   /* ---------------------------------------------------------------- storage */
 
   function emptyStore() {
@@ -264,7 +280,7 @@
   // export pays for it, nothing else does.
   function loadContexts() {
     if (!contextsPromise) {
-      contextsPromise = fetch(CONTEXT_URL, { credentials: "same-origin" })
+      contextsPromise = fetch(withBase(CONTEXT_URL), { credentials: "same-origin" })
         .then(function (response) {
           if (!response.ok) throw new Error("HTTP " + response.status);
           return response.json();
@@ -334,7 +350,11 @@
       var pa = a.context && a.context.position;
       var pb = b.context && b.context.position;
       if (pa && pb) {
-        return pa.blockNumber - pb.blockNumber || pa.articleNumber - pb.articleNumber;
+        return (
+          (pa.textbookNumber || 0) - (pb.textbookNumber || 0) ||
+          pa.blockNumber - pb.blockNumber ||
+          pa.articleNumber - pb.articleNumber
+        );
       }
       if (pa) return -1;
       if (pb) return 1;
@@ -368,16 +388,25 @@
     var position = context.position;
     if (position) {
       lines.push(
-        "- **Where it sits:** block " +
+        "- **Where it sits:** " +
+          (position.textbookTitle ? position.textbookTitle + ", " : "") +
+          "block " +
           position.blockNumber +
           " of " +
           position.blockCount +
-          ", “" +
+          " (“" +
           position.blockTitle +
-          "” — article " +
+          "”) — article " +
           position.articleNumber +
           " of " +
           position.articleCount
+      );
+    }
+    if (context.status && context.status !== "published") {
+      lines.push(
+        "- **Status:** this article is a " +
+          context.status +
+          " - a writing brief rather than finished prose, so it may outline what is coming rather than argue it."
       );
     }
     if (context.summary) lines.push("- **What it covers:** " + context.summary);
@@ -603,6 +632,7 @@
     subscribe: subscribe,
     currentPage: currentPage,
     normalizeUrl: normalizeUrl,
+    withBase: withBase,
     loadContexts: loadContexts,
     contextFor: contextFor,
     groupNotes: groupNotes,
