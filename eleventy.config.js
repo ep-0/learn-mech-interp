@@ -100,6 +100,7 @@ function validate() {
   const { blocks, textbooks } = scanBlocks();
   const refs = JSON.parse(fs.readFileSync("src/_data/references.json", "utf-8"));
   const redirects = JSON.parse(fs.readFileSync("src/_data/redirects.json", "utf-8"));
+  const lessonPlan = JSON.parse(fs.readFileSync("src/_data/lessonPlan.json", "utf-8"));
   const pageContexts = JSON.parse(fs.readFileSync("src/_data/pageContexts.json", "utf-8"));
 
   // 1. Check for duplicate reference titles and URLs
@@ -339,7 +340,41 @@ function validate() {
     }
   }
 
-  // 13. Redirects must be unique topic routes with live topic destinations.
+  // 13. The learning plan must schedule every article exactly once, and every
+  //     article and lesson it references must exist. Without this the plan
+  //     silently rots as articles are added, renamed, or split.
+  const scheduled = new Map(); // slug -> lesson number
+  const lessonNumbers = new Set(lessonPlan.lessons.map(l => l.n));
+  lessonPlan.lessons.forEach((lesson, index) => {
+    if (lesson.n !== index + 1) {
+      errors.push(`Lesson plan: lesson at position ${index + 1} is numbered ${lesson.n}`);
+    }
+    for (const article of lesson.articles) {
+      if (!allArticleSlugs.has(article.slug)) {
+        errors.push(`Lesson ${lesson.n}: schedules "${article.slug}", which is not an article`);
+      }
+      if (scheduled.has(article.slug)) {
+        errors.push(`Lesson plan: "${article.slug}" is scheduled in lessons ` +
+          `${scheduled.get(article.slug)} and ${lesson.n}`);
+      }
+      scheduled.set(article.slug, lesson.n);
+    }
+    for (const revisit of lesson.revisit) {
+      if (!lessonNumbers.has(revisit.n)) {
+        errors.push(`Lesson ${lesson.n}: revisits lesson ${revisit.n}, which does not exist`);
+      }
+      if (revisit.n >= lesson.n) {
+        errors.push(`Lesson ${lesson.n}: revisits lesson ${revisit.n}, which is not earlier`);
+      }
+    }
+  });
+  for (const slug of allArticleSlugs) {
+    if (!scheduled.has(slug)) {
+      errors.push(`Lesson plan: "${slug}" is never scheduled in any lesson`);
+    }
+  }
+
+  // 14. Redirects must be unique topic routes with live topic destinations.
   const redirectSources = new Set();
   for (const redirect of redirects) {
     if (!redirect.from?.match(/^\/topics\/[^/]+\/$/)) {
