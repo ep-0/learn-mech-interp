@@ -58,7 +58,7 @@ Weight sparsity is a dial, not a switch, and turning it up costs pretraining los
 
 <figure>
   <img src="/topics/weight-sparse-training/images/capability_interpretability_frontier.png" alt="Scatter plot of pruned circuit size against pretraining loss, with five connected curves coloured by total parameter count. Within each curve, smaller weight L0 gives lower circuit size but higher loss. Larger total parameter counts shift entire curves down and to the left.">
-  <figcaption>Figure 2: The capability-interpretability frontier. Within a curve, decreasing weight $L_0$ trades capability for interpretability. Across curves, increasing total parameter count improves both. Down and to the left is better. From Gao et al., <em>Weight-Sparse Transformers Have Interpretable Circuits</em>. {% cite "gao2025weightsparse" %}</figcaption>
+  <figcaption>Figure 2: The capability-interpretability frontier. Within a curve, decreasing weight <em>L</em><sub>0</sub> trades capability for interpretability. Across curves, increasing total parameter count improves both. Down and to the left is better. From Gao et al., <em>Weight-Sparse Transformers Have Interpretable Circuits</em>. {% cite "gao2025weightsparse" %}</figcaption>
 </figure>
 
 Hold total parameter count fixed and make the weights sparser: pretraining loss gets worse, circuits get smaller. That is a trade, and it is the frontier we are on. Hold sparsity fixed and make the model wider: both improve at once, and the whole frontier moves outward.

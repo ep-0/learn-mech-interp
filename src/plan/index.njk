@@ -43,6 +43,8 @@ eleventyExcludeFromCollections: true
       <dd>Explain each new idea in your own words and connect it to something you already know. The <a href="/notes/">notes panel</a> is there for this.</dd>
       <dt>Calibration</dt>
       <dd>Predict how you will score before you test yourself, then compare. Feeling fluent is not knowing, and the gap is the thing to measure.</dd>
+      <dt>Context before detail</dt>
+      <dd>Each lesson opens with what its material is eventually for, in language you do not yet fully understand. Meeting a term loosely before meeting it precisely gives the precise version somewhere to attach, and the "Where this goes" links are computed from the site's own prerequisite graph rather than guessed.</dd>
       <dt>Varied, applied practice</dt>
       <dd>Every lesson has practice that is not on this site: implement it, break it, plot it, or reproduce it. Understanding that survives only inside the article is not understanding.</dd>
     </dl>
@@ -54,7 +56,8 @@ eleventyExcludeFromCollections: true
     <table class="plan-shape-table">
       <thead><tr><th>Part</th><th>About</th><th>What it is</th></tr></thead>
       <tbody>
-        <tr><td>Read</td><td>2 h</td><td>The new articles, once through. No rereading, no highlighting.</td></tr>
+        <tr><td>Orient</td><td>10 min</td><td>The paragraph at the top of the lesson, plus a guess at what the articles will say.</td></tr>
+      <tr><td>Read</td><td>2 h</td><td>The new articles, once through. No rereading, no highlighting.</td></tr>
         <tr><td>Retrieve</td><td>1 h</td><td>Closed book: the article's exit criteria, plus a free recall of what it argued.</td></tr>
         <tr><td>Revisit</td><td>1 h</td><td>The earlier lessons named below, attempted from memory before you reopen anything.</td></tr>
         <tr><td>Practice</td><td>2.5 h</td><td>The applied work listed in the lesson. Code, derivations, replications.</td></tr>
@@ -68,6 +71,7 @@ eleventyExcludeFromCollections: true
     {% if lesson.part != currentPart %}
       {% set currentPart = lesson.part %}
       <h2 class="plan-part" id="part-{{ lesson.part | slugify }}">{{ lesson.part }}</h2>
+      <p class="plan-part-intro">{{ lessonPlan.partIntros[lesson.part] | mdInline | safe }}</p>
     {% endif %}
     {% set itemCount = lesson.articles.length + lesson.revisit.length + lesson.practice.length + 1 %}
     <details class="plan-lesson{% if lesson.kind == 'consolidation' %} plan-lesson--consolidation{% endif %}"
@@ -80,6 +84,13 @@ eleventyExcludeFromCollections: true
       </summary>
 
       <div class="plan-lesson-body">
+        <p class="plan-orientation">{{ lesson.orientation | mdInline | safe }}</p>
+
+        {% if lesson.usedIn.length %}
+        <p class="plan-forward"><span class="plan-forward-label">Where this goes</span>
+          {% for u in lesson.usedIn %}{% if loop.index > 1 %}, {% endif %}<a href="#lesson-{{ u.n }}">Lesson {{ u.n }} — {{ u.title }}</a>{% endfor %}</p>
+        {% endif %}
+
         {% if lesson.articles.length %}
         <h3 class="plan-step">Read</h3>
         <ul class="plan-items">
@@ -106,14 +117,14 @@ eleventyExcludeFromCollections: true
         <ul class="plan-items">
           {% for p in lesson.practice %}
           <li><label><input type="checkbox" data-plan-item="l{{ lesson.n }}-practice-{{ loop.index }}">
-            <span>{{ p }}</span></label></li>
+            <span>{{ p | mdInline | safe }}</span></label></li>
           {% endfor %}
         </ul>
 
         <h3 class="plan-step">Write</h3>
         <ul class="plan-items">
           <li><label><input type="checkbox" data-plan-item="l{{ lesson.n }}-write">
-            <span>{{ lesson.synthesis }}</span></label></li>
+            <span>{{ lesson.synthesis | mdInline | safe }}</span></label></li>
         </ul>
       </div>
     </details>

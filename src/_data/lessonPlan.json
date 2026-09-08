@@ -38,7 +38,26 @@
         "Copy ten pieces of notation out of any article further along in the curriculum, including one you do not understand at all, and translate each into a full English sentence.",
         "Take one expression with a summation sign and expand it by hand for n = 3, then write the loop that computes it."
       ],
-      "synthesis": "Without looking, write the definition of a function in one sentence, then explain why $f \\circ g$ and $g \\circ f$ are different objects."
+      "synthesis": "Without looking, write the definition of a function in one sentence, then explain why $f \\circ g$ and $g \\circ f$ are different objects.",
+      "orientation": "The symbols come first because everything else is written in them. When a paper states that a language model computes $\\prod_i P(x_i \\mid x_{<i})$, or that features live in $\\mathbb{R}^{d_{\\text{model}}}$, that is this lesson's content and nothing more. Composition matters more than it looks: a transformer is functions composed a hundred deep, the chain rule differentiates a composition, and an autoencoder is a composition that should come back to where it started. What does it take to read a formula out loud and know what every piece is doing?",
+      "usedIn": [
+        {
+          "n": 2,
+          "title": "Growth, Bounds, and Shape"
+        },
+        {
+          "n": 3,
+          "title": "Coordinates, Systems, and Arrays"
+        },
+        {
+          "n": 5,
+          "title": "Limits, Series, and Counting"
+        },
+        {
+          "n": 6,
+          "title": "Making Code and Figures You Can Trust"
+        }
+      ]
     },
     {
       "n": 2,
@@ -66,7 +85,26 @@
         "Derive the three log rules from the exponent laws on paper, closed book.",
         "Plot $x^2$, $2^x$, and $\\log_2 x$ on one axis, then again on a log scale, and write one sentence about what changed."
       ],
-      "synthesis": "State from memory why cross-entropy is measured in logs rather than in raw probabilities, and what units the result is in."
+      "synthesis": "State from memory why cross-entropy is measured in logs rather than in raw probabilities, and what units the result is in.",
+      "orientation": "Logarithms are the most reused idea in the entire curriculum. Cross-entropy, perplexity, log-likelihood, KL divergence, bits per token, and the log-odds a probe outputs are one topic wearing six names, and the trick underneath all of them is that a log turns a product of many small probabilities into a sum of manageable numbers. Bounds matter for a different reason: most results you will meet are inequalities, not equations, and reading one correctly is a skill. Why is a model's loss reported in logs at all?",
+      "usedIn": [
+        {
+          "n": 4,
+          "title": "Angles and Rotation"
+        },
+        {
+          "n": 10,
+          "title": "Rank and Eigenstructure"
+        },
+        {
+          "n": 13,
+          "title": "Many Dimensions, Real Machines"
+        },
+        {
+          "n": 15,
+          "title": "Rates of Change"
+        }
+      ]
     },
     {
       "n": 3,
@@ -99,7 +137,26 @@
         "Take an array of shape [4, 6, 8] and produce every reduction over each axis, predicting each output shape before running it.",
         "Deliberately trigger a silent broadcasting bug, then write the assertion that would have caught it."
       ],
-      "synthesis": "Explain what a homogeneous system having a nonzero solution says about the columns of its matrix."
+      "synthesis": "Explain what a homogeneous system having a nonzero solution says about the columns of its matrix.",
+      "orientation": "An activation is a point in a space with a few thousand coordinates, a norm is a distance, and a probe's decision boundary is a hyperplane. Those are this lesson's objects with the dimension count raised, which is the entire conceptual jump. Arrays are here alongside them because every shape bug you will meet in interpretability code is learnable now, in NumPy, where nothing else is going on. What is the same and what is different about a point in $\\mathbb{R}^2$ and a point in $\\mathbb{R}^{4096}$?",
+      "usedIn": [
+        {
+          "n": 4,
+          "title": "Angles and Rotation"
+        },
+        {
+          "n": 8,
+          "title": "Vectors, Dot Products, and Maps"
+        },
+        {
+          "n": 12,
+          "title": "Fitting and Shapes in Code"
+        },
+        {
+          "n": 13,
+          "title": "Many Dimensions, Real Machines"
+        }
+      ]
     },
     {
       "n": 4,
@@ -128,7 +185,22 @@
         "Multiply two complex numbers in polar form on paper, then predict where the product lands before plotting it.",
         "Look up how rotary position embeddings rotate a coordinate pair, and identify the angle-addition formula inside it. You will not follow the whole method yet; find the trigonometry."
       ],
-      "synthesis": "Explain, without notes, why multiplying by a unit complex number is a rotation."
+      "synthesis": "Explain, without notes, why multiplying by a unit complex number is a rotation.",
+      "orientation": "Cosine similarity is how the field asks whether two directions mean the same thing, and it is the law of cosines rearranged. Rotation shows up twice more: rotary position embeddings rotate query and key vectors by an angle proportional to position, and a real matrix with complex eigenvalues is a matrix that rotates. Learn the unit circle now and three later results stop being surprising. What does it mean for two directions in a model to agree?",
+      "usedIn": [
+        {
+          "n": 8,
+          "title": "Vectors, Dot Products, and Maps"
+        },
+        {
+          "n": 10,
+          "title": "Rank and Eigenstructure"
+        },
+        {
+          "n": 15,
+          "title": "Rates of Change"
+        }
+      ]
     },
     {
       "n": 5,
@@ -161,7 +233,18 @@
         "Simulate 100,000 runs of n coin flips and compare the empirical distribution of successes against the binomial formula.",
         "Find the smallest number of terms of a convergent series that gets you within 1e-6, first by bounding the tail, then by brute force."
       ],
-      "synthesis": "State the three conditions for continuity and give a function that fails each one."
+      "synthesis": "State the three conditions for continuity and give a function that fails each one.",
+      "orientation": "The derivative is a limit, so limits come before calculus. Series matter because a Taylor expansion is an infinite series, and the question of how many terms to keep is the question of how far a linear approximation can be trusted, which is exactly the question attribution patching raises. Counting is here because probability begins with it. What is actually happening in the definition of a derivative?",
+      "usedIn": [
+        {
+          "n": 15,
+          "title": "Rates of Change"
+        },
+        {
+          "n": 17,
+          "title": "Randomness and Its Moments"
+        }
+      ]
     },
     {
       "n": 6,
@@ -194,7 +277,22 @@
         "Reproduce one figure from a paper you can already partly follow, then list every choice the figure's axes hide.",
         "Plot the same data three ways, one of which is misleading, and write down what makes it misleading."
       ],
-      "synthesis": "Describe what you would need to record today so that a number you produce could be regenerated in six months."
+      "synthesis": "Describe what you would need to record today so that a number you produce could be regenerated in six months.",
+      "orientation": "Interpretability moves through repositories, and the gap between reading a result and reproducing it is almost always environments, versions, and unfamiliar code rather than the idea. Figures matter for a related reason: an attention pattern, a logit lens heatmap, and a sparsity-fidelity frontier are how findings are stated and disputed, so producing and reading them accurately is a research skill. What would you need to record today for a number you produce to be regenerable in six months?",
+      "usedIn": [
+        {
+          "n": 24,
+          "title": "Curved Spaces"
+        },
+        {
+          "n": 38,
+          "title": "Reading the Model's Mind"
+        },
+        {
+          "n": 66,
+          "title": "Becoming a Researcher"
+        }
+      ]
     },
     {
       "n": 7,
@@ -234,7 +332,9 @@
         "Take the exit criteria from all sixteen articles so far and attempt them cold, in random order. Score yourself before checking.",
         "Rewrite, from memory, the explanation of the one topic you found hardest, then compare against the article and note only the gaps."
       ],
-      "synthesis": "Which two topics from this part do you predict you will have forgotten most by the next consolidation? Write them down now; you will check that prediction later."
+      "synthesis": "Which two topics from this part do you predict you will have forgotten most by the next consolidation? Write them down now; you will check that prediction later.",
+      "orientation": "Nothing new. This lesson exists because retrieving material you have half-forgotten is what makes it stick, and because sixteen articles read once are sixteen articles mostly gone. Expect the recall to feel worse than the reading did; the discomfort is the mechanism working, not a sign you learned badly.",
+      "usedIn": []
     },
     {
       "n": 8,
@@ -271,7 +371,26 @@
         "Take three weight matrices from any pretrained model, print their shapes, and write down which space each maps from and to.",
         "Compute cosine similarity between every pair of a hundred random unit vectors in $\\mathbb{R}^{768}$ and plot the histogram. Predict its center and width first."
       ],
-      "synthesis": "Explain why a matrix product is a composition of functions, and why the inner dimensions must agree."
+      "synthesis": "Explain why a matrix product is a composition of functions, and why the inner dimensions must agree.",
+      "orientation": "Attention scores are dot products. Feature strength is a dot product. Similarity between two learned directions is a normalized dot product. One operation carries most of the geometric reasoning in the field, and reading a weight matrix as a map between two named spaces rather than a grid of numbers is what makes circuit-level arguments possible at all. What space does $W_Q$ map from, and to?",
+      "usedIn": [
+        {
+          "n": 9,
+          "title": "Coordinates and Projection"
+        },
+        {
+          "n": 15,
+          "title": "Rates of Change"
+        },
+        {
+          "n": 16,
+          "title": "Approximation, Jacobians, and Accumulation"
+        },
+        {
+          "n": 22,
+          "title": "Optimization"
+        }
+      ]
     },
     {
       "n": 9,
@@ -304,7 +423,18 @@
         "Rotate a basis, express the same vector in both, and confirm that its norm is unchanged while its coordinates are not.",
         "Implement Gram-Schmidt, then find an input where it loses orthogonality numerically, and compare against a QR routine."
       ],
-      "synthesis": "State what it means for a basis to be privileged, and why the residual stream of a transformer is usually said not to have one."
+      "synthesis": "State what it means for a basis to be privileged, and why the residual stream of a transformer is usually said not to have one.",
+      "orientation": "Ablating a feature means projecting it out; reading its strength means projecting onto it. Direct logit attribution, ablation steering, and concept erasure are the same decomposition applied with different intent. Change of basis matters for a stranger reason: the claim that the residual stream has no privileged basis, which motivates the whole search for features, is a change-of-basis argument. What survives when you rotate the coordinates a model is described in?",
+      "usedIn": [
+        {
+          "n": 10,
+          "title": "Rank and Eigenstructure"
+        },
+        {
+          "n": 11,
+          "title": "Decomposition and Quadratic Forms"
+        }
+      ]
     },
     {
       "n": 10,
@@ -337,7 +467,14 @@
         "Diagonalize a small symmetric matrix by hand, then check against a library routine.",
         "Find a real matrix with complex eigenvalues, and show numerically that it rotates a vector rather than scaling it."
       ],
-      "synthesis": "Explain why $W_Q W_K^T$ has rank at most the head dimension, and what that limits about what a head can attend to."
+      "synthesis": "Explain why $W_Q W_K^T$ has rank at most the head dimension, and what that limits about what a head can attend to.",
+      "orientation": "An attention head factors into two low-rank pieces, a matching circuit and a copying circuit, and the reason the factorization exists is that $W_Q W_K^T$ cannot have rank above the head dimension. That single fact lets a whole head be summarized by matrices smaller than the residual stream. Eigenvalues arrive here because a copying circuit announces itself in its spectrum. Why can a head only do so much?",
+      "usedIn": [
+        {
+          "n": 11,
+          "title": "Decomposition and Quadratic Forms"
+        }
+      ]
     },
     {
       "n": 11,
@@ -370,7 +507,22 @@
         "Generate correlated 2D data, compute its covariance, and plot the covariance ellipse with its principal axes.",
         "Whiten that data and confirm the new covariance is the identity."
       ],
-      "synthesis": "Explain the relationship between the SVD, the eigendecomposition of $M^T M$, and the geometry of a quadratic form."
+      "synthesis": "Explain the relationship between the SVD, the eigendecomposition of $M^T M$, and the geometry of a quadratic form.",
+      "orientation": "The SVD is the general-purpose tool for asking what a matrix actually does: how many directions it uses, which matter most, and what the best low-rank summary is. You will point it at weight matrices, at activation datasets, and at the covariance matrices that concept erasure is defined against. Quadratic forms come along because a covariance matrix is one, and its geometry is an ellipsoid whose axes you can read. How many directions does this thing really use?",
+      "usedIn": [
+        {
+          "n": 12,
+          "title": "Fitting and Shapes in Code"
+        },
+        {
+          "n": 19,
+          "title": "Structure in Data"
+        },
+        {
+          "n": 24,
+          "title": "Curved Spaces"
+        }
+      ]
     },
     {
       "n": 12,
@@ -403,7 +555,18 @@
         "Write the per-head attention score computation as a single einsum and check the output shape against a loop version.",
         "Take five einsum strings from a real interpretability codebase and read each one aloud as a sentence."
       ],
-      "synthesis": "Describe least squares as a projection, naming what is projected onto what."
+      "synthesis": "Describe least squares as a projection, naming what is projected onto what.",
+      "orientation": "Least squares is the closed-form fit hiding inside a linear probe, the tuned lens, and the rank-one weight edits used in fact editing, and its solution is an orthogonal projection you already know. Einsum is here because interpretability code contracts arrays with batch, position, head, and feature axes at once, and most implementation bugs are shape bugs. Can you write per-head attention as one line and predict its output shape?",
+      "usedIn": [
+        {
+          "n": 25,
+          "title": "Learning from Data"
+        },
+        {
+          "n": 32,
+          "title": "Instrumenting a Model"
+        }
+      ]
     },
     {
       "n": 13,
@@ -440,7 +603,22 @@
         "Estimate the memory needed to cache every residual-stream activation for a small model and a batch of 32, then measure it and compare.",
         "Compute the same sum in float32 and bfloat16 with terms in different orders, and record the disagreement."
       ],
-      "synthesis": "Explain, with numbers, why a 768-dimensional space can host far more than 768 nearly independent directions."
+      "synthesis": "Explain, with numbers, why a 768-dimensional space can host far more than 768 nearly independent directions.",
+      "orientation": "The superposition hypothesis is a counting argument: a space of dimension $d$ holds only $d$ orthogonal directions but exponentially many almost-orthogonal ones, so a network can represent far more features than it has neurons at the cost of interference. That is a theorem about high-dimensional geometry, and it deserves to be understood rather than repeated. Memory is paired with it because caching activations is the routine operation that fills a GPU. How many features can a model hide in 768 dimensions?",
+      "usedIn": [
+        {
+          "n": 24,
+          "title": "Curved Spaces"
+        },
+        {
+          "n": 32,
+          "title": "Instrumenting a Model"
+        },
+        {
+          "n": 37,
+          "title": "What the Field Is Claiming"
+        }
+      ]
     },
     {
       "n": 14,
@@ -488,7 +666,9 @@
         "Take a weight matrix from a real model and produce a one-page analysis: shapes, rank, spectrum, and what the map does.",
         "Check the prediction you wrote at the last consolidation. Were the topics you expected to forget the ones you actually forgot?"
       ],
-      "synthesis": "Explain the whole of Part 2 to an imagined reader who has finished Part 1 only, in writing, in under 500 words."
+      "synthesis": "Explain the whole of Part 2 to an imagined reader who has finished Part 1 only, in writing, in under 500 words.",
+      "orientation": "Interleaved retrieval across two parts. The point of shuffling is that recognizing which method applies is a separate skill from executing it, and blocked practice never trains it.",
+      "usedIn": []
     },
     {
       "n": 15,
@@ -525,7 +705,18 @@
         "Compute the gradient of a scalar function of a 100-dimensional input and confirm the steepest-ascent property empirically.",
         "Take a composition four functions deep and apply the chain rule on paper, tracking every factor."
       ],
-      "synthesis": "Explain what a directional derivative measures, and what it would mean to take one along a steering vector."
+      "synthesis": "Explain what a directional derivative measures, and what it would mean to take one along a steering vector.",
+      "orientation": "Backpropagation is the chain rule applied to a composition a hundred layers deep, and every gradient-based attribution method is that same rule read as a claim about influence. The shift that matters here is from gradients with respect to parameters, which is training, to gradients with respect to activations, which is interpretability. How much does moving activations along this direction change the output?",
+      "usedIn": [
+        {
+          "n": 16,
+          "title": "Approximation, Jacobians, and Accumulation"
+        },
+        {
+          "n": 22,
+          "title": "Optimization"
+        }
+      ]
     },
     {
       "n": 16,
@@ -566,7 +757,26 @@
         "Implement integrated gradients for a simple function and verify the completeness property numerically.",
         "Find a case where the first-order estimate of an intervention's effect disagrees badly with the true effect, and explain why."
       ],
-      "synthesis": "State exactly which term attribution patching discards, and describe a situation where discarding it is unsafe."
+      "synthesis": "State exactly which term attribution patching discards, and describe a situation where discarding it is unsafe.",
+      "orientation": "Attribution patching replaces an expensive intervention with a first-order Taylor estimate of it, so knowing exactly which term is discarded is what separates using the approximation from being fooled by it. Jacobians make a layer's local behavior into a linear map you can compose and project. Integrated gradients accumulates a gradient along a path, which is a line integral. When does the cheap estimate stop telling the truth?",
+      "usedIn": [
+        {
+          "n": 17,
+          "title": "Randomness and Its Moments"
+        },
+        {
+          "n": 24,
+          "title": "Curved Spaces"
+        },
+        {
+          "n": 26,
+          "title": "Networks and Their Gradients"
+        },
+        {
+          "n": 40,
+          "title": "Attribution at Scale"
+        }
+      ]
     },
     {
       "n": 17,
@@ -607,7 +817,26 @@
         "Construct two variables that are uncorrelated but strongly dependent, and plot them.",
         "Write out a short sentence's probability under the autoregressive factorization, naming every conditional."
       ],
-      "synthesis": "Explain why a probe with 99% accuracy on a rare behavior can be mostly wrong when it fires."
+      "synthesis": "Explain why a probe with 99% accuracy on a rare behavior can be mostly wrong when it fires.",
+      "orientation": "A language model is a conditional probability distribution over tokens, so every claim about what it predicts, samples, or is uncertain about is a claim about that distribution. Two ideas pay off immediately: a steering vector is a difference of two conditional expectations, and a detector's usefulness depends on the base rate of what it detects, not on its accuracy. Why can a probe that is right 99% of the time be wrong most times it fires?",
+      "usedIn": [
+        {
+          "n": 18,
+          "title": "Estimating and Sampling"
+        },
+        {
+          "n": 19,
+          "title": "Structure in Data"
+        },
+        {
+          "n": 20,
+          "title": "Information"
+        },
+        {
+          "n": 23,
+          "title": "Cause"
+        }
+      ]
     },
     {
       "n": 18,
@@ -644,7 +873,22 @@
         "Implement temperature, top-k, and top-p sampling from a fixed logit vector, and plot how each reshapes the distribution.",
         "Compare a paired and an unpaired estimate of the same difference, and measure how much variance pairing removed."
       ],
-      "synthesis": "Explain why training a language model is maximum likelihood estimation, and what it is estimating."
+      "synthesis": "Explain why training a language model is maximum likelihood estimation, and what it is estimating.",
+      "orientation": "Training a language model is maximum likelihood estimation, which is why cross-entropy is the loss rather than an arbitrary choice. Sampling is here because decoding is sampling, patching effects are averaged over prompt distributions, and counterfactual resampling estimates an effect by re-drawing continuations, so the variance of an average is a number you will need constantly. How many prompts does it take to pin down an effect?",
+      "usedIn": [
+        {
+          "n": 19,
+          "title": "Structure in Data"
+        },
+        {
+          "n": 25,
+          "title": "Learning from Data"
+        },
+        {
+          "n": 35,
+          "title": "Circuits in the Weights"
+        }
+      ]
     },
     {
       "n": 19,
@@ -685,7 +929,26 @@
         "Run PCA two ways on the same data, by eigendecomposition of the covariance and by SVD of the centered matrix, and confirm agreement.",
         "Take a high-variance principal component of some real activations and argue both for and against reading it as a concept."
       ],
-      "synthesis": "Explain what changes about a dataset's geometry when you whiten it, and why erasure methods care."
+      "synthesis": "Explain what changes about a dataset's geometry when you whiten it, and why erasure methods care.",
+      "orientation": "Every contested interpretability claim is contested because a difference was reported without an interval, or because 144 heads were screened at once and the winner was noise. PCA arrives here because it is the first thing anyone runs on activations, and several results in the field begin with a principal component and a claim about what it means. Covariance and whitening set up concept erasure, whose guarantee is stated in exactly those terms. Is this effect real?",
+      "usedIn": [
+        {
+          "n": 25,
+          "title": "Learning from Data"
+        },
+        {
+          "n": 43,
+          "title": "Directions from Contrast"
+        },
+        {
+          "n": 47,
+          "title": "Editing Weights"
+        },
+        {
+          "n": 61,
+          "title": "Open-Ended Interpretation"
+        }
+      ]
     },
     {
       "n": 20,
@@ -722,7 +985,26 @@
         "Compute the KL between a model's output and the same model with one component ablated, and compare it against the change in top-1 accuracy.",
         "Demonstrate the asymmetry of KL with a concrete pair of distributions where the two directions differ sharply."
       ],
-      "synthesis": "Explain what a circuit faithfulness score reported as a KL divergence is actually measuring, and in which direction."
+      "synthesis": "Explain what a circuit faithfulness score reported as a KL divergence is actually measuring, and in which direction.",
+      "orientation": "Cross-entropy is the loss every model is trained on and perplexity is how quality gets quoted, so the units matter whenever an ablation moves a loss. KL divergence then becomes the standard measure of circuit faithfulness: how far does the ablated model's output distribution sit from the full model's? That is a stricter test than agreement on the top token, and the direction of the divergence changes what it penalizes. What does a loss of 2.1 nats actually say?",
+      "usedIn": [
+        {
+          "n": 26,
+          "title": "Networks and Their Gradients"
+        },
+        {
+          "n": 50,
+          "title": "Beyond the Residual Stream"
+        },
+        {
+          "n": 53,
+          "title": "Comparing Models"
+        },
+        {
+          "n": 55,
+          "title": "Evaluating a Circuit"
+        }
+      ]
     },
     {
       "n": 21,
@@ -770,7 +1052,9 @@
         "Take one dataset and produce a single analysis that uses probability, linear algebra, and information theory together.",
         "List the three ideas from Parts 1 to 3 you are least confident about, and schedule them into the practice of the next several lessons."
       ],
-      "synthesis": "Write the mathematical prerequisites of mechanistic interpretability as a one-page map, from memory, then compare it against the site's prerequisite links."
+      "synthesis": "Write the mathematical prerequisites of mechanistic interpretability as a one-page map, from memory, then compare it against the site's prerequisite links.",
+      "orientation": "Everything mathematical, retrieved together and out of order. If you can now read the equations in a transformer-circuits paper without stopping, the preparation is done, whether or not the ideas make sense yet.",
+      "usedIn": []
     },
     {
       "n": 22,
@@ -811,7 +1095,26 @@
         "Fit the same model with L1 and L2 penalties across a sweep of strengths, and plot the number of nonzero coefficients against the penalty.",
         "Derive the soft-thresholding operator from the L1 proximal problem, then implement ISTA and watch coefficients hit exactly zero."
       ],
-      "synthesis": "Explain why an L1-penalized autoencoder systematically underestimates the magnitude of the features it finds."
+      "synthesis": "Explain why an L1-penalized autoencoder systematically underestimates the magnitude of the features it finds.",
+      "orientation": "Every learned object ahead is the output of a gradient descent run: a probe, a sparse autoencoder, a steering vector found by optimization. Sparsity gets its own treatment because a sparse autoencoder is a reconstruction objective plus an L1 penalty, and almost every design question about SAEs, including which variant to prefer, is a question about how that penalty behaves. Constrained optimization is here because concept erasure is a constrained program with a closed-form solution. Why does L1 produce exact zeros when L2 does not?",
+      "usedIn": [
+        {
+          "n": 25,
+          "title": "Learning from Data"
+        },
+        {
+          "n": 45,
+          "title": "Learned and Distributed Control"
+        },
+        {
+          "n": 47,
+          "title": "Editing Weights"
+        },
+        {
+          "n": 58,
+          "title": "Weights Rather Than Activations"
+        }
+      ]
     },
     {
       "n": 23,
@@ -852,7 +1155,22 @@
         "Simulate a mediation setup and estimate the direct and indirect effects, then break the estimate by adding an interaction.",
         "Take a published clean-corrupted prompt pair from any interpretability paper and list everything it fails to hold fixed."
       ],
-      "synthesis": "Explain the difference between noising and denoising as mediation questions, and describe a case where they disagree."
+      "synthesis": "Explain the difference between noising and denoising as mediation questions, and describe a case where they disagree.",
+      "orientation": "Activation patching is an intervention on a computational graph, and the entire argument that interpretability findings are causal rather than correlational is borrowed from this framework. Mediation is the specific piece: patching an activation and measuring the change is a mediation analysis, and noising and denoising correspond to different mediation estimands, which is why the two directions can disagree without either being wrong. What licenses you to say a component causes a behavior?",
+      "usedIn": [
+        {
+          "n": 39,
+          "title": "Causal Intervention"
+        },
+        {
+          "n": 40,
+          "title": "Attribution at Scale"
+        },
+        {
+          "n": 56,
+          "title": "Feature-Level Circuits"
+        }
+      ]
     },
     {
       "n": 24,
@@ -893,7 +1211,14 @@
         "Move along a great circle on a sphere and compare against moving in a straight line in the ambient space, measuring how far the straight path leaves the surface.",
         "Run t-SNE on the same data with five different perplexity settings and write down which apparent structures survive."
       ],
-      "synthesis": "Explain why a steering direction is a tangent vector, and what that predicts about large interventions."
+      "synthesis": "Explain why a steering direction is a tangent vector, and what that predicts about large interventions.",
+      "orientation": "When activations concentrate on a curved low-dimensional set, the linear-direction vocabulary stops being exact and a feature direction becomes a tangent vector at a point. That predicts something testable: linear steering should degrade as the step size grows, because a straight line leaves a curved surface. Intrinsic dimension is here because claims that a concept occupies few dimensions are estimates you should be able to make and to doubt. Where does the linear picture break?",
+      "usedIn": [
+        {
+          "n": 51,
+          "title": "The Shape of Features"
+        }
+      ]
     },
     {
       "n": 25,
@@ -938,7 +1263,26 @@
         "Choose an operating point under a fixed false-positive budget and report the true-positive rate there.",
         "Construct a train and test split that leaks, measure the inflated accuracy, then fix the split and measure again."
       ],
-      "synthesis": "Explain precisely what a probe's high accuracy does and does not establish about the model it was trained on."
+      "synthesis": "Explain precisely what a probe's high accuracy does and does not establish about the model it was trained on.",
+      "orientation": "A probe is logistic regression on activations, and its weight vector is the direction the field then interprets. The standard objection to any probing result lives here too: high accuracy proves the information is linearly decodable and nothing more, which is why control tasks and selectivity exist. Distribution shift closes the part because probes validated on curated pairs get deployed on real traffic. What has a probe established, exactly?",
+      "usedIn": [
+        {
+          "n": 26,
+          "title": "Networks and Their Gradients"
+        },
+        {
+          "n": 42,
+          "title": "Probing"
+        },
+        {
+          "n": 43,
+          "title": "Directions from Contrast"
+        },
+        {
+          "n": 61,
+          "title": "Open-Ended Interpretation"
+        }
+      ]
     },
     {
       "n": 26,
@@ -979,7 +1323,26 @@
         "Demonstrate softmax shift invariance in code, and show why logit differences are the meaningful quantity.",
         "Construct a saturated softmax where a component matters causally but its gradient is near zero."
       ],
-      "synthesis": "Explain why reverse-mode differentiation is cheap for a scalar loss, in terms of Jacobian products."
+      "synthesis": "Explain why reverse-mode differentiation is cheap for a scalar loss, in terms of Jacobian products.",
+      "orientation": "Attention weights are a softmax, next-token predictions are a softmax, and softmax's shift invariance is why the curriculum measures logit differences rather than logits. Backpropagation is here in its interpretability form: attribution patching, integrated-gradient circuit discovery, and every hook-based library are built directly on the computation graph. Building autodiff from scratch removes the mystery permanently. Why are differences of logits the meaningful quantity?",
+      "usedIn": [
+        {
+          "n": 27,
+          "title": "Training at Scale"
+        },
+        {
+          "n": 31,
+          "title": "Representations Worth Learning"
+        },
+        {
+          "n": 32,
+          "title": "Instrumenting a Model"
+        },
+        {
+          "n": 40,
+          "title": "Attribution at Scale"
+        }
+      ]
     },
     {
       "n": 27,
@@ -1020,7 +1383,26 @@
         "Implement LayerNorm and RMSNorm, then show how the input-dependent scale breaks an additive decomposition of the residual stream.",
         "Train word embeddings on a small corpus and test the analogy arithmetic, including the cases the critiques say fail."
       ],
-      "synthesis": "Explain why layer normalization complicates direct logit attribution, and what freezing it assumes."
+      "synthesis": "Explain why layer normalization complicates direct logit attribution, and what freezing it assumes.",
+      "orientation": "Phase changes during training, the emergence of induction heads, and every model-diffing result are claims about a trajectory rather than a final weight vector. Normalization gets attention because layer normalization is the one component that breaks the additive decomposition of the residual stream that circuit analysis depends on. Embeddings arrive because the linear representation hypothesis is the modern descendant of the word-vector results. What did training do to this model?",
+      "usedIn": [
+        {
+          "n": 30,
+          "title": "How Chat Models Are Made"
+        },
+        {
+          "n": 31,
+          "title": "Representations Worth Learning"
+        },
+        {
+          "n": 33,
+          "title": "Following a Token Through"
+        },
+        {
+          "n": 34,
+          "title": "Attention and MLPs"
+        }
+      ]
     },
     {
       "n": 28,
@@ -1068,7 +1450,9 @@
         "Train a small network end to end on a real dataset, with a plotted training curve, an error bar, and a held-out evaluation.",
         "Write down which mathematical topic you have now used most often in practice, and which you have not touched since you read it."
       ],
-      "synthesis": "Explain, in writing, why a transformer's loss being cross-entropy is a consequence of decisions made in probability theory rather than an arbitrary engineering choice."
+      "synthesis": "Explain, in writing, why a transformer's loss being cross-entropy is a consequence of decisions made in probability theory rather than an arbitrary engineering choice.",
+      "orientation": "The seam between mathematics and models, retrieved as one piece. If the path from maximum likelihood to cross-entropy to a weight update is not yet a single chain in your head, this is where it becomes one.",
+      "usedIn": []
     },
     {
       "n": 29,
@@ -1109,7 +1493,18 @@
         "Train a character-level recurrent model and observe the vanishing gradient on long sequences.",
         "Write the training loss for one specific short sequence, naming every term, then verify against a real model's reported loss."
       ],
-      "synthesis": "Explain what causal masking makes impossible, in terms of information flow between positions."
+      "synthesis": "Explain what causal masking makes impossible, in terms of information flow between positions.",
+      "orientation": "Everything you will interpret is a next-token predictor, and a surprising number of confusions about model behavior dissolve once the objective is clear. Tokenization is not a detail: a large share of surprising interpretability findings, from odd first-token behavior to arithmetic failures, are tokenizer artifacts rather than model mechanisms, and a clean-corrupted prompt pair that tokenizes to different lengths will quietly ruin an experiment. Recurrent models are here to make attention feel like an answer to a problem rather than a formula. What is this thing actually trained to do?",
+      "usedIn": [
+        {
+          "n": 30,
+          "title": "How Chat Models Are Made"
+        },
+        {
+          "n": 33,
+          "title": "Following a Token Through"
+        }
+      ]
     },
     {
       "n": 30,
@@ -1146,7 +1541,26 @@
         "Reproduce a few-shot scaling curve: accuracy against number of demonstrations, on a task you construct.",
         "Design an experiment that separates learning from the demonstrations' content from learning from their format."
       ],
-      "synthesis": "Explain what the KL penalty in RLHF prevents, and why refusal being mediated by one direction is surprising given the training procedure."
+      "synthesis": "Explain what the KL penalty in RLHF prevents, and why refusal being mediated by one direction is surprising given the training procedure.",
+      "orientation": "Refusal, evaluation awareness, alignment faking, and every model-diffing result compare a base model to a fine-tuned one, so what fine-tuning does is not skippable. In-context learning arrives as a behavior first, deliberately: induction heads and function vectors are proposed mechanisms for it, and you cannot judge a mechanism without a clear statement of the phenomenon it explains. What separates a base model from the chat model built on it?",
+      "usedIn": [
+        {
+          "n": 45,
+          "title": "Learned and Distributed Control"
+        },
+        {
+          "n": 53,
+          "title": "Comparing Models"
+        },
+        {
+          "n": 54,
+          "title": "Induction and a First Circuit"
+        },
+        {
+          "n": 63,
+          "title": "Detection"
+        }
+      ]
     },
     {
       "n": 31,
@@ -1187,7 +1601,18 @@
         "Vary the dictionary size on that synthetic data and watch feature splitting appear.",
         "Compute CKA and CCA between two networks trained from different seeds, and explain any disagreement between the measures."
       ],
-      "synthesis": "Describe a sparse autoencoder entirely in the vocabulary of dictionary learning, and say what the identifiability results imply about its features."
+      "synthesis": "Describe a sparse autoencoder entirely in the vocabulary of dictionary learning, and say what the identifiability results imply about its features.",
+      "orientation": "A sparse autoencoder is dictionary learning applied to activations, and the field's live arguments about feature splitting, dictionary size, and whether the true features are recoverable were had in the sparse coding literature first. Learning that literature now means those arguments arrive as familiar questions rather than novelties. Representation similarity is here because universality claims are similarity measurements, and each measure builds in an invariance that decides the answer in advance. When has a decomposition found the real parts?",
+      "usedIn": [
+        {
+          "n": 48,
+          "title": "Sparse Autoencoders"
+        },
+        {
+          "n": 56,
+          "title": "Feature-Level Circuits"
+        }
+      ]
     },
     {
       "n": 32,
@@ -1220,7 +1645,18 @@
         "Take a gradient with respect to an activation rather than a parameter, and confirm you understand which is which.",
         "Break your own hook deliberately, by removing it too late and by returning the wrong shape, and read each resulting error."
       ],
-      "synthesis": "Explain what a forward hook is and at what point in the forward pass it fires, without looking it up."
+      "synthesis": "Explain what a forward hook is and at what point in the forward pass it fires, without looking it up.",
+      "orientation": "TransformerLens, nnsight, and SAE Lens are wrappers over one mechanism: a hook that fires at a named point in the forward pass and can read or replace what passes through. Writing activation patching yourself, in raw PyTorch, is what makes the difference between using those libraries and being able to check what they did. What is the library doing on your behalf?",
+      "usedIn": [
+        {
+          "n": 65,
+          "title": "The Tooling"
+        },
+        {
+          "n": 66,
+          "title": "Becoming a Researcher"
+        }
+      ]
     },
     {
       "n": 33,
@@ -1265,7 +1701,18 @@
         "Compare learned, sinusoidal, and rotary position handling on the same short sequence and describe what each does to the scores.",
         "Take the unembedding matrix of a real model and find the nearest tokens to a few embedding vectors."
       ],
-      "synthesis": "Describe the residual stream as a communication channel: who writes to it, who reads from it, and what that buys."
+      "synthesis": "Describe the residual stream as a communication channel: who writes to it, who reads from it, and what that buys.",
+      "orientation": "This is the machine. Everything in the mathematics and machine learning parts was preparation for reading it, and everything after this is taking it apart. Build it yourself rather than reading about it: the residual stream as a channel that components write to and read from is the single mental picture the rest of the curriculum keeps referring back to. What happens to a token between the embedding and the logits?",
+      "usedIn": [
+        {
+          "n": 34,
+          "title": "Attention and MLPs"
+        },
+        {
+          "n": 35,
+          "title": "Circuits in the Weights"
+        }
+      ]
     },
     {
       "n": 34,
@@ -1306,7 +1753,26 @@
         "Find a neuron in a real model that activates on something legible, then find one that clearly does not.",
         "Fold the LayerNorm gain into the adjacent weight matrix and confirm the model's outputs are unchanged."
       ],
-      "synthesis": "Explain why layer normalization is the component that breaks the additive decomposition of the residual stream."
+      "synthesis": "Explain why layer normalization is the component that breaks the additive decomposition of the residual stream.",
+      "orientation": "Queries and keys decide where to look, values decide what moves, and MLPs transform each position in place. Those three sentences are most of a transformer, and the interesting question is which parts of them are legible. Layer normalization is here because it is the component that makes clean decomposition hard, and knowing exactly how is worth more than resenting it. What does one head actually do?",
+      "usedIn": [
+        {
+          "n": 35,
+          "title": "Circuits in the Weights"
+        },
+        {
+          "n": 38,
+          "title": "Reading the Model's Mind"
+        },
+        {
+          "n": 39,
+          "title": "Causal Intervention"
+        },
+        {
+          "n": 50,
+          "title": "Beyond the Residual Stream"
+        }
+      ]
     },
     {
       "n": 35,
@@ -1347,7 +1813,26 @@
         "Measure composition between a pair of heads in adjacent layers and report which kind you found.",
         "Generate text with greedy, temperature, top-k, and top-p decoding from the same prompt and logits, and describe the differences."
       ],
-      "synthesis": "Explain how a head decomposes into a matching circuit and a copying circuit, and what each is a function of."
+      "synthesis": "Explain how a head decomposes into a matching circuit and a copying circuit, and what each is a function of.",
+      "orientation": "A head decomposes into two independent circuits: QK decides where attention goes, OV decides what gets written. Composition across layers then produces virtual heads with behavior no single head has, which is how two ordinary heads become a pattern-completion mechanism. This lesson is the algebra behind the first real circuit you will trace. How do heads combine into something more than themselves?",
+      "usedIn": [
+        {
+          "n": 53,
+          "title": "Comparing Models"
+        },
+        {
+          "n": 54,
+          "title": "Induction and a First Circuit"
+        },
+        {
+          "n": 56,
+          "title": "Feature-Level Circuits"
+        },
+        {
+          "n": 65,
+          "title": "The Tooling"
+        }
+      ]
     },
     {
       "n": 36,
@@ -1399,7 +1884,9 @@
         "Take your from-scratch transformer and add one instrumentation feature: cache an activation of your choice and plot it across layers.",
         "Re-read only the notes you took, not the articles, and list what your notes fail to capture."
       ],
-      "synthesis": "Explain to an imagined reader who knows the mathematics but has never seen a transformer what the architecture computes and why the residual stream matters."
+      "synthesis": "Explain to an imagined reader who knows the mathematics but has never seen a transformer what the architecture computes and why the residual stream matters.",
+      "orientation": "The architecture, retrieved from memory with every tensor shape labeled. If you can draw a block correctly without notes, later circuit arguments will be about mechanism rather than about bookkeeping.",
+      "usedIn": []
     },
     {
       "n": 37,
@@ -1440,7 +1927,26 @@
         "Find a polysemantic neuron in a real model and document three unrelated things it fires on.",
         "Write the strongest argument you can against the linear representation hypothesis, then the strongest defense."
       ],
-      "synthesis": "State the superposition hypothesis precisely enough to be tested, and name the evidence that would refute it."
+      "synthesis": "State the superposition hypothesis precisely enough to be tested, and name the evidence that would refute it.",
+      "orientation": "Three claims organize the field: models compute features, features are directions, and there are more features than dimensions. The third explains why individual neurons are usually meaningless, which is what makes the entire decomposition project necessary. Hold all three loosely; the evidence is real but partial, and knowing where it stops is what separates a researcher from an enthusiast. What is this field asserting, and how would it be wrong?",
+      "usedIn": [
+        {
+          "n": 43,
+          "title": "Directions from Contrast"
+        },
+        {
+          "n": 48,
+          "title": "Sparse Autoencoders"
+        },
+        {
+          "n": 58,
+          "title": "Weights Rather Than Activations"
+        },
+        {
+          "n": 65,
+          "title": "The Tooling"
+        }
+      ]
     },
     {
       "n": 38,
@@ -1485,7 +1991,18 @@
         "Decompose a logit difference into per-head contributions and rank the heads.",
         "Find a prompt where the logit lens is misleading, and explain what the tuned lens fixes."
       ],
-      "synthesis": "Explain what direct logit attribution measures, and name one thing it systematically misses."
+      "synthesis": "Explain what direct logit attribution measures, and name one thing it systematically misses.",
+      "orientation": "The residual stream can be read at every layer by projecting it through the unembedding, which turns a model's internal state into a prediction you can watch evolve. Direct logit attribution then splits that prediction into per-component contributions, so you can rank heads by how much each pushed toward an answer. Both are correlational, which is the limitation the next lesson exists to fix. What is the model predicting halfway through?",
+      "usedIn": [
+        {
+          "n": 42,
+          "title": "Probing"
+        },
+        {
+          "n": 59,
+          "title": "Decoding Hidden States"
+        }
+      ]
     },
     {
       "n": 39,
@@ -1522,7 +2039,26 @@
         "Design three different corrupted prompts for the same clean prompt and show how the conclusion changes.",
         "Patch at the level of a head, a neuron, and a learned direction on the same behavior, and compare what each tells you."
       ],
-      "synthesis": "Explain which mediation estimand your patching experiment computed, and what assumption it relies on."
+      "synthesis": "Explain which mediation estimand your patching experiment computed, and what assumption it relies on.",
+      "orientation": "This is the technique the field is built on. Replace an activation from one run with the corresponding activation from another, measure what changes, and you have evidence about what that activation is for. The care is all in the design: which corrupted prompt, which direction, which metric, and what the answer means when noising and denoising disagree. Does the model actually use this?",
+      "usedIn": [
+        {
+          "n": 40,
+          "title": "Attribution at Scale"
+        },
+        {
+          "n": 47,
+          "title": "Editing Weights"
+        },
+        {
+          "n": 59,
+          "title": "Decoding Hidden States"
+        },
+        {
+          "n": 61,
+          "title": "Open-Ended Interpretation"
+        }
+      ]
     },
     {
       "n": 40,
@@ -1567,7 +2103,14 @@
         "Implement an integrated-gradients variant and check whether the disagreement shrinks.",
         "Ablate a component known to matter and measure whether later components compensate."
       ],
-      "synthesis": "Explain how self-repair can make a genuinely important component look unimportant."
+      "synthesis": "Explain how self-repair can make a genuinely important component look unimportant.",
+      "orientation": "Patching every layer and position is expensive, so the field approximates it with a gradient, which works until it does not. This lesson is about knowing where the approximation fails, why saturated attention breaks it, and what integrated gradients repairs. Self-repair arrives as the deeper problem: later components can compensate for an ablation, making a genuinely important component look irrelevant. Can you trust the cheap version?",
+      "usedIn": [
+        {
+          "n": 54,
+          "title": "Induction and a First Circuit"
+        }
+      ]
     },
     {
       "n": 41,
@@ -1607,7 +2150,9 @@
         "Attempt a mixed set of exit criteria from Parts 3, 5, and 6, without checking which lesson each came from.",
         "Return to the toy superposition model from earlier and apply a technique you have learned since."
       ],
-      "synthesis": "Write the case for and against the claim that activation patching establishes causation in a neural network."
+      "synthesis": "Write the case for and against the claim that activation patching establishes causation in a neural network.",
+      "orientation": "Three families of evidence, interleaved: reading tools, intervention tools, and gradient approximations. Recognizing which one a paper used, and what it therefore cannot claim, is the skill this lesson trains.",
+      "usedIn": []
     },
     {
       "n": 42,
@@ -1648,7 +2193,14 @@
         "Train an attention probe and compare it against mean pooling on the same task.",
         "Reproduce a truth-direction result on a small model, then test whether the direction transfers to a different dataset."
       ],
-      "synthesis": "Explain the gap between a property being linearly decodable and the model actually using it."
+      "synthesis": "Explain the gap between a property being linearly decodable and the model actually using it.",
+      "orientation": "Train a classifier on activations and ask what it can decode. That is the oldest technique here and the most abused, because a probe finding a property proves the information is present and nothing about whether the model uses it. Everything you learned about control tasks, selectivity, and distribution shift is aimed at this lesson. What is in there, and how would you know it matters?",
+      "usedIn": [
+        {
+          "n": 43,
+          "title": "Directions from Contrast"
+        }
+      ]
     },
     {
       "n": 43,
@@ -1689,7 +2241,22 @@
         "Take a probe validated on one dataset and evaluate it on a genuinely different distribution, reporting the drop.",
         "Build a two-stage cascade and measure the cost saving against the accuracy loss."
       ],
-      "synthesis": "Explain what a contrastive steering vector estimates, in the language of expectations."
+      "synthesis": "Explain what a contrastive steering vector estimates, in the language of expectations.",
+      "orientation": "Instead of training a classifier, take the difference between mean activations on contrasting prompts and call it a direction. It is cruder than a probe and often works better, which is worth sitting with. Production is where these results meet reality: long contexts, unknown base rates, and behaviors nobody trained on. Why does averaging differences find anything at all?",
+      "usedIn": [
+        {
+          "n": 44,
+          "title": "Steering"
+        },
+        {
+          "n": 45,
+          "title": "Learned and Distributed Control"
+        },
+        {
+          "n": 63,
+          "title": "Detection"
+        }
+      ]
     },
     {
       "n": 44,
@@ -1734,7 +2301,26 @@
         "Show that projecting out a direction does not remove the information, by training a fresh probe on the projected activations.",
         "Implement affine steering with a recentering term and compare against plain addition."
       ],
-      "synthesis": "Explain why ablating a direction is weaker evidence of erasure than it first appears."
+      "synthesis": "Explain why ablating a direction is weaker evidence of erasure than it first appears.",
+      "orientation": "Add a direction to change behavior; project one out to remove it. Steering is the strongest routine evidence that a representation is causally used, and it is also where overclaiming is easiest, because projecting a direction out does not erase the information, it just stops a linear probe from finding it. What does an intervention prove?",
+      "usedIn": [
+        {
+          "n": 45,
+          "title": "Learned and Distributed Control"
+        },
+        {
+          "n": 47,
+          "title": "Editing Weights"
+        },
+        {
+          "n": 51,
+          "title": "The Shape of Features"
+        },
+        {
+          "n": 63,
+          "title": "Detection"
+        }
+      ]
     },
     {
       "n": 45,
@@ -1779,7 +2365,9 @@
         "Distribute a fixed steering budget across layers in several ways and compare robustness.",
         "Use a probe's output as a training signal on a small fine-tune and measure what it changed."
       ],
-      "synthesis": "Explain why an unsupervised steering method can surface behaviors the researcher did not think to look for."
+      "synthesis": "Explain why an unsupervised steering method can surface behaviors the researcher did not think to look for.",
+      "orientation": "Task vectors extracted from in-context examples, steering directions found by optimization with no labels at all, and interventions distributed across layers rather than applied at one. This is the frontier of control, including the uncomfortable part: unsupervised methods surface behaviors nobody thought to look for. What can you make a model do without knowing in advance what you are looking for?",
+      "usedIn": []
     },
     {
       "n": 46,
@@ -1819,7 +2407,9 @@
         "Mixed retrieval across Parts 5 and 6, at least twenty items, scored before checking.",
         "Check your earlier prediction about which topics you would forget. Update how you allocate revisiting."
       ],
-      "synthesis": "Write the strongest version of the claim that steering demonstrates a representation is causally used, then the strongest objection to it."
+      "synthesis": "Write the strongest version of the claim that steering demonstrates a representation is causally used, then the strongest objection to it.",
+      "orientation": "Every intervention you know, side by side, with what each licenses you to claim. Check the forgetting prediction you made earlier and change how you allocate revisiting based on the answer.",
+      "usedIn": []
     },
     {
       "n": 47,
@@ -1860,7 +2450,9 @@
         "Implement LEACE on real activations and confirm that a linear probe can no longer recover the concept.",
         "Then train a nonlinear probe on the same erased activations and report what remains."
       ],
-      "synthesis": "Explain precisely what LEACE's guarantee covers and what it does not."
+      "synthesis": "Explain precisely what LEACE's guarantee covers and what it does not.",
+      "orientation": "Editing weights rather than activations makes a change permanent, which sharpens every question about whether you found the right place. The recurring lesson is that successfully inserting a fact does not show you found where the original was stored, and that behavioral suppression is not the same as removal. Concept erasure brings the closed-form guarantee, along with a precise statement of what remains after it. Did you remove it, or hide it?",
+      "usedIn": []
     },
     {
       "n": 48,
@@ -1897,7 +2489,22 @@
         "Build a feature dashboard for ten of your features: top activating examples, logit effects, and activation histogram.",
         "Write your own label for five features, then compare against an automated explanation, and note where they disagree."
       ],
-      "synthesis": "Explain what a sparse autoencoder assumes about how features are represented, and what happens when that assumption fails."
+      "synthesis": "Explain what a sparse autoencoder assumes about how features are represented, and what happens when that assumption fails.",
+      "orientation": "If features are directions and there are more of them than dimensions, then finding them is a dictionary learning problem, and a sparse autoencoder is the amortized solution. This is the technique that reorganized the field, and it is also the one with the most unresolved questions about whether what it recovers is the model's decomposition or merely a convenient one. What are the real units of computation?",
+      "usedIn": [
+        {
+          "n": 49,
+          "title": "Scaling and Variants"
+        },
+        {
+          "n": 59,
+          "title": "Decoding Hidden States"
+        },
+        {
+          "n": 65,
+          "title": "The Tooling"
+        }
+      ]
     },
     {
       "n": 49,
@@ -1934,7 +2541,18 @@
         "Clamp a feature to a large value and observe the behavioral change, then try to break the effect.",
         "Explore a large public SAE on Neuronpedia and find one feature whose published label you disagree with."
       ],
-      "synthesis": "Explain why downstream loss recovered is a better evaluation than reconstruction MSE."
+      "synthesis": "Explain why downstream loss recovered is a better evaluation than reconstruction MSE.",
+      "orientation": "Scaling to millions of features surfaced multilingual, multimodal, and abstract concepts, and clamping one steers behavior. The variants matter because each one changes the sparsity-fidelity tradeoff differently, and the evaluation lesson matters more: reconstruction error is the wrong measure, and loss recovered when you substitute the reconstruction back into the model is closer to right. How would you know a dictionary is good?",
+      "usedIn": [
+        {
+          "n": 50,
+          "title": "Beyond the Residual Stream"
+        },
+        {
+          "n": 51,
+          "title": "The Shape of Features"
+        }
+      ]
     },
     {
       "n": 50,
@@ -1975,7 +2593,22 @@
         "Compare a token-wise feature dictionary against one trained on span-averaged activations.",
         "Take a feature you found earlier and track it across layers with your crosscoder."
       ],
-      "synthesis": "Explain what a transcoder buys for circuit analysis that a residual-stream SAE does not."
+      "synthesis": "Explain what a transcoder buys for circuit analysis that a residual-stream SAE does not.",
+      "orientation": "A residual-stream SAE tells you what is present but not what computed it. Transcoders replace an MLP with an interpretable map from input features to output features, which is what makes feature-level circuit tracing possible at all. Crosscoders learn one dictionary across layers or models, which is what makes model diffing possible. Where did this feature come from?",
+      "usedIn": [
+        {
+          "n": 53,
+          "title": "Comparing Models"
+        },
+        {
+          "n": 56,
+          "title": "Feature-Level Circuits"
+        },
+        {
+          "n": 58,
+          "title": "Weights Rather Than Activations"
+        }
+      ]
     },
     {
       "n": 51,
@@ -2016,7 +2649,9 @@
         "Estimate the intrinsic dimension of the activations for a constrained family of prompts.",
         "Steer along a straight line and along a curved path fitted to the manifold, and compare fluency at large step sizes."
       ],
-      "synthesis": "Explain why some concepts cannot be captured by a single direction, with a concrete example."
+      "synthesis": "Explain why some concepts cannot be captured by a single direction, with a concrete example.",
+      "orientation": "Some concepts are not directions. Categories form polytopes, periodic features trace circles, hierarchies occupy subspaces, and steering along a curved path behaves differently from adding a vector. This lesson is where the linear picture is corrected rather than abandoned, and the manifold material from earlier finally has something to describe. What shape is a concept?",
+      "usedIn": []
     },
     {
       "n": 52,
@@ -2060,7 +2695,9 @@
         "Mixed retrieval drawing on Parts 4, 6, and 7, at least twenty items.",
         "Return to sparse coding theory and re-read only your notes, then say what the identifiability results predict about your own SAE's features."
       ],
-      "synthesis": "Write the case that sparse autoencoders find the model's features, and the case that they find a convenient basis that merely reconstructs well."
+      "synthesis": "Write the case that sparse autoencoders find the model's features, and the case that they find a convenient basis that merely reconstructs well.",
+      "orientation": "Three ways to find the same concept, compared: a probe, an SAE feature, and a contrastive direction. If they disagree, that is the finding.",
+      "usedIn": []
     },
     {
       "n": 53,
@@ -2101,7 +2738,9 @@
         "Build the control that distinguishes a genuine model difference from a sparsity artifact, and run it.",
         "Probe for the fine-tuning domain in the activations of the fine-tuned model and measure how detectable it is."
       ],
-      "synthesis": "Explain what a base-versus-chat comparison controls for, and what confounds remain."
+      "synthesis": "Explain what a base-versus-chat comparison controls for, and what confounds remain.",
+      "orientation": "Two models differing by a known intervention is a controlled experiment, which is why base-versus-fine-tuned comparisons are so useful. The techniques here find rare behaviors by amplifying differences, and locate changes feature by feature rather than in aggregate. The controls matter as much as the methods, because a sparsity artifact looks a great deal like a genuine model difference. What did fine-tuning change?",
+      "usedIn": []
     },
     {
       "n": 54,
@@ -2138,7 +2777,14 @@
         "Reproduce the indirect object identification circuit on GPT-2 small, at least as far as identifying the name mover heads.",
         "Find a prompt where the circuit you traced fails, and explain why."
       ],
-      "synthesis": "Explain how two heads compose into a pattern-copying mechanism, in terms of QK and OV circuits."
+      "synthesis": "Explain how two heads compose into a pattern-copying mechanism, in terms of QK and OV circuits.",
+      "orientation": "Two heads compose into a mechanism that completes patterns, and that mechanism appears at a specific point in training alongside a jump in in-context learning ability. Then the IOI circuit: the field's canonical worked example, traced end to end. Reproducing it yourself is the point at which the techniques stop being separate tools and become a method. How do you go from a behavior to a mechanism?",
+      "usedIn": [
+        {
+          "n": 55,
+          "title": "Evaluating a Circuit"
+        }
+      ]
     },
     {
       "n": 55,
@@ -2179,7 +2825,14 @@
         "Design an entity-binding prompt set and test which of the competing retrieval mechanisms your model uses.",
         "Find a copy-suppression head and demonstrate its effect on a token repeated from context."
       ],
-      "synthesis": "Explain why a circuit can be faithful and still not be an explanation."
+      "synthesis": "Explain why a circuit can be faithful and still not be an explanation.",
+      "orientation": "A circuit you can draw is not yet a circuit that survives testing. Faithfulness, completeness, and minimality are the three tests, and applying them to your own IOI reproduction is usually humbling: redundant paths, negative contributors, and components that matter only in combination. Copy suppression is the specific surprise, a head whose job is to push down what was already said. Is your circuit true?",
+      "usedIn": [
+        {
+          "n": 58,
+          "title": "Weights Rather Than Activations"
+        }
+      ]
     },
     {
       "n": 56,
@@ -2220,7 +2873,14 @@
         "Compare a circuit you found in two models trained from different seeds, using a similarity measure you can defend.",
         "Take one text-model technique and apply it to a vision-language model, and report what transferred."
       ],
-      "synthesis": "Explain what a replacement model is, and the ways an attribution graph over one can mislead."
+      "synthesis": "Explain what a replacement model is, and the ways an attribution graph over one can mislead.",
+      "orientation": "Circuits over heads are coarse; circuits over features are what the field is moving toward. Attribution graphs built on transcoders trace computation at feature level, with the caveat that a replacement model is not the model. Universality asks whether any of this generalizes across models, which is the question that decides whether the field is a science or a collection of case studies. Does this circuit exist in other models too?",
+      "usedIn": [
+        {
+          "n": 58,
+          "title": "Weights Rather Than Activations"
+        }
+      ]
     },
     {
       "n": 57,
@@ -2260,7 +2920,9 @@
         "Mixed retrieval across Parts 5 through 8, at least twenty-five items.",
         "Compare your current notes against the notes you took in Part 5, and rewrite one early note now that you know more."
       ],
-      "synthesis": "Write an honest account of what the field can and cannot currently establish about a circuit, using your own experiments as evidence."
+      "synthesis": "Write an honest account of what the field can and cannot currently establish about a circuit, using your own experiments as evidence.",
+      "orientation": "The whole method, from behavior to validated claim, retrieved as one pipeline. Write it out before checking, and note which step you consistently skip.",
+      "usedIn": []
     },
     {
       "n": 58,
@@ -2301,7 +2963,9 @@
         "Prune a subnetwork without an adversary, then with one, and compare the sizes you get.",
         "Train a tiny weight-sparse model and read a circuit directly off its weights."
       ],
-      "synthesis": "Explain why pruning without an adversary understates the size of a circuit."
+      "synthesis": "Explain why pruning without an adversary understates the size of a circuit.",
+      "orientation": "Every technique so far decomposes activations. This part decomposes the weights instead, into subcomponents that can be ablated wherever the network does not use them, which sidesteps the question of which inputs to run. Weight-sparse training goes further and forces compact circuits at training time, trading capability for legibility. Can you read a mechanism off the parameters?",
+      "usedIn": []
     },
     {
       "n": 59,
@@ -2342,7 +3006,14 @@
         "Compare a patchscope description against what the logit lens says about the same state.",
         "Find a case where the description is fluent and confident and also wrong."
       ],
-      "synthesis": "Explain what makes a self-report about an activation evidence, rather than a plausible confabulation."
+      "synthesis": "Explain what makes a self-report about an activation evidence, rather than a plausible confabulation.",
+      "orientation": "Rather than decoding a hidden state yourself, patch it into a prompt and let the model describe it. It works better than it has any right to, which is exactly why the controls matter: a fluent, confident description that tracks the surrounding prompt rather than the activation is the standard failure. Can the model tell you what it is thinking?",
+      "usedIn": [
+        {
+          "n": 60,
+          "title": "Trained Interpreters"
+        }
+      ]
     },
     {
       "n": 60,
@@ -2383,7 +3054,14 @@
         "Train a small decoder to answer questions about activations, and evaluate it on held-out question types.",
         "Test your decoder on a model organism it never saw during training."
       ],
-      "synthesis": "Explain the difference between a model reporting its internal state and a model producing a plausible answer about it."
+      "synthesis": "Explain the difference between a model reporting its internal state and a model producing a plausible answer about it.",
+      "orientation": "Inject a concept you chose into a hidden state and check whether the model's self-report tracks your intervention rather than cues in the text. That is the cleanest available test of introspection, and it turns a philosophical question into an experiment with a control condition. Training a decoder to answer open questions about activations is the natural extension. Is the report about the state, or about the prompt?",
+      "usedIn": [
+        {
+          "n": 61,
+          "title": "Open-Ended Interpretation"
+        }
+      ]
     },
     {
       "n": 61,
@@ -2424,7 +3102,9 @@
         "Take a chain-of-thought trace and resample after each step to measure which steps the answer depends on.",
         "Find a reasoning trace where the stated reasoning and the causally load-bearing steps differ."
       ],
-      "synthesis": "Explain what counterfactual resampling establishes about a reasoning trace that reading it cannot."
+      "synthesis": "Explain what counterfactual resampling establishes about a reasoning trace that reading it cannot.",
+      "orientation": "One interpreter trained across many tasks, explanations trained without labels that say what an activation encodes, and a black-box method that tests which steps of a reasoning trace the answer actually depends on. The last is the sharpest: a stated chain of thought and the causally load-bearing steps are often different things. Is the reasoning it shows you the reasoning it used?",
+      "usedIn": []
     },
     {
       "n": 62,
@@ -2464,7 +3144,9 @@
         "Mixed retrieval across every part so far, at least thirty items, drawn at random.",
         "Identify the three articles you have used most in practice and the three you have never returned to, and ask why."
       ],
-      "synthesis": "Write, from memory, the strongest critique of mechanistic interpretability as a research program that you can honestly make."
+      "synthesis": "Write, from memory, the strongest critique of mechanistic interpretability as a research program that you can honestly make.",
+      "orientation": "Everything, retrieved at once and out of order. The research proposal is the real exercise: it is the first time you are asked to produce a question rather than answer one.",
+      "usedIn": []
     },
     {
       "n": 63,
@@ -2505,7 +3187,14 @@
         "Evaluate that probe on a behavior it was not trained on, and report the drop.",
         "Write down what result would convince you that a detector works on deception rather than on a proxy."
       ],
-      "synthesis": "Explain why detecting a trained backdoor is weaker evidence than detecting emergent deception, and what the gap consists of."
+      "synthesis": "Explain why detecting a trained backdoor is weaker evidence than detecting emergent deception, and what the gap consists of.",
+      "orientation": "Refusal turns out to be mediated by a single direction across many chat models, which is the most striking causal result in the field and a warning about how shallow safety training can be. Then the harder cases: detecting a backdoor you trained is much easier than detecting deception you did not, and the gap between those two is where the safety argument currently lives. Can you catch a model hiding something?",
+      "usedIn": [
+        {
+          "n": 64,
+          "title": "Monitoring and Its Limits"
+        }
+      ]
     },
     {
       "n": 64,
@@ -2546,7 +3235,9 @@
         "Take one published safety-relevant interpretability result and write the strongest critique of its evaluation.",
         "List the failure modes of your own experiments from earlier parts that this article names."
       ],
-      "synthesis": "Explain how evaluation awareness could invalidate a safety measurement, and what design would detect it."
+      "synthesis": "Explain how evaluation awareness could invalidate a safety measurement, and what design would detect it.",
+      "orientation": "Models can tell evaluations from deployment, which threatens every safety measurement made under evaluation conditions. This lesson works through that, through what deployed monitoring costs at a realistic false-positive rate, and then through an honest catalogue of where interpretability fails as a safety tool. Expect it to undercut earlier enthusiasm; that is the point. What can this field actually promise?",
+      "usedIn": []
     },
     {
       "n": 65,
@@ -2587,7 +3278,9 @@
         "Train or load an SAE with SAE Lens and connect its features to Neuronpedia.",
         "Verify one library's convenience function against your own implementation, and find any discrepancy."
       ],
-      "synthesis": "Explain what a hook-based library is doing on your behalf, and how you would check it."
+      "synthesis": "Explain what a hook-based library is doing on your behalf, and how you would check it.",
+      "orientation": "You have written these interventions yourself, which is the right order: the libraries are now conveniences rather than magic, and you can check them. Redoing an earlier experiment in TransformerLens and again in nnsight shows which abstraction suits which question. Neuronpedia connects your own features to the field's shared ones. What should you not write yourself?",
+      "usedIn": []
     },
     {
       "n": 66,
@@ -2624,7 +3317,9 @@
         "Write up one of your earlier experiments as a short public post, with methods, results, and limitations.",
         "Identify three open problems you could plausibly attack, and write one paragraph on each."
       ],
-      "synthesis": "Write the research agenda you would pursue, and what you would need to learn next that this site does not cover."
+      "synthesis": "Write the research agenda you would pursue, and what you would need to learn next that this site does not cover.",
+      "orientation": "The transition from studying to doing. ARENA supplies implementation practice on whatever you found hardest, and Neel Nanda's roadmap supplies the advice on project selection and iteration that turns exercises into research. Write something public, be wrong in front of people, and revise. What would you work on?",
+      "usedIn": []
     },
     {
       "n": 67,
@@ -2664,7 +3359,21 @@
         "Have the whole thing reviewed by someone who will push back, and revise it.",
         "Final mixed retrieval across the entire curriculum, drawn at random, scored honestly before checking."
       ],
-      "synthesis": "Write the account of what you now know that you could not have written at the start, and be specific about which parts of the plan produced it."
+      "synthesis": "Write the account of what you now know that you could not have written at the start, and be specific about which parts of the plan produced it.",
+      "orientation": "One real investigation of your own, on a behavior nobody has explained, with controls and negative results reported honestly. Everything before this was preparation for producing a claim that could be wrong and knowing how you would find out.",
+      "usedIn": []
     }
-  ]
+  ],
+  "partIntros": {
+    "Getting the Language": "Nothing here is about neural networks. It is about being able to read a line of mathematics without stopping and to run a piece of code without fighting it, because every argument later in the curriculum is made in that notation and checked with that code. Expect this part to feel disconnected from interpretability; the payoff is that nothing after it has to pause to explain a summation sign.",
+    "Linear Algebra and Calculus": "A transformer is a long composition of linear maps with nonlinearities between them, and almost every interpretability claim is a geometric claim about those maps: this feature is a direction, that head is low-rank, this intervention is a projection. This part builds the geometry, then the calculus that lets you ask how a change at one point propagates to the output. By the end you can read the equations in the transformer-circuits papers, even if the ideas are still unfamiliar.",
+    "Uncertainty, Information, and Cause": "Interpretability results are measurements on samples, and the three ways they go wrong are all here: a difference reported without an interval, a loss quoted in units nobody converted, and a correlation described as a mechanism. This part gives you the probability to quantify what you measured, the information theory to say what a loss means, and the causal vocabulary that separates what a model does from what merely co-occurs with it. Activation patching is a mediation analysis, and this is where mediation gets defined.",
+    "Learning Machines": "Before asking what a trained network computes, it helps to know what training did to it. This part goes from fitting a line to training a language model and instrumenting one, which is the point where the mathematics stops being preparation and starts being the object of study. The probes you will train later are the classifiers from this part, applied to activations instead of data.",
+    "Inside a Transformer": "This is the machine the rest of the curriculum takes apart. You will build one, run tokens through it, and look at every intermediate tensor, so that later claims about heads, layers, and the residual stream refer to something you have held in your hands. Implementing it once is worth more than reading about it five times.",
+    "Reading and Intervening": "The two questions in interpretability are what is represented and what is used, and this part supplies the tools for both. Reading tools tell you what a state contains; intervention tools tell you whether the model relies on it. They disagree often enough that keeping the difference straight is most of the skill.",
+    "Features": "A neuron is not a feature, which is the finding that reorganized the field. This part covers the attempt to recover the real units of computation by decomposing activations into a sparse overcomplete dictionary, and the honest accounting of where that attempt succeeds, where it splits one feature into three, and how you would know the difference.",
+    "Circuits": "A circuit is a claim that a specific set of components, wired a specific way, implements a behavior. This part builds one, tests it against faithfulness, completeness, and minimality, then rebuilds it at the level of features rather than heads. The recurring lesson is how much of a plausible circuit survives an adversarial test.",
+    "Making Models Explain Themselves": "Rather than decode an activation yourself, hand it back to a language model and ask what it means. This part covers that family of methods and, more usefully, the controls that separate a report which tracks the activation from a fluent answer that tracks the prompt.",
+    "Safety, Tools, and Practice": "The safety case for interpretability is that understanding internals catches problems behavior alone would hide. This part works through the strongest current evidence for that claim, the places it does not yet hold, and the tooling the field actually uses, and ends with you doing original work rather than reading about it."
+  }
 }

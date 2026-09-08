@@ -359,6 +359,17 @@ function validate() {
       }
       scheduled.set(article.slug, lesson.n);
     }
+    if (!lesson.orientation) {
+      errors.push(`Lesson ${lesson.n}: missing 'orientation'`);
+    }
+    for (const forward of lesson.usedIn || []) {
+      if (!lessonNumbers.has(forward.n)) {
+        errors.push(`Lesson ${lesson.n}: points forward to lesson ${forward.n}, which does not exist`);
+      }
+      if (forward.n <= lesson.n) {
+        errors.push(`Lesson ${lesson.n}: points forward to lesson ${forward.n}, which is not later`);
+      }
+    }
     for (const revisit of lesson.revisit) {
       if (!lessonNumbers.has(revisit.n)) {
         errors.push(`Lesson ${lesson.n}: revisits lesson ${revisit.n}, which does not exist`);
@@ -371,6 +382,11 @@ function validate() {
   for (const slug of allArticleSlugs) {
     if (!scheduled.has(slug)) {
       errors.push(`Lesson plan: "${slug}" is never scheduled in any lesson`);
+    }
+  }
+  for (const part of lessonPlan.parts) {
+    if (!lessonPlan.partIntros || !lessonPlan.partIntros[part]) {
+      errors.push(`Lesson plan: part "${part}" has no intro`);
     }
   }
 
@@ -440,6 +456,40 @@ export default function(eleventyConfig) {
     }
   });
 
+  // Catch TeX that never reached KaTeX. Math only renders where Markdown runs,
+  // so a formula in a raw HTML block, in a data file rendered through Nunjucks,
+  // or with a delimiter the parser rejects reaches the reader as source. The
+  // check ignores the annotation element, where KaTeX stores the original TeX
+  // on purpose, and only flags spans containing a command or a sub/superscript
+  // so that prose about "$X" or a price is not a false positive.
+  eleventyConfig.on("eleventy.after", ({ dir }) => {
+    if (process.env.SKIP_VALIDATION) return;
+    const unrendered = [];
+    const walk = (directory) => {
+      for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+        const full = path.join(directory, entry.name);
+        if (entry.isDirectory()) walk(full);
+        else if (entry.name.endsWith(".html")) {
+          const html = fs.readFileSync(full, "utf-8")
+            .replace(/<annotation[^>]*>[\s\S]*?<\/annotation>/g, "");
+          const match = html.match(/\$[^$\n]*(?:\\[a-zA-Z]+|[_^])[^$\n]*\$/);
+          if (match) unrendered.push(`${path.relative(dir.output, full)}: ${match[0]}`);
+        }
+      }
+    };
+    walk(dir.output);
+    if (unrendered.length > 0) {
+      throw new Error(
+        `\n=== Unrendered math ===\n` +
+        unrendered.map(e => `  - ${e}`).join("\n") +
+        `\n\nThis TeX reached the page as source. Math renders only where Markdown runs:\n` +
+        `  - inside a raw HTML block, rewrite it as HTML or move it into Markdown\n` +
+        `  - in a data file rendered by Nunjucks, pipe the string through the mdInline filter\n` +
+        `  - a closing $ followed by a digit is not math; reword or bring the digits inside\n`
+      );
+    }
+  });
+
   // Run Pagefind indexer after each build
   eleventyConfig.on("eleventy.after", () => {
     execSync(`npx pagefind --site _site`, {
@@ -459,6 +509,16 @@ export default function(eleventyConfig) {
     .use(markdownItAnchor, { permalink: false, slugify });
 
   eleventyConfig.setLibrary("md", md);
+
+  // Render a single line of Markdown, including $...$ math, from inside a
+  // Nunjucks template. Data-driven pages such as the learning plan hold their
+  // prose in JSON, which never passes through the Markdown pipeline, so a
+  // dollar-delimited formula there would otherwise reach the reader as
+  // literal text.
+  eleventyConfig.addFilter("mdInline", function (value) {
+    if (value == null) return "";
+    return md.renderInline(String(value));
+  });
 
   // Add base plugin for path prefix support on GitHub Pages
   eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
@@ -495,6 +555,19 @@ export default function(eleventyConfig) {
 
   // Pass through CSS files to _site/css/
   eleventyConfig.addPassthroughCopy("src/css");
+
+  // Self-host KaTeX's stylesheet and fonts. Math is rendered to HTML at build
+  // time, but that HTML is unreadable without these rules: the MathML copy
+  // KaTeX emits for screen readers becomes visible and every formula appears
+  // twice. A CDN that is blocked or slow therefore breaks every equation on
+  // the site, so the files ship with it. Only woff2 is copied; katex.min.css
+  // lists it first and no browser in use reaches the woff or ttf fallbacks.
+  eleventyConfig.addPassthroughCopy({
+    "node_modules/katex/dist/katex.min.css": "css/katex.min.css",
+  });
+  eleventyConfig.addPassthroughCopy({
+    "node_modules/katex/dist/fonts/*.woff2": "css/fonts",
+  });
 
   // Pass through JS files to _site/js/
   eleventyConfig.addPassthroughCopy("src/js");

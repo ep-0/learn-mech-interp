@@ -58,7 +58,7 @@ The algebra has the form of a soft key-value lookup: the input is matched agains
 
 <figure>
   <img src="/topics/mlps-in-transformers/images/ffn_key_value_memory.png" alt="Diagram of a feed-forward layer as key-value memory. The input vector is multiplied by key vectors k_1 through k_dm to produce memory coefficients, and the output is a weighted sum of value vectors v_1 through v_dm. Example trigger inputs for individual keys are shown, such as 'it will take a' and 'every once in a'.">
-  <figcaption>A feed-forward layer as key-value memory. Each of the $d_m$ neurons has a key vector that matches textual patterns and a value vector that contributes to the output. The memory coefficients (activation strengths) determine how much each value vector contributes. From Geva et al., <em>Transformer Feed-Forward Layers Are Key-Value Memories</em>. {%- cite "geva2021kvmemories" -%}</figcaption>
+  <figcaption>A feed-forward layer as key-value memory. Each of the <em>d<sub>m</sub></em> neurons has a key vector that matches textual patterns and a value vector that contributes to the output. The memory coefficients (activation strengths) determine how much each value vector contributes. From Geva et al., <em>Transformer Feed-Forward Layers Are Key-Value Memories</em>. {%- cite "geva2021kvmemories" -%}</figcaption>
 </figure>
 
 Geva et al. studied a 16-layer transformer and examined what the keys and values actually encode {% cite "geva2021kvmemories" %}. By collecting the inputs that maximally activate each neuron (the inputs that best match each key), they found interpretable patterns:
