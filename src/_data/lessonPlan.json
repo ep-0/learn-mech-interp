@@ -1,0 +1,2670 @@
+{
+  "parts": [
+    "Getting the Language",
+    "Linear Algebra and Calculus",
+    "Uncertainty, Information, and Cause",
+    "Learning Machines",
+    "Inside a Transformer",
+    "Reading and Intervening",
+    "Features",
+    "Circuits",
+    "Making Models Explain Themselves",
+    "Safety, Tools, and Practice"
+  ],
+  "lessons": [
+    {
+      "n": 1,
+      "part": "Getting the Language",
+      "title": "Notation, Functions, and a First Program",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "mathematical-notation-and-sets",
+          "title": "Mathematical Notation, Sets, and Statements"
+        },
+        {
+          "slug": "functions-and-composition",
+          "title": "Functions, Domains, and Composition"
+        },
+        {
+          "slug": "python-fundamentals",
+          "title": "Python Fundamentals"
+        }
+      ],
+      "revisit": [],
+      "practice": [
+        "Install Python and set up a project environment you can recreate from scratch. Delete it and rebuild it once, to prove you can.",
+        "Write a script that composes three functions and prints intermediate values at each stage.",
+        "Copy ten pieces of notation out of any article further along in the curriculum, including one you do not understand at all, and translate each into a full English sentence.",
+        "Take one expression with a summation sign and expand it by hand for n = 3, then write the loop that computes it."
+      ],
+      "synthesis": "Without looking, write the definition of a function in one sentence, then explain why $f \\circ g$ and $g \\circ f$ are different objects."
+    },
+    {
+      "n": 2,
+      "part": "Getting the Language",
+      "title": "Growth, Bounds, and Shape",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "inequalities-and-bounds",
+          "title": "Inequalities, Absolute Value, and Bounds"
+        },
+        {
+          "slug": "polynomials-and-rational-functions",
+          "title": "Polynomials and Rational Functions"
+        },
+        {
+          "slug": "exponentials-and-logarithms",
+          "title": "Exponentials and Logarithms"
+        }
+      ],
+      "revisit": [],
+      "practice": [
+        "Compute $\\log$ of a product of 200 small probabilities two ways, directly and as a sum of logs, and observe where the direct version underflows.",
+        "Convert three published language-model losses into perplexities by hand, then check with code.",
+        "Derive the three log rules from the exponent laws on paper, closed book.",
+        "Plot $x^2$, $2^x$, and $\\log_2 x$ on one axis, then again on a log scale, and write one sentence about what changed."
+      ],
+      "synthesis": "State from memory why cross-entropy is measured in logs rather than in raw probabilities, and what units the result is in."
+    },
+    {
+      "n": 3,
+      "part": "Getting the Language",
+      "title": "Coordinates, Systems, and Arrays",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "coordinate-geometry-and-distance",
+          "title": "Coordinate Geometry, Distance, and Lines"
+        },
+        {
+          "slug": "systems-of-linear-equations",
+          "title": "Systems of Linear Equations"
+        },
+        {
+          "slug": "arrays-and-numerical-python",
+          "title": "Arrays and Numerical Python"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        }
+      ],
+      "practice": [
+        "Solve a 3x3 system by hand, then again with NumPy, and confirm the answers match.",
+        "Write the distance function for two points in $\\mathbb{R}^n$ without loops, using array operations only.",
+        "Take an array of shape [4, 6, 8] and produce every reduction over each axis, predicting each output shape before running it.",
+        "Deliberately trigger a silent broadcasting bug, then write the assertion that would have caught it."
+      ],
+      "synthesis": "Explain what a homogeneous system having a nonzero solution says about the columns of its matrix."
+    },
+    {
+      "n": 4,
+      "part": "Getting the Language",
+      "title": "Angles and Rotation",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "trigonometry-and-the-unit-circle",
+          "title": "Trigonometry and the Unit Circle"
+        },
+        {
+          "slug": "complex-numbers-and-eulers-formula",
+          "title": "Complex Numbers and Euler's Formula"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 2,
+          "title": "Growth, Bounds, and Shape"
+        }
+      ],
+      "practice": [
+        "Write a function that rotates a 2D point by an angle, then verify that rotating twice equals rotating by the sum.",
+        "Compute the cosine of the angle between two random vectors in $\\mathbb{R}^2$, $\\mathbb{R}^{10}$, and $\\mathbb{R}^{1000}$, a thousand samples each, and plot the three distributions.",
+        "Multiply two complex numbers in polar form on paper, then predict where the product lands before plotting it.",
+        "Look up how rotary position embeddings rotate a coordinate pair, and identify the angle-addition formula inside it. You will not follow the whole method yet; find the trigonometry."
+      ],
+      "synthesis": "Explain, without notes, why multiplying by a unit complex number is a rotation."
+    },
+    {
+      "n": 5,
+      "part": "Getting the Language",
+      "title": "Limits, Series, and Counting",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "sequences-series-and-summation",
+          "title": "Sequences, Series, and Summation"
+        },
+        {
+          "slug": "limits-and-continuity",
+          "title": "Limits and Continuity"
+        },
+        {
+          "slug": "counting-and-combinatorics",
+          "title": "Counting, Factorials, and Binomial Coefficients"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 3,
+          "title": "Coordinates, Systems, and Arrays"
+        }
+      ],
+      "practice": [
+        "Compute the derivative of $x^2$ from the difference quotient on paper, then verify numerically with shrinking step sizes and plot the error.",
+        "Sum a geometric series by hand, then write the code and check where floating point stops agreeing with the formula.",
+        "Simulate 100,000 runs of n coin flips and compare the empirical distribution of successes against the binomial formula.",
+        "Find the smallest number of terms of a convergent series that gets you within 1e-6, first by bounding the tail, then by brute force."
+      ],
+      "synthesis": "State the three conditions for continuity and give a function that fails each one."
+    },
+    {
+      "n": 6,
+      "part": "Getting the Language",
+      "title": "Making Code and Figures You Can Trust",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "working-with-research-code",
+          "title": "Reading and Running Research Code"
+        },
+        {
+          "slug": "plotting-and-visualizing-results",
+          "title": "Plotting and Visualizing Results"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 4,
+          "title": "Angles and Rotation"
+        }
+      ],
+      "practice": [
+        "Clone any interpretability repository, build its environment, and run its smallest example end to end.",
+        "Take a script that fails and locate the cause from the traceback alone, without reading the whole file.",
+        "Reproduce one figure from a paper you can already partly follow, then list every choice the figure's axes hide.",
+        "Plot the same data three ways, one of which is misleading, and write down what makes it misleading."
+      ],
+      "synthesis": "Describe what you would need to record today so that a number you produce could be regenerated in six months."
+    },
+    {
+      "n": 7,
+      "part": "Getting the Language",
+      "title": "Consolidation: The Toolkit",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 2,
+          "title": "Growth, Bounds, and Shape"
+        },
+        {
+          "n": 3,
+          "title": "Coordinates, Systems, and Arrays"
+        },
+        {
+          "n": 4,
+          "title": "Angles and Rotation"
+        },
+        {
+          "n": 5,
+          "title": "Limits, Series, and Counting"
+        },
+        {
+          "n": 6,
+          "title": "Making Code and Figures You Can Trust"
+        }
+      ],
+      "practice": [
+        "Closed book, write out the log rules, the distance formula, the angle-addition formulas, and the definition of a limit. Check them afterwards and mark only what you got wrong.",
+        "Build one script that uses material from every lesson so far: read data, transform it with array operations, compute a log-scale quantity, and plot it with labeled axes.",
+        "Take the exit criteria from all sixteen articles so far and attempt them cold, in random order. Score yourself before checking.",
+        "Rewrite, from memory, the explanation of the one topic you found hardest, then compare against the article and note only the gaps."
+      ],
+      "synthesis": "Which two topics from this part do you predict you will have forgotten most by the next consolidation? Write them down now; you will check that prediction later."
+    },
+    {
+      "n": 8,
+      "part": "Linear Algebra and Calculus",
+      "title": "Vectors, Dot Products, and Maps",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "vectors-and-vector-spaces",
+          "title": "Vectors, Span, and Vector Spaces"
+        },
+        {
+          "slug": "dot-products-norms-and-angles",
+          "title": "Dot Products, Norms, and Angles"
+        },
+        {
+          "slug": "matrices-as-linear-maps",
+          "title": "Matrices as Linear Maps"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 3,
+          "title": "Coordinates, Systems, and Arrays"
+        },
+        {
+          "n": 6,
+          "title": "Making Code and Figures You Can Trust"
+        }
+      ],
+      "practice": [
+        "Implement matrix multiplication with explicit loops, then with array operations, and time both.",
+        "Write a function that reports whether a set of vectors is linearly independent, and test it on cases you construct to be dependent.",
+        "Take three weight matrices from any pretrained model, print their shapes, and write down which space each maps from and to.",
+        "Compute cosine similarity between every pair of a hundred random unit vectors in $\\mathbb{R}^{768}$ and plot the histogram. Predict its center and width first."
+      ],
+      "synthesis": "Explain why a matrix product is a composition of functions, and why the inner dimensions must agree."
+    },
+    {
+      "n": 9,
+      "part": "Linear Algebra and Calculus",
+      "title": "Coordinates and Projection",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "bases-and-change-of-basis",
+          "title": "Bases, Coordinates, and Change of Basis"
+        },
+        {
+          "slug": "orthogonality-and-projections",
+          "title": "Orthogonality and Projections"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 4,
+          "title": "Angles and Rotation"
+        },
+        {
+          "n": 6,
+          "title": "Making Code and Figures You Can Trust"
+        }
+      ],
+      "practice": [
+        "Implement the projection of a vector onto a direction and onto the orthogonal complement, and verify the two pieces sum back to the original.",
+        "Build a projection matrix for a two-dimensional subspace of $\\mathbb{R}^5$ and check idempotence numerically.",
+        "Rotate a basis, express the same vector in both, and confirm that its norm is unchanged while its coordinates are not.",
+        "Implement Gram-Schmidt, then find an input where it loses orthogonality numerically, and compare against a QR routine."
+      ],
+      "synthesis": "State what it means for a basis to be privileged, and why the residual stream of a transformer is usually said not to have one."
+    },
+    {
+      "n": 10,
+      "part": "Linear Algebra and Calculus",
+      "title": "Rank and Eigenstructure",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "matrix-rank-and-low-rank-factorization",
+          "title": "Rank and Low-Rank Factorization"
+        },
+        {
+          "slug": "eigenvectors-and-diagonalization",
+          "title": "Eigenvectors, Eigenvalues, and Diagonalization"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 5,
+          "title": "Limits, Series, and Counting"
+        },
+        {
+          "n": 8,
+          "title": "Vectors, Dot Products, and Maps"
+        }
+      ],
+      "practice": [
+        "Construct a rank-2 matrix in $\\mathbb{R}^{10 \\times 10}$ three different ways and confirm the rank numerically each time.",
+        "Multiply two random matrices with a thin inner dimension and verify the rank bound empirically.",
+        "Diagonalize a small symmetric matrix by hand, then check against a library routine.",
+        "Find a real matrix with complex eigenvalues, and show numerically that it rotates a vector rather than scaling it."
+      ],
+      "synthesis": "Explain why $W_Q W_K^T$ has rank at most the head dimension, and what that limits about what a head can attend to."
+    },
+    {
+      "n": 11,
+      "part": "Linear Algebra and Calculus",
+      "title": "Decomposition and Quadratic Forms",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "singular-value-decomposition",
+          "title": "The Singular Value Decomposition"
+        },
+        {
+          "slug": "quadratic-forms-and-psd-matrices",
+          "title": "Quadratic Forms and Positive Semi-Definite Matrices"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 6,
+          "title": "Making Code and Figures You Can Trust"
+        },
+        {
+          "n": 9,
+          "title": "Coordinates and Projection"
+        }
+      ],
+      "practice": [
+        "Take the SVD of a weight matrix from a real model, plot the singular value spectrum, and estimate its effective rank.",
+        "Truncate that SVD at several ranks, measure reconstruction error, and compare against the Eckart-Young bound.",
+        "Generate correlated 2D data, compute its covariance, and plot the covariance ellipse with its principal axes.",
+        "Whiten that data and confirm the new covariance is the identity."
+      ],
+      "synthesis": "Explain the relationship between the SVD, the eigendecomposition of $M^T M$, and the geometry of a quadratic form."
+    },
+    {
+      "n": 12,
+      "part": "Linear Algebra and Calculus",
+      "title": "Fitting and Shapes in Code",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "least-squares-and-the-pseudoinverse",
+          "title": "Least Squares and the Pseudoinverse"
+        },
+        {
+          "slug": "tensors-and-einsum-notation",
+          "title": "Tensors, Shapes, and Einsum Notation"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 6,
+          "title": "Making Code and Figures You Can Trust"
+        },
+        {
+          "n": 10,
+          "title": "Rank and Eigenstructure"
+        }
+      ],
+      "practice": [
+        "Solve a least-squares problem three ways, by normal equations, QR, and SVD, and compare accuracy on an ill-conditioned input.",
+        "Verify numerically that the least-squares residual is orthogonal to the column space.",
+        "Write the per-head attention score computation as a single einsum and check the output shape against a loop version.",
+        "Take five einsum strings from a real interpretability codebase and read each one aloud as a sentence."
+      ],
+      "synthesis": "Describe least squares as a projection, naming what is projected onto what."
+    },
+    {
+      "n": 13,
+      "part": "Linear Algebra and Calculus",
+      "title": "Many Dimensions, Real Machines",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "high-dimensional-geometry",
+          "title": "Geometry in High Dimensions"
+        },
+        {
+          "slug": "gpus-memory-and-precision",
+          "title": "GPUs, Memory, and Numerical Precision"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 8,
+          "title": "Vectors, Dot Products, and Maps"
+        },
+        {
+          "n": 11,
+          "title": "Decomposition and Quadratic Forms"
+        }
+      ],
+      "practice": [
+        "Verify the concentration of random cosine similarity as dimension grows, and compare against the $1/\\sqrt{d}$ prediction.",
+        "Count how many vectors you can pack in $\\mathbb{R}^{64}$ with pairwise cosine below 0.1, by random search, and compare to the theoretical scaling.",
+        "Estimate the memory needed to cache every residual-stream activation for a small model and a batch of 32, then measure it and compare.",
+        "Compute the same sum in float32 and bfloat16 with terms in different orders, and record the disagreement."
+      ],
+      "synthesis": "Explain, with numbers, why a 768-dimensional space can host far more than 768 nearly independent directions."
+    },
+    {
+      "n": 14,
+      "part": "Linear Algebra and Calculus",
+      "title": "Consolidation: Linear Algebra",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 4,
+          "title": "Angles and Rotation"
+        },
+        {
+          "n": 8,
+          "title": "Vectors, Dot Products, and Maps"
+        },
+        {
+          "n": 9,
+          "title": "Coordinates and Projection"
+        },
+        {
+          "n": 10,
+          "title": "Rank and Eigenstructure"
+        },
+        {
+          "n": 11,
+          "title": "Decomposition and Quadratic Forms"
+        },
+        {
+          "n": 12,
+          "title": "Fitting and Shapes in Code"
+        },
+        {
+          "n": 13,
+          "title": "Many Dimensions, Real Machines"
+        }
+      ],
+      "practice": [
+        "Closed book, reconstruct the relationships between rank, the SVD, projection, and least squares as a single diagram.",
+        "Re-attempt the exit criteria from Part 1 and Part 2 together, shuffled, without looking at which lesson each came from.",
+        "Take a weight matrix from a real model and produce a one-page analysis: shapes, rank, spectrum, and what the map does.",
+        "Check the prediction you wrote at the last consolidation. Were the topics you expected to forget the ones you actually forgot?"
+      ],
+      "synthesis": "Explain the whole of Part 2 to an imagined reader who has finished Part 1 only, in writing, in under 500 words."
+    },
+    {
+      "n": 15,
+      "part": "Linear Algebra and Calculus",
+      "title": "Rates of Change",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "derivatives-and-the-chain-rule",
+          "title": "Derivatives and the Chain Rule"
+        },
+        {
+          "slug": "partial-derivatives-and-gradients",
+          "title": "Partial Derivatives and Gradients"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 3,
+          "title": "Coordinates, Systems, and Arrays"
+        },
+        {
+          "n": 10,
+          "title": "Rank and Eigenstructure"
+        },
+        {
+          "n": 13,
+          "title": "Many Dimensions, Real Machines"
+        }
+      ],
+      "practice": [
+        "Differentiate ReLU, GELU, sigmoid, and softmax by hand, then verify each numerically by finite differences.",
+        "Implement a gradient checker and use it on a two-layer network you write yourself.",
+        "Compute the gradient of a scalar function of a 100-dimensional input and confirm the steepest-ascent property empirically.",
+        "Take a composition four functions deep and apply the chain rule on paper, tracking every factor."
+      ],
+      "synthesis": "Explain what a directional derivative measures, and what it would mean to take one along a steering vector."
+    },
+    {
+      "n": 16,
+      "part": "Linear Algebra and Calculus",
+      "title": "Approximation, Jacobians, and Accumulation",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "taylor-expansion-and-linear-approximation",
+          "title": "Linear Approximation and Taylor Expansion"
+        },
+        {
+          "slug": "jacobians-and-hessians",
+          "title": "Jacobians and Hessians"
+        },
+        {
+          "slug": "integrals-and-path-integrals",
+          "title": "Integrals and Path Integrals"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 4,
+          "title": "Angles and Rotation"
+        },
+        {
+          "n": 11,
+          "title": "Decomposition and Quadratic Forms"
+        },
+        {
+          "n": 13,
+          "title": "Many Dimensions, Real Machines"
+        }
+      ],
+      "practice": [
+        "Approximate a nonlinear function at a point to first and second order, and plot where each approximation stops being usable.",
+        "Compute a Jacobian for a small vector-valued function, first by hand and then with autodiff, and compare.",
+        "Implement integrated gradients for a simple function and verify the completeness property numerically.",
+        "Find a case where the first-order estimate of an intervention's effect disagrees badly with the true effect, and explain why."
+      ],
+      "synthesis": "State exactly which term attribution patching discards, and describe a situation where discarding it is unsafe."
+    },
+    {
+      "n": 17,
+      "part": "Uncertainty, Information, and Cause",
+      "title": "Randomness and Its Moments",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "random-variables-and-distributions",
+          "title": "Random Variables and Distributions"
+        },
+        {
+          "slug": "expectation-variance-and-covariance",
+          "title": "Expectation, Variance, and Covariance"
+        },
+        {
+          "slug": "conditional-probability-and-bayes",
+          "title": "Conditional Probability, Independence, and Bayes' Rule"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 5,
+          "title": "Limits, Series, and Counting"
+        },
+        {
+          "n": 12,
+          "title": "Fitting and Shapes in Code"
+        },
+        {
+          "n": 15,
+          "title": "Rates of Change"
+        }
+      ],
+      "practice": [
+        "Sample from a categorical distribution 100,000 times and confirm the empirical frequencies converge at the rate you predict.",
+        "Compute a detector's precision from its true-positive rate, false-positive rate, and a base rate of 1 in 10,000, then argue about whether it is deployable.",
+        "Construct two variables that are uncorrelated but strongly dependent, and plot them.",
+        "Write out a short sentence's probability under the autoregressive factorization, naming every conditional."
+      ],
+      "synthesis": "Explain why a probe with 99% accuracy on a rare behavior can be mostly wrong when it fires."
+    },
+    {
+      "n": 18,
+      "part": "Uncertainty, Information, and Cause",
+      "title": "Estimating and Sampling",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "estimation-and-maximum-likelihood",
+          "title": "Estimation and Maximum Likelihood"
+        },
+        {
+          "slug": "sampling-and-monte-carlo",
+          "title": "Sampling and Monte Carlo Estimation"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 6,
+          "title": "Making Code and Figures You Can Trust"
+        },
+        {
+          "n": 13,
+          "title": "Many Dimensions, Real Machines"
+        },
+        {
+          "n": 16,
+          "title": "Approximation, Jacobians, and Accumulation"
+        }
+      ],
+      "practice": [
+        "Derive the maximum likelihood estimate for a categorical distribution on paper, then confirm it is the empirical frequency.",
+        "Estimate a mean by Monte Carlo at several sample sizes and plot the error against $1/\\sqrt{n}$.",
+        "Implement temperature, top-k, and top-p sampling from a fixed logit vector, and plot how each reshapes the distribution.",
+        "Compare a paired and an unpaired estimate of the same difference, and measure how much variance pairing removed."
+      ],
+      "synthesis": "Explain why training a language model is maximum likelihood estimation, and what it is estimating."
+    },
+    {
+      "n": 19,
+      "part": "Uncertainty, Information, and Cause",
+      "title": "Structure in Data",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "hypothesis-testing-and-uncertainty",
+          "title": "Statistical Uncertainty and Hypothesis Testing"
+        },
+        {
+          "slug": "covariance-matrices-and-whitening",
+          "title": "Covariance Matrices and Whitening"
+        },
+        {
+          "slug": "principal-component-analysis",
+          "title": "Principal Component Analysis"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 6,
+          "title": "Making Code and Figures You Can Trust"
+        },
+        {
+          "n": 13,
+          "title": "Many Dimensions, Real Machines"
+        },
+        {
+          "n": 17,
+          "title": "Randomness and Its Moments"
+        }
+      ],
+      "practice": [
+        "Bootstrap a confidence interval for a difference in means and compare it against a t-based interval.",
+        "Screen 144 random 'heads' for an effect that does not exist, at alpha 0.05, and count the false positives. Then apply a correction.",
+        "Run PCA two ways on the same data, by eigendecomposition of the covariance and by SVD of the centered matrix, and confirm agreement.",
+        "Take a high-variance principal component of some real activations and argue both for and against reading it as a concept."
+      ],
+      "synthesis": "Explain what changes about a dataset's geometry when you whiten it, and why erasure methods care."
+    },
+    {
+      "n": 20,
+      "part": "Uncertainty, Information, and Cause",
+      "title": "Information",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "entropy-and-cross-entropy",
+          "title": "Entropy, Cross-Entropy, and Perplexity"
+        },
+        {
+          "slug": "kl-divergence-and-mutual-information",
+          "title": "KL Divergence and Mutual Information"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 8,
+          "title": "Vectors, Dot Products, and Maps"
+        },
+        {
+          "n": 15,
+          "title": "Rates of Change"
+        },
+        {
+          "n": 18,
+          "title": "Estimating and Sampling"
+        }
+      ],
+      "practice": [
+        "Compute entropy, cross-entropy, and KL for several small distributions by hand, then verify with code.",
+        "Take a real model's next-token distribution on a few prompts and compute its entropy. Find a prompt where it is very low and one where it is high.",
+        "Compute the KL between a model's output and the same model with one component ablated, and compare it against the change in top-1 accuracy.",
+        "Demonstrate the asymmetry of KL with a concrete pair of distributions where the two directions differ sharply."
+      ],
+      "synthesis": "Explain what a circuit faithfulness score reported as a KL divergence is actually measuring, and in which direction."
+    },
+    {
+      "n": 21,
+      "part": "Uncertainty, Information, and Cause",
+      "title": "Consolidation: Mathematics",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 8,
+          "title": "Vectors, Dot Products, and Maps"
+        },
+        {
+          "n": 15,
+          "title": "Rates of Change"
+        },
+        {
+          "n": 16,
+          "title": "Approximation, Jacobians, and Accumulation"
+        },
+        {
+          "n": 17,
+          "title": "Randomness and Its Moments"
+        },
+        {
+          "n": 18,
+          "title": "Estimating and Sampling"
+        },
+        {
+          "n": 19,
+          "title": "Structure in Data"
+        },
+        {
+          "n": 20,
+          "title": "Information"
+        }
+      ],
+      "practice": [
+        "Closed book, write the definitions of expectation, variance, entropy, cross-entropy, and KL, then check.",
+        "Shuffle the exit criteria from every mathematics article so far and work through twenty of them at random, scoring yourself before checking.",
+        "Take one dataset and produce a single analysis that uses probability, linear algebra, and information theory together.",
+        "List the three ideas from Parts 1 to 3 you are least confident about, and schedule them into the practice of the next several lessons."
+      ],
+      "synthesis": "Write the mathematical prerequisites of mechanistic interpretability as a one-page map, from memory, then compare it against the site's prerequisite links."
+    },
+    {
+      "n": 22,
+      "part": "Uncertainty, Information, and Cause",
+      "title": "Optimization",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "optimization-and-gradient-descent",
+          "title": "Optimization and Gradient Descent"
+        },
+        {
+          "slug": "constrained-optimization-and-lagrange-multipliers",
+          "title": "Constrained Optimization and Lagrange Multipliers"
+        },
+        {
+          "slug": "sparsity-and-regularization",
+          "title": "Sparsity, L1, and Regularization"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 10,
+          "title": "Rank and Eigenstructure"
+        },
+        {
+          "n": 17,
+          "title": "Randomness and Its Moments"
+        },
+        {
+          "n": 20,
+          "title": "Information"
+        }
+      ],
+      "practice": [
+        "Implement gradient descent on a badly conditioned quadratic and watch it zig-zag, then fix it with a preconditioner.",
+        "Solve a small constrained problem with Lagrange multipliers by hand and interpret the multiplier's value.",
+        "Fit the same model with L1 and L2 penalties across a sweep of strengths, and plot the number of nonzero coefficients against the penalty.",
+        "Derive the soft-thresholding operator from the L1 proximal problem, then implement ISTA and watch coefficients hit exactly zero."
+      ],
+      "synthesis": "Explain why an L1-penalized autoencoder systematically underestimates the magnitude of the features it finds."
+    },
+    {
+      "n": 23,
+      "part": "Uncertainty, Information, and Cause",
+      "title": "Cause",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "causal-graphs-and-interventions",
+          "title": "Causal Graphs and Interventions"
+        },
+        {
+          "slug": "mediation-direct-and-indirect-effects",
+          "title": "Mediation: Direct and Indirect Effects"
+        },
+        {
+          "slug": "counterfactuals-and-confounding",
+          "title": "Counterfactuals and Confounding"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 11,
+          "title": "Decomposition and Quadratic Forms"
+        },
+        {
+          "n": 18,
+          "title": "Estimating and Sampling"
+        },
+        {
+          "n": 20,
+          "title": "Information"
+        }
+      ],
+      "practice": [
+        "Build a three-variable simulation with a confounder, and show that conditioning and intervening give different answers.",
+        "Construct a collider and demonstrate that conditioning on it creates a dependence that was not there.",
+        "Simulate a mediation setup and estimate the direct and indirect effects, then break the estimate by adding an interaction.",
+        "Take a published clean-corrupted prompt pair from any interpretability paper and list everything it fails to hold fixed."
+      ],
+      "synthesis": "Explain the difference between noising and denoising as mediation questions, and describe a case where they disagree."
+    },
+    {
+      "n": 24,
+      "part": "Uncertainty, Information, and Cause",
+      "title": "Curved Spaces",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "manifolds-and-tangent-spaces",
+          "title": "Manifolds, Charts, and Tangent Spaces"
+        },
+        {
+          "slug": "curvature-and-geodesics",
+          "title": "Curvature and Geodesics"
+        },
+        {
+          "slug": "intrinsic-dimension-and-dimensionality-reduction",
+          "title": "Intrinsic Dimension and Dimensionality Reduction"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 12,
+          "title": "Fitting and Shapes in Code"
+        },
+        {
+          "n": 19,
+          "title": "Structure in Data"
+        },
+        {
+          "n": 22,
+          "title": "Optimization"
+        }
+      ],
+      "practice": [
+        "Sample points from a curved 1D manifold embedded in $\\mathbb{R}^{50}$ and estimate its intrinsic dimension two different ways.",
+        "Show that PCA fails on that data, and that a nonlinear method recovers the structure.",
+        "Move along a great circle on a sphere and compare against moving in a straight line in the ambient space, measuring how far the straight path leaves the surface.",
+        "Run t-SNE on the same data with five different perplexity settings and write down which apparent structures survive."
+      ],
+      "synthesis": "Explain why a steering direction is a tangent vector, and what that predicts about large interventions."
+    },
+    {
+      "n": 25,
+      "part": "Learning Machines",
+      "title": "Learning from Data",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "supervised-learning-and-generalization",
+          "title": "Supervised Learning, Generalization, and Overfitting"
+        },
+        {
+          "slug": "linear-and-logistic-regression",
+          "title": "Linear and Logistic Regression"
+        },
+        {
+          "slug": "classification-metrics-and-thresholds",
+          "title": "Classification Metrics, Thresholds, and ROC"
+        },
+        {
+          "slug": "distribution-shift-and-evaluation",
+          "title": "Distribution Shift and Held-Out Evaluation"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 13,
+          "title": "Many Dimensions, Real Machines"
+        },
+        {
+          "n": 20,
+          "title": "Information"
+        },
+        {
+          "n": 23,
+          "title": "Cause"
+        }
+      ],
+      "practice": [
+        "Fit a logistic regression on synthetic data, then design a control task in the style of Hewitt and Liang and measure selectivity.",
+        "Plot ROC and precision-recall curves for the same classifier on a heavily imbalanced dataset, and argue which is honest.",
+        "Choose an operating point under a fixed false-positive budget and report the true-positive rate there.",
+        "Construct a train and test split that leaks, measure the inflated accuracy, then fix the split and measure again."
+      ],
+      "synthesis": "Explain precisely what a probe's high accuracy does and does not establish about the model it was trained on."
+    },
+    {
+      "n": 26,
+      "part": "Learning Machines",
+      "title": "Networks and Their Gradients",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "neurons-layers-and-activation-functions",
+          "title": "Neurons, Layers, and Activation Functions"
+        },
+        {
+          "slug": "softmax-and-cross-entropy-loss",
+          "title": "Softmax and the Cross-Entropy Loss"
+        },
+        {
+          "slug": "backpropagation-and-autodiff",
+          "title": "Backpropagation and Automatic Differentiation"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 13,
+          "title": "Many Dimensions, Real Machines"
+        },
+        {
+          "n": 20,
+          "title": "Information"
+        },
+        {
+          "n": 24,
+          "title": "Curved Spaces"
+        }
+      ],
+      "practice": [
+        "Build a scalar-valued autodiff engine from scratch, then train a small network with it.",
+        "Derive the cross-entropy gradient with respect to logits on paper and confirm it numerically.",
+        "Demonstrate softmax shift invariance in code, and show why logit differences are the meaningful quantity.",
+        "Construct a saturated softmax where a component matters causally but its gradient is near zero."
+      ],
+      "synthesis": "Explain why reverse-mode differentiation is cheap for a scalar loss, in terms of Jacobian products."
+    },
+    {
+      "n": 27,
+      "part": "Learning Machines",
+      "title": "Training at Scale",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "training-dynamics-and-optimizers",
+          "title": "Training Deep Networks: SGD, Adam, and Schedules"
+        },
+        {
+          "slug": "normalization-and-residual-connections",
+          "title": "Normalization and Residual Connections"
+        },
+        {
+          "slug": "embeddings-and-distributed-representations",
+          "title": "Embeddings and Distributed Representations"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 15,
+          "title": "Rates of Change"
+        },
+        {
+          "n": 22,
+          "title": "Optimization"
+        },
+        {
+          "n": 25,
+          "title": "Learning from Data"
+        }
+      ],
+      "practice": [
+        "Implement Adam from the paper and match a library implementation step for step on the same seed.",
+        "Train the same small model with and without a residual connection and compare the gradient magnitudes at the earliest layer.",
+        "Implement LayerNorm and RMSNorm, then show how the input-dependent scale breaks an additive decomposition of the residual stream.",
+        "Train word embeddings on a small corpus and test the analogy arithmetic, including the cases the critiques say fail."
+      ],
+      "synthesis": "Explain why layer normalization complicates direct logit attribution, and what freezing it assumes."
+    },
+    {
+      "n": 28,
+      "part": "Learning Machines",
+      "title": "Consolidation: From Mathematics to Models",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 11,
+          "title": "Decomposition and Quadratic Forms"
+        },
+        {
+          "n": 22,
+          "title": "Optimization"
+        },
+        {
+          "n": 23,
+          "title": "Cause"
+        },
+        {
+          "n": 24,
+          "title": "Curved Spaces"
+        },
+        {
+          "n": 25,
+          "title": "Learning from Data"
+        },
+        {
+          "n": 26,
+          "title": "Networks and Their Gradients"
+        },
+        {
+          "n": 27,
+          "title": "Training at Scale"
+        }
+      ],
+      "practice": [
+        "Closed book, draw the path from maximum likelihood to the cross-entropy loss to backpropagation to a weight update.",
+        "Take twenty exit criteria drawn at random from Parts 2, 3, and 4 and attempt them in one sitting, mixed.",
+        "Train a small network end to end on a real dataset, with a plotted training curve, an error bar, and a held-out evaluation.",
+        "Write down which mathematical topic you have now used most often in practice, and which you have not touched since you read it."
+      ],
+      "synthesis": "Explain, in writing, why a transformer's loss being cross-entropy is a consequence of decisions made in probability theory rather than an arbitrary engineering choice."
+    },
+    {
+      "n": 29,
+      "part": "Learning Machines",
+      "title": "Language Models",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "language-modeling-and-next-token-prediction",
+          "title": "Language Modeling and Next-Token Prediction"
+        },
+        {
+          "slug": "tokenization",
+          "title": "Tokenization and Subword Vocabularies"
+        },
+        {
+          "slug": "sequence-models-before-transformers",
+          "title": "Sequence Models Before Transformers"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 17,
+          "title": "Randomness and Its Moments"
+        },
+        {
+          "n": 24,
+          "title": "Curved Spaces"
+        },
+        {
+          "n": 27,
+          "title": "Training at Scale"
+        }
+      ],
+      "practice": [
+        "Implement byte-pair encoding from scratch on a small corpus and inspect the merge list.",
+        "Take twenty prompts and find three where tokenization does something surprising, including one number and one rare word.",
+        "Train a character-level recurrent model and observe the vanishing gradient on long sequences.",
+        "Write the training loss for one specific short sequence, naming every term, then verify against a real model's reported loss."
+      ],
+      "synthesis": "Explain what causal masking makes impossible, in terms of information flow between positions."
+    },
+    {
+      "n": 30,
+      "part": "Learning Machines",
+      "title": "How Chat Models Are Made",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "pretraining-finetuning-and-rlhf",
+          "title": "Pretraining, Fine-Tuning, and RLHF"
+        },
+        {
+          "slug": "in-context-learning",
+          "title": "In-Context Learning and Prompting"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 18,
+          "title": "Estimating and Sampling"
+        },
+        {
+          "n": 25,
+          "title": "Learning from Data"
+        },
+        {
+          "n": 27,
+          "title": "Training at Scale"
+        }
+      ],
+      "practice": [
+        "Load a base model and its chat counterpart, run the same prompts through both, and catalogue the differences.",
+        "Measure the weight-space distance between base and chat, layer by layer, and plot it.",
+        "Reproduce a few-shot scaling curve: accuracy against number of demonstrations, on a task you construct.",
+        "Design an experiment that separates learning from the demonstrations' content from learning from their format."
+      ],
+      "synthesis": "Explain what the KL penalty in RLHF prevents, and why refusal being mediated by one direction is surprising given the training procedure."
+    },
+    {
+      "n": 31,
+      "part": "Learning Machines",
+      "title": "Representations Worth Learning",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "autoencoders",
+          "title": "Autoencoders and Reconstruction Objectives"
+        },
+        {
+          "slug": "sparse-coding-and-dictionary-learning",
+          "title": "Sparse Coding and Dictionary Learning"
+        },
+        {
+          "slug": "representation-similarity-measures",
+          "title": "Comparing Representations Across Models"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 19,
+          "title": "Structure in Data"
+        },
+        {
+          "n": 26,
+          "title": "Networks and Their Gradients"
+        },
+        {
+          "n": 29,
+          "title": "Language Models"
+        }
+      ],
+      "practice": [
+        "Train a linear autoencoder and confirm it recovers the PCA subspace but not PCA's basis.",
+        "Generate data from a known sparse dictionary, then try to recover the dictionary and measure how close you got.",
+        "Vary the dictionary size on that synthetic data and watch feature splitting appear.",
+        "Compute CKA and CCA between two networks trained from different seeds, and explain any disagreement between the measures."
+      ],
+      "synthesis": "Describe a sparse autoencoder entirely in the vocabulary of dictionary learning, and say what the identifiability results imply about its features."
+    },
+    {
+      "n": 32,
+      "part": "Learning Machines",
+      "title": "Instrumenting a Model",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "pytorch-and-computation-graphs",
+          "title": "PyTorch Tensors, Modules, and Hooks"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 20,
+          "title": "Information"
+        },
+        {
+          "n": 27,
+          "title": "Training at Scale"
+        },
+        {
+          "n": 30,
+          "title": "How Chat Models Are Made"
+        }
+      ],
+      "practice": [
+        "Implement activation patching in raw PyTorch with forward hooks, on a small model, with no interpretability library.",
+        "Cache every residual-stream activation for a batch, measure the memory used, and compare against your earlier estimate.",
+        "Take a gradient with respect to an activation rather than a parameter, and confirm you understand which is which.",
+        "Break your own hook deliberately, by removing it too late and by returning the wrong shape, and read each resulting error."
+      ],
+      "synthesis": "Explain what a forward hook is and at what point in the forward pass it fires, without looking it up."
+    },
+    {
+      "n": 33,
+      "part": "Inside a Transformer",
+      "title": "Following a Token Through",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "mi-prerequisites",
+          "title": "What This Book Assumes"
+        },
+        {
+          "slug": "transformer-architecture",
+          "title": "Transformer Architecture Intro"
+        },
+        {
+          "slug": "embeddings",
+          "title": "Embeddings"
+        },
+        {
+          "slug": "positional-embeddings",
+          "title": "Positional Embeddings"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 20,
+          "title": "Information"
+        },
+        {
+          "n": 27,
+          "title": "Training at Scale"
+        },
+        {
+          "n": 31,
+          "title": "Representations Worth Learning"
+        }
+      ],
+      "practice": [
+        "Implement a decoder-only transformer forward pass from scratch, small enough to run on a laptop, matching a reference implementation's outputs.",
+        "Print the shape of every intermediate tensor for one token's journey through a real model, and label each with the space it lives in.",
+        "Compare learned, sinusoidal, and rotary position handling on the same short sequence and describe what each does to the scores.",
+        "Take the unembedding matrix of a real model and find the nearest tokens to a few embedding vectors."
+      ],
+      "synthesis": "Describe the residual stream as a communication channel: who writes to it, who reads from it, and what that buys."
+    },
+    {
+      "n": 34,
+      "part": "Inside a Transformer",
+      "title": "Attention and MLPs",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "attention-mechanism",
+          "title": "The Attention Mechanism"
+        },
+        {
+          "slug": "mlps-in-transformers",
+          "title": "MLPs in Transformers"
+        },
+        {
+          "slug": "layer-normalization",
+          "title": "Layer Normalization"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 22,
+          "title": "Optimization"
+        },
+        {
+          "n": 29,
+          "title": "Language Models"
+        },
+        {
+          "n": 32,
+          "title": "Instrumenting a Model"
+        }
+      ],
+      "practice": [
+        "Implement attention from scratch with explicit einsums, and verify against a library implementation on the same weights.",
+        "Visualize attention patterns for several heads on a repeated-token sequence and label what each head appears to do.",
+        "Find a neuron in a real model that activates on something legible, then find one that clearly does not.",
+        "Fold the LayerNorm gain into the adjacent weight matrix and confirm the model's outputs are unchanged."
+      ],
+      "synthesis": "Explain why layer normalization is the component that breaks the additive decomposition of the residual stream."
+    },
+    {
+      "n": 35,
+      "part": "Inside a Transformer",
+      "title": "Circuits in the Weights",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "qk-ov-circuits",
+          "title": "QK and OV Circuits"
+        },
+        {
+          "slug": "composition-and-virtual-heads",
+          "title": "Composition and Virtual Attention Heads"
+        },
+        {
+          "slug": "decoding-strategies",
+          "title": "Decoding Strategies"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 23,
+          "title": "Cause"
+        },
+        {
+          "n": 30,
+          "title": "How Chat Models Are Made"
+        },
+        {
+          "n": 33,
+          "title": "Following a Token Through"
+        }
+      ],
+      "practice": [
+        "Compute the full $W_Q W_K^T$ and $W_O W_V$ matrices for one head and inspect their rank and spectrum.",
+        "Look for evidence of copying by examining the eigenvalues of an OV circuit, and compare across several heads.",
+        "Measure composition between a pair of heads in adjacent layers and report which kind you found.",
+        "Generate text with greedy, temperature, top-k, and top-p decoding from the same prompt and logits, and describe the differences."
+      ],
+      "synthesis": "Explain how a head decomposes into a matching circuit and a copying circuit, and what each is a function of."
+    },
+    {
+      "n": 36,
+      "part": "Inside a Transformer",
+      "title": "Consolidation: The Architecture",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 15,
+          "title": "Rates of Change"
+        },
+        {
+          "n": 29,
+          "title": "Language Models"
+        },
+        {
+          "n": 30,
+          "title": "How Chat Models Are Made"
+        },
+        {
+          "n": 31,
+          "title": "Representations Worth Learning"
+        },
+        {
+          "n": 32,
+          "title": "Instrumenting a Model"
+        },
+        {
+          "n": 33,
+          "title": "Following a Token Through"
+        },
+        {
+          "n": 34,
+          "title": "Attention and MLPs"
+        },
+        {
+          "n": 35,
+          "title": "Circuits in the Weights"
+        }
+      ],
+      "practice": [
+        "Closed book, draw a full transformer block with every tensor shape labeled, then check it against your own implementation.",
+        "Attempt exit criteria from Parts 4 and 5 mixed together, including at least five from the mathematics parts.",
+        "Take your from-scratch transformer and add one instrumentation feature: cache an activation of your choice and plot it across layers.",
+        "Re-read only the notes you took, not the articles, and list what your notes fail to capture."
+      ],
+      "synthesis": "Explain to an imagined reader who knows the mathematics but has never seen a transformer what the architecture computes and why the residual stream matters."
+    },
+    {
+      "n": 37,
+      "part": "Inside a Transformer",
+      "title": "What the Field Is Claiming",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "what-is-mech-interp",
+          "title": "What Is Mechanistic Interpretability?"
+        },
+        {
+          "slug": "linear-representation-hypothesis",
+          "title": "The Linear Representation Hypothesis"
+        },
+        {
+          "slug": "superposition",
+          "title": "The Superposition Hypothesis"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 25,
+          "title": "Learning from Data"
+        },
+        {
+          "n": 32,
+          "title": "Instrumenting a Model"
+        },
+        {
+          "n": 35,
+          "title": "Circuits in the Weights"
+        }
+      ],
+      "practice": [
+        "Reproduce a toy model of superposition: train a small autoencoder-like model on sparse features and observe the packing.",
+        "Vary sparsity in that toy model and plot when superposition appears and when it does not.",
+        "Find a polysemantic neuron in a real model and document three unrelated things it fires on.",
+        "Write the strongest argument you can against the linear representation hypothesis, then the strongest defense."
+      ],
+      "synthesis": "State the superposition hypothesis precisely enough to be tested, and name the evidence that would refute it."
+    },
+    {
+      "n": 38,
+      "part": "Reading and Intervening",
+      "title": "Reading the Model's Mind",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "logit-lens-and-tuned-lens",
+          "title": "The Logit Lens and Tuned Lens"
+        },
+        {
+          "slug": "direct-logit-attribution",
+          "title": "Direct Logit Attribution"
+        },
+        {
+          "slug": "reading-attention-patterns",
+          "title": "Reading the Attention Patterns"
+        },
+        {
+          "slug": "jacobian-lens",
+          "title": "The Jacobian Lens"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 26,
+          "title": "Networks and Their Gradients"
+        },
+        {
+          "n": 33,
+          "title": "Following a Token Through"
+        },
+        {
+          "n": 35,
+          "title": "Circuits in the Weights"
+        }
+      ],
+      "practice": [
+        "Implement the logit lens on a real model and plot how the predicted token changes across layers for several prompts.",
+        "Train a tuned lens probe for one layer and compare its predictions against the raw logit lens.",
+        "Decompose a logit difference into per-head contributions and rank the heads.",
+        "Find a prompt where the logit lens is misleading, and explain what the tuned lens fixes."
+      ],
+      "synthesis": "Explain what direct logit attribution measures, and name one thing it systematically misses."
+    },
+    {
+      "n": 39,
+      "part": "Reading and Intervening",
+      "title": "Causal Intervention",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "activation-patching",
+          "title": "Activation Patching and Causal Interventions"
+        },
+        {
+          "slug": "choosing-causal-mediators",
+          "title": "Choosing Causal Mediators"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 27,
+          "title": "Training at Scale"
+        },
+        {
+          "n": 34,
+          "title": "Attention and MLPs"
+        },
+        {
+          "n": 37,
+          "title": "What the Field Is Claiming"
+        }
+      ],
+      "practice": [
+        "Run activation patching across every layer and position for one behavior, and produce the standard heatmap.",
+        "Run the same experiment in both the noising and the denoising direction and compare the results.",
+        "Design three different corrupted prompts for the same clean prompt and show how the conclusion changes.",
+        "Patch at the level of a head, a neuron, and a learned direction on the same behavior, and compare what each tells you."
+      ],
+      "synthesis": "Explain which mediation estimand your patching experiment computed, and what assumption it relies on."
+    },
+    {
+      "n": 40,
+      "part": "Reading and Intervening",
+      "title": "Attribution at Scale",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "attribution-patching",
+          "title": "Attribution Patching and Path Patching"
+        },
+        {
+          "slug": "refined-attribution-methods",
+          "title": "Refined Attribution Methods"
+        },
+        {
+          "slug": "self-repair",
+          "title": "Self-Repair in Language Models"
+        },
+        {
+          "slug": "causal-abstraction",
+          "title": "The Causal Abstraction Framework"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 27,
+          "title": "Training at Scale"
+        },
+        {
+          "n": 35,
+          "title": "Circuits in the Weights"
+        },
+        {
+          "n": 38,
+          "title": "Reading the Model's Mind"
+        }
+      ],
+      "practice": [
+        "Implement attribution patching and compare its estimates against true activation patching on the same components.",
+        "Find the components where the two disagree most, and explain the disagreement from the Taylor expansion.",
+        "Implement an integrated-gradients variant and check whether the disagreement shrinks.",
+        "Ablate a component known to matter and measure whether later components compensate."
+      ],
+      "synthesis": "Explain how self-repair can make a genuinely important component look unimportant."
+    },
+    {
+      "n": 41,
+      "part": "Reading and Intervening",
+      "title": "Consolidation: Techniques",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 18,
+          "title": "Estimating and Sampling"
+        },
+        {
+          "n": 37,
+          "title": "What the Field Is Claiming"
+        },
+        {
+          "n": 38,
+          "title": "Reading the Model's Mind"
+        },
+        {
+          "n": 39,
+          "title": "Causal Intervention"
+        },
+        {
+          "n": 40,
+          "title": "Attribution at Scale"
+        }
+      ],
+      "practice": [
+        "Closed book, list every technique so far for asking what a component does, and give one weakness of each.",
+        "Take one behavior in one model and attack it with three different methods, then write up where they agree and disagree.",
+        "Attempt a mixed set of exit criteria from Parts 3, 5, and 6, without checking which lesson each came from.",
+        "Return to the toy superposition model from earlier and apply a technique you have learned since."
+      ],
+      "synthesis": "Write the case for and against the claim that activation patching establishes causation in a neural network."
+    },
+    {
+      "n": 42,
+      "part": "Reading and Intervening",
+      "title": "Probing",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "probing-classifiers",
+          "title": "Probing Classifiers"
+        },
+        {
+          "slug": "attention-probes",
+          "title": "Attention Probes"
+        },
+        {
+          "slug": "truthfulness-probing",
+          "title": "Truthfulness Probing and the Geometry of Truth"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 30,
+          "title": "How Chat Models Are Made"
+        },
+        {
+          "n": 37,
+          "title": "What the Field Is Claiming"
+        },
+        {
+          "n": 40,
+          "title": "Attribution at Scale"
+        }
+      ],
+      "practice": [
+        "Train linear probes at every layer for one property and plot accuracy across depth.",
+        "Add a control task and report selectivity alongside accuracy.",
+        "Train an attention probe and compare it against mean pooling on the same task.",
+        "Reproduce a truth-direction result on a small model, then test whether the direction transfers to a different dataset."
+      ],
+      "synthesis": "Explain the gap between a property being linearly decodable and the model actually using it."
+    },
+    {
+      "n": 43,
+      "part": "Reading and Intervening",
+      "title": "Directions from Contrast",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "caa-method",
+          "title": "Contrastive Activation Addition (CAA)"
+        },
+        {
+          "slug": "lat-probing",
+          "title": "Linear Artificial Tomography (LAT)"
+        },
+        {
+          "slug": "probes-in-production",
+          "title": "Probes in Production"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 31,
+          "title": "Representations Worth Learning"
+        },
+        {
+          "n": 38,
+          "title": "Reading the Model's Mind"
+        },
+        {
+          "n": 40,
+          "title": "Attribution at Scale"
+        }
+      ],
+      "practice": [
+        "Compute a contrastive activation direction from many pairs and measure how the direction stabilizes as pairs are added.",
+        "Compare that direction against a trained probe's weight vector by cosine similarity.",
+        "Take a probe validated on one dataset and evaluate it on a genuinely different distribution, reporting the drop.",
+        "Build a two-stage cascade and measure the cost saving against the accuracy loss."
+      ],
+      "synthesis": "Explain what a contrastive steering vector estimates, in the language of expectations."
+    },
+    {
+      "n": 44,
+      "part": "Reading and Intervening",
+      "title": "Steering",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "addition-steering",
+          "title": "Addition Steering"
+        },
+        {
+          "slug": "ablation-steering",
+          "title": "Ablation Steering"
+        },
+        {
+          "slug": "affine-steering",
+          "title": "Affine Steering"
+        },
+        {
+          "slug": "representation-control",
+          "title": "Representation Control"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 32,
+          "title": "Instrumenting a Model"
+        },
+        {
+          "n": 39,
+          "title": "Causal Intervention"
+        },
+        {
+          "n": 42,
+          "title": "Probing"
+        }
+      ],
+      "practice": [
+        "Add a steering vector at several layers and strengths, and map the region where behavior changes without fluency collapsing.",
+        "Ablate the same direction and compare what disappears against what addition produced.",
+        "Show that projecting out a direction does not remove the information, by training a fresh probe on the projected activations.",
+        "Implement affine steering with a recentering term and compare against plain addition."
+      ],
+      "synthesis": "Explain why ablating a direction is weaker evidence of erasure than it first appears."
+    },
+    {
+      "n": 45,
+      "part": "Reading and Intervening",
+      "title": "Learned and Distributed Control",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "function-vectors",
+          "title": "Function Vectors"
+        },
+        {
+          "slug": "unsupervised-steering-vectors",
+          "title": "Unsupervised Steering Vectors"
+        },
+        {
+          "slug": "multi-layer-steering",
+          "title": "Multi-Layer Steering"
+        },
+        {
+          "slug": "interpretability-guided-training",
+          "title": "Interpretability-Guided Training"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 33,
+          "title": "Following a Token Through"
+        },
+        {
+          "n": 40,
+          "title": "Attribution at Scale"
+        },
+        {
+          "n": 43,
+          "title": "Directions from Contrast"
+        }
+      ],
+      "practice": [
+        "Extract a task vector from in-context examples and test whether it transfers to a zero-shot prompt.",
+        "Optimize a steering vector under a norm constraint without labels, and inspect what behavior it produces.",
+        "Distribute a fixed steering budget across layers in several ways and compare robustness.",
+        "Use a probe's output as a training signal on a small fine-tune and measure what it changed."
+      ],
+      "synthesis": "Explain why an unsupervised steering method can surface behaviors the researcher did not think to look for."
+    },
+    {
+      "n": 46,
+      "part": "Reading and Intervening",
+      "title": "Consolidation: Control",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 20,
+          "title": "Information"
+        },
+        {
+          "n": 42,
+          "title": "Probing"
+        },
+        {
+          "n": 43,
+          "title": "Directions from Contrast"
+        },
+        {
+          "n": 44,
+          "title": "Steering"
+        },
+        {
+          "n": 45,
+          "title": "Learned and Distributed Control"
+        }
+      ],
+      "practice": [
+        "Closed book, write the taxonomy of interventions you now know: what each does to an activation, and what each licenses you to claim.",
+        "Take a single concept and attack it with a probe, a contrastive vector, ablation, and patching, then write up the four results together.",
+        "Mixed retrieval across Parts 5 and 6, at least twenty items, scored before checking.",
+        "Check your earlier prediction about which topics you would forget. Update how you allocate revisiting."
+      ],
+      "synthesis": "Write the strongest version of the claim that steering demonstrates a representation is causally used, then the strongest objection to it."
+    },
+    {
+      "n": 47,
+      "part": "Reading and Intervening",
+      "title": "Editing Weights",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "fact-editing",
+          "title": "Localized Fact Editing and Its Pitfalls"
+        },
+        {
+          "slug": "concept-erasure",
+          "title": "LEACE and Linear Concept Erasure"
+        },
+        {
+          "slug": "memorization-and-unlearning",
+          "title": "Memorization and Machine Unlearning"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 35,
+          "title": "Circuits in the Weights"
+        },
+        {
+          "n": 42,
+          "title": "Probing"
+        },
+        {
+          "n": 45,
+          "title": "Learned and Distributed Control"
+        }
+      ],
+      "practice": [
+        "Implement a rank-one weight edit that inserts a fact, and test generalization to paraphrases.",
+        "Show that a successful edit does not prove the fact was stored where you edited.",
+        "Implement LEACE on real activations and confirm that a linear probe can no longer recover the concept.",
+        "Then train a nonlinear probe on the same erased activations and report what remains."
+      ],
+      "synthesis": "Explain precisely what LEACE's guarantee covers and what it does not."
+    },
+    {
+      "n": 48,
+      "part": "Features",
+      "title": "Sparse Autoencoders",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "sparse-autoencoders",
+          "title": "Sparse Autoencoders: Decomposing Superposition"
+        },
+        {
+          "slug": "sae-interpretability",
+          "title": "Feature Dashboards and Automated Interpretability"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 35,
+          "title": "Circuits in the Weights"
+        },
+        {
+          "n": 43,
+          "title": "Directions from Contrast"
+        },
+        {
+          "n": 45,
+          "title": "Learned and Distributed Control"
+        }
+      ],
+      "practice": [
+        "Train a small sparse autoencoder on activations you collect yourself, and plot the sparsity-fidelity frontier across penalty strengths.",
+        "Measure dead features and implement one resampling strategy, then measure again.",
+        "Build a feature dashboard for ten of your features: top activating examples, logit effects, and activation histogram.",
+        "Write your own label for five features, then compare against an automated explanation, and note where they disagree."
+      ],
+      "synthesis": "Explain what a sparse autoencoder assumes about how features are represented, and what happens when that assumption fails."
+    },
+    {
+      "n": 49,
+      "part": "Features",
+      "title": "Scaling and Variants",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "scaling-monosemanticity",
+          "title": "Scaling Monosemanticity and Feature Steering"
+        },
+        {
+          "slug": "sae-variants-and-evaluation",
+          "title": "SAE Variants, Evaluation, and Limitations"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 37,
+          "title": "What the Field Is Claiming"
+        },
+        {
+          "n": 44,
+          "title": "Steering"
+        },
+        {
+          "n": 47,
+          "title": "Editing Weights"
+        }
+      ],
+      "practice": [
+        "Train TopK and JumpReLU variants on the same activations and compare their frontiers against your L1 baseline.",
+        "Evaluate all three by substituting the reconstruction back into the model and measuring loss recovered, not just reconstruction error.",
+        "Clamp a feature to a large value and observe the behavioral change, then try to break the effect.",
+        "Explore a large public SAE on Neuronpedia and find one feature whose published label you disagree with."
+      ],
+      "synthesis": "Explain why downstream loss recovered is a better evaluation than reconstruction MSE."
+    },
+    {
+      "n": 50,
+      "part": "Features",
+      "title": "Beyond the Residual Stream",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "transcoders",
+          "title": "Transcoders: Interpretable MLP Replacements"
+        },
+        {
+          "slug": "crosscoders",
+          "title": "Crosscoders"
+        },
+        {
+          "slug": "temporal-feature-extraction",
+          "title": "Temporal Representations and Feature Extraction"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 38,
+          "title": "Reading the Model's Mind"
+        },
+        {
+          "n": 45,
+          "title": "Learned and Distributed Control"
+        },
+        {
+          "n": 48,
+          "title": "Sparse Autoencoders"
+        }
+      ],
+      "practice": [
+        "Train a transcoder to replace one MLP and measure how much of the layer's behavior it preserves.",
+        "Train a crosscoder across two adjacent layers and inspect which features are shared and which are layer-specific.",
+        "Compare a token-wise feature dictionary against one trained on span-averaged activations.",
+        "Take a feature you found earlier and track it across layers with your crosscoder."
+      ],
+      "synthesis": "Explain what a transcoder buys for circuit analysis that a residual-stream SAE does not."
+    },
+    {
+      "n": 51,
+      "part": "Features",
+      "title": "The Shape of Features",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "feature-geometry",
+          "title": "Feature Geometry: Beyond One-Dimensional Directions"
+        },
+        {
+          "slug": "neural-manifolds",
+          "title": "Discovering and Interpreting Neural Manifolds"
+        },
+        {
+          "slug": "manifold-steering",
+          "title": "Manifold Steering"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 39,
+          "title": "Causal Intervention"
+        },
+        {
+          "n": 45,
+          "title": "Learned and Distributed Control"
+        },
+        {
+          "n": 49,
+          "title": "Scaling and Variants"
+        }
+      ],
+      "practice": [
+        "Find a set of features that form a discrete category and test whether they occupy a simplex-like arrangement.",
+        "Look for a periodic feature, such as days or months, and check whether it traces a circle.",
+        "Estimate the intrinsic dimension of the activations for a constrained family of prompts.",
+        "Steer along a straight line and along a curved path fitted to the manifold, and compare fluency at large step sizes."
+      ],
+      "synthesis": "Explain why some concepts cannot be captured by a single direction, with a concrete example."
+    },
+    {
+      "n": 52,
+      "part": "Features",
+      "title": "Consolidation: Decomposition",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 23,
+          "title": "Cause"
+        },
+        {
+          "n": 47,
+          "title": "Editing Weights"
+        },
+        {
+          "n": 48,
+          "title": "Sparse Autoencoders"
+        },
+        {
+          "n": 49,
+          "title": "Scaling and Variants"
+        },
+        {
+          "n": 50,
+          "title": "Beyond the Residual Stream"
+        },
+        {
+          "n": 51,
+          "title": "The Shape of Features"
+        }
+      ],
+      "practice": [
+        "Closed book, list every decomposition method you know, what it decomposes, and what it assumes.",
+        "Take one model and one concept and find it three ways: a probe, an SAE feature, and a contrastive direction. Compare the three objects.",
+        "Mixed retrieval drawing on Parts 4, 6, and 7, at least twenty items.",
+        "Return to sparse coding theory and re-read only your notes, then say what the identifiability results predict about your own SAE's features."
+      ],
+      "synthesis": "Write the case that sparse autoencoders find the model's features, and the case that they find a convenient basis that merely reconstructs well."
+    },
+    {
+      "n": 53,
+      "part": "Features",
+      "title": "Comparing Models",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "logit-diff-amplification",
+          "title": "Logit Diff Amplification"
+        },
+        {
+          "slug": "feature-level-model-diffing",
+          "title": "Feature-Level Model Diffing"
+        },
+        {
+          "slug": "finetuning-traces",
+          "title": "Finetuning Traces in Activations"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 40,
+          "title": "Attribution at Scale"
+        },
+        {
+          "n": 48,
+          "title": "Sparse Autoencoders"
+        },
+        {
+          "n": 51,
+          "title": "The Shape of Features"
+        }
+      ],
+      "practice": [
+        "Take a base and a fine-tuned model and amplify their logit difference to surface a rare behavior.",
+        "Train a crosscoder across the two models and find features present in one but not the other.",
+        "Build the control that distinguishes a genuine model difference from a sparsity artifact, and run it.",
+        "Probe for the fine-tuning domain in the activations of the fine-tuned model and measure how detectable it is."
+      ],
+      "synthesis": "Explain what a base-versus-chat comparison controls for, and what confounds remain."
+    },
+    {
+      "n": 54,
+      "part": "Circuits",
+      "title": "Induction and a First Circuit",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "induction-heads",
+          "title": "Induction Heads and In-Context Learning"
+        },
+        {
+          "slug": "ioi-circuit",
+          "title": "The IOI Circuit: Discovery and Mechanism"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 42,
+          "title": "Probing"
+        },
+        {
+          "n": 49,
+          "title": "Scaling and Variants"
+        },
+        {
+          "n": 51,
+          "title": "The Shape of Features"
+        }
+      ],
+      "practice": [
+        "Measure induction behavior on repeated random token sequences and find the heads responsible.",
+        "Trace the previous-token head and the induction head, and demonstrate the composition between them.",
+        "Reproduce the indirect object identification circuit on GPT-2 small, at least as far as identifying the name mover heads.",
+        "Find a prompt where the circuit you traced fails, and explain why."
+      ],
+      "synthesis": "Explain how two heads compose into a pattern-copying mechanism, in terms of QK and OV circuits."
+    },
+    {
+      "n": 55,
+      "part": "Circuits",
+      "title": "Evaluating a Circuit",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "circuit-evaluation",
+          "title": "Circuit Evaluation: Faithfulness, Completeness, and Minimality"
+        },
+        {
+          "slug": "entity-binding-and-retrieval",
+          "title": "Entity Binding and Retrieval"
+        },
+        {
+          "slug": "copy-suppression",
+          "title": "Copy Suppression"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 43,
+          "title": "Directions from Contrast"
+        },
+        {
+          "n": 50,
+          "title": "Beyond the Residual Stream"
+        },
+        {
+          "n": 53,
+          "title": "Comparing Models"
+        }
+      ],
+      "practice": [
+        "Take your IOI circuit and test faithfulness, completeness, and minimality, reporting each number.",
+        "Find the negative contributors and show what happens to your metrics when they are removed.",
+        "Design an entity-binding prompt set and test which of the competing retrieval mechanisms your model uses.",
+        "Find a copy-suppression head and demonstrate its effect on a token repeated from context."
+      ],
+      "synthesis": "Explain why a circuit can be faithful and still not be an explanation."
+    },
+    {
+      "n": 56,
+      "part": "Circuits",
+      "title": "Feature-Level Circuits",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "circuit-tracing",
+          "title": "Circuit Tracing and Attribution Graphs"
+        },
+        {
+          "slug": "universality",
+          "title": "Universality Across Models"
+        },
+        {
+          "slug": "multimodal-mi",
+          "title": "Multimodal Mechanistic Interpretability"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 44,
+          "title": "Steering"
+        },
+        {
+          "n": 51,
+          "title": "The Shape of Features"
+        },
+        {
+          "n": 54,
+          "title": "Induction and a First Circuit"
+        }
+      ],
+      "practice": [
+        "Build an attribution graph over transcoder features for one prompt and read off the main path.",
+        "Validate one edge of that graph with a direct intervention, and report whether it held.",
+        "Compare a circuit you found in two models trained from different seeds, using a similarity measure you can defend.",
+        "Take one text-model technique and apply it to a vision-language model, and report what transferred."
+      ],
+      "synthesis": "Explain what a replacement model is, and the ways an attribution graph over one can mislead."
+    },
+    {
+      "n": 57,
+      "part": "Circuits",
+      "title": "Consolidation: Mechanism",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 26,
+          "title": "Networks and Their Gradients"
+        },
+        {
+          "n": 53,
+          "title": "Comparing Models"
+        },
+        {
+          "n": 54,
+          "title": "Induction and a First Circuit"
+        },
+        {
+          "n": 55,
+          "title": "Evaluating a Circuit"
+        },
+        {
+          "n": 56,
+          "title": "Feature-Level Circuits"
+        }
+      ],
+      "practice": [
+        "Closed book, write the full pipeline from a behavior to a validated circuit, naming the method used at each step.",
+        "Take a behavior nobody has published a circuit for and get as far as a defensible hypothesis, documenting dead ends.",
+        "Mixed retrieval across Parts 5 through 8, at least twenty-five items.",
+        "Compare your current notes against the notes you took in Part 5, and rewrite one early note now that you know more."
+      ],
+      "synthesis": "Write an honest account of what the field can and cannot currently establish about a circuit, using your own experiments as evidence."
+    },
+    {
+      "n": 58,
+      "part": "Circuits",
+      "title": "Weights Rather Than Activations",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "parameter-decomposition",
+          "title": "Parameter Decomposition"
+        },
+        {
+          "slug": "parameter-space-circuits",
+          "title": "Circuits in Parameter Space"
+        },
+        {
+          "slug": "weight-sparse-training",
+          "title": "Training Models to Be Interpretable"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 45,
+          "title": "Learned and Distributed Control"
+        },
+        {
+          "n": 53,
+          "title": "Comparing Models"
+        },
+        {
+          "n": 56,
+          "title": "Feature-Level Circuits"
+        }
+      ],
+      "practice": [
+        "Decompose a small model's weights into rank-one subcomponents and ablate the ones the model does not use on a task.",
+        "Compare a circuit found in parameter space against one found in activation space for the same behavior.",
+        "Prune a subnetwork without an adversary, then with one, and compare the sizes you get.",
+        "Train a tiny weight-sparse model and read a circuit directly off its weights."
+      ],
+      "synthesis": "Explain why pruning without an adversary understates the size of a circuit."
+    },
+    {
+      "n": 59,
+      "part": "Making Models Explain Themselves",
+      "title": "Decoding Hidden States",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "hidden-state-decoding-intro",
+          "title": "Hidden State Decoding: From Vectors to Language"
+        },
+        {
+          "slug": "patchscopes",
+          "title": "Patchscopes"
+        },
+        {
+          "slug": "selfie-interpretation",
+          "title": "SelfIE: Self-Interpretation of Embeddings"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 47,
+          "title": "Editing Weights"
+        },
+        {
+          "n": 54,
+          "title": "Induction and a First Circuit"
+        },
+        {
+          "n": 56,
+          "title": "Feature-Level Circuits"
+        }
+      ],
+      "practice": [
+        "Patch a hidden state into an explanatory prompt and get a natural-language description out.",
+        "Design the control that checks whether the description tracks the activation rather than the surrounding prompt.",
+        "Compare a patchscope description against what the logit lens says about the same state.",
+        "Find a case where the description is fluent and confident and also wrong."
+      ],
+      "synthesis": "Explain what makes a self-report about an activation evidence, rather than a plausible confabulation."
+    },
+    {
+      "n": 60,
+      "part": "Making Models Explain Themselves",
+      "title": "Trained Interpreters",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "concept-injection",
+          "title": "Testing Introspection with Concept Injection"
+        },
+        {
+          "slug": "training-self-explanation",
+          "title": "Training Models to Explain Their Computations"
+        },
+        {
+          "slug": "latentqa",
+          "title": "LatentQA and Latent Interpretation Tuning"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 48,
+          "title": "Sparse Autoencoders"
+        },
+        {
+          "n": 55,
+          "title": "Evaluating a Circuit"
+        },
+        {
+          "n": 58,
+          "title": "Weights Rather Than Activations"
+        }
+      ],
+      "practice": [
+        "Inject a known concept into a hidden state and test whether the model's self-report tracks the injection.",
+        "Run the control where the concept is absent but the prompt suggests it, and compare.",
+        "Train a small decoder to answer questions about activations, and evaluate it on held-out question types.",
+        "Test your decoder on a model organism it never saw during training."
+      ],
+      "synthesis": "Explain the difference between a model reporting its internal state and a model producing a plausible answer about it."
+    },
+    {
+      "n": 61,
+      "part": "Making Models Explain Themselves",
+      "title": "Open-Ended Interpretation",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "activation-oracles",
+          "title": "Activation Oracles"
+        },
+        {
+          "slug": "natural-language-autoencoders",
+          "title": "Natural Language Autoencoders"
+        },
+        {
+          "slug": "counterfactual-resampling",
+          "title": "Counterfactual Resampling"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 49,
+          "title": "Scaling and Variants"
+        },
+        {
+          "n": 56,
+          "title": "Feature-Level Circuits"
+        },
+        {
+          "n": 59,
+          "title": "Decoding Hidden States"
+        }
+      ],
+      "practice": [
+        "Evaluate an activation interpreter across several question types and report where it degrades.",
+        "Train a verbalizer and reconstructor pair and measure whether the explanation retains enough to reconstruct.",
+        "Take a chain-of-thought trace and resample after each step to measure which steps the answer depends on.",
+        "Find a reasoning trace where the stated reasoning and the causally load-bearing steps differ."
+      ],
+      "synthesis": "Explain what counterfactual resampling establishes about a reasoning trace that reading it cannot."
+    },
+    {
+      "n": 62,
+      "part": "Safety, Tools, and Practice",
+      "title": "Consolidation: The Whole Method",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 29,
+          "title": "Language Models"
+        },
+        {
+          "n": 58,
+          "title": "Weights Rather Than Activations"
+        },
+        {
+          "n": 59,
+          "title": "Decoding Hidden States"
+        },
+        {
+          "n": 60,
+          "title": "Trained Interpreters"
+        },
+        {
+          "n": 61,
+          "title": "Open-Ended Interpretation"
+        }
+      ],
+      "practice": [
+        "Closed book, reconstruct the site's three textbooks as a single map, from notation to safety applications.",
+        "Take one open question in interpretability and write a research proposal: hypothesis, method, controls, and what would falsify it.",
+        "Mixed retrieval across every part so far, at least thirty items, drawn at random.",
+        "Identify the three articles you have used most in practice and the three you have never returned to, and ask why."
+      ],
+      "synthesis": "Write, from memory, the strongest critique of mechanistic interpretability as a research program that you can honestly make."
+    },
+    {
+      "n": 63,
+      "part": "Safety, Tools, and Practice",
+      "title": "Detection",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "refusal-direction",
+          "title": "The Refusal Direction"
+        },
+        {
+          "slug": "sleeper-agent-detection",
+          "title": "Detecting Sleeper Agents with Mechanistic Interpretability"
+        },
+        {
+          "slug": "deception-detection",
+          "title": "Deception Detection and Alignment Faking"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 51,
+          "title": "The Shape of Features"
+        },
+        {
+          "n": 58,
+          "title": "Weights Rather Than Activations"
+        },
+        {
+          "n": 61,
+          "title": "Open-Ended Interpretation"
+        }
+      ],
+      "practice": [
+        "Find and validate a refusal direction on an open chat model, and test it causally in both directions.",
+        "Train a probe on a model organism with a known backdoor and report its operating point under a realistic false-positive budget.",
+        "Evaluate that probe on a behavior it was not trained on, and report the drop.",
+        "Write down what result would convince you that a detector works on deception rather than on a proxy."
+      ],
+      "synthesis": "Explain why detecting a trained backdoor is weaker evidence than detecting emergent deception, and what the gap consists of."
+    },
+    {
+      "n": 64,
+      "part": "Safety, Tools, and Practice",
+      "title": "Monitoring and Its Limits",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "evaluation-awareness",
+          "title": "Evaluation Awareness and Evaluation Validity"
+        },
+        {
+          "slug": "safety-mechanisms-and-monitoring",
+          "title": "Understanding Safety Mechanisms and MI-Based Monitoring"
+        },
+        {
+          "slug": "mi-safety-limitations",
+          "title": "Limits of Mechanistic Interpretability for Safety"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 51,
+          "title": "The Shape of Features"
+        },
+        {
+          "n": 59,
+          "title": "Decoding Hidden States"
+        },
+        {
+          "n": 61,
+          "title": "Open-Ended Interpretation"
+        }
+      ],
+      "practice": [
+        "Test whether a model behaves differently on prompts that look like evaluations, and quantify the difference.",
+        "Design a monitoring setup with an explicit false-positive budget and estimate its cost at deployment scale.",
+        "Take one published safety-relevant interpretability result and write the strongest critique of its evaluation.",
+        "List the failure modes of your own experiments from earlier parts that this article names."
+      ],
+      "synthesis": "Explain how evaluation awareness could invalidate a safety measurement, and what design would detect it."
+    },
+    {
+      "n": 65,
+      "part": "Safety, Tools, and Practice",
+      "title": "The Tooling",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "transformerlens",
+          "title": "TransformerLens"
+        },
+        {
+          "slug": "nnsight-and-nnterp",
+          "title": "nnsight and nnterp"
+        },
+        {
+          "slug": "saelens-and-neuronpedia",
+          "title": "SAE Lens and Neuronpedia"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 53,
+          "title": "Comparing Models"
+        },
+        {
+          "n": 60,
+          "title": "Trained Interpreters"
+        },
+        {
+          "n": 63,
+          "title": "Detection"
+        }
+      ],
+      "practice": [
+        "Redo one experiment you previously wrote in raw PyTorch using TransformerLens, and compare the code.",
+        "Do the same experiment again in nnsight, and write down which abstraction suited it better.",
+        "Train or load an SAE with SAE Lens and connect its features to Neuronpedia.",
+        "Verify one library's convenience function against your own implementation, and find any discrepancy."
+      ],
+      "synthesis": "Explain what a hook-based library is doing on your behalf, and how you would check it."
+    },
+    {
+      "n": 66,
+      "part": "Safety, Tools, and Practice",
+      "title": "Becoming a Researcher",
+      "kind": "study",
+      "articles": [
+        {
+          "slug": "arena",
+          "title": "ARENA: Hands-On Technical Training"
+        },
+        {
+          "slug": "getting-started-in-mi-research",
+          "title": "Getting Started in MI Research"
+        }
+      ],
+      "revisit": [
+        {
+          "n": 54,
+          "title": "Induction and a First Circuit"
+        },
+        {
+          "n": 61,
+          "title": "Open-Ended Interpretation"
+        },
+        {
+          "n": 64,
+          "title": "Monitoring and Its Limits"
+        }
+      ],
+      "practice": [
+        "Work through the ARENA sections covering material you found hardest, not the ones you found easy.",
+        "Pick one paper you now believe is wrong or overstated, and write the rebuttal with your own evidence.",
+        "Write up one of your earlier experiments as a short public post, with methods, results, and limitations.",
+        "Identify three open problems you could plausibly attack, and write one paragraph on each."
+      ],
+      "synthesis": "Write the research agenda you would pursue, and what you would need to learn next that this site does not cover."
+    },
+    {
+      "n": 67,
+      "part": "Safety, Tools, and Practice",
+      "title": "Capstone: An Original Investigation",
+      "kind": "consolidation",
+      "articles": [],
+      "revisit": [
+        {
+          "n": 1,
+          "title": "Notation, Functions, and a First Program"
+        },
+        {
+          "n": 31,
+          "title": "Representations Worth Learning"
+        },
+        {
+          "n": 63,
+          "title": "Detection"
+        },
+        {
+          "n": 64,
+          "title": "Monitoring and Its Limits"
+        },
+        {
+          "n": 65,
+          "title": "The Tooling"
+        },
+        {
+          "n": 66,
+          "title": "Becoming a Researcher"
+        }
+      ],
+      "practice": [
+        "Choose a behavior in a real model that nobody has explained, and investigate it end to end: hypothesis, method, controls, negative results, and a falsifiable claim.",
+        "Use at least three different techniques and report where they disagree.",
+        "Have the whole thing reviewed by someone who will push back, and revise it.",
+        "Final mixed retrieval across the entire curriculum, drawn at random, scored honestly before checking."
+      ],
+      "synthesis": "Write the account of what you now know that you could not have written at the start, and be specific about which parts of the plan produced it."
+    }
+  ]
+}

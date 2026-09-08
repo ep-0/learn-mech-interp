@@ -1,0 +1,121 @@
+---
+title: Learning Plan
+layout: layouts/base.njk
+description: An ordered set of lessons through the whole curriculum, built on retrieval practice, spaced revisiting, and interleaving, with applied practice that goes beyond the articles.
+permalink: /plan/
+eleventyExcludeFromCollections: true
+---
+{% set totalLessons = lessonPlan.lessons | length %}
+
+<div class="plan-page">
+  <h1>Learning Plan</h1>
+  <p class="plan-lead">
+    The <a href="/topics/">topics page</a> shows what the curriculum contains. This page is a route through it:
+    {{ totalLessons }} lessons in order, each roughly eight hours, built so that the material sticks rather than
+    merely gets read. Nothing here is dated. Work a lesson when you have the time for it.
+  </p>
+
+  <div class="plan-progress" data-plan-progress hidden>
+    <div class="plan-progress-bar"><span data-plan-progress-fill></span></div>
+    <p class="plan-progress-text"><span data-plan-progress-text>Loading…</span>
+      <button type="button" class="plan-reset" data-plan-reset>Reset progress</button></p>
+  </div>
+
+  <noscript><p class="plan-callout">Checkboxes remember your progress only with JavaScript enabled. The plan itself reads fine without it.</p></noscript>
+
+  <section class="plan-method">
+    <h2>How this plan is built</h2>
+    <p>
+      Reading an article twice feels like learning and mostly is not. The plan is arranged around the findings
+      in <em>Make It Stick</em>: effortful recall beats review, spacing beats cramming, and mixing problem types
+      beats drilling one at a time. Every lesson therefore asks you to put the article down and retrieve.
+    </p>
+    <dl class="plan-principles">
+      <dt>Retrieval, not review</dt>
+      <dd>After reading, close the tab and reconstruct the argument. Each article's exit criteria are the test; attempt them cold.</dd>
+      <dt>Spacing</dt>
+      <dd>Every lesson revisits earlier lessons at growing gaps. Retrieving something you have half-forgotten is the point, not a sign you failed.</dd>
+      <dt>Interleaving</dt>
+      <dd>Revisits and practice deliberately mix topics. Working problems in a shuffled order is harder and produces better transfer than blocking them by subject.</dd>
+      <dt>Generation before instruction</dt>
+      <dd>Attempt the "Pause and think" prompts and the practice problems before reading the answer. Failing first makes the answer stick.</dd>
+      <dt>Elaboration</dt>
+      <dd>Explain each new idea in your own words and connect it to something you already know. The <a href="/notes/">notes panel</a> is there for this.</dd>
+      <dt>Calibration</dt>
+      <dd>Predict how you will score before you test yourself, then compare. Feeling fluent is not knowing, and the gap is the thing to measure.</dd>
+      <dt>Varied, applied practice</dt>
+      <dd>Every lesson has practice that is not on this site: implement it, break it, plot it, or reproduce it. Understanding that survives only inside the article is not understanding.</dd>
+    </dl>
+  </section>
+
+  <section class="plan-shape">
+    <h2>The shape of a lesson</h2>
+    <p>Roughly eight hours, though the split matters more than the total:</p>
+    <table class="plan-shape-table">
+      <thead><tr><th>Part</th><th>About</th><th>What it is</th></tr></thead>
+      <tbody>
+        <tr><td>Read</td><td>2 h</td><td>The new articles, once through. No rereading, no highlighting.</td></tr>
+        <tr><td>Retrieve</td><td>1 h</td><td>Closed book: the article's exit criteria, plus a free recall of what it argued.</td></tr>
+        <tr><td>Revisit</td><td>1 h</td><td>The earlier lessons named below, attempted from memory before you reopen anything.</td></tr>
+        <tr><td>Practice</td><td>2.5 h</td><td>The applied work listed in the lesson. Code, derivations, replications.</td></tr>
+        <tr><td>Write</td><td>1.5 h</td><td>The synthesis question, in prose, closed book. Then check what you got wrong.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  {% set currentPart = "" %}
+  {% for lesson in lessonPlan.lessons %}
+    {% if lesson.part != currentPart %}
+      {% set currentPart = lesson.part %}
+      <h2 class="plan-part" id="part-{{ lesson.part | slugify }}">{{ lesson.part }}</h2>
+    {% endif %}
+    {% set itemCount = lesson.articles.length + lesson.revisit.length + lesson.practice.length + 1 %}
+    <details class="plan-lesson{% if lesson.kind == 'consolidation' %} plan-lesson--consolidation{% endif %}"
+             id="lesson-{{ lesson.n }}" data-plan-lesson="{{ lesson.n }}" data-plan-total="{{ itemCount }}">
+      <summary class="plan-lesson-summary">
+        <span class="plan-lesson-number">{{ lesson.n }}</span>
+        <span class="plan-lesson-title">{{ lesson.title }}</span>
+        {% if lesson.kind == "consolidation" %}<span class="plan-tag">consolidation</span>{% endif %}
+        <span class="plan-lesson-count" data-plan-count>0/{{ itemCount }}</span>
+      </summary>
+
+      <div class="plan-lesson-body">
+        {% if lesson.articles.length %}
+        <h3 class="plan-step">Read</h3>
+        <ul class="plan-items">
+          {% for a in lesson.articles %}
+          <li><label><input type="checkbox" data-plan-item="l{{ lesson.n }}-read-{{ a.slug }}">
+            <a href="/topics/{{ a.slug }}/">{{ a.title }}</a></label></li>
+          {% endfor %}
+        </ul>
+        <p class="plan-note">Then, closed book, work each article's exit criteria and write a paragraph on what it argued.</p>
+        {% endif %}
+
+        {% if lesson.revisit.length %}
+        <h3 class="plan-step">Revisit</h3>
+        <p class="plan-note">From memory first. Reopen the articles only after you have written down what you can recall.</p>
+        <ul class="plan-items">
+          {% for r in lesson.revisit %}
+          <li><label><input type="checkbox" data-plan-item="l{{ lesson.n }}-revisit-{{ r.n }}">
+            <a href="#lesson-{{ r.n }}">Lesson {{ r.n }} — {{ r.title }}</a></label></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        <h3 class="plan-step">Practice</h3>
+        <ul class="plan-items">
+          {% for p in lesson.practice %}
+          <li><label><input type="checkbox" data-plan-item="l{{ lesson.n }}-practice-{{ loop.index }}">
+            <span>{{ p }}</span></label></li>
+          {% endfor %}
+        </ul>
+
+        <h3 class="plan-step">Write</h3>
+        <ul class="plan-items">
+          <li><label><input type="checkbox" data-plan-item="l{{ lesson.n }}-write">
+            <span>{{ lesson.synthesis }}</span></label></li>
+        </ul>
+      </div>
+    </details>
+  {% endfor %}
+</div>
