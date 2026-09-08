@@ -144,6 +144,22 @@
   color: var(--color-text-secondary, rgba(0, 0, 0, 0.6));
 }
 
+/* Placeholder notice - shown on articles whose frontmatter sets status: placeholder */
+.article-placeholder-notice {
+  margin-top: var(--spacing-md, 1rem);
+  padding: var(--spacing-sm, 0.5rem) var(--spacing-md, 1rem);
+  border-left: 3px solid var(--color-border-strong, rgba(0, 0, 0, 0.2));
+  border-radius: var(--radius-sm, 3px);
+  background: var(--color-background-subtle, rgba(0, 0, 0, 0.02));
+  color: var(--color-text-secondary, rgba(0, 0, 0, 0.6));
+  font-size: var(--font-size-small, 0.875rem);
+  line-height: 1.5;
+}
+
+.article-placeholder-notice strong {
+  color: var(--color-text, rgba(0, 0, 0, 0.87));
+}
+
 /* Article Meta (date, author, etc.) */
 .article-meta {
   font-size: var(--font-size-small, 0.875rem);
@@ -784,6 +800,18 @@
 .sidebar-block {
   border: 0;
   margin-bottom: 0.75rem;
+}
+
+/* Planned articles read as available but unwritten: same link, quieter, with a
+   small open square after the title. */
+.sidebar-topics a.sidebar-topic-placeholder {
+  color: var(--color-text-muted, rgba(0, 0, 0, 0.4));
+}
+
+.sidebar-placeholder-mark {
+  margin-left: 0.3em;
+  font-size: 0.8em;
+  opacity: 0.7;
 }
 
 .sidebar-textbook .sidebar-block {
@@ -1486,6 +1514,16 @@
 
 .learning-path-topic a:hover {
   text-decoration: underline;
+}
+
+.topic-placeholder-tag {
+  margin-left: 0.4em;
+  padding: 0.05rem 0.35rem;
+  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.1));
+  border-radius: var(--radius-sm, 3px);
+  font-size: 0.75rem;
+  color: var(--color-text-muted, rgba(0, 0, 0, 0.4));
+  vertical-align: 0.1em;
 }
 
 /* Connecting line between blocks */

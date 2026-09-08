@@ -5,6 +5,8 @@ order: 1
 prerequisites:
   - title: "Ablation Steering"
     url: "/topics/ablation-steering/"
+  - title: "Pretraining, Fine-Tuning, and RLHF"
+    url: "/topics/pretraining-finetuning-and-rlhf/"
 
 glossary:
   - term: "Refusal Direction"

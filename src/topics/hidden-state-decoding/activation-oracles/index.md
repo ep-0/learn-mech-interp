@@ -6,6 +6,8 @@ order: 7
 prerequisites:
   - title: "LatentQA and Latent Interpretation Tuning"
     url: "/topics/latentqa/"
+  - title: "Distribution Shift and Held-Out Evaluation"
+    url: "/topics/distribution-shift-and-evaluation/"
 ---
 
 ## From Specialized to General-Purpose

@@ -5,6 +5,8 @@ order: 2
 prerequisites:
   - title: "Feature Geometry: Beyond One-Dimensional Directions"
     url: "/topics/feature-geometry/"
+  - title: "Intrinsic Dimension and Dimensionality Reduction"
+    url: "/topics/intrinsic-dimension-and-dimensionality-reduction/"
 
 glossary:
   - term: "Neural Manifold"

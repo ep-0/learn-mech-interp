@@ -6,6 +6,8 @@ order: 1
 prerequisites:
   - title: "Composition and Virtual Attention Heads"
     url: "/topics/composition-and-virtual-heads/"
+  - title: "In-Context Learning and Prompting"
+    url: "/topics/in-context-learning/"
 
 glossary:
   - term: "In-Context Learning"

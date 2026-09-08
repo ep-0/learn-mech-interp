@@ -5,8 +5,6 @@ order: 4
 prerequisites:
   - title: "The IOI Circuit: Discovery and Mechanism"
     url: "/topics/ioi-circuit/"
-  - title: "The Attention Mechanism"
-    url: "/topics/attention-mechanism/"
 glossary:
   - term: "Entity Binding"
     definition: "The problem of associating an entity with its context-specific attributes so that the correct pair can be retrieved later without confusing it with other entities."

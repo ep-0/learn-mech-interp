@@ -8,6 +8,8 @@ prerequisites:
     url: "/topics/transcoders/"
   - title: "QK and OV Circuits"
     url: "/topics/qk-ov-circuits/"
+  - title: "Causal Graphs and Interventions"
+    url: "/topics/causal-graphs-and-interventions/"
 
 glossary:
   - term: "Attribution Graph"

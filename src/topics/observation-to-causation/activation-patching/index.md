@@ -6,6 +6,8 @@ order: 1
 prerequisites:
   - title: "The Attention Mechanism"
     url: "/topics/attention-mechanism/"
+  - title: "Mediation: Direct and Indirect Effects"
+    url: "/topics/mediation-direct-and-indirect-effects/"
 
 glossary:
   - term: "Activation Patching"

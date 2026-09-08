@@ -6,8 +6,10 @@ order: 1
 prerequisites:
   - title: "What Is Mechanistic Interpretability?"
     url: "/topics/what-is-mech-interp/"
-  - title: "Composition and Virtual Heads"
+  - title: "Composition and Virtual Attention Heads"
     url: "/topics/composition-and-virtual-heads/"
+  - title: "PyTorch Tensors, Modules, and Hooks"
+    url: "/topics/pytorch-and-computation-graphs/"
 
 glossary:
   - term: "HookPoint"

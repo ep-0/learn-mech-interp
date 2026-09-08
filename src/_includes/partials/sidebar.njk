@@ -22,8 +22,8 @@
           <ul class="sidebar-topics">
             {% for topic in blockItem.topics %}
             <li>
-              <a href="/topics/{{ topic.slug }}/"{% if page.fileSlug == topic.slug %} aria-current="page" class="sidebar-active"{% endif %}>
-                {{ topic.title }}
+              <a href="/topics/{{ topic.slug }}/"{% if topic.status == "placeholder" %} data-placeholder="true"{% endif %} class="{% if page.fileSlug == topic.slug %}sidebar-active {% endif %}{% if topic.status == "placeholder" %}sidebar-topic-placeholder{% endif %}"{% if page.fileSlug == topic.slug %} aria-current="page"{% endif %}>
+                {{ topic.title }}{% if topic.status == "placeholder" %}<span class="sidebar-placeholder-mark" title="Planned article, not yet written" aria-label="planned">&#9633;</span>{% endif %}
               </a>
             </li>
             {% endfor %}

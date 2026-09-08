@@ -6,6 +6,10 @@ order: 2
 prerequisites:
   - title: "Ablation Steering"
     url: "/topics/ablation-steering/"
+  - title: "Covariance Matrices and Whitening"
+    url: "/topics/covariance-matrices-and-whitening/"
+  - title: "Constrained Optimization and Lagrange Multipliers"
+    url: "/topics/constrained-optimization-and-lagrange-multipliers/"
 
 glossary:
   - term: "Concept Erasure"

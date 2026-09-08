@@ -7,8 +7,7 @@ layout: layouts/base.njk
     <h1 class="hero-title">Learn Mechanistic Interpretability</h1>
     <p class="hero-description">Mechanistic interpretability, often shortened to mech interp or MI, reverse-engineers how neural networks compute. Learn it through a free, structured textbook.</p>
     <div class="hero-actions">
-      {% set firstTopic = learningPath.blocks[0].topics[0] %}
-      <a href="/topics/{{ firstTopic.slug }}/" class="btn btn-primary">Start Learning</a>
+      <a href="/topics/{{ learningPath.startHere.slug }}/" class="btn btn-primary">Start Learning</a>
       <a href="/topics/" class="btn btn-secondary">Browse Topics</a>
     </div>
     <p class="hero-open-source">This is an open source textbook. If you find something incorrect, missing, or that could use improvement, <a href="https://github.com/FlyingPumba/learn-mech-interp">send a PR</a>.</p>

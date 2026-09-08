@@ -5,6 +5,8 @@ order: 2
 prerequisites:
   - title: "Probing Classifiers"
     url: "/topics/probing-classifiers/"
+  - title: "Principal Component Analysis"
+    url: "/topics/principal-component-analysis/"
 
 glossary:
   - term: "Contrast-Consistent Search (CCS)"

@@ -53,6 +53,7 @@ Key points:
 - **`learningPath.js` and `glossary.js` are computed from the filesystem.** You never edit them directly. The sidebar, topics page, prev/next navigation, and glossary all update automatically when you add or modify articles.
 - **`references.json`** and **`_textbooks.json`** are the only data files you edit by hand (to add new citations and new textbooks).
 - **Articles nest three deep: textbook -> block -> article.** A textbook is a self-contained course; blocks are its chapters. The sidebar renders that hierarchy as nested collapsible sections, each textbook tinted with its own colour.
+- **Prerequisites form a graph, not just a reading order.** Every article lists what to read first, those articles list their own prerequisites, and following the chain far enough always terminates in the assumed background described in [What This Book Assumes](src/topics/transformer-foundations/mi-prerequisites/index.md). The build enforces that the graph has no cycles.
 - **URLs are flat.** An article at `src/topics/probing/probing-classifiers/index.md` is served at `/topics/probing-classifiers/`, not `/topics/probing/probing-classifiers/`.
 
 ## Adding a new article
@@ -151,6 +152,8 @@ Run `npm run build`. The build-time validator checks:
 - Required frontmatter fields (`title`, `description`, `order`)
 - Contiguous ordering within blocks, and of blocks within a textbook (no gaps or duplicates)
 - Every block names a textbook declared in `_textbooks.json`, and every textbook has at least one block
+- `status` is `placeholder` or absent
+- The prerequisite graph is acyclic, no article lists itself, and no prerequisite is reachable through another one on the same list
 - All `{% cite "key" %}` keys exist in `references.json`
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
@@ -165,6 +168,38 @@ If the build fails, the error message will tell you exactly what to fix.
 - **Moving a block to a different textbook**: change `textbook` in its `_block.json`, then renumber the `order` fields in both the old and new textbooks so each stays contiguous.
 - **Adding glossary terms**: add entries to the `glossary:` list in the article's frontmatter. Each term must be unique across all articles.
 - **Adding citations**: add the reference to `src/_data/references.json`, then use `{% cite "key" %}` in the article.
+- **Filling in a placeholder**: write the article as usual, then delete `status: placeholder` from its frontmatter and remove the "Why this article exists" and "What this article will cover" scaffolding. Keep its prerequisites unless the finished article genuinely needs different ones.
+
+## Prerequisites
+
+The `prerequisites` list in an article's frontmatter is what the reader should have read first, and it is the site's main navigation aid after the sidebar.
+
+- **List the nearest prerequisite, not the whole chain.** If an article needs projections, link [Orthogonality and Projections](/topics/orthogonality-and-projections/), not the vectors article that projections themselves build on. The reader reaches the rest by following links from there.
+- **Aim for at most four.** A longer list usually means the article is doing too much, or that some entries are already reachable through the others.
+- **Cross-textbook links are normal.** A mechanistic interpretability article that needs the chain rule should link straight to it in Mathematical Foundations. Clicking it collapses the current textbook in the sidebar and opens the target's.
+- **If the prerequisite has no article anywhere on the site, create a placeholder for it** (below) rather than leaving the dependency unstated.
+- **The graph must stay acyclic**, and the build fails on a cycle, naming the loop.
+- **The build also rejects a prerequisite that another listed prerequisite already reaches.** If an article lists both `attention-mechanism` and `embeddings`, and attention already depends on embeddings, drop the second: the reader gets there by following the first. This is what keeps "nearest" enforceable rather than aspirational.
+
+## Placeholder articles
+
+A placeholder fixes a topic's place in the prerequisite chain before anyone writes it. Give it the frontmatter every article has, plus `status: placeholder`:
+
+```yaml
+---
+title: "Rank and Low-Rank Factorization"
+description: "One-sentence summary, same as any article."
+order: 6
+status: placeholder
+prerequisites:
+  - title: "Matrices as Linear Maps"
+    url: "/topics/matrices-as-linear-maps/"
+---
+```
+
+`status` is either `placeholder` or absent; any other value fails validation. The layout renders a "Planned article" notice, the sidebar dims the entry and marks it, and the topics page tags it. The body carries the intended scope in three sections: why the article exists, what it will cover, and which articles depend on it.
+
+Placeholders count as real articles everywhere else: they take an `order` within their block, they appear in prev/next navigation, and they can be linked as prerequisites.
 
 ## Adding a new block
 
@@ -202,9 +237,11 @@ A textbook is a standalone course. Reach for one when the material is not anothe
 
 2. `order` must be contiguous across textbooks, and it sets reading order: every block of textbook 1 comes before every block of textbook 2 in the sidebar, on the topics page, and in prev/next article navigation.
 
-3. `hue` is a CSS hue angle (0--360) that colour-codes the textbook in the sidebar and on the topics page, so a reader with several books open can tell at a glance which articles belong to which. Everything else about the colour (saturation, lightness, the light and dark theme variants) is derived from tokens in `src/css/variables.css`. Pick a hue well separated from the ones already in use, and prefer deep, saturated hues over pale yellows and limes, which wash out against the page. Currently in use: 232 (indigo, Mechanistic Interpretability). Good next choices: 152 (green), 28 (amber), 340 (rose), 190 (teal), 275 (violet).
+3. Currently in use: 275 (violet, Mathematical Foundations), 152 (green, Machine Learning Foundations), 232 (indigo, Mechanistic Interpretability).
 
-4. Move or create at least one block that points at the new textbook. A textbook with no blocks fails validation.
+4. `hue` is a CSS hue angle (0--360) that colour-codes the textbook in the sidebar and on the topics page, so a reader with several books open can tell at a glance which articles belong to which. Everything else about the colour (saturation, lightness, the light and dark theme variants) is derived from tokens in `src/css/variables.css`. Pick a hue well separated from the ones already in use, and prefer deep, saturated hues over pale yellows and limes, which wash out against the page. Good next choices: 28 (amber), 340 (rose), 190 (teal), 20 (terracotta).
+
+5. Move or create at least one block that points at the new textbook. A textbook with no blocks fails validation.
 
 ## Build-time validation
 

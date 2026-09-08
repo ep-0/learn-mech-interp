@@ -5,6 +5,8 @@ order: 1
 prerequisites:
   - title: "The Superposition Hypothesis"
     url: "/topics/superposition/"
+  - title: "Sparse Coding and Dictionary Learning"
+    url: "/topics/sparse-coding-and-dictionary-learning/"
 
 glossary:
   - term: "Dictionary Learning"

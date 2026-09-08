@@ -5,6 +5,8 @@ order: 7
 prerequisites:
   - title: "Transformer Architecture Intro"
     url: "/topics/transformer-architecture/"
+  - title: "Normalization and Residual Connections"
+    url: "/topics/normalization-and-residual-connections/"
 
 glossary:
   - term: "Layer Normalization"

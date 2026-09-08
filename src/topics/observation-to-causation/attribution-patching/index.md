@@ -5,6 +5,10 @@ order: 3
 prerequisites:
   - title: "Activation Patching and Causal Interventions"
     url: "/topics/activation-patching/"
+  - title: "Linear Approximation and Taylor Expansion"
+    url: "/topics/taylor-expansion-and-linear-approximation/"
+  - title: "Backpropagation and Automatic Differentiation"
+    url: "/topics/backpropagation-and-autodiff/"
 
 glossary:
   - term: "Attribution Patching"

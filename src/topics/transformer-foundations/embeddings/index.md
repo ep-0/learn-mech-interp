@@ -5,6 +5,8 @@ order: 3
 prerequisites:
   - title: "Transformer Architecture Intro"
     url: "/topics/transformer-architecture/"
+  - title: "Embeddings and Distributed Representations"
+    url: "/topics/embeddings-and-distributed-representations/"
 
 glossary:
   - term: "Token Embedding"

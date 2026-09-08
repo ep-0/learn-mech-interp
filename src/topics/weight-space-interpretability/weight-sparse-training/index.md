@@ -7,6 +7,8 @@ prerequisites:
     url: "/topics/superposition/"
   - title: "Circuit Evaluation: Faithfulness, Completeness, and Minimality"
     url: "/topics/circuit-evaluation/"
+  - title: "Sparsity, L1, and Regularization"
+    url: "/topics/sparsity-and-regularization/"
 
 glossary:
   - term: "Weight Sparsity"
