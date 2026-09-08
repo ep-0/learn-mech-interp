@@ -14,13 +14,54 @@ prerequisites:
 
 Phase changes during training, the emergence of induction heads, and the differences between a base model and its fine-tune are all statements about a training trajectory, not just a final weight vector.
 
-## What this article will cover
+## Required sections
 
-- Minibatch SGD, batch size, and gradient noise
-- Momentum, Adam, and what adaptive scaling changes
-- Learning-rate schedules, warmup, and decay
-- Initialization, exploding and vanishing gradients, and clipping
-- Training curves, phase changes, and checkpoints as objects of study
+The finished article must cover the following, in this order. Headings can be reworded; the content cannot be dropped.
+
+**1. Minibatch SGD**
+
+- The stochastic gradient as an unbiased estimate, with variance set by batch size
+- Why noise is not purely a cost
+- Epochs, steps, and the token-count framing used for language models
+
+**2. Momentum and adaptive methods**
+
+- Momentum as an exponential average of gradients
+- Adam: the two moment estimates, bias correction, and the update rule written out
+- AdamW and why decoupled weight decay was needed
+
+**3. Schedules**
+
+- Warmup, cosine and linear decay, and what each is fixing
+- Learning rate as the most consequential hyperparameter
+- Batch size and learning rate scaling relationships
+
+**4. Failure modes**
+
+- Exploding and vanishing gradients, and clipping
+- Initialization schemes, and why they matter at depth
+- Loss spikes, divergence, and the practice of restarting from a checkpoint
+
+**5. Training as an object of study**
+
+- Checkpoints as a sequence of models rather than a means to an end
+- Phase changes and emergent capabilities, with the induction-head phase change as the example
+- Why model diffing needs the trajectory, not just the endpoints
+
+## What you should be able to do afterward
+
+If any of these is still out of reach, the article is not finished.
+
+- Write the Adam update from memory and say what each term is compensating for
+- Diagnose a training curve as a learning-rate problem, a data problem, or an initialization problem
+- Explain why interpretability research increasingly uses checkpoint sequences
+
+## Sources to learn from
+
+- Goodfellow et al., *Deep Learning*, chapter 8 — Optimization for deep models, including initialization and the algorithms.
+- Kingma & Ba, 'Adam' (arXiv:1412.6980) and Loshchilov & Hutter, 'Decoupled Weight Decay Regularization' (arXiv:1711.05101) — The two papers. Short, and worth reading in the original.
+- Karpathy, 'Let's build GPT' and 'Let's reproduce GPT-2 (124M)' — Training as it is actually done, including the schedule and stability tricks.
+- Olsson et al., 'In-context Learning and Induction Heads' (transformer-circuits.pub, 2022) — The phase-change result. Read for why training dynamics is an interpretability question.
 
 ## Where the curriculum uses it
 
