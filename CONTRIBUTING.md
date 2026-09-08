@@ -216,10 +216,13 @@ A placeholder's body is a writing brief, in five sections:
 | Why this article exists | One paragraph tying the topic to the curriculum that needs it. |
 | Required sections | The numbered outline the finished article must cover, in order, each with two or three bullets. Headings can be reworded when writing; the content cannot be dropped. |
 | What you should be able to do afterward | Three or so concrete competencies. These are the exit criteria: if one is out of reach, the article is not finished. |
+| Deliberately out of scope | Optional, and used where a standard course would cover much more than this curriculum needs. Lists what the article omits, so it does not grow into a general textbook chapter. |
 | Sources to learn from | Three or four specific readings, each with a line on what to take from it. Chapters and sections where they are known. |
 | Where the curriculum uses it | Generated from the prerequisite graph: the articles that list this one. |
 
 The brief is written before the article, and it is what makes the article writable by someone who has just learned the material rather than only by someone who already knew it.
+
+Foundational articles are scoped by what the curriculum uses, not by what a subject contains. The precalculus block is the clearest case: it covers the unit circle because cosine similarity and rotary embeddings need it, and skips solving triangles; it covers binomial coefficients because probability starts with counting, and skips generating functions. When adding a foundational article, justify each required section by a downstream use, and put the rest under "Deliberately out of scope" rather than leaving the boundary implicit.
 
 ### Writing a placeholder up
 

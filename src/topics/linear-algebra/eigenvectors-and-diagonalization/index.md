@@ -6,6 +6,10 @@ status: placeholder
 prerequisites:
   - title: "Bases, Coordinates, and Change of Basis"
     url: "/topics/bases-and-change-of-basis/"
+  - title: "Polynomials and Rational Functions"
+    url: "/topics/polynomials-and-rational-functions/"
+  - title: "Complex Numbers and Euler's Formula"
+    url: "/topics/complex-numbers-and-eulers-formula/"
 ---
 
 ## Why this article exists

@@ -3,7 +3,9 @@ title: "Vectors, Span, and Vector Spaces"
 description: "Vectors as points and directions in R^n, what span and linear independence mean, and why a basis fixes the coordinates everything else is written in."
 order: 1
 status: placeholder
-prerequisites: []
+prerequisites:
+  - title: "Systems of Linear Equations"
+    url: "/topics/systems-of-linear-equations/"
 ---
 
 ## Why this article exists

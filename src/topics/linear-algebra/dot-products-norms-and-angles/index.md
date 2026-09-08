@@ -6,6 +6,8 @@ status: placeholder
 prerequisites:
   - title: "Vectors, Span, and Vector Spaces"
     url: "/topics/vectors-and-vector-spaces/"
+  - title: "Trigonometry and the Unit Circle"
+    url: "/topics/trigonometry-and-the-unit-circle/"
 ---
 
 ## Why this article exists

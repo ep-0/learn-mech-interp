@@ -6,6 +6,10 @@ status: placeholder
 prerequisites:
   - title: "Dot Products, Norms, and Angles"
     url: "/topics/dot-products-norms-and-angles/"
+  - title: "Inequalities, Absolute Value, and Bounds"
+    url: "/topics/inequalities-and-bounds/"
+  - title: "Exponentials and Logarithms"
+    url: "/topics/exponentials-and-logarithms/"
 ---
 
 ## Why this article exists

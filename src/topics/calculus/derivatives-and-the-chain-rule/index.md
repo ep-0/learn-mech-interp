@@ -3,7 +3,13 @@ title: "Derivatives and the Chain Rule"
 description: "The derivative as a local linear approximation rather than a formula to memorize, and the chain rule that makes deep composition differentiable."
 order: 1
 status: placeholder
-prerequisites: []
+prerequisites:
+  - title: "Limits and Continuity"
+    url: "/topics/limits-and-continuity/"
+  - title: "Exponentials and Logarithms"
+    url: "/topics/exponentials-and-logarithms/"
+  - title: "Trigonometry and the Unit Circle"
+    url: "/topics/trigonometry-and-the-unit-circle/"
 ---
 
 ## Why this article exists
