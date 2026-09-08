@@ -17,7 +17,10 @@ description: Search the full text of every article in the Learn Mechanistic Inte
       element: "#search",
       showSubResults: true,
       showImages: false,
-      baseUrl: "/"
+      {# Pagefind records URLs relative to the built site, so it needs the
+         deployment path prefix explicitly. The HTML base plugin rewrites href
+         and src attributes but not JavaScript string literals. #}
+      baseUrl: "{{ '/' | url }}"
     });
   });
 </script>

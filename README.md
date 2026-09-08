@@ -10,8 +10,10 @@ Requires Node.js 20 or newer (CI builds on 20; 22 works).
 
 ```bash
 npm ci        # first time only, installs dependencies
-npm start     # dev server at http://localhost:8080, rebuilds on save
+npm start     # dev server, rebuilds on save
 ```
+
+The site is served from a subdirectory on GitHub Pages, so `pathPrefix` in `eleventy.config.js` is set to `/learn-mech-interp/` and the dev server mirrors that: open **http://localhost:8080/learn-mech-interp/**, not the bare root. If the site ever moves to a domain of its own, set `pathPrefix` back to `/` and update `url` in `src/_data/site.json`, the `Sitemap:` line in `src/robots.txt`, and the Pages settings together.
 
 `npm run build` writes the static site to `_site/` without serving it. That directory is gitignored and is what CI uploads to GitHub Pages.
 

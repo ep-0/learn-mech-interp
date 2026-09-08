@@ -569,6 +569,9 @@ export default function(eleventyConfig) {
     templateFormats: ["md", "njk", "html"],
     markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",
-    pathPrefix: "/"
+    // Served from https://ep-0.github.io/learn-mech-interp/, so every internal
+    // link needs the subdirectory. EleventyHtmlBasePlugin rewrites them at build
+    // time. Set to "/" if the site moves to a domain of its own.
+    pathPrefix: "/learn-mech-interp/"
   };
 }
