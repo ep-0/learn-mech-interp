@@ -5,6 +5,8 @@ order: 1
 prerequisites:
   - title: "PyTorch Tensors, Modules, and Hooks"
     url: "/topics/pytorch-and-computation-graphs/"
+  - title: "Reading and Running Research Code"
+    url: "/topics/working-with-research-code/"
 ---
 
 ## What is ARENA?

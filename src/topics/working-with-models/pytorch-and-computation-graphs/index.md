@@ -8,6 +8,8 @@ prerequisites:
     url: "/topics/backpropagation-and-autodiff/"
   - title: "Tensors, Shapes, and Einsum Notation"
     url: "/topics/tensors-and-einsum-notation/"
+  - title: "GPUs, Memory, and Numerical Precision"
+    url: "/topics/gpus-memory-and-precision/"
 ---
 
 ## Why this article exists

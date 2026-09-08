@@ -8,6 +8,8 @@ prerequisites:
     url: "/topics/singular-value-decomposition/"
   - title: "Manifolds, Charts, and Tangent Spaces"
     url: "/topics/manifolds-and-tangent-spaces/"
+  - title: "Plotting and Visualizing Results"
+    url: "/topics/plotting-and-visualizing-results/"
 ---
 
 ## Why this article exists
