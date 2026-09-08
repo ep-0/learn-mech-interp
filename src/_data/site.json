@@ -1,7 +1,7 @@
 {
   "name": "Learn Mechanistic Interpretability",
   "shortName": "Learn MI",
-  "url": "https://learnmechinterp.com",
+  "url": "https://ep-0.github.io/learn-mech-interp",
   "description": "A free, open-source mechanistic interpretability textbook with a structured course on transformer internals, causal methods, circuits, features, and AI safety.",
   "language": "en",
   "repo": "https://github.com/FlyingPumba/learn-mech-interp",
