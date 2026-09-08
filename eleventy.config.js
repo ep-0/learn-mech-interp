@@ -97,7 +97,7 @@ const imageDimensions = collectImageDimensions();
 
 function validate() {
   const errors = [];
-  const { blocks } = scanBlocks();
+  const { blocks, textbooks } = scanBlocks();
   const refs = JSON.parse(fs.readFileSync("src/_data/references.json", "utf-8"));
   const redirects = JSON.parse(fs.readFileSync("src/_data/redirects.json", "utf-8"));
 
@@ -125,31 +125,72 @@ function validate() {
     }
   }
 
-  // 2. Check block order contiguity
-  const blockOrders = blocks.map(b => b.order).sort((a, b) => a - b);
-  for (let i = 0; i < blockOrders.length; i++) {
-    if (blockOrders[i] !== i + 1) {
-      errors.push(`Block order is not contiguous: expected ${i + 1}, got ${blockOrders[i]}. ` +
-        `Blocks: ${blocks.map(b => `${b.slug}(${b.order})`).join(", ")}`);
+  // 2. Check textbook metadata: unique slugs, contiguous order, required fields
+  const seenTextbookSlugs = new Set();
+  for (const textbook of textbooks) {
+    if (!textbook.slug) {
+      errors.push(`Textbook entry in _textbooks.json: missing slug`);
+      continue;
+    }
+    if (seenTextbookSlugs.has(textbook.slug)) {
+      errors.push(`Duplicate textbook slug in _textbooks.json: ${textbook.slug}`);
+    }
+    seenTextbookSlugs.add(textbook.slug);
+    if (!textbook.title) errors.push(`Textbook ${textbook.slug}: missing title in _textbooks.json`);
+    if (textbook.order == null) errors.push(`Textbook ${textbook.slug}: missing order in _textbooks.json`);
+    if (!Number.isFinite(textbook.hue) || textbook.hue < 0 || textbook.hue > 360) {
+      errors.push(`Textbook ${textbook.slug}: 'hue' must be a number between 0 and 360 (sidebar color coding)`);
+    }
+    if (textbook.blocks.length === 0) {
+      errors.push(`Textbook ${textbook.slug}: contains no blocks`);
+    }
+  }
+
+  const textbookOrders = textbooks.map(t => t.order).sort((a, b) => a - b);
+  for (let i = 0; i < textbookOrders.length; i++) {
+    if (textbookOrders[i] !== i + 1) {
+      errors.push(`Textbook order is not contiguous: expected ${i + 1}, got ${textbookOrders[i]}. ` +
+        `Textbooks: ${textbooks.map(t => `${t.slug}(${t.order})`).join(", ")}`);
       break;
     }
   }
 
-  // Check for duplicate block orders
-  const blockOrderSet = new Set(blockOrders);
-  if (blockOrderSet.size !== blockOrders.length) {
-    errors.push(`Duplicate block orders found: ${blockOrders.join(", ")}`);
+  // 3. Every block must belong to a declared textbook
+  for (const block of blocks) {
+    if (!block.textbook) {
+      errors.push(`Block ${block.slug}: missing 'textbook' in _block.json`);
+    } else if (!seenTextbookSlugs.has(block.textbook)) {
+      errors.push(`Block ${block.slug}: textbook "${block.textbook}" not declared in src/topics/_textbooks.json`);
+    }
+  }
+
+  // 4. Check block order contiguity within each textbook
+  for (const textbook of textbooks) {
+    const blockOrders = textbook.blocks.map(b => b.order).sort((a, b) => a - b);
+    for (let i = 0; i < blockOrders.length; i++) {
+      if (blockOrders[i] !== i + 1) {
+        errors.push(`Textbook "${textbook.slug}": block order is not contiguous. Expected ${i + 1}, got ${blockOrders[i]}. ` +
+          `Blocks: ${textbook.blocks.map(b => `${b.slug}(${b.order})`).join(", ")}`);
+        break;
+      }
+    }
+
+    // Check for duplicate block orders within the textbook
+    const blockOrderSet = new Set(blockOrders);
+    if (blockOrderSet.size !== blockOrders.length) {
+      errors.push(`Textbook "${textbook.slug}": duplicate block orders: ${blockOrders.join(", ")}`);
+    }
   }
 
   const allGlossaryTerms = new Map(); // term -> [article slugs]
   const allArticleSlugs = new Set();
 
   for (const block of blocks) {
-    // 2. Check _block.json fields
+    // 5. Check _block.json fields
     if (!block.title) errors.push(`Block ${block.slug}: missing title in _block.json`);
     if (block.order == null) errors.push(`Block ${block.slug}: missing order in _block.json`);
 
-    // 3. Check article order contiguity within block
+    // 6. Check article order contiguity within block
     const artOrders = block.topics.map(t => t.order).sort((a, b) => a - b);
     for (let i = 0; i < artOrders.length; i++) {
       if (artOrders[i] !== i + 1) {
@@ -173,12 +214,12 @@ function validate() {
       const raw = fs.readFileSync(mdPath, "utf-8");
       const { data } = matter(raw);
 
-      // 4. Required frontmatter
+      // 7. Required frontmatter
       if (!data.title) errors.push(`${topic.slug}: missing 'title' in frontmatter`);
       if (!data.description) errors.push(`${topic.slug}: missing 'description' in frontmatter`);
       if (data.order == null) errors.push(`${topic.slug}: missing 'order' in frontmatter`);
 
-      // 5. Validate citation keys
+      // 8. Validate citation keys
       const citeMatches = raw.matchAll(/\{%[-\s]*cite\s+"([^"]+)"\s*[-\s]*%\}/g);
       for (const m of citeMatches) {
         if (!refs[m[1]]) {
@@ -186,7 +227,7 @@ function validate() {
         }
       }
 
-      // 6. Collect glossary terms for duplicate check
+      // 9. Collect glossary terms for duplicate check
       if (Array.isArray(data.glossary)) {
         for (const entry of data.glossary) {
           if (!allGlossaryTerms.has(entry.term)) {
@@ -198,7 +239,7 @@ function validate() {
     }
   }
 
-  // 7. Validate prerequisites (second pass: all slugs now collected)
+  // 10. Validate prerequisites (second pass: all slugs now collected)
   for (const block of blocks) {
     for (const topic of block.topics) {
       const mdPath = path.join("src/topics", block.slug, topic.slug, "index.md");
@@ -217,14 +258,14 @@ function validate() {
     }
   }
 
-  // 8. Duplicate glossary terms
+  // 11. Duplicate glossary terms
   for (const [term, slugs] of allGlossaryTerms) {
     if (slugs.length > 1) {
       errors.push(`Glossary term "${term}" defined in multiple articles: ${slugs.join(", ")}`);
     }
   }
 
-  // 9. Redirects must be unique topic routes with live topic destinations.
+  // 12. Redirects must be unique topic routes with live topic destinations.
   const redirectSources = new Set();
   for (const redirect of redirects) {
     if (!redirect.from?.match(/^\/topics\/[^/]+\/$/)) {
