@@ -6,6 +6,8 @@ order: 6
 prerequisites:
   - title: "SAE Variants, Evaluation, and Limitations"
     url: "/topics/sae-variants-and-evaluation/"
+  - title: "MLPs in Transformers"
+    url: "/topics/mlps-in-transformers/"
 
 glossary:
   - term: "Transcoder"

@@ -146,6 +146,11 @@ function validate() {
     }
   }
 
+  const primaryTextbooks = textbooks.filter(t => t.primary);
+  if (primaryTextbooks.length > 1) {
+    errors.push(`Only one textbook may set "primary": ${primaryTextbooks.map(t => t.slug).join(", ")}`);
+  }
+
   const textbookOrders = textbooks.map(t => t.order).sort((a, b) => a - b);
   for (let i = 0; i < textbookOrders.length; i++) {
     if (textbookOrders[i] !== i + 1) {
@@ -218,6 +223,9 @@ function validate() {
       if (!data.title) errors.push(`${topic.slug}: missing 'title' in frontmatter`);
       if (!data.description) errors.push(`${topic.slug}: missing 'description' in frontmatter`);
       if (data.order == null) errors.push(`${topic.slug}: missing 'order' in frontmatter`);
+      if (data.status != null && data.status !== "placeholder") {
+        errors.push(`${topic.slug}: 'status' must be "placeholder" or omitted, got "${data.status}"`);
+      }
 
       // 8. Validate citation keys
       const citeMatches = raw.matchAll(/\{%[-\s]*cite\s+"([^"]+)"\s*[-\s]*%\}/g);
@@ -258,14 +266,79 @@ function validate() {
     }
   }
 
-  // 11. Duplicate glossary terms
+  // 11. The prerequisite graph must be acyclic, so a reader following prerequisites
+  //     of prerequisites always reaches assumed background rather than looping.
+  const prereqEdges = new Map();
+  for (const block of blocks) {
+    for (const topic of block.topics) {
+      const mdPath = path.join("src/topics", block.slug, topic.slug, "index.md");
+      if (!fs.existsSync(mdPath)) continue;
+      const { data } = matter(fs.readFileSync(mdPath, "utf-8"));
+      const targets = (Array.isArray(data.prerequisites) ? data.prerequisites : [])
+        .map(p => p.url?.match(/^\/topics\/([^/]+)\/$/)?.[1])
+        .filter(Boolean);
+      if (targets.includes(topic.slug)) {
+        errors.push(`${topic.slug}: lists itself as a prerequisite`);
+      }
+      prereqEdges.set(topic.slug, targets);
+    }
+  }
+
+  const visitState = new Map(); // slug -> "visiting" | "done"
+  let reportedCycle = false;
+  const walkPrereqs = (slug, stack) => {
+    const state = visitState.get(slug);
+    if (state === "done") return;
+    if (state === "visiting") {
+      if (!reportedCycle) {
+        const start = stack.indexOf(slug);
+        errors.push(`Prerequisite cycle: ${stack.slice(start).concat(slug).join(" -> ")}`);
+        reportedCycle = true;
+      }
+      return;
+    }
+    visitState.set(slug, "visiting");
+    for (const next of prereqEdges.get(slug) || []) {
+      walkPrereqs(next, stack.concat(slug));
+    }
+    visitState.set(slug, "done");
+  };
+  for (const slug of prereqEdges.keys()) walkPrereqs(slug, []);
+
+  // Prerequisites must be the *nearest* ones: listing an article that another
+  // listed prerequisite already reaches sends the reader up the chain twice.
+  // Only meaningful once the graph is known to be acyclic.
+  if (!reportedCycle) {
+    const reachable = new Map();
+    const reach = (slug) => {
+      if (reachable.has(slug)) return reachable.get(slug);
+      const out = new Set();
+      reachable.set(slug, out);
+      for (const next of prereqEdges.get(slug) || []) {
+        out.add(next);
+        for (const deeper of reach(next)) out.add(deeper);
+      }
+      return out;
+    };
+    for (const [slug, targets] of prereqEdges) {
+      for (const target of targets) {
+        const via = targets.find(other => other !== target && reach(other).has(target));
+        if (via) {
+          errors.push(`${slug}: prerequisite "${target}" is not the nearest one, ` +
+            `it is already reachable through "${via}". List only immediate prerequisites.`);
+        }
+      }
+    }
+  }
+
+  // 12. Duplicate glossary terms
   for (const [term, slugs] of allGlossaryTerms) {
     if (slugs.length > 1) {
       errors.push(`Glossary term "${term}" defined in multiple articles: ${slugs.join(", ")}`);
     }
   }
 
-  // 12. Redirects must be unique topic routes with live topic destinations.
+  // 13. Redirects must be unique topic routes with live topic destinations.
   const redirectSources = new Set();
   for (const redirect of redirects) {
     if (!redirect.from?.match(/^\/topics\/[^/]+\/$/)) {

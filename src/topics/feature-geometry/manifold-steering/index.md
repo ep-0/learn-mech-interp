@@ -7,6 +7,8 @@ prerequisites:
     url: "/topics/neural-manifolds/"
   - title: "Addition Steering"
     url: "/topics/addition-steering/"
+  - title: "Curvature and Geodesics"
+    url: "/topics/curvature-and-geodesics/"
 
 glossary:
   - term: "Manifold Steering"

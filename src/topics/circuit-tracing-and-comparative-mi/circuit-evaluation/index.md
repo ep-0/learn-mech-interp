@@ -6,6 +6,8 @@ order: 3
 prerequisites:
   - title: "The IOI Circuit: Discovery and Mechanism"
     url: "/topics/ioi-circuit/"
+  - title: "KL Divergence and Mutual Information"
+    url: "/topics/kl-divergence-and-mutual-information/"
 
 glossary:
   - term: "Completeness (circuit)"

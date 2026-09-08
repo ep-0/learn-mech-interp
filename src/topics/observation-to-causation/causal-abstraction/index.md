@@ -5,6 +5,8 @@ order: 6
 prerequisites:
   - title: "Activation Patching and Causal Interventions"
     url: "/topics/activation-patching/"
+  - title: "Counterfactuals and Confounding"
+    url: "/topics/counterfactuals-and-confounding/"
 
 glossary:
   - term: "Causal Abstraction"

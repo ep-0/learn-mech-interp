@@ -6,6 +6,8 @@ order: 10
 prerequisites:
   - title: "Transformer Architecture Intro"
     url: "/topics/transformer-architecture/"
+  - title: "Sampling and Monte Carlo Estimation"
+    url: "/topics/sampling-and-monte-carlo/"
 
 glossary:
   - term: "Greedy Decoding"

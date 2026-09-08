@@ -5,8 +5,6 @@ order: 8
 prerequisites:
   - title: "Activation Oracles"
     url: "/topics/activation-oracles/"
-  - title: "Sparse Autoencoders"
-    url: "/topics/sparse-autoencoders/"
 glossary:
   - term: "Natural Language Autoencoder (NLA)"
     definition: "A pair of language models trained jointly to autoencode a target model's activation through a natural-language bottleneck. A verbalizer writes a text description of the activation and a reconstructor rebuilds the activation from that text. Training minimizes reconstruction error, with no labels for what the activation encodes."

@@ -8,11 +8,11 @@ eleventyExcludeFromCollections: true
 {% set totalTopics = collections.learningPath | length %}
 {% set totalBlocks = learningPath.blocks | length %}
 {% set totalTextbooks = learningPath.textbooks | length %}
-{% set firstTopic = learningPath.blocks[0].topics[0] %}
+{% set firstTopic = learningPath.startHere %}
 
 <div class="topics-page">
   <h1>Topics</h1>
-  <p class="topics-description">Explore {{ totalTopics }} articles across {{ totalBlocks }} blocks{% if totalTextbooks > 1 %} in {{ totalTextbooks }} textbooks{% endif %}. Follow the suggested order or jump straight to the topic you need.</p>
+  <p class="topics-description">Explore {{ totalTopics }} articles across {{ totalBlocks }} blocks{% if totalTextbooks > 1 %} in {{ totalTextbooks }} textbooks{% endif %}. Follow the suggested order, jump straight to the topic you need, or work backwards through an article's prerequisites until you reach ground you already have.</p>
   <div class="hero-actions topics-actions">
     <a href="/topics/{{ firstTopic.slug }}/" class="btn btn-primary">Start Learning</a>
     <a href="/glossary/" class="btn btn-secondary">Browse Glossary</a>
@@ -59,7 +59,7 @@ eleventyExcludeFromCollections: true
           <ul class="learning-path-topics">
             {% for topic in block.topics %}
             <li class="learning-path-topic">
-              <a href="/topics/{{ topic.slug }}/">{{ topic.title }}</a>
+              <a href="/topics/{{ topic.slug }}/">{{ topic.title }}</a>{% if topic.status == "placeholder" %} <span class="topic-placeholder-tag">planned</span>{% endif %}
             </li>
             {% endfor %}
           </ul>

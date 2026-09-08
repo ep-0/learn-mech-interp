@@ -1,9 +1,24 @@
 [
   {
+    "slug": "mathematical-foundations",
+    "title": "Mathematical Foundations",
+    "description": "The linear algebra, calculus, probability, information theory, optimization, causal inference, and geometry that the rest of the curriculum uses without re-deriving.",
+    "order": 1,
+    "hue": 275
+  },
+  {
+    "slug": "machine-learning-foundations",
+    "title": "Machine Learning Foundations",
+    "description": "How networks are built, trained, and evaluated, and how language models are made, up to the point where mechanistic interpretability starts asking what they compute.",
+    "order": 2,
+    "hue": 152
+  },
+  {
     "slug": "mechanistic-interpretability",
     "title": "Mechanistic Interpretability",
     "description": "The core curriculum: from transformer internals through features, circuits, and safety applications.",
-    "order": 1,
-    "hue": 232
+    "order": 3,
+    "hue": 232,
+    "primary": true
   }
 ]

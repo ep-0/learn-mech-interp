@@ -5,6 +5,8 @@ order: 6
 prerequisites:
   - title: "Crosscoders"
     url: "/topics/crosscoders/"
+  - title: "Comparing Representations Across Models"
+    url: "/topics/representation-similarity-measures/"
 
 glossary:
   - term: "Universality"

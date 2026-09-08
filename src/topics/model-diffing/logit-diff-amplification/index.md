@@ -2,6 +2,11 @@
 title: "Logit Diff Amplification"
 description: "How amplifying the logit-level differences between two model checkpoints can surface rare undesired behaviors that standard sampling would almost never find."
 order: 1
+prerequisites:
+  - title: "Decoding Strategies"
+    url: "/topics/decoding-strategies/"
+  - title: "KL Divergence and Mutual Information"
+    url: "/topics/kl-divergence-and-mutual-information/"
 
 glossary:
   - term: "Logit Diff Amplification (LDA)"

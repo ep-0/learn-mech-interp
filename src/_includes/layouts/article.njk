@@ -30,6 +30,11 @@ layout: layouts/base.njk
     <div class="article-meta">
       {{ content | readingTime }}
     </div>
+    {% if status == "placeholder" %}
+    <div class="article-placeholder-notice" role="note">
+      <strong>Planned article.</strong> This topic has a place in the prerequisite chain but has not been written yet. What follows is its intended scope.
+    </div>
+    {% endif %}
     {% if prerequisites and prerequisites.length %}
     <div class="article-prerequisites">
       <span class="prerequisites-label">Read first:</span>
@@ -43,6 +48,7 @@ layout: layouts/base.njk
       {{ content | safe }}
     </div>
 
+    {% if status != "placeholder" %}
     <aside class="article-toc" aria-label="Table of contents">
       <h2 class="toc-heading">Contents</h2>
       <div class="article-toc-nav">
@@ -50,6 +56,7 @@ layout: layouts/base.njk
         {{ content | toc | safe }}
       </div>
     </aside>
+    {% endif %}
   </div>
 </article>
 

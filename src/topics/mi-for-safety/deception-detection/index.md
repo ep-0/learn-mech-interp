@@ -3,7 +3,7 @@ title: "Deception Detection and Alignment Faking"
 description: "Why strategic deception can evade behavioral evaluations, and what early probing results support, without overstating the case for detecting alignment faking."
 order: 3
 prerequisites:
-  - title: "Detecting Sleeper Agents"
+  - title: "Detecting Sleeper Agents with Mechanistic Interpretability"
     url: "/topics/sleeper-agent-detection/"
 
 glossary:
