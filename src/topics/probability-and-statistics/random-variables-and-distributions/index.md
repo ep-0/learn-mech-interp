@@ -6,6 +6,8 @@ status: placeholder
 prerequisites:
   - title: "Integrals and Path Integrals"
     url: "/topics/integrals-and-path-integrals/"
+  - title: "Counting, Factorials, and Binomial Coefficients"
+    url: "/topics/counting-and-combinatorics/"
 ---
 
 ## Why this article exists
