@@ -62,4 +62,4 @@ If any of these is still out of reach, the article is not finished.
 
 ## Where the curriculum uses it
 
-[Function Vectors](/topics/function-vectors/), [Induction Heads and In-Context Learning](/topics/induction-heads/).
+[Chain-of-Thought Faithfulness](/topics/chain-of-thought-faithfulness/), [Function Vectors](/topics/function-vectors/), [Induction Heads and In-Context Learning](/topics/induction-heads/).

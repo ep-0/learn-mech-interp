@@ -2,7 +2,7 @@
 title: "Decoding Strategies"
 seoTitle: "Transformer Decoding: Greedy, Top-k, and Top-p"
 description: "How transformer logits become text through greedy decoding, temperature, top-k, top-p, and beam search, and how each strategy selects the next token."
-order: 10
+order: 11
 prerequisites:
   - title: "Transformer Architecture Intro"
     url: "/topics/transformer-architecture/"

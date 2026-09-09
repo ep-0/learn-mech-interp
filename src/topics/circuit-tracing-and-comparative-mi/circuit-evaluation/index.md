@@ -2,7 +2,7 @@
 title: "Circuit Evaluation: Faithfulness, Completeness, and Minimality"
 seoTitle: "Evaluating Circuits: Faithfulness and Completeness"
 description: "How faithfulness, completeness, and minimality expose weaknesses in a proposed circuit, with redundancy and negative contributors from the IOI case study."
-order: 3
+order: 5
 prerequisites:
   - title: "The IOI Circuit: Discovery and Mechanism"
     url: "/topics/ioi-circuit/"

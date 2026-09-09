@@ -1,7 +1,7 @@
 ---
 title: "Entity Binding and Retrieval"
 description: "How language models associate entities with attributes in context, attach reusable binding identifiers, and retrieve the right value through several competing mechanisms."
-order: 4
+order: 6
 prerequisites:
   - title: "The IOI Circuit: Discovery and Mechanism"
     url: "/topics/ioi-circuit/"
