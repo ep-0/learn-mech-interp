@@ -52,6 +52,9 @@ furtherReading:
   - title: "Elhage et al., *A Mathematical Framework for Transformer Circuits*"
     url: "https://transformer-circuits.pub/2021/framework/index.html"
     note: "Read the 'Transformer Overview' section now for the notation the rest of the curriculum uses. The circuit results will not land until later."
+  - title: "Phuong & Hutter, *Formal Algorithms for Transformers*"
+    url: "https://arxiv.org/abs/2207.09238"
+    note: "The architecture as precise pseudocode, with every shape and index stated. The complement to Karpathy's code-first path above: this is the specification rather than an implementation, and it is the fastest way to settle a question about what exactly a variant changes."
 ---
 
 ## What Does an LLM Actually Do?

@@ -62,6 +62,7 @@ If any of these is still out of reach, the article is not finished.
 
 - Hastie, Tibshirani & Friedman, *The Elements of Statistical Learning*, chapters 3-4 — Both models, with the statistical caveats about coefficient interpretation.
 - Murphy, *Probabilistic Machine Learning: An Introduction*, chapters 11 and 10 — Linear and logistic regression with the probabilistic framing made central.
+- Gelman, Hill & Vehtari, *Regression and Other Stories*, chapters 6-8 — Regression as it is actually practised: what a coefficient means, what the uncertainty means, and how both get misreported. A different tradition from the other sources here, and the one that will make you careful.
 - Bishop, *Pattern Recognition and Machine Learning*, chapter 4 — Linear models for classification, including the geometry of the decision boundary.
 - Alain & Bengio, 'Understanding intermediate layers using linear classifier probes' (arXiv:1610.01644) — The origin of linear probing as an interpretability tool.
 

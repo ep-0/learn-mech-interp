@@ -57,6 +57,7 @@ If any of these is still out of reach, the article is not finished.
 ## Sources to learn from
 
 - Boyd & Vandenberghe, *Convex Optimization*, chapters 2-3 and 9 — Convexity and descent methods, done rigorously. Freely available. Skip the interior-point material.
+- Prince, *Understanding Deep Learning*, chapter 6 — Stochastic gradient descent, momentum, and Adam for the non-convex case, which the convex sources here deliberately do not cover. Free, with exercises.
 - Goodfellow et al., *Deep Learning*, chapters 4 and 8 — Numerical computation and optimization for deep models, including the saddle-point discussion.
 - Nocedal & Wright, *Numerical Optimization*, chapters 2-3 — Line search and convergence rates, if you want the analysis.
 - Gabriel Goh, 'Why Momentum Really Works' (Distill, 2017) — The clearest account of conditioning and why it makes plain gradient descent slow.

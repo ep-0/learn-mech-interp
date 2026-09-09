@@ -61,6 +61,7 @@ If any of these is still out of reach, the article is not finished.
 - Wasserman, *All of Statistics*, chapters 8 and 10-11 — The bootstrap, testing, and the statements you will want to be precise about.
 - Efron & Hastie, *Computer Age Statistical Inference*, chapters 10-11 and 15 — The bootstrap and false discovery rates from the people who developed them. Freely available.
 - Greenland et al., 'Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations' (2016) — A list of the misreadings. Read it once and return to it when writing a results section.
+- Gelman & Loken, 'The Garden of Forking Paths' — Free. Why a result can be a false positive with no explicit multiple testing anywhere, because the analysis was chosen after seeing the data. Sweeping layers and reporting the best one is exactly this.
 - Bowman & Dahl, 'What Will it Take to Fix Benchmarking in NLU?' (arXiv:2104.02145) — Optional. The field-specific version of why uncertainty reporting is not optional.
 
 ## Where the curriculum uses it
