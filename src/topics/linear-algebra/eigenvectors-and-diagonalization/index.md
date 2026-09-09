@@ -56,6 +56,7 @@ If any of these is still out of reach, the article is not finished.
 
 - 3Blue1Brown, *Essence of Linear Algebra*, chapters 10 and 14 — Eigenvectors geometrically, then the eigenbasis as a computational device.
 - Strang, *Introduction to Linear Algebra*, chapter 6 — Eigenvalues, diagonalization, and symmetric matrices, with the applications worked out.
+- MIT OCW 18.06SC, Unit II problem sets on determinants and eigenvalues — Free, with solutions. Diagonalize small matrices by hand until the failure cases (repeated eigenvalues, defective matrices) are familiar rather than surprising.
 - Axler, *Linear Algebra Done Right*, chapters 5 and 7 — The determinant-free development, and the spectral theorem done properly.
 - Elhage et al., 'A Mathematical Framework for Transformer Circuits', the eigenvalue analysis of OV circuits — A direct interpretability use: positive eigenvalues as evidence of copying.
 

@@ -60,6 +60,7 @@ If any of these is still out of reach, the article is not finished.
 
 - Bishop, *Pattern Recognition and Machine Learning*, chapter 12.1 — Both formulations of PCA, derived carefully, plus the probabilistic version.
 - Blum, Hopcroft & Kannan, *Foundations of Data Science*, chapter 3 — PCA through the SVD, with the approximation guarantees.
+- Implement it twice: once as the eigendecomposition of the covariance matrix, once through the SVD of the centred data, and check they agree — The equivalence is stated everywhere and understood after you have made the centring mistake yourself.
 - Jonathon Shlens, 'A Tutorial on Principal Component Analysis' (arXiv:1404.1100) — Short, geometric, and good on the assumptions PCA is making.
 - Burns et al., 'Discovering Latent Knowledge in Language Models Without Supervision' (arXiv:2212.03827) — An interpretability method built on this machinery, and useful for seeing what such methods do and do not establish.
 

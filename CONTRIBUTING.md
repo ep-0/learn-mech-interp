@@ -167,6 +167,7 @@ Run `npm run build`. The build-time validator checks:
 - Every published article has `furtherReading`, and every entry has a title, a note, and an absolute URL if it has one at all
 - Every published concept article has at least three `exitCriteria`, and every entry has a task and a worked answer long enough to score an attempt against
 - Review item ids are unique, so no two questions can share a reader's scheduling history
+- Every placeholder brief lists at least four sources, since a brief's source list is the only teaching it has
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
 - Every `/topics/<slug>/` key in `pageContexts.json` matches a live article
@@ -224,10 +225,21 @@ A placeholder's body is a writing brief, in five sections:
 | Required sections | The numbered outline the finished article must cover, in order, each with two or three bullets. Headings can be reworded when writing; the content cannot be dropped. |
 | What you should be able to do afterward | Three or so concrete competencies. These are the exit criteria: if one is out of reach, the article is not finished. |
 | Deliberately out of scope | Optional, and used where a standard course would cover much more than this curriculum needs. Lists what the article omits, so it does not grow into a general textbook chapter. |
-| Sources to learn from | Three or four specific readings, each with a line on what to take from it. Chapters and sections where they are known. |
+| Sources to learn from | At least four specific readings, each with a line on what to take from it. Chapters and sections where they are known. This is the syllabus for the topic, not a footnote — see below. |
 | Where the curriculum uses it | Generated from the prerequisite graph: the articles that list this one. |
 
 The brief is written before the article, and it is what makes the article writable by someone who has just learned the material rather than only by someone who already knew it.
+
+### Sources on a brief carry the whole topic
+
+A written article teaches the topic itself; the further reading beside it is optional depth. A brief teaches nothing, so its source list is the only instruction the reader gets. Build it to stand alone, covering four roles — a single source may fill more than one, and the fourth is often already there:
+
+1. **An entry point.** One source to start from, named as such, so the reader is not choosing between four equals on a topic they do not yet know. Prefer a well-known text, lecture series, or course over a blog post.
+2. **Somewhere to practise.** Where the skill is procedural — anything in precalculus, linear algebra, calculus, probability, or programming — name the problem sets, the exercise chapters, or an "Implement it:" entry with a concrete thing to build. Reading a linear algebra chapter and doing its exercises are different activities, and only one of them produces the skill.
+3. **A second explanation in a different register.** A lecture beside a book, a visual treatment beside a formal one. The reader who bounces off the first source needs somewhere to go that is not the same explanation again.
+4. **What the curriculum does with it.** The MI-facing payoff — the paper or article downstream that makes the topic worth the effort.
+
+Validation enforces the count (at least four) and nothing else; the roles are a judgement call. Prefer sources that are freely readable, and prefer established authorities over recent posts: a reader working through a brief has no way to tell a fringe source from a standard one, so that filtering has to happen here.
 
 Foundational articles are scoped by what the curriculum uses, not by what a subject contains. The precalculus block is the clearest case: it covers the unit circle because cosine similarity and rotary embeddings need it, and skips solving triangles; it covers binomial coefficients because probability starts with counting, and skips generating functions. When adding a foundational article, justify each required section by a downstream use, and put the rest under "Deliberately out of scope" rather than leaving the boundary implicit.
 
@@ -237,7 +249,7 @@ Foundational articles are scoped by what the curriculum uses, not by what a subj
 2. Write the article against the required sections, following `ARTICLE_GUIDELINES.md`. The outline is a contract about coverage, not about wording or section count: split or merge headings where the prose reads better, as long as nothing in the bullets goes missing.
 3. Check yourself against the exit criteria. They are the reason the brief lists them.
 4. Move any source you cite in the finished prose into `src/_data/references.json` and cite it with `{% cite "key" %}`. Sources that were only study material do not need to survive.
-5. Delete the four scaffolding sections and remove `status: placeholder` from the frontmatter.
+5. Delete the scaffolding sections and remove `status: placeholder` from the frontmatter.
 6. Revisit the prerequisites. Writing the article usually reveals that one is wrong or missing.
 
 ## Adding a new block

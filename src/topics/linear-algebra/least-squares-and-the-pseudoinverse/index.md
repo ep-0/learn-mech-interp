@@ -52,6 +52,7 @@ If any of these is still out of reach, the article is not finished.
 
 - Strang, *Introduction to Linear Algebra*, chapter 4 — Least squares as projection, which is the reading that makes everything else obvious.
 - Trefethen & Bau, *Numerical Linear Algebra*, lectures 11 and 18-19 — Least squares, conditioning, and why the normal equations are numerically poor.
+- MIT OCW 18.06SC, Unit II problem sets — Free, with solutions. Set up and solve normal equations by hand before trusting `lstsq` to do it for you.
 - Hastie, Tibshirani & Friedman, *The Elements of Statistical Learning*, chapter 3 — The statistical reading, including ridge and the bias-variance consequences. Freely available.
 - Meng et al., 'Locating and Editing Factual Associations in GPT' (ROME, arXiv:2202.05262), the derivation of the rank-one update — Read the algebra only, to see least squares turn up as a weight edit.
 

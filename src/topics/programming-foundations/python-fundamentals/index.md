@@ -72,6 +72,7 @@ If any of these is still out of reach, the article is not finished.
 - Al Sweigart, *Automate the Boring Stuff with Python*, chapters 1-6 — Free online, and the gentlest start if you have never programmed. Stop after functions and lists; the automation chapters are not needed.
 - Allen Downey, *Think Python* (2nd edition) — Free, and better than Sweigart if you want the reasoning rather than the recipes.
 - The official Python Tutorial, sections 3-5 and 9 — The reference version, worth reading once the basics are in place. Section 9 is the class syntax you need for reading libraries.
+- Exercism's Python track, or the problem sets from whichever course above you choose — Free, with mentor solutions. Reading Python and writing Python are different skills and only the second one transfers to a research codebase.
 - MIT 6.100L or Berkeley CS61A, the first few weeks — Free full courses. Use one of these if you would rather be taught than read, and stop once functions and collections are comfortable.
 
 ## Where the curriculum uses it

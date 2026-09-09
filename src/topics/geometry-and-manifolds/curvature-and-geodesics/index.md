@@ -51,7 +51,9 @@ If any of these is still out of reach, the article is not finished.
 ## Sources to learn from
 
 - Do Carmo, *Differential Geometry of Curves and Surfaces*, chapters 3-4 — Curvature on surfaces, which is the level of generality this article needs.
+- Needham, *Visual Differential Geometry and Forms*, the curvature chapters — Curvature developed as something you can see before it is something you compute. Read alongside do Carmo rather than instead of it.
 - John Lee, *Introduction to Riemannian Manifolds*, chapters 2-5 — Metrics, geodesics, and the exponential map, done properly.
+- Do Carmo's chapter 3-4 exercises — Compute Gaussian curvature for the sphere, the cylinder and a saddle. That the cylinder comes out flat is the single most useful fact for reading claims about curved representations, and deriving it is what makes it stick.
 - Bronstein et al., 'Geometric Deep Learning' (arXiv:2104.13478) — For the machine learning framing of the same objects.
 - Pennec, 'Intrinsic Statistics on Riemannian Manifolds' — Optional. Useful for how means and directions are defined when the space is curved.
 

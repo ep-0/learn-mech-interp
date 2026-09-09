@@ -54,6 +54,7 @@ If any of these is still out of reach, the article is not finished.
 
 - 3Blue1Brown, *Multivariable Calculus* (with Khan Academy), the gradient and directional derivative sections — Short, geometric, and exactly the right scope.
 - MIT OCW 18.02SC, *Multivariable Calculus*, units 1-2 — The rigorous version, with the level-set geometry developed properly.
+- MIT OCW 18.02SC, the Unit 1-2 problem sets — Free, with solutions. Compute gradients and directional derivatives by hand until the level-set picture and the algebra are the same object to you.
 - Parr & Howard, 'The Matrix Calculus You Need For Deep Learning' (arXiv:1802.01528) — The single most useful document for translating between scalar calculus and the vector-matrix expressions in ML papers.
 - Goodfellow et al., *Deep Learning*, section 4.3 — Gradient-based optimization introduced with the notation used later in the book.
 

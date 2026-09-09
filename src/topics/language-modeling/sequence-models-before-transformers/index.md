@@ -60,5 +60,6 @@ If any of these is still out of reach, the article is not finished.
 
 - Jurafsky & Martin, *Speech and Language Processing*, the RNN and LSTM chapter — The standard treatment, with the encoder-decoder setup.
 - Chris Olah, 'Understanding LSTM Networks' (colah.github.io) — The diagrams everyone uses. Fifteen minutes.
+- Stanford CS224N, the RNN, LSTM and attention lectures — Free video. Worth watching in order, because the sequence in which the field hit each limitation is the argument for the next architecture.
 - Bahdanau, Cho & Bengio, 'Neural Machine Translation by Jointly Learning to Align and Translate' (arXiv:1409.0473) — The original attention paper. Read it before the transformer paper.
 - Vaswani et al., 'Attention Is All You Need' (arXiv:1706.03762) — Read the introduction and related work here, for the argument. The architecture comes later in the curriculum.

@@ -264,6 +264,21 @@ function validate() {
       } else if (data.exitCriteria && data.status === "placeholder") {
         errors.push(`${topic.slug}: placeholders state exit criteria in the brief, not in frontmatter`);
       }
+
+      // An unwritten article teaches nothing itself, so its source list is the
+      // whole syllabus for that topic. Four is the floor: somewhere to start,
+      // somewhere to practise, a second explanation in a different register,
+      // and what the curriculum eventually does with it.
+      if (data.status === "placeholder") {
+        const sources = raw.match(/## Sources to learn from\n\n([\s\S]*?)(?=\n\n## |\s*$)/);
+        const count = sources
+          ? sources[1].split("\n").filter(line => line.trim().startsWith("- ")).length
+          : 0;
+        if (count < 4) {
+          errors.push(`${topic.slug}: brief lists ${count} sources; an unwritten article needs at least 4, ` +
+            `because the sources are the only teaching it has`);
+        }
+      }
       for (const item of data.exitCriteria || []) {
         if (!item.task) {
           errors.push(`${topic.slug}: an exitCriteria entry has no 'task'`);

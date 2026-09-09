@@ -58,6 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 - Goodfellow et al., *Deep Learning*, chapter 14 — Autoencoders, including the denoising and contractive variants and the PCA connection.
 - Baldi & Hornik, 'Neural networks and principal component analysis' (1989) — The original result that linear autoencoders find the PCA subspace.
+- Implement it: train a linear autoencoder on data whose principal components you know, and confirm it recovers the PCA subspace but not the individual components — This is the Baldi and Hornik result above, and doing it is what makes the later claim about SAE non-uniqueness unsurprising rather than alarming.
 - Bishop & Bishop, *Deep Learning: Foundations and Concepts*, the autoencoder sections — A current textbook treatment.
 - Bricken et al., 'Towards Monosemanticity' (transformer-circuits.pub, 2023), the architecture and training sections — Where these choices are made for interpretability, including dead-feature resampling.
 

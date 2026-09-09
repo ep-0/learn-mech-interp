@@ -52,8 +52,10 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
+- Tristan Needham, *Visual Differential Geometry and Forms*, the early chapters — The gentlest serious entry point, and the one to start from if do Carmo's index notation is doing more harm than good. Needham argues the geometry pictorially and then makes it rigorous.
 - Do Carmo, *Differential Geometry of Curves and Surfaces*, chapters 1-2 — Concrete surfaces in $\mathbb{R}^3$ before any abstraction. Start here.
 - John Lee, *Introduction to Smooth Manifolds*, chapters 1 and 3 — The rigorous definitions, if you want them. Heavy; read selectively.
+- Do Carmo's chapter 1-2 exercises, and John Lee's chapter 1 exercises — Parameterise a few surfaces and compute their tangent planes by hand. Charts and transition maps stay abstract until you have written one down for the sphere and hit the pole.
 - Bronstein, Bruna, Cohen & Veličković, 'Geometric Deep Learning' (arXiv:2104.13478), chapters 2-3 — Manifolds as they are used in machine learning rather than in geometry.
 - Fefferman, Mitter & Narayanan, 'Testing the Manifold Hypothesis' (arXiv:1310.0425) — Read the introduction. It is the paper that turned an intuition into a testable statement.
 

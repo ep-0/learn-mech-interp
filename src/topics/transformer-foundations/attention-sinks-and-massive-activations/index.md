@@ -70,4 +70,5 @@ If any of these is still out of reach, the article is not finished.
 - Xiao et al., *Efficient Streaming Language Models with Attention Sinks* (arXiv:2309.17453) — Where the term comes from, plus the evidence that the sink is functional rather than decorative.
 - Sun et al., *Massive Activations in Large Language Models* (arXiv:2402.17762) — The systematic study across models, including the ablations showing these dimensions act as fixed attention biases.
 - Darcet et al., *Vision Transformers Need Registers* (arXiv:2309.16588) — The same phenomenon in vision, with an architectural fix. Reading both makes clear this is about softmax, not about language.
+- Look for them: load any current open model, plot the attention paid to position 0 across heads, and plot the per-coordinate magnitude of a residual stream vector — Twenty lines, and both phenomena are visible immediately. Read the papers above after you have seen the numbers, not before.
 - Anthropic, *Privileged Bases in the Transformer Residual Stream* (transformer-circuits.pub, 2023) — Outlier dimensions from the interpretability side, and what they cost the basis-free picture of the residual stream.

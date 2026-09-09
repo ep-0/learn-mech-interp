@@ -58,6 +58,7 @@ If any of these is still out of reach, the article is not finished.
 - Brown et al., 'Language Models are Few-Shot Learners' (arXiv:2005.14165), sections 1-3 — The original result and its evaluation methodology.
 - Min et al., 'Rethinking the Role of Demonstrations' (arXiv:2202.12837) — The label-correctness result. Read the follow-up literature too, since it has been refined.
 - Olsson et al., 'In-context Learning and Induction Heads' (transformer-circuits.pub, 2022), the behavioral sections — Read only the parts that define and measure the behavior. The mechanism is a later article.
+- Reproduce it: take a few-shot prompt, randomise the labels while keeping the format, and measure how much accuracy actually falls — An afternoon, and it converts the Min et al. result from a claim you have read into one you have seen.
 - Hendel, Geva & Globerson, 'In-Context Learning Creates Task Vectors' (arXiv:2310.15916) — The behavioral observation that function vectors later explain.
 
 ## Where the curriculum uses it

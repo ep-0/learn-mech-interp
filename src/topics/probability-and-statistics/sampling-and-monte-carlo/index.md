@@ -58,6 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 - Blitzstein & Hwang, *Introduction to Probability*, the simulation sections — Sampling mechanics with worked code.
 - Owen, *Monte Carlo theory, methods and examples*, chapters 2 and 8-9 — The reference for Monte Carlo error and variance reduction. Freely available.
+- Implement it: draw from a distribution by inverse transform, then by rejection, then estimate an integral and plot the error against $1/\sqrt{n}$ — An hour of code. The $\sqrt{n}$ rate is the single fact that governs how many samples any interpretability experiment needs, and seeing it emerge is worth more than reading the bound.
 - Holtzman et al., 'The Curious Case of Neural Text Degeneration' (arXiv:1904.09751) — Where top-$p$ comes from, and the argument for why truncation is needed at all.
 - Wasserman, *All of Statistics*, chapter 24 (simulation methods) — A compact statement of the bootstrap and Monte Carlo ideas you will reuse.
 

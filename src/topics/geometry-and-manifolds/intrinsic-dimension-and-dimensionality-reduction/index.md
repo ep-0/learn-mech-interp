@@ -62,6 +62,7 @@ If any of these is still out of reach, the article is not finished.
 
 - Wattenberg, Viégas & Johnson, 'How to Use t-SNE Effectively' (Distill, 2016) — Interactive, and the fastest way to learn what these plots do not mean.
 - Coenen & Pearce, 'Understanding UMAP' (pair-code.github.io) — The same treatment for UMAP, including the hyperparameter sensitivity.
+- Run all three: take one set of model activations and project it with PCA, t-SNE and UMAP, varying perplexity and n_neighbors — The Distill and PAIR pieces above tell you the hyperparameters produce artefacts; doing it yourself is what stops you believing the next projection you are shown.
 - Facco et al., 'Estimating the intrinsic dimension of datasets by a minimal neighborhood information' (Scientific Reports, 2017) — The two-nearest-neighbor estimator, widely used on activations.
 - Ansuini et al., 'Intrinsic dimension of data representations in deep neural networks' (NeurIPS 2019) — The application to network representations, with the hunchback profile result.
 

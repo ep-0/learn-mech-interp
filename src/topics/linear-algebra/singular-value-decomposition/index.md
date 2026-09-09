@@ -56,6 +56,7 @@ If any of these is still out of reach, the article is not finished.
 
 - Trefethen & Bau, *Numerical Linear Algebra*, lectures 4-5 — The best short treatment of the SVD as geometry, from people who also compute it.
 - Strang, *Introduction to Linear Algebra*, chapter 7 — The SVD tied to the four subspaces, plus applications.
+- MIT OCW 18.06SC, Unit III problem sets — Free, with solutions. Compute a small SVD by hand once. It is tedious and it is the only way the relationship to the eigendecomposition of $A^TA$ becomes concrete.
 - Blum, Hopcroft & Kannan, *Foundations of Data Science*, chapter 3 — Best-fit subspaces and the SVD, developed for data rather than for matrices. Freely available.
 - Gavish & Donoho, 'The optimal hard threshold for singular values is 4/sqrt(3)' — Optional, and worth it the first time you have to decide where to truncate a spectrum on real data.
 

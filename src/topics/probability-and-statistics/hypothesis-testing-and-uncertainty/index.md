@@ -59,6 +59,7 @@ If any of these is still out of reach, the article is not finished.
 ## Sources to learn from
 
 - Wasserman, *All of Statistics*, chapters 8 and 10-11 — The bootstrap, testing, and the statements you will want to be precise about.
+- Efron & Tibshirani, *An Introduction to the Bootstrap*, chapters 6-8, with the exercises — The bootstrap is the tool you will reach for most often, because it works when you cannot write down a sampling distribution. Resample something real before trusting it.
 - Efron & Hastie, *Computer Age Statistical Inference*, chapters 10-11 and 15 — The bootstrap and false discovery rates from the people who developed them. Freely available.
 - Greenland et al., 'Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations' (2016) — A list of the misreadings. Read it once and return to it when writing a results section.
 - Gelman & Loken, 'The Garden of Forking Paths' — Free. Why a result can be a false positive with no explicit multiple testing anywhere, because the analysis was chosen after seeing the data. Sweeping layers and reporting the best one is exactly this.

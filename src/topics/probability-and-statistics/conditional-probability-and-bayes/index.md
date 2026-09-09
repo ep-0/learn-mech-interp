@@ -56,6 +56,7 @@ If any of these is still out of reach, the article is not finished.
 ## Sources to learn from
 
 - Blitzstein & Hwang, *Introduction to Probability*, chapter 2 — Conditional probability done thoroughly, including the classic paradoxes that are worth working through.
+- Harvard Stat 110, lectures 2-4 and the corresponding Strategic Practice sets — Free, with solutions. Conditioning is where nearly everyone's intuition is wrong; the problems are what fix it, and Blitzstein has collected the ones that expose the error.
 - Wasserman, *All of Statistics*, chapter 2 — The compact statements.
 - Judea Pearl, *The Book of Why*, chapters 1-3 — Not for the math, but for the distinction between conditioning and intervening, which you will need shortly.
 - Murphy, *Probabilistic Machine Learning: An Introduction*, sections 2.1 and 4.6 — Bayes' rule in ML notation, including the classification setting.
