@@ -1391,16 +1391,16 @@
           "title": "How Chat Models Are Made"
         },
         {
-          "n": 31,
-          "title": "Representations Worth Learning"
-        },
-        {
           "n": 33,
           "title": "Following a Token Through"
         },
         {
           "n": 34,
           "title": "Attention and MLPs"
+        },
+        {
+          "n": 54,
+          "title": "Induction and a First Circuit"
         }
       ]
     },
@@ -1545,16 +1545,16 @@
       "orientation": "Refusal, evaluation awareness, alignment faking, and every model-diffing result compare a base model to a fine-tuned one, so what fine-tuning does is not skippable. In-context learning arrives as a behavior first, deliberately: induction heads and function vectors are proposed mechanisms for it, and you cannot judge a mechanism without a clear statement of the phenomenon it explains. What separates a base model from the chat model built on it?",
       "usedIn": [
         {
-          "n": 45,
-          "title": "Learned and Distributed Control"
-        },
-        {
-          "n": 53,
-          "title": "Comparing Models"
+          "n": 37,
+          "title": "What the Field Is Claiming"
         },
         {
           "n": 54,
           "title": "Induction and a First Circuit"
+        },
+        {
+          "n": 61,
+          "title": "Open-Ended Interpretation"
         },
         {
           "n": 63,
@@ -1731,6 +1731,10 @@
         {
           "slug": "layer-normalization",
           "title": "Layer Normalization"
+        },
+        {
+          "slug": "attention-sinks-and-massive-activations",
+          "title": "Attention Sinks and Massive Activations"
         }
       ],
       "revisit": [
@@ -1905,6 +1909,14 @@
         {
           "slug": "superposition",
           "title": "The Superposition Hypothesis"
+        },
+        {
+          "slug": "vision-circuits",
+          "title": "Circuits in Vision Models"
+        },
+        {
+          "slug": "toy-models-and-model-organisms",
+          "title": "Toy Models and Model Organisms"
         }
       ],
       "revisit": [
@@ -1935,12 +1947,12 @@
           "title": "Directions from Contrast"
         },
         {
-          "n": 48,
-          "title": "Sparse Autoencoders"
-        },
-        {
           "n": 58,
           "title": "Weights Rather Than Activations"
+        },
+        {
+          "n": 61,
+          "title": "Open-Ended Interpretation"
         },
         {
           "n": 65,
@@ -2755,6 +2767,14 @@
         {
           "slug": "ioi-circuit",
           "title": "The IOI Circuit: Discovery and Mechanism"
+        },
+        {
+          "slug": "grokking-and-progress-measures",
+          "title": "Grokking and Progress Measures"
+        },
+        {
+          "slug": "circuit-formation-during-training",
+          "title": "How Circuits Form During Training"
         }
       ],
       "revisit": [
@@ -3080,6 +3100,10 @@
         {
           "slug": "counterfactual-resampling",
           "title": "Counterfactual Resampling"
+        },
+        {
+          "slug": "chain-of-thought-faithfulness",
+          "title": "Chain-of-Thought Faithfulness"
         }
       ],
       "revisit": [
@@ -3295,6 +3319,10 @@
         {
           "slug": "getting-started-in-mi-research",
           "title": "Getting Started in MI Research"
+        },
+        {
+          "slug": "following-the-field",
+          "title": "Following the Field"
         }
       ],
       "revisit": [

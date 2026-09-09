@@ -64,4 +64,4 @@ If any of these is still out of reach, the article is not finished.
 
 ## Where the curriculum uses it
 
-[Feature-Level Model Diffing](/topics/feature-level-model-diffing/), [In-Context Learning and Prompting](/topics/in-context-learning/), [Memorization and Machine Unlearning](/topics/memorization-and-unlearning/), [The Refusal Direction](/topics/refusal-direction/).
+[Feature-Level Model Diffing](/topics/feature-level-model-diffing/), [In-Context Learning and Prompting](/topics/in-context-learning/), [Memorization and Machine Unlearning](/topics/memorization-and-unlearning/), [The Refusal Direction](/topics/refusal-direction/), [Toy Models and Model Organisms](/topics/toy-models-and-model-organisms/).

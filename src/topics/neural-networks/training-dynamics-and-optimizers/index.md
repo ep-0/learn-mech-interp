@@ -65,4 +65,4 @@ If any of these is still out of reach, the article is not finished.
 
 ## Where the curriculum uses it
 
-[Normalization and Residual Connections](/topics/normalization-and-residual-connections/), [Pretraining, Fine-Tuning, and RLHF](/topics/pretraining-finetuning-and-rlhf/).
+[Grokking and Progress Measures](/topics/grokking-and-progress-measures/), [Normalization and Residual Connections](/topics/normalization-and-residual-connections/), [Pretraining, Fine-Tuning, and RLHF](/topics/pretraining-finetuning-and-rlhf/).
