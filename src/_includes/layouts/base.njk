@@ -92,6 +92,9 @@
   {% if page.url == "/plan/" %}
     <script src="/js/plan-progress.js?v={{ buildId }}"></script>
   {% endif %}
+  {% if page.url == "/review/" %}
+    <script src="/js/review.js?v={{ buildId }}"></script>
+  {% endif %}
   {% if page.url == "/notes/" %}
     <script src="/js/notes-page.js?v={{ buildId }}"></script>
   {% else %}

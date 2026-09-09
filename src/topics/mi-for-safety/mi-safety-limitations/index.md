@@ -31,7 +31,7 @@ exitCriteria:
       Failing that, finer-grained interventions: the accounts differ in *how* components interact, so edge-level path patching may discriminate where node-level tests cannot.
 
       **The safety consequence:** an analysis identifying one circuit for a behavior may miss an alternative that also implements it. "We found the mechanism" should read "we found a mechanism sufficient to reproduce the behavior on the inputs we tested."
-  - task: "The article says the right question is not whether an MI tool works, but which threat, model, input distribution, and error rate it has been tested against. Explain why a working detector can still create false confidence."
+  - task: "The right question about an MI tool is not whether it works, but which threat, model, input distribution, and error rate it has been tested against. Explain why a detector that works can still create false confidence."
     answer: |
       Because "works" is a claim relative to conditions, and a detector carries no record of its own conditions into deployment.
 

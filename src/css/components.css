@@ -2227,3 +2227,220 @@
   font-size: 0.9375rem;
   line-height: 1.55;
 }
+
+/* ==========================================================================
+   REVIEW
+   Spaced retrieval over the site's exit criteria. One card at a time: the
+   task, then the worked answer, then a self-grade that sets the next interval.
+   ========================================================================== */
+
+.review-page {
+  max-width: var(--content-width-wide);
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--container-padding) var(--spacing-2xl);
+}
+
+.review-lead {
+  color: var(--color-text-secondary);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Stats ------------------------------------------------------------------- */
+
+.review-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md) 0;
+  margin-bottom: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.review-stat {
+  display: flex;
+  flex-direction: column;
+  min-width: 5.5rem;
+}
+
+.review-stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.review-stat-label {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 0.15rem;
+}
+
+/* The card ---------------------------------------------------------------- */
+
+.review-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-background-subtle);
+  padding: var(--spacing-lg);
+}
+
+.review-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm) var(--spacing-md);
+  justify-content: space-between;
+  margin: 0 0 var(--spacing-md);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.review-task {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+.review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm) var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.review-hint {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.review-answer {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.review-answer > :first-child {
+  margin-top: 0;
+}
+
+.review-answer > :last-child {
+  margin-bottom: 0;
+}
+
+.review-answer ul,
+.review-answer ol {
+  padding-left: var(--spacing-lg);
+}
+
+/* Grading ----------------------------------------------------------------- */
+
+.review-grade {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.review-grade-prompt {
+  margin: 0 0 var(--spacing-sm);
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+}
+
+.review-grade-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.review-last {
+  margin: 0 0 var(--spacing-sm);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  min-height: 1.2em;
+}
+
+/* Messages and settings --------------------------------------------------- */
+
+.review-message,
+.review-loading {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  background: var(--color-background-subtle);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.review-settings {
+  margin-top: var(--spacing-xl);
+  font-size: 0.9375rem;
+}
+
+.review-settings > summary {
+  cursor: pointer;
+  color: var(--color-link);
+}
+
+.review-scope {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+}
+
+.review-scope legend {
+  padding: 0 0.4rem;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.review-scope label {
+  display: block;
+  margin: var(--spacing-xs) 0;
+  cursor: pointer;
+}
+
+.review-reset-row {
+  margin: var(--spacing-md) 0 0;
+}
+
+/* Explanation ------------------------------------------------------------- */
+
+.review-how {
+  margin-top: var(--spacing-2xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.review-how h2 {
+  margin-top: 0;
+}
+
+.review-how p {
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+}
+
+.review-privacy {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 640px) {
+  .review-stats {
+    gap: var(--spacing-md);
+  }
+
+  .review-grade-buttons .btn {
+    flex: 1 1 100%;
+  }
+}
