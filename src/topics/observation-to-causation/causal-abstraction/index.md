@@ -14,6 +14,38 @@ glossary:
   - term: "Interchange Intervention Accuracy (IIA)"
     definition: "The proportion of tested interchange interventions on which the neural network's output matches the high-level causal model's prediction. It measures support for a proposed alignment on the sampled interventions."
 
+exitCriteria:
+  - task: "A model solves a task with 85% accuracy. What is the maximum Interchange Intervention Accuracy any causal hypothesis about it could achieve, and why?"
+    answer: |
+      Roughly 85%. IIA counts the fraction of interchange interventions where the network's post-swap output matches what the high-level model predicts. On the 15% of inputs the network gets wrong, its behavior is not described by any clean causal model — that is what "wrong" means here — so those cases will generally fail the match regardless of which hypothesis you test. Task accuracy is the ceiling.
+
+      This matters for how results are read. When Boundless DAS gave the Left/Right Boundary hypothesis 86–90% IIA on Alpaca at roughly 85% task accuracy, the correct reading is not "90% is a bit short of perfect." It is that the hypothesis is **saturating the ceiling** — essentially every input the model handles correctly is described by the algorithm. That is a much stronger result than the raw number suggests.
+
+      The general point: an IIA figure is uninterpretable without the task accuracy beside it. 70% IIA against a 72%-accurate model and 70% against a 99%-accurate model are opposite findings.
+  - task: "Geiger et al. construct a case where a probe decodes a variable from a representation with perfect accuracy, yet interchange interventions show that representation plays no causal role. Explain how both can be true, and what this implies about probing as evidence."
+    answer: |
+      A probe is a function *you* fit from the representation to a label. Its success establishes that the label is linearly recoverable from the activations you sampled — a fact about the geometry of that representation on that distribution. Nothing about fitting it involves the model's downstream computation.
+
+      The network can carry a variable as a **byproduct** and never read it. Suppose the information arrives at that site as a side effect of some upstream computation, and every downstream component's read weights are orthogonal to the direction carrying it. The probe finds it perfectly; the model ignores it entirely. Swap the representation between inputs differing only in that variable and the output does not move, because nothing downstream was projecting onto it.
+
+      **What this implies:** probing establishes accessibility, which is a *necessary* condition for a causal role and nowhere near a sufficient one. A probing result is a hypothesis about where to intervene next, not a finding about mechanism. The gap is not a technicality — it is the reason the field moved from observational to interventional methods, and probing results reported without a causal follow-up should be read as preliminary.
+  - task: "DAS learns an orthogonal rotation $Q$ of the representation space rather than intervening on neurons directly. Explain what problem the rotation solves and what assumption it builds in."
+    answer: |
+      **The problem it solves:** a high-level causal variable need not align with any neuron or coordinate axis. "Above the lower bound" may be carried by a direction spread across many neurons in the residual stream, which has no privileged basis in the first place. Intervening neuron by neuron can only test axis-aligned hypotheses, and there is no reason the model's variables should be axis-aligned. Learning an orthogonal $Q$ rotates the space so that the direction carrying the variable *becomes* a coordinate, after which a clean coordinate-wise swap is exactly the intervention you wanted. Optimizing $Q$ to maximize IIA is a search over candidate directions.
+
+      **The assumption:** that the variable is carried by a **linear subspace**. The rotation is orthogonal and the intervention is a subspace swap, so a variable encoded through a genuinely nonlinear function of the activations cannot be found this way, and will register as a failed hypothesis rather than as a limitation of the method. This is the linear representation hypothesis imported as a methodological commitment.
+
+      Boundless DAS relaxes a different constraint — it learns each subspace's *dimensionality* rather than fixing it — but the linearity assumption stays.
+  - task: "Wu et al. tested four competing high-level models rather than one. The best scored 86–90% IIA and the others 70–72%. Explain why the comparison carries more weight than the winning number alone would."
+    answer: |
+      A single IIA figure has no scale. Is 88% high? It depends on what an *uninformative* hypothesis scores, and that baseline is not zero. Any hypothesis with roughly the right variables in roughly the right places will capture some of the model's behavior, because the alternatives are not independent — Mid-point Distance and Bracket Identity both correlate with the boundary checks on most inputs. A hypothesis can score respectably by being partially right about a task it barely describes.
+
+      The comparison supplies the missing scale. The 16–20 point gap between Left/Right Boundary and its rivals is the actual evidence: it says the alignment is not explained by generic structure that any plausible account would capture, and it discriminates *between* accounts rather than merely failing to reject one.
+
+      This is pre-registration logic applied to interpretability. Testing one hypothesis and reporting that it fit is weak, because the hypothesis space is large and the fitting procedure (DAS optimizes a rotation) is flexible. Testing several specified in advance and reporting the ranking is much harder to get accidentally right.
+
+      The transfer results — 94% on unseen price brackets, a 2% drop under irrelevant prefixes — do further work of the same kind, showing the alignment is not fitted to the tested inputs.
+
 furtherReading:
   - title: "Geiger et al., *Causal Abstraction: A Theoretical Foundation for Mechanistic Interpretability*"
     url: "https://arxiv.org/abs/2301.04709"

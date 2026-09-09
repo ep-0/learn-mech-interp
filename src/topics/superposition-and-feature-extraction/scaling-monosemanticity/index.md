@@ -12,6 +12,50 @@ glossary:
   - term: "Feature Steering"
     definition: "A technique for controlling model behavior by artificially amplifying or suppressing specific SAE features during inference, effectively pushing model outputs toward or away from concepts those features represent."
 
+exitCriteria:
+  - task: "Clamping the Golden Gate Bridge latent makes the model weave the bridge into every response. State the causal claim this licenses, and three stronger claims it does not."
+    answer: |
+      **Licensed:** the decoder direction for that latent has a causal semantic effect. Setting that coordinate high changes the model's output distribution in a *specific and coherent* way — the responses stay fluent and on-topic-adjacent rather than degenerating, which is what distinguishes a semantic intervention from simply damaging the residual stream.
+
+      **Three claims it does not license:**
+
+      1. **That this is the model's only bridge representation.** Clamping one direction shows that direction is sufficient to induce the behavior. Other directions, distributed across other latents or not captured by this dictionary, may carry the concept too.
+      2. **That the latent's natural activation is necessary for bridge reasoning.** Sufficiency under clamping and necessity under ablation are different experiments, and redundancy routinely separates them.
+      3. **That clean interventions exist for arbitrary concepts.** Golden Gate Bridge is a concrete, frequent, well-attested entity — close to the easiest possible case. Nothing about it predicts that a "deception" latent will steer as cleanly, and that is exactly the extrapolation the safety applications require.
+
+      The progression is the familiar one: activation on bridge text is correlational, clamping is causal, and neither is a mechanism.
+  - task: "One latent responds to Golden Gate Bridge content in English, Japanese, Korean, and Russian, and to images. Say what this establishes about the representation, and what alternative it fails to exclude."
+    answer: |
+      **Establishes:** a single learned direction tracks something that is not tied to one language's token forms. Whatever the model is doing, at least one of its readouts abstracts over surface form — which is a substantive finding, since a direction keyed to the token sequence "Golden Gate" could not fire on Russian text or an image.
+
+      **Fails to exclude:** that the model *also* maintains separate language-specific representations that coexist with this one. Finding a shared direction shows a shared direction exists; it says nothing about what else is there. The model might route Japanese bridge content through a Japanese-specific pathway that feeds this latent late, in which case the latent is a convergence point rather than the representation.
+
+      It also does not exclude a correlate. The dashboard shows the latent fires on these inputs; it does not show the latent encodes *the concept* rather than something reliably co-occurring with it across languages, such as a topical or discourse property.
+
+      The general shape: cross-modal or cross-lingual activation is strong evidence *against* a surface-form account and weak evidence *for* any particular semantic one. It narrows the hypothesis space from one side only.
+  - task: "Safety features suggest three applications: monitoring, steering, and auditing. Rank them by how much they depend on properties of SAEs that have not been established, and name the property each needs most."
+    answer: |
+      **Auditing depends most.** An affirmative safety case — positive evidence that a model's mechanisms are acceptable — requires the decomposition to be **complete**: everything the model represents must appear in the dictionary, or an absence of alarming features means nothing. Completeness is not established, is not measured by any current benchmark, and may not be well defined given feature splitting.
+
+      **Monitoring depends next.** It needs **reliability**: the feature must fire consistently for the concept it names, with adequate sensitivity and specificity. Two known failure modes attack it directly. **Non-uniqueness** — different training runs yield different dictionaries — makes "which feature do we monitor?" unanswerable. **Absorption** — a parent feature failing to fire when a child feature matches — means a monitored latent can go quiet exactly on the specific cases you care about most.
+
+      **Steering depends least**, because it can be validated behaviorally. You clamp, you observe, you measure side effects; the interpretation can be wrong while the intervention still works. It is also the crudest: a single coordinate against a behavior that is not one coordinate.
+
+      The ordering is unfortunate. The application with the strongest safety case is the one whose prerequisites are furthest from established.
+  - task: "The Claude 3 Sonnet SAEs used dictionaries up to 34 million latents, of which about 12 million were active. Explain why the dead-latent rate is not a property of SAEs, and what it is a property of."
+    answer: |
+      A latent is "dead" when it does not activate over **the sample used to assess it**. That makes the rate a joint function of at least five things, none of them intrinsic:
+
+      - **The evaluation sample.** A latent for a rare pattern — a specific script, a niche notation — is dead on a small or narrow corpus and alive on a broader one. Rare features required enormous token counts even in the one-layer study.
+      - **The threshold.** "Activates" needs a cutoff, and moving it moves the count.
+      - **Dictionary size.** A larger expansion produces more latents competing for the same activation mass, so the dead fraction typically rises with width.
+      - **Initialization and optimizer.** Dead latents are partly an optimization failure — a latent whose encoder direction never wins any input receives no gradient and stays dead. Resampling and other tricks exist precisely to rescue these.
+      - **Training data.** What is never seen is never learned.
+
+      So $12$ of $34$ million characterizes *this SAE, measured this way*. Quoting a dead-latent rate as a fact about the method, or comparing rates across studies that differ in any of these, is comparing measurement procedures.
+
+      The same warning applies to the feature count itself, which is likewise a choice as much as a finding.
+
 furtherReading:
   - title: "Templeton et al., *Scaling Monosemanticity*"
     url: "https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html"

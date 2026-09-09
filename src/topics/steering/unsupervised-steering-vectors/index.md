@@ -12,6 +12,46 @@ glossary:
   - term: "MELBO"
     definition: "Mechanistically Eliciting Latent Behaviors in language mOdels. An unsupervised method that discovers steering vectors by optimizing perturbations at an early layer to maximize activation change at a later layer, requiring no labeled examples or contrast pairs."
 
+exitCriteria:
+  - task: "Every contrastive steering method requires the researcher to specify the target behavior. Explain the blind spot this creates and why it matters specifically for auditing."
+    answer: |
+      Contrastive methods are **confirmatory instruments**. You supply positive and negative examples of a named behavior, and the method returns a direction for it. It cannot return a direction for something you did not ask about, because the question is built into the data.
+
+      So an audit using them can only certify the absence of behaviors on the auditor's list. An auditor probing for sycophancy, deception, and harmfulness will find directions for those and learn nothing about anything else — and "anything else" is where the risk concentrates, because a behavior nobody anticipated is exactly the one no evaluation covers.
+
+      The adversarial case makes it sharp. A model fine-tuned with a backdoor contains behavior designed to stay dormant except on a trigger. It is absent from ordinary traffic, so contrast pairs constructed from ordinary behavior contain no examples of it, and no probing for known harm categories can surface it. The auditor's clean report is a statement about their hypothesis list.
+
+      This is the general limitation of hypothesis-driven methods, and it is why an unsupervised discovery method is worth its worse precision: it can return something you would not have asked for.
+  - task: "MELBO optimizes a small perturbation at an early layer to maximize the change in activations at a much later layer. Explain why this objective should surface behaviorally meaningful directions."
+    answer: |
+      The objective selects for **amplification through the model's own computation**. A random direction of norm $R$ added at layer 8 mostly gets attenuated: it is largely orthogonal to what downstream components read, and normalization damps what remains. To produce a large change many layers later, a perturbation must align with directions that the model's computation *reads and acts on* — it has to enter a pathway that propagates rather than dissipates.
+
+      The **layer gap** is what enforces this. Measuring the change immediately after the source layer would reward any large write. Measuring it eight layers before the end forces the perturbation through most of the network, so superficial changes score poorly and only structurally important pathways score well.
+
+      The **norm constraint** completes the argument: without a fixed $R$, the trivial solution is an arbitrarily large vector. Fixing the sphere makes the optimization a search over *directions* rather than magnitudes, and the winners are those with the highest downstream gain per unit input.
+
+      So the objective is a proxy for causal importance that requires no labels — it asks which directions the model is most sensitive to, and the hypothesis is that those correspond to latent behaviors.
+  - task: "The MELBO radius $R$ has a narrow usable band: too small has no behavioral effect, too large produces gibberish. Relate this to the $\\alpha$ parameter in addition steering and say what the shared shape indicates."
+    answer: |
+      It is the same phenomenon with a different name. In both cases the intervention is a vector added to the residual stream, and its magnitude controls a trade between having an effect and remaining in the region where the model's weights were fitted.
+
+      - **Too small:** the perturbation is negligible against the residual stream's own magnitude, and normalization further suppresses anything that does not shift the state's direction appreciably.
+      - **Too large:** the state leaves the distribution of activations the model's own computation produces, and downstream behavior is unconstrained rather than more strongly on-concept. The failure signature is degradation, not exaggeration.
+      - **Intermediate:** coherent but changed behavior — the model still generating from a state it can interpret.
+
+      **What the shared shape indicates:** the usable band is a property of *additive intervention on a curved representation*, not of any particular method. Both are moving along a straight line through a space whose natural states occupy a lower-dimensional, curved region, so both stay valid only within the locally flat neighborhood.
+
+      It also implies that reporting a steering result without the sweep is incomplete. The interesting quantity is the *width* of the coherent band, since a narrow one suggests the direction is barely usable even where it works.
+  - task: "MELBO's objective has many local optima, and different random initializations converge to different vectors. Explain why this is treated as a feature, and what validation the resulting library requires."
+    answer: |
+      **Why a feature:** the optimization is searching for directions the model's computation is unusually sensitive to, and there is no reason there should be only one. Many stationary points is what you expect if the model has many latent behaviors, so each local optimum is a candidate rather than a failure to converge. Running many seeds — and constraining successive vectors to be orthogonal to earlier ones — produces a diverse library instead of rediscovering the same direction.
+
+      This inverts the usual relationship with non-uniqueness. For SAEs, seed-dependent dictionaries are a problem, because the goal is *the* decomposition. Here multiplicity is the product.
+
+      **What validation it requires:** the objective rewards downstream activation change, and nothing in it requires the change to be *behaviorally meaningful*. A vector could maximize activation displacement while producing degenerate output, or exploit a numerical sensitivity with no behavioral correlate. So each vector needs generation under it inspected and characterized, an off-target check that the effect is specific rather than general disruption, and confirmation that the elicited behavior is one the model can produce naturally — otherwise you have found a way to break the model, not a latent behavior.
+
+      The honest framing is a hypothesis generator with high recall and unknown precision.
+
 furtherReading:
   - title: "Mack & Turner, *Mechanistically Eliciting Latent Behaviors in Language Models*"
     url: "https://www.alignmentforum.org/posts/ioPnHKFyy4Cw2Gr2x/mechanistically-eliciting-latent-behaviors-in-language"

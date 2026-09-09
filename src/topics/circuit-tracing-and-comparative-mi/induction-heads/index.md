@@ -17,6 +17,49 @@ glossary:
   - term: "Previous Token Head"
     definition: "An attention head that places substantial weight on the immediately preceding position and writes information about that token. It can supply predecessor-token information to an induction circuit."
 
+exitCriteria:
+  - task: "Explain why a one-layer attention-only transformer cannot implement the induction mechanism, in terms of what each layer's queries and keys are computed from."
+    answer: |
+      In a one-layer model every head's queries and keys are computed from the same initial residual stream: the token embedding plus positional information. There is no earlier attention output for a head to read.
+
+      The induction mechanism requires a query of the form *find a position whose predecessor was $A$*. Matching on that criterion means the key at each source position must carry the identity of the token *before* it — information that is not in that position's embedding and must be put there by some earlier operation. With one layer there is no earlier operation, so no key can carry it.
+
+      A single layer is therefore limited to fixed token-to-token maps, summarized by $W_E W_{QK}^h W_E^T$ for routing and $W_E W_{OV}^h W_U$ for the write, plus positional effects and the mask. That covers bigram statistics, copying, and attention at fixed offsets — but not a criterion computed from context.
+
+      The careful statement is architectural and specific: one attention layer cannot implement *this two-step predecessor-copying mechanism*. It is not a proof that no one-layer network with different components could approximate repeated-pattern behavior some other way.
+  - task: "For the sequence `A B C D A B`, say which position the induction head attends to from position 6 (the second `B`) and what it predicts, then state what the previous-token head had to write for this to work."
+    answer: |
+      From position 6 (`B`), the head attends to **position 3** (`C`) and predicts `C`.
+
+      The rule is *find an earlier occurrence of my current token, and read what followed it*. The current token is `B`, its earlier occurrence is position 2, so the token that followed it is at position 3. The head attends there and its OV circuit copies that token's identity to the output.
+
+      Crucially the head does **not** attend to position 2, the matching token itself. That is the observable signature: attention lands one position *after* the match, which is what produces the characteristic off-diagonal stripe.
+
+      **What the previous-token head had to write:** at every position $i$, the identity of the token at $i-1$. So position 3 carries "I am `C` and my predecessor was `B`." That is what the induction head's query — formed from its own token `B` — matches against, via the keys. Without that write, position 3's key says only "I am `C`," which the query for `B` has no reason to select.
+
+      Check yourself on position 5: the second `A` attends to position 2 (`B`) and predicts `B`.
+  - task: "State the evidence connecting induction heads to the in-context learning phase change, and identify which piece is correlational and which is causal."
+    answer: |
+      **Correlational:** induction-like heads appear in the same narrow training window as the sharp improvement in the in-context-learning score. Co-occurrence in time is suggestive and, on its own, compatible with both being downstream of a third change.
+
+      **Causal, two pieces:**
+
+      1. **Ablation.** Removing the relevant heads in the small models tested substantially reduces the measured in-context-learning score. This is an intervention on the trained model.
+      2. **Architectural manipulation.** Changes that restrict composition delay or weaken the transition. This is an intervention on training itself, and it is the stronger of the two, because it manipulates the proposed cause upstream rather than deleting the result.
+
+      A third piece is structural rather than experimental: one-layer models show no such transition, and one-layer models cannot build the mechanism. The presence of the jump tracks the availability of composition.
+
+      **What the evidence does not settle:** that induction heads are the *only* route to in-context learning, or that the same account holds in large models where ICL is far richer than pattern completion. The claim it supports is that induction circuitry is a real and causally relevant ingredient in the models studied.
+  - task: "In large models, heads are found that match approximately or semantically rather than on exact repeats. Explain why calling them induction heads is a hypothesis rather than an observation."
+    answer: |
+      The name "induction head" was defined by a **mechanism**: K-composition with a previous-token head, producing a key that carries predecessor identity, so the head can attend one past an exact token match and copy. Every part of that is checkable in a small model, and the small-model evidence is what gives the term meaning.
+
+      What is observed in a large model is usually a **pattern**: attention that jumps to a plausible continuation after something resembling a repeat. That is the mechanism's signature, and signatures are not unique. Fuzzy or semantic matching in particular is evidence *against* the literal mechanism, since exact-token matching is what predecessor-identity keys give you. A head that matches paraphrases is doing something the two-head circuit does not explain.
+
+      So the transfer needs its own evidence: which upstream components write the keys this head reads, does composition analysis or path patching show the predecessor pathway, does it behave like an induction head on random repeated tokens (the test that made the original case), and what does the OV circuit copy?
+
+      The general failure is naming by resemblance and inheriting the mechanism for free — the same error as reading a head's function off its attention pattern, one level up.
+
 furtherReading:
   - title: "Olsson et al., *In-Context Learning and Induction Heads*"
     url: "https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html"

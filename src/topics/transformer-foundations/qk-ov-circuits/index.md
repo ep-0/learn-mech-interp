@@ -12,6 +12,42 @@ glossary:
   - term: "QK Circuit"
     definition: "The component of an attention head formed by the product of the query (W_Q) and key (W_K) weight matrices. The QK circuit determines which tokens attend to which other tokens by computing attention scores."
 
+exitCriteria:
+  - task: "In GPT-2 small, $d_{\\text{model}} = 768$ and $d_k = 64$. The QK circuit $W_{QK}^h$ is a $768 \\times 768$ matrix. What is its maximum rank, and what does that bound tell you about what one head can do?"
+    answer: |
+      Rank at most $64$. $W_{QK}^h = W_Q^h (W_K^h)^T$ is a product of a $768 \times 64$ matrix with a $64 \times 768$ matrix, and the rank of a product cannot exceed the smaller inner dimension.
+
+      The consequence is a hard bottleneck on routing. The bilinear form $\mathbf{x}_i W_{QK} \mathbf{x}_j^T$ can only see the projection of each residual state into a $64$-dimensional subspace — $8\%$ of the stream. Everything orthogonal to that subspace is invisible to this head's attention decision, no matter how large it is.
+
+      So any claim that a single head attends on the basis of some rich, many-featured criterion is bounded by $64$ dimensions of evidence. A head can implement "attend to the previous token" or "attend to a repeated token" comfortably; a criterion requiring hundreds of independent features has to be built by composition across heads and layers. The same bound with $d_v$ in place of $d_k$ constrains the OV circuit's write.
+  - task: "State what entry $(i, j)$ means in each of $W_E W_{QK}^h W_E^T$ and $W_E W_{OV}^h W_U$. Then say how you would use one of them to test the claim \"this head copies whatever it attends to.\""
+    answer: |
+      **$W_E W_{QK}^h W_E^T$**, entry $(i,j)$: how much a destination position holding token $i$ attends to a source position holding token $j$, on the basis of token identity alone. A token-to-token relevance matrix.
+
+      **$W_E W_{OV}^h W_U$**, entry $(i,j)$: if the head attends to a source position holding token $i$, how much does that raise the output logit for token $j$? A token-to-logit effect matrix.
+
+      To test a copying claim, use the OV matrix and look at the **diagonal**. Copying means "attending to token $i$ raises the logit for token $i$," so the claim predicts that entry $(i,i)$ is large relative to the off-diagonal entries in row $i$. The standard summary statistic is the fraction of vocabulary rows whose diagonal entry is the row maximum, or a positive-eigenvalue measure of the matrix.
+
+      Two caveats. The matrix only describes the direct path, so in a deep model it omits everything routed through intermediate components. And a head can copy *classes* rather than tokens — raising the logits for all names when it attends to a name — which shows as block structure, not a diagonal.
+  - task: "Why do we study the products $W_Q W_K^T$ and $W_V W_O$ rather than the four matrices individually? Give the mathematical reason, not just the convenience one."
+    answer: |
+      Because the individual matrices are not well defined by the model, and the products are.
+
+      Insert any invertible $M \in \mathbb{R}^{d_k \times d_k}$ between the two factors: replace $W_Q$ with $W_Q M$ and $W_K$ with $W_K (M^{-1})^T$. Then
+
+      $$(W_Q M)\left(W_K (M^{-1})^T\right)^T = W_Q M M^{-1} W_K^T = W_Q W_K^T,$$
+
+      so the model computes exactly the same attention scores while both matrices have changed. The same argument with $W_V W_O$ shows the head's write is unchanged under $W_V \mapsto W_V M$, $W_O \mapsto M^{-1} W_O$. There is a continuous family of parameter settings implementing the identical head.
+
+      Any statement about $W_Q$ alone — its singular values, which directions it emphasizes, its similarity to another head's $W_Q$ — is therefore a statement about an arbitrary choice from that family, not about the model. The products are the invariants, so they are what carries meaning. This is the same lesson as the residual stream's non-privileged basis, one level down.
+  - task: "The end-to-end QK circuit is described as a directly interpretable token-to-token matrix. Explain why it is a poor description of a head in layer 9 of a 12-layer model, and what replaces it."
+    answer: |
+      The object $W_E W_{QK}^h W_E^T$ computes attention scores as if the residual states at both positions were the raw token embeddings. That is close to true at layer 0, where the stream *is* the embedding plus positional information. By layer 9 the stream is the embedding plus the writes of nine layers of heads and MLPs, and the embedding term is typically a small part of it.
+
+      So the matrix describes only the **direct embedding path** — the contribution to the attention score attributable to bare token identity. In a deep layer that path may account for very little of the observed score, and a head that looks uninteresting under this matrix may be routing on features that no token-level analysis can see.
+
+      What replaces it is a decomposition in **feature** space rather than token space: expand each residual state into the contributions that built it, and attribute the bilinear score to pairs of (query-side contribution, key-side contribution). [Circuit tracing](/topics/circuit-tracing/) develops this as QK attribution, using sparse features as the expansion basis.
+
 furtherReading:
   - title: "Elhage et al., *A Mathematical Framework for Transformer Circuits*"
     url: "https://transformer-circuits.pub/2021/framework/index.html"

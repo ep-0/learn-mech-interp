@@ -12,6 +12,35 @@ glossary:
   - term: "Logit Diff Amplification (LDA)"
     definition: "A technique for surfacing rare model behaviors by sampling from a distribution that amplifies the logit-level differences between two model checkpoints (e.g., before and after fine-tuning), making training-induced behavioral changes more frequent and easier to detect."
 
+exitCriteria:
+  - task: "Rewrite the LDA update as $(1+\\alpha)\\,\\text{logits}_{\\text{after}} - \\alpha\\,\\text{logits}_{\\text{before}}$ and say what geometric operation this is. Then state what $\\alpha = -1$ and $-1 < \\alpha < 0$ do."
+    answer: |
+      It is **linear extrapolation in logit space**: move along the line from the before model to the after model and continue past the after model by a factor $\alpha$. At $\alpha = 0$ you sample from the after checkpoint unchanged.
+
+      **$\alpha = -1$:** the coefficients become $0$ and $+1$, giving $\text{logits}_{\text{before}}$ exactly. You recover the before checkpoint's distribution — the far endpoint of the same line.
+
+      **$-1 < \alpha < 0$:** interpolation between the two checkpoints, sampling from a distribution partway back toward the before model. This *suppresses* training-induced changes rather than amplifying them, which is a useful control: a behavior attributed to fine-tuning should weaken monotonically as $\alpha$ runs from positive through zero to $-1$, and one that does not was probably not introduced by this training stage.
+
+      One subtlety the linear form hides: the difference is recomputed autoregressively at every prefix, so the amplified generator is not a fixed model anywhere on the line. It is a sampling procedure that consults both checkpoints at each step, which is why it is not equivalent to a checkpoint produced by "more training."
+  - task: "A behavior occurs in 0.01% of samples. Explain why LDA is preferable to simply sampling more, and what the amplified samples do and do not establish."
+    answer: |
+      **Why not sample more:** at $0.01\%$ you need on the order of $100{,}000$ generations to see ten examples, and each must be reviewed — and reviewed by someone who already knows what to look for, since the behavior is defined by whatever you failed to anticipate. The cost is prohibitive and the detection step is the weak link.
+
+      LDA changes the **sampling distribution** rather than the sample count. By extrapolating the logit difference, tokens that gained relative logit under training become much more likely, so training-associated behaviors surface at a rate that moderate sampling can find. This is the right lever precisely because the behavior of interest is *defined* as something training introduced.
+
+      **What amplified samples establish:** that this behavioral tendency was introduced or strengthened by this training stage, and what it looks like — enough to construct targeted evaluations for the unamplified model.
+
+      **What they do not establish:** the base rate in deployment. A behavior visible at $\alpha = 4$ may be vanishingly rare at $\alpha = 0$, and the amplified generator is not the deployed model. Nor do they establish that the behavior is *reachable* naturally: extrapolation past the after checkpoint can produce output no setting of the real model would generate, in the same way that over-large steering leaves the distribution.
+  - task: "LDA needs two checkpoints. Say what this requirement rules in and out as an application, and how it compares with the access a behavioral evaluation needs."
+    answer: |
+      **Rules in:** any comparison where you hold both endpoints of a training stage — base versus RLHF'd, before and after a fine-tune, checkpoint $n$ versus checkpoint $n{+}k$ during a run. The natural users are model developers auditing their own training, and researchers with open weights at multiple stages.
+
+      **Rules out:** auditing a model you did not train. Given only a deployed model, there is no before checkpoint, so LDA cannot be applied at all — and that is exactly the third-party auditing setting where a hidden backdoor is most concerning. It also cannot attribute a behavior to a *stage* if only the endpoints of the whole pipeline are kept.
+
+      **Compared with behavioral evaluation:** a black-box evaluation needs only query access and works on any model, which is its great advantage; its disadvantage is the $0.01\%$ problem — it can only find what its prompts elicit.
+
+      So the two occupy opposite corners: LDA needs privileged access and buys enormous sensitivity to *changes*; behavioral evaluation needs nothing and is blind to rare behavior. Neither substitutes for the other, and the gap between them is a large part of why auditing a model you did not train remains hard.
+
 furtherReading:
   - title: "Betley et al., *Emergent Misalignment*"
     url: "https://arxiv.org/abs/2502.17424"

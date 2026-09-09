@@ -11,6 +11,37 @@ glossary:
   - term: "Linear Representation Hypothesis"
     definition: "The hypothesis that neural networks represent concepts as linear directions in activation space, so that adding or subtracting these directions corresponds to adding or removing the associated concept."
 
+exitCriteria:
+  - task: "A linear probe fails to decode a property you believe the model represents. Give three distinct explanations, only one of which is \"the model does not represent it linearly.\""
+    answer: |
+      1. **The parameterization is wrong.** This is the Othello lesson: probes for board state failed under an absolute black/white coordinate frame and succeeded under a *mine/theirs* frame relative to the player to move. The representation was linear all along; the target was described in the wrong coordinates.
+      2. **The data is insufficient or the classes are unbalanced.** A linear probe on a $768$-dimensional space with a few hundred examples can fail from variance alone, and a rare positive class can be missed by a probe that maximizes accuracy.
+      3. **The property is not represented at that layer, or not on that distribution.** The model may compute it later, earlier, or only on inputs your probing set does not contain.
+
+      Only after ruling these out does "nonlinearly encoded" become the leading explanation — and even then it competes with "not represented at all."
+  - task: "Two unit feature directions sit $85°$ apart. Feature A is active at strength $3$ and feature B is not active at all. What does a linear read for B return, and why is the model willing to accept that?"
+    answer: |
+      The read is the dot product of the residual stream with $\mathbf{d}_B$. With $\mathbf{r} = 3\,\mathbf{d}_A$, that is $3\cos 85° \approx 3 \times 0.0872 \approx 0.26$. So B reads as weakly active when it is not active at all — a false positive of about $0.26$ against a true activation that would be around $3$.
+
+      The model accepts it because of **sparsity**. The interference cost is only paid when an interfering feature is on, and if features are active on a small fraction of inputs, the expected number of simultaneously active interferers is small. The alternative is worse: with only $d_{\text{model}}$ orthogonal directions available, refusing interference means refusing to represent the feature at all. A $0.26$ contamination on rare occasions beats a permanent zero.
+  - task: "A probe decodes part-of-speech from layer 6 activations at 95% accuracy. Design the experiment that distinguishes \"linearly decodable\" from \"causally used,\" and say what each possible outcome would license you to conclude."
+    answer: |
+      Intervene along the probe direction and measure a downstream behavior that should depend on part-of-speech. Concretely: take the probe's weight vector as a direction, and at layer 6 either ablate the component of the residual stream along it, or add a scaled copy that flips the decoded label — then measure the change in the model's output on cases where part-of-speech is load-bearing.
+
+      - **Behavior changes as predicted**: the direction is causally used, at least on this distribution. This is the strongest available claim, and it is still distribution-bound.
+      - **Behavior does not change**: the information is present but the downstream computation does not read this direction. Decodability was a fact about the geometry, not about the algorithm.
+      - **Behavior changes unpredictably**: you have probably damaged something the direction is entangled with, which is why an ablation should be paired with a control that removes a random direction of the same norm.
+  - task: "Explain why the linear representation hypothesis is what makes superposition possible. What about superposition would break if concepts were encoded nonlinearly instead?"
+    answer: |
+      Superposition is a packing argument, and packing requires that the things being packed add. Under the LRH the residual stream is $\mathbf{r} \approx \sum_i a_i \mathbf{d}_{f_i}$: features superimpose by vector addition, each is recovered by a dot product, and the cost of packing two features together is exactly the cosine of the angle between them. That gives a currency — interference — that can be traded off against capacity, and the trade is favourable because high-dimensional space contains exponentially many nearly-orthogonal directions.
+
+      If a concept were encoded nonlinearly, say by a threshold on some function of several coordinates, there would be no additive superposition of two such codes and no angle to quantify the interference. Two nonlinear codes sharing a space would collide in ways that depend on the specific inputs rather than on a geometric quantity you can bound. The whole cost-benefit analysis that predicts *when* a model adopts superposition would have nothing to compute.
+  - task: "You label neuron 347 \"baseball\" from its top-50 activating examples. State the experiment that would reveal the label is incomplete, and explain why top-$k$ examples cannot reveal it on their own."
+    answer: |
+      Sample activations across a broad, diverse corpus rather than ranking a narrow one, and inspect the full activation distribution — particularly the moderately-high band, not just the extreme tail. A neuron that is genuinely also a citation detector will show a second population of citation contexts, possibly at slightly lower activation than the baseball peak. A second test: hold the label fixed and search for inputs that should *not* activate it, then check whether any do.
+
+      Top-$k$ cannot reveal this because it is a selection procedure that conditions on the answer. If baseball contexts activate slightly more strongly than citation contexts, the top 50 are all baseball by construction, and the citation population is invisible however large it is. The failure is the same one that made the wolf neuron look monosemantic: an interpretation tested only on the examples that generated it. The general rule is to search for counterexamples to a label, not for more confirmations of it.
+
 furtherReading:
   - title: "Park, Choe & Veitch, *The Linear Representation Hypothesis and the Geometry of Large Language Models*"
     url: "https://arxiv.org/abs/2311.03658"

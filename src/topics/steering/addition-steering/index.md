@@ -6,6 +6,35 @@ prerequisites:
   - title: "Contrastive Activation Addition (CAA)"
     url: "/topics/caa-method/"
 
+exitCriteria:
+  - task: "ActAdd computes a steering vector from a single contrast pair such as \"Love\" and \"Hate.\" Say what this vector contains besides the concept, and what changes when the same construction is averaged over many pairs."
+    answer: |
+      It contains the **entire difference** between two activations. "Love" and "Hate" differ in sentiment and also in token identity, length, frequency, the topics each word tends to co-occur with, and whatever positional structure the two prompts induce. Subtraction does not separate these; the vector is their sum.
+
+      Steering with it therefore produces effects attributable to any of them, and there is no way from the result to tell which. If the output becomes more affectionate, that is consistent with a sentiment direction and equally consistent with a topic direction that happens to correlate with affectionate language.
+
+      **Averaging over many pairs** ([CAA](/topics/caa-method/)) cancels whatever varies independently across pairs, shrinking idiosyncratic components roughly as $1/\sqrt{N}$ while the shared concept survives at full magnitude.
+
+      The useful thing about ActAdd is not that it is better but that it is *minimal*: it shows the intervention works at all, with one pair and one vector addition, which is a striking demonstration of how linear the relevant structure is. It is a proof of concept, and treating a single-pair vector as a concept direction is where the trouble starts.
+  - task: "The steering coefficient $\\alpha$ has a narrow usable range: too small and nothing happens, too large and output becomes incoherent. Give the mechanism at each end."
+    answer: |
+      **Too small:** the added vector is negligible relative to the residual stream's own magnitude at that layer. The stream carries contributions from every prior component, and a small addition changes the direction of the combined state by a fraction of a degree. Downstream reads are essentially unchanged, and layer normalization further suppresses anything that does not shift the *direction* of the vector.
+
+      **Too large:** the activation is pushed to a region no forward pass produces. The model's weights were fitted on the distribution of states its own computation generates, and outside that region their behavior is unconstrained — not wrong in a systematic way, simply not determined by anything in training. The output degrades into incoherence rather than becoming more strongly on-concept, which is the signature of leaving the distribution rather than of over-steering.
+
+      The geometric account is that the concept is carried on a curved structure, and the addition follows a straight line: small steps stay in the locally flat neighborhood where the linear approximation holds, large steps leave it. This predicts the failure is not a tuning inconvenience but a consequence of treating a curved representation as flat.
+  - task: "A single steering vector supports both amplification ($\\alpha > 0$) and suppression ($\\alpha < 0$). State the assumption this bidirectionality depends on, and how it could fail."
+    answer: |
+      **The assumption:** the concept is encoded as a signed scalar along one direction, with the negative half meaning "less of it" or "the opposite." Under that model, moving backwards along the direction is the same operation as moving forwards, mirrored.
+
+      **How it fails:**
+
+      1. **The concept may not have a meaningful negative.** "Talks about the Golden Gate Bridge" has an opposite only in the sense of *absence*, and absence is not a direction — it is everywhere else in the space. Negative steering then pushes toward whatever happens to be anti-correlated in the contrast set rather than toward a coherent opposite.
+      2. **Feature activations are often nonnegative.** If the model's own encoding is a ReLU-gated magnitude, negative values are outside the represented range entirely, and the negative half of the line is off-distribution by construction.
+      3. **The two directions may be asymmetric in effect.** Suppression can be redundantly implemented — other pathways supply the behavior — while amplification is not, so $\alpha = -3$ and $\alpha = +3$ do very different amounts of work.
+
+      The check is empirical and cheap: sweep $\alpha$ through both signs and verify the response is monotone and roughly symmetric. Asymmetry is evidence the one-dimensional signed model is wrong.
+
 furtherReading:
   - title: "Turner et al., *Steering Language Models With Activation Addition*"
     url: "https://arxiv.org/abs/2308.10248"

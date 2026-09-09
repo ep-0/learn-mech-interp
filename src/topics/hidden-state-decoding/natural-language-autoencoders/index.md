@@ -13,6 +13,37 @@ glossary:
   - term: "Activation Reconstructor (AR)"
     definition: "The decoder half of an NLA. A truncated copy of the target model that reads an explanation and maps it back to a reconstructed activation through a learned affine head."
 
+exitCriteria:
+  - task: "Supervised verbalizers and unsupervised methods like SAEs each have an opposite limitation. State both, and say which one an NLA is designed to escape."
+    answer: |
+      **Supervised verbalizers** (LatentQA, Activation Oracles) can only be taught to report things we can already label. The training data comes from planted personas, labelled topics, properties we installed on purpose — so the training distribution is bounded by what we thought to ask, and everything else rests on generalization we cannot check.
+
+      **Unsupervised methods** (logit lens, SAEs) need no labels, but express the answer as a weighted combination of atoms from a **fixed dictionary** — tokens, or learned features. The logit lens can only say what a state favours in vocabulary space; an SAE returns latent indices that still require a separate human interpretation step before anyone can read them.
+
+      So one is open-ended in output but closed in what it can discover; the other is open in discovery but closed in output form.
+
+      An **NLA escapes both** by construction: the objective is unsupervised (reconstruction, no labels), so it can surface content nobody anticipated, and the bottleneck is a paragraph of English, so the output is readable without a further interpretation step. The bottleneck's format supplies the readability that an SAE's index cannot, and the objective supplies the openness a supervised verbalizer cannot.
+  - task: "The NLA objective is reconstruction error through a text bottleneck, and rewards neither readability nor faithfulness explicitly. Explain why readable explanations nevertheless emerge, and what that means for trusting them."
+    answer: |
+      The objective only requires that the reconstructor can rebuild the activation from the text. In principle the verbalizer could learn an arbitrary code — a string that carries the information efficiently and means nothing to a human — since nothing in the loss prefers English.
+
+      Readability comes from **two extra ingredients**: a supervised warm start, which puts the verbalizer in a region of parameter space where it is already writing descriptions, and a penalty keeping it near that initialization, which prevents drift toward a private code. Both are outside the reconstruction objective.
+
+      **What this means for trust:** reconstruction success certifies that the text carries enough *information* to rebuild the activation. It does not certify that the text *means* what it appears to mean. A description could be informative to the reconstructor through features of its phrasing that have nothing to do with its apparent content — a steganographic channel riding on word choice.
+
+      So two properties need separate evidence: that the explanation is informative (measured by fraction of variance explained) and that its human reading corresponds to what makes it informative. The second is where a control belongs — perturb the description's content while preserving its surface, and check that reconstruction degrades.
+  - task: "The NLA reports fraction of variance explained, $\\text{FVE} = 1 - \\mathcal{L}/\\mathbb{E}\\|h_l - \\bar{h}_l\\|^2$, rather than raw reconstruction loss. Say what the denominator is and why the normalization matters."
+    answer: |
+      The denominator is the variance of the activations around their mean — the reconstruction error you would get from the trivial predictor that always outputs $\bar{h}_l$ and ignores the explanation entirely.
+
+      So FVE measures performance **relative to a null model**. At $\text{FVE} = 0$ the explanation carries nothing beyond what a constant would; at $1$ the reconstruction is exact.
+
+      **Why it matters:** a raw loss is uninterpretable without knowing the scale of the activations. Residual-stream norms vary by layer, model, and site, so a squared error of $0.4$ could be excellent or worthless. Reporting it invites comparison across settings where it means different things.
+
+      The mean baseline is also the right null specifically. Activations are not centred at the origin and are far from isotropic; a large fraction of their raw magnitude is a shared offset that any method reproduces for free. An unnormalized loss would credit the explanation for that.
+
+      This is the same discipline as the no-activation baseline for oracles and the shuffled-label baseline for manifold fits: state what a method that knows nothing would score, and report the gap.
+
 furtherReading:
   - title: "Bricken et al., *Towards Monosemanticity*"
     url: "https://transformer-circuits.pub/2023/monosemantic-features/index.html"

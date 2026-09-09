@@ -249,6 +249,33 @@ function validate() {
         errors.push(`${topic.slug}: 'status' must be "placeholder" or omitted, got "${data.status}"`);
       }
 
+      // Exit criteria are the article's self-test: a task the reader attempts
+      // cold, and a worked answer to score the attempt against. Retrieval
+      // practice without feedback produces confidence rather than memory, so a
+      // task without an answer is worse than no task at all. Orientation pages
+      // (the More Resources block, and the diagnostic that opens the MI
+      // textbook) test nothing and are exempt.
+      const testsNothing = block.slug === "more-resources" || topic.slug === "mi-prerequisites";
+      if (data.status == null && !testsNothing) {
+        if (!Array.isArray(data.exitCriteria) || data.exitCriteria.length < 3) {
+          errors.push(`${topic.slug}: published article needs at least 3 'exitCriteria' entries`);
+        }
+      } else if (data.exitCriteria && data.status === "placeholder") {
+        errors.push(`${topic.slug}: placeholders state exit criteria in the brief, not in frontmatter`);
+      }
+      for (const item of data.exitCriteria || []) {
+        if (!item.task) {
+          errors.push(`${topic.slug}: an exitCriteria entry has no 'task'`);
+          continue;
+        }
+        if (!item.answer) {
+          errors.push(`${topic.slug}: exit criterion "${item.task.slice(0, 60)}" has no worked 'answer'`);
+        } else if (String(item.answer).trim().length < 80) {
+          errors.push(`${topic.slug}: exit criterion "${item.task.slice(0, 60)}" has an answer too short ` +
+            `to score an attempt against`);
+        }
+      }
+
       // 8. Validate citation keys
       const citeMatches = raw.matchAll(/\{%[-\s]*cite\s+"([^"]+)"\s*[-\s]*%\}/g);
       for (const m of citeMatches) {
@@ -538,6 +565,14 @@ export default function(eleventyConfig) {
   eleventyConfig.addFilter("mdInline", function (value) {
     if (value == null) return "";
     return md.renderInline(String(value));
+  });
+
+  // Render a block of Markdown from a data file: paragraphs, lists, display
+  // math. Exit-criteria answers are written in frontmatter rather than in the
+  // article body, so they need the full pipeline, not just the inline one.
+  eleventyConfig.addFilter("mdBlock", function (value) {
+    if (value == null) return "";
+    return md.render(String(value));
   });
 
   // Add base plugin for path prefix support on GitHub Pages

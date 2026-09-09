@@ -8,6 +8,34 @@ prerequisites:
   - title: "Principal Component Analysis"
     url: "/topics/principal-component-analysis/"
 
+exitCriteria:
+  - task: "LAT extracts a classifier's weight vector; CAA computes a mean difference. Say when the two directions agree, what each additionally supplies, and what neither supplies."
+    answer: |
+      **When they agree:** when the class covariances are well behaved — roughly, when the two classes have similar, near-isotropic spread. The discriminative optimum then points along the line joining the means. Where covariances differ or the data has strong anisotropic structure, a fitted classifier will tilt away from the mean difference to exploit directions where the classes are separable but not displaced.
+
+      **LAT additionally supplies** held-out classification accuracy, a direct measure of how linearly accessible the distinction is. CAA gives you a vector with no built-in measure of how well it separates anything.
+
+      **CAA additionally supplies** robustness. It has no fitting step, so it cannot overfit to dataset-specific correlates — the property that makes difference-in-means transfer better across topics than trained logistic regression.
+
+      **Neither supplies** causal use or semantic purity. Both are correlational: a direction that separates the labels, obtained two ways. Whether the model reads it, and whether it tracks the concept rather than something reliably co-occurring with it, requires interventions and counterexample tests that neither procedure performs.
+  - task: "LAT borrows the population-level perspective from cognitive neuroscience rather than studying individual components. State the methodological claim this makes, and the cost it accepts."
+    answer: |
+      **The claim:** the useful unit of analysis is the *representation* — a direction in high-dimensional activation space corresponding to a behavioral concept — rather than any individual component. Neuroscientists do not primarily study single neurons; they study population activity patterns, because cognition is carried by the population and single units are noisy, polysemantic, and individually uninformative. LAT applies the same reasoning to transformers, and the polysemanticity results give it independent support: single neurons *are* uninformative for exactly the reason the neuroscientists found.
+
+      **The cost:** you get a handle without a mechanism. A concept direction says the model represents something and lets you read and possibly write it. It does not say which components compute it, how it is produced, or what consumes it. "Honesty is at layer 15" is a useful operational fact and not an explanation.
+
+      This is a genuine division of labor rather than a defect. LAT-style work buys practical control quickly, which is what monitoring and steering need; circuit-level work buys mechanism slowly. The error is treating a direction as if it were a mechanism, and it is easy to make because a direction that steers reliably *feels* like understanding.
+  - task: "A LAT probe separates honest from deceptive completions with high held-out accuracy. List the tests that would have to pass before calling the direction an honesty direction."
+    answer: |
+      1. **Cross-topic transfer.** The direction found on one domain should classify honesty in others. Failure means you found a topic-specific correlate; success narrows the alternatives without eliminating them.
+      2. **Cross-format transfer.** New prompt templates, phrasings, and conversation structures. This catches template artifacts, which are the most common confound in contrastively constructed datasets.
+      3. **Counterexamples by construction.** Deliberately build cases where honesty and the likely confounds come apart: honest statements phrased hedgingly, deceptive ones phrased confidently. If the probe follows confidence rather than honesty, this is where it shows.
+      4. **A causal test with an off-target control.** Intervene along the direction and check that honesty-dependent behavior moves as predicted (Cause), and that unrelated capabilities do not (Isolate).
+      5. **Adversarial pressure.** Whether the direction survives inputs constructed to defeat it, which is the condition any deployment faces.
+      6. **A supervised baseline comparison.** If difference-in-means on the same data does as well, the fitted classifier's extra capacity bought nothing and may have cost transfer.
+
+      High held-out accuracy on the training distribution passes none of these. It is where the investigation starts.
+
 furtherReading:
   - title: "Zou et al., *Representation Engineering: A Top-Down Approach to AI Transparency*"
     url: "https://arxiv.org/abs/2310.01405"

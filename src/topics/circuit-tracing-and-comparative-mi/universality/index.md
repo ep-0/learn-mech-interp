@@ -12,6 +12,46 @@ glossary:
   - term: "Universality"
     definition: "The hypothesis that different neural networks trained on similar tasks converge on similar internal representations and circuits, suggesting that certain computational solutions are natural or optimal for given problems."
 
+exitCriteria:
+  - task: "Distinguish weak from strong universality, say which the current evidence supports, and explain why the stronger claim is harder to establish."
+    answer: |
+      **Weak:** different models develop features serving similar *functions* — both detect sentence boundaries — while the directions and implementations differ. Analogous, not identical.
+
+      **Strong:** different models develop the *same* features, with directions that map onto one another. Representationally equivalent, not merely functionally similar.
+
+      The evidence favors **weak**. Close one-to-one correspondences appear for a minority of units — the 1–5% of neurons that match across seeds — and nothing supports a shared universal feature dictionary.
+
+      **Why strong is harder:** correlated activations do not establish identical computation. Two units can fire on the same inputs while feeding entirely different downstream consumers, so a correspondence found by activation similarity is a correlational match between two models, inheriting all the weaknesses of correlational evidence *twice over*. Establishing the strong claim needs matched *function*: intervene on the unit in model A and on its counterpart in model B and show the same downstream consequences.
+
+      There is also a measurement problem. "Same feature" is only defined relative to an alignment method, and CKA, matched neurons, and crosscoders can disagree. A claim of strong universality has to name the level of abstraction at which it is asserted.
+  - task: "Universal neurons are 1–5% of neurons, monosemantic and interpretable, with large weight norms and low activation frequency. Connect this profile to the superposition phase diagram, and say what the connection predicts."
+    answer: |
+      The phase diagram says features escape superposition when they are **high-importance and low-sparsity** — worth an orthogonal dimension of their own. The universal neurons' profile is close to a direct read of that region. Large weight norm is a proxy for importance: the model has invested magnitude in this unit and downstream components read it strongly. Monosemanticity is what escaping superposition *means* at the neuron level.
+
+      So the two findings support each other from different directions. Superposition predicts a small privileged set that gets dedicated capacity; universality finds a small set that is both interpretable and stable across seeds. Plausibly they are the same set, and for the same reason: a feature important enough to be worth a dedicated dimension in one training run is important enough to be worth one in every training run, because the pressure comes from the data and the objective rather than from the seed.
+
+      **The prediction:** universality should be *graded by importance*, not uniform. Sweep a measure of feature importance and the cross-seed match rate should rise with it, with superposed low-importance features matching poorly because their particular packing geometry is an arbitrary solution to a packing problem with many optima.
+
+      Low activation frequency is the one part that cuts against the simple story, since the phase diagram wants dense features to escape — worth noticing rather than smoothing over.
+  - task: "CKA has largely superseded SVCCA for comparing representations across models trained from different initializations. Explain what each measures and why the difference matters here."
+    answer: |
+      **SVCCA** selects the most important directions in each representation by SVD, then measures pairwise correlation between those directions. It is a comparison of **coordinate systems**.
+
+      **CKA** compares similarity matrices over inputs: for each model, how similar is input $i$'s representation to input $j$'s? It is a comparison of **relational structure**, and it is invariant to any orthogonal transformation of the space.
+
+      The difference matters because the residual stream has no privileged basis. Two models can encode identical structure in bases related by an arbitrary rotation — and different initializations essentially guarantee they will. SVCCA sees that rotation as disagreement and reports low similarity for models that are representationally equivalent. CKA is blind to it by construction, so it detects the correspondence that is actually there.
+
+      The general lesson recurs throughout the curriculum: a comparison should be invariant to the symmetries of the thing being compared. A method that is sensitive to an arbitrary choice will report differences that reflect the choice rather than the models.
+
+      The cost is that CKA gives an aggregate score and names no features. It says representations are similar without saying which parts correspond, which is why crosscoders are the complement rather than the competitor.
+  - task: "SAEs trained on a Transformer and on Mamba find mostly similar features, and Mamba's induction circuit is structurally analogous with an off-by-one motif difference. Explain why this is the strongest form of universality, and what would be needed to make the claim causal."
+    answer: |
+      It is the strongest form because the two systems share almost nothing at the level of computational primitives. A Transformer routes information by attention — an input-dependent, all-to-all comparison. Mamba uses a selective state space — a recurrence with input-dependent gating. Seed differences vary the starting point of the same optimization; architecture differences vary the space of computations available. Convergence across that gap is evidence that the structure is coming from the **data and objective**, which is the strongest available argument that any of this is about language rather than about transformers.
+
+      The off-by-one motif is a useful detail: it shows the correspondence is at the algorithmic level and not a coincidence of implementation, since a spurious match would not preserve the algorithm while shifting the indexing.
+
+      **To make it causal:** feature-level similarity from SAEs is still a correspondence between two learned dictionaries, matched by activation. What is needed is intervention on both sides. Ablate the Mamba induction components and show the in-context-learning behavior degrades as it does in a Transformer; steer along a matched feature in each model and show the same behavioral change; patch and show the analogous circuit mediates the same counterfactual. Until then the claim is that two SAEs found similar-looking dictionaries — which the linear-representation and packing arguments predict even where the mechanisms differ.
+
 furtherReading:
   - title: "Gurnee et al., *Universal Neurons in GPT-2 Language Models*"
     url: "https://arxiv.org/abs/2401.12181"

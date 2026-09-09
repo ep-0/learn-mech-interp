@@ -10,6 +10,51 @@ glossary:
   - term: "Persona Vector"
     definition: "A contrastive activation direction constructed to represent a named behavioral trait, using responses elicited by opposing trait-conditioned prompts."
 
+exitCriteria:
+  - task: "CAA averages activation differences over many contrast pairs rather than using one. Say precisely what the averaging cancels and what it preserves, and why a single pair is unreliable."
+    answer: |
+      A single difference $\mathbf{h}^{(+)} - \mathbf{h}^{(-)}$ contains the *entire* difference between two activations, not just the semantic part. "Love" and "Hate" differ in sentiment, and also in length, topic associations, token identity, and whatever positional structure the two prompts happen to induce. Nothing in the subtraction separates these.
+
+      **Averaging cancels** whatever varies independently across pairs. If pair $i$ carries an idiosyncratic component $\boldsymbol{\epsilon}_i$ with no consistent direction, then $\frac{1}{N}\sum_i \boldsymbol{\epsilon}_i$ shrinks roughly as $1/\sqrt{N}$.
+
+      **Averaging preserves** whatever is shared across pairs — by construction, the concept every pair was designed to isolate.
+
+      **Why one pair is unreliable:** you get signal plus one draw of noise, with no way to tell them apart, and the noise may be larger than the signal. Steering along it produces effects attributable to length or topic as readily as to sentiment.
+
+      The critical caveat: averaging only cancels what is *not* systematic. A confound present in every positive prompt and absent from every negative one survives the average perfectly, and is indistinguishable from the concept. The method's quality is bounded by the contrast design, not by $N$.
+  - task: "CAA's steering effect peaks around layers 12–17 of Llama 2 and is near zero at early and late layers. Explain both ends of the curve."
+    answer: |
+      **Early layers, no effect:** representations are still close to token space, encoding surface features — identity, position, local syntax. The abstract concept you are trying to steer is not yet represented, so the difference vector computed there is a difference between token-level encodings, and adding it changes surface properties rather than the behavior. There is no concept direction to add along.
+
+      **Late layers, no effect:** the model has largely committed. By the last few layers the residual stream is being organized for the unembedding, and the computation that *decides* the behavior has already run. A push there can only nudge the final logits, not change what the model concluded — you are intervening downstream of the decision.
+
+      **Middle layers, peak effect:** concepts are represented in their most abstract form, and enough computation remains downstream for a change to propagate into the behavior. Both conditions are necessary, and only the middle satisfies both.
+
+      The curve is also a useful diagnostic. A steering result reported without a layer sweep hides whether the chosen layer was the best of many tried; and a *flat* profile would be suspicious, suggesting the intervention works by disruption rather than by moving a represented variable.
+  - task: "A CAA vector points from the negative class mean to the positive class mean *for the dataset you built*. Describe the failure this invites and how you would detect it."
+    answer: |
+      **The failure:** any property that differs systematically between your positive and negative prompts becomes part of the vector, and averaging does not remove it — averaging removes what varies *across* pairs, and a systematic confound does not vary.
+
+      Concretely, for sycophancy: if agreeing responses in your dataset tend to be shorter, more enthusiastic, or start with "Yes," the vector is partly a length-and-enthusiasm direction. Steering along it produces more agreeable-sounding output, the evaluation scores it as sycophancy, and the interpretation is wrong.
+
+      **Detection:**
+
+      1. **Vary the contrast construction.** Build a second dataset where the confound runs the other way — agreeing responses that are long and hedged — and check that the two vectors are similar. Cosine similarity between vectors from independent designs is the cheapest useful test.
+      2. **Test off-target behavior.** Steer and measure properties that should not move, the Isolate half of Cause-and-Isolate.
+      3. **Probe the vector for the confound.** Project activations that vary only in the suspected nuisance property and see whether they separate along it.
+      4. **Check transfer.** A vector capturing the concept should work on prompts from a different distribution; one capturing a template artifact should not.
+  - task: "The CAA vector and a difference-in-means probe direction are computed identically. Say what this duality means and what has to hold for the reading direction to work as a writing direction."
+    answer: |
+      The same object serves both roles: project an activation onto it to *read* how much of the concept is present, or add a multiple of it to *write* the concept in. One computation, two uses — reading a concept and writing it are the same geometry viewed from either side.
+
+      **What must additionally hold for writing to work:**
+
+      1. **The direction must be causally used, not merely present.** A direction can separate the classes because it is a byproduct of the computation while no downstream component reads it. Reading it works; writing it does nothing. This is the probing correlation-causation gap, and it does not go away when you reuse the vector.
+      2. **The additive model must be adequate.** Writing assumes the concept enters as a linear offset. If the model represents it multiplicatively, contextually, or on a curved manifold, adding a constant vector approximates the right change only locally.
+      3. **The result must stay in distribution.** A large coefficient moves the activation to a region no forward pass produces, where behavior is unconstrained — which is why steering degrades into incoherence rather than saturating.
+
+      So the duality is a genuine economy and a trap: it makes the writing intervention *available* without making it *valid*.
+
 furtherReading:
   - title: "Rimsky et al., *Steering Llama 2 via Contrastive Activation Addition*"
     url: "https://arxiv.org/abs/2312.06681"

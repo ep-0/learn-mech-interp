@@ -18,6 +18,41 @@ glossary:
   - term: "Rotary Position Embedding"
     definition: "A positional method that rotates pairs of query and key coordinates by position-dependent angles, making their dot product depend on relative offset."
 
+exitCriteria:
+  - task: "Show that RoPE makes the attention score depend on the relative offset, starting from $\\widetilde{\\mathbf{q}}_i = \\mathbf{q}_i R_i$ and $\\widetilde{\\mathbf{k}}_j = \\mathbf{k}_j R_j$. Then say what RoPE does *not* do that an additive scheme does."
+    answer: |
+      $$\widetilde{\mathbf{q}}_i \widetilde{\mathbf{k}}_j^T = \mathbf{q}_i R_i (\mathbf{k}_j R_j)^T = \mathbf{q}_i R_i R_j^T \mathbf{k}_j^T.$$
+
+      Each $R_i$ is block-diagonal with $2\times2$ rotations by angles $i\omega_k$. Rotations compose by adding angles and $R_j^T = R_{-j}$, so $R_i R_j^T = R_{i-j}$ blockwise. The score is $\mathbf{q}_i R_{i-j} \mathbf{k}_j^T$: it depends on the two positions only through their difference, even though each rotation was applied using an absolute index.
+
+      What RoPE does **not** do is write anything into the residual stream. It acts after the query and key projections, inside the head, and it preserves the norm of each vector — it changes alignment, not magnitude. So there is no positional vector for a later MLP to read, no positional component in a logit-lens projection, and nothing positional in the values the head moves. Position exists only in the query-key interaction of each head, which is why "rotary position *embedding*" is a slightly misleading name.
+  - task: "You want to change a head's positional input while holding token content fixed. Say where to intervene in a model with learned absolute embeddings and in a RoPE model, and why the sites differ."
+    answer: |
+      **Learned absolute.** Position is added at the input: $\mathbf{r}^0_i = W_E[t_i,:] + \mathbf{p}_i$. You can substitute a different $\mathbf{p}_i$ at layer 0 and the content term is untouched. But note what you have done: the positional vector now flows through *every* downstream component — attention, MLPs, and the direct residual path to the unembedding — so this is a global intervention, not a head-specific one.
+
+      **RoPE.** There is nothing positional in the residual stream to patch. Position enters after the query and key projections of each individual head, so the intervention site is the rotated query or key of that head. This is narrower and cleaner — you can change one head's positional input while every other head is untouched.
+
+      The RoPE intervention comes with its own caveat: substituting a rotation for a different offset creates a query-key pair that no real input would produce, so the result is a model-internal counterfactual. It answers "what does this head do if its positional signal says $\Delta = 5$," which is a well-posed question, but not the same as "what does the model do on a prompt where the tokens are five apart."
+  - task: "Sinusoidal encodings and RoPE both produce well-defined values at position 100,000, far beyond any training length. Explain why that does not establish that the model works there."
+    answer: |
+      Being defined and being in-distribution are different properties. The formula supplies an input at position $100{,}000$; nothing about it constrains what the trained weights do with that input.
+
+      Concretely, what breaks. The fast rotation frequencies wrap many times over a long context, so two positions at very different distances can receive nearly identical phase — the encoding stops being injective in the range that matters. Attention was trained to distribute over a few thousand positions and its softmax normalizes over every eligible source, so at $100{,}000$ tokens the mass per position is orders of magnitude smaller than anything seen in training. And any learned algorithm that relies on a particular attention-score scale — a head that needs to put $0.9$ on one position — has its scores computed under offsets it never encountered.
+
+      The general form of the error is treating a definition as a guarantee. The model is a function fitted on a distribution of lengths, and the encoding is only its input format. Context-extension methods that rescale positions or frequencies are attempts to move the *out-of-distribution* inputs back toward the training range, and they still require measurement rather than argument.
+  - task: "A head reliably attends one position back. Name three distinct mechanisms consistent with that observation, and design the prompt manipulation that separates them."
+    answer: |
+      1. **Genuinely positional.** The head's query-key computation implements offset $-1$, whatever tokens are present.
+      2. **Content match that correlates with distance.** The head attends on some content property that in ordinary text usually sits one token back — the previous word of a compound, or a preceding article.
+      3. **Both, in a mixture.** The positional term supplies a baseline preference (an ALiBi-style recency bias, or a learned positional component) that a content match then reinforces.
+
+      **The manipulation: hold one factor fixed and vary the other.**
+
+      - *Vary content, hold offset.* Feed sequences of random tokens, where no content relationship exists at offset $-1$. If the diagonal-minus-one stripe survives, the rule is positional.
+      - *Vary offset, hold content.* Take a prompt where the head attends to some token, then insert filler between that token and the destination so the same content now sits at offset $-3$. If attention follows the content, the rule is content-based; if it stays at $-1$, positional.
+
+      The random-token test is the stronger one, and it is exactly how previous-token heads were originally established — the same design that showed induction heads operate on sequences that could not have been memorized.
+
 furtherReading:
   - title: "Su et al., *RoFormer: Enhanced Transformer with Rotary Position Embedding*"
     url: "https://arxiv.org/abs/2104.09864"

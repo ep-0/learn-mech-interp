@@ -8,6 +8,33 @@ prerequisites:
   - title: "Activation Patching"
     url: "/topics/activation-patching/"
 
+exitCriteria:
+  - task: "Patchscopes uses a target prompt as a learned readout. Explain why the resulting continuation depends on four things, and what that means for interpreting it."
+    answer: |
+      The continuation is a joint function of: **the source activation** (what you want to learn about), **the mapping** applied if source and target models or layers differ, **the target prompt** (which asks a particular question in a particular framing), and **the target model** (which brings its own priors and capabilities).
+
+      Only the first is the object of study. The other three are instrument settings, and each can dominate. A target prompt like `"[PATCH] is the capital city of"` strongly constrains the output space; the model may complete it plausibly from almost any patched state, because the prompt has already decided the answer is a country. A more capable target model can supply information the source state never carried.
+
+      **What this means for interpretation:** a single continuation is uninterpretable. What licenses a claim is **agreement across variations** — the same answer under paraphrased target prompts, under different mappings, and different answers when the source state changes. Plus known-answer controls: patch a state whose content you already know and check the readout recovers it.
+
+      The framing "prompt as a learned readout" is the useful one. Like a trained probe, it has capacity, it can be fitted to give you what you expect, and it needs held-out validation.
+  - task: "Different target prompts elicit different information from the same source representation. Say why this is the framework's main strength and its main hazard."
+    answer: |
+      **The strength:** one framework, many questions, with no retraining. `"x x x x [PATCH]"` recovers next-token prediction and reproduces the logit lens; `"[PATCH] is also known as"` asks about entity identity; `"[PATCH] is a type of"` asks about category. The readout is reprogrammed by editing a string, so a researcher can ask open-ended questions of an activation that no fixed method anticipated. This is what lets Patchscopes unify several prior methods as special cases.
+
+      **The hazard:** the target prompt is an uncontrolled researcher degree of freedom, and it is invisible in the reported result. If several prompts were tried and the informative one reported, the finding is partly a description of the search. Worse, a well-chosen prompt can *manufacture* an answer: ask `"[PATCH]: the capital city of"` and you will get a country name from a state carrying no geographic content, because the prompt admits nothing else.
+
+      The two are the same property seen twice — flexibility in what can be asked is flexibility in what can be elicited. The discipline is to fix the prompt set before looking, report all of it, and include a prompt whose predicted answer is "nothing informative" so that failure has somewhere to show up.
+  - task: "When source and target are different models, a more capable model can decode a smaller one's representations. State the additional assumption this requires and how it could fail silently."
+    answer: |
+      **The assumption:** the two representational spaces are aligned well enough that the source vector means something in the target model's space. The models have different widths, different bases, and independently learned geometry, so a vector from one is not natively interpretable by the other — a mapping is required, and the readout is only as good as that mapping.
+
+      **How it fails silently:** the target model is a fluent language model and will produce a coherent description of whatever it receives, including a vector that is nonsense in its space. A misaligned patch does not raise an error; it produces a plausible sentence generated mostly from the prompt and the target model's priors, with the patched state contributing noise.
+
+      The failure is worse when the target is *more capable*, because a stronger model is better at producing something plausible from little. Capability and reliability run in opposite directions here.
+
+      **The control:** patch source states with known content and verify the cross-model readout recovers it, and compare against a baseline — a mean source state, or a state from an unrelated input — passed through the same mapping. If the baseline yields comparably confident descriptions, the pipeline is reading its own prompt.
+
 furtherReading:
   - title: "Ghandeharioun et al., *Patchscopes*"
     url: "https://arxiv.org/abs/2401.06102"

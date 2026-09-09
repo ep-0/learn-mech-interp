@@ -103,6 +103,8 @@ Article content here...
 - `title` -- the article's display title
 - `description` -- shown below the title on the article page
 - `order` -- integer position within the block (1-indexed, contiguous, no gaps)
+- `furtherReading` -- where to go for depth the article does not have room for ([details](#further-reading))
+- `exitCriteria` -- at least three tasks with worked answers, for the reader to test themselves against ([details](#exit-criteria))
 
 **Optional fields:**
 - `prerequisites` -- list of articles the reader should complete first
@@ -163,6 +165,7 @@ Run `npm run build`. The build-time validator checks:
 - The learning plan schedules every article exactly once, and its article and lesson references resolve
 - No TeX reaches the built pages unrendered
 - Every published article has `furtherReading`, and every entry has a title, a note, and an absolute URL if it has one at all
+- Every published concept article has at least three `exitCriteria`, and every entry has a task and a worked answer long enough to score an attempt against
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
 - Every `/topics/<slug>/` key in `pageContexts.json` matches a live article
@@ -343,6 +346,38 @@ The build keeps the plan and the curriculum in sync:
 - every lesson has an orientation, every part has an intro, and every forward link points later
 
 So **adding an article means adding it to a lesson**, or the build fails and names the article. That is deliberate: a plan that silently omits new material is worse than no plan.
+
+## Exit criteria
+
+Every published concept article carries an `exitCriteria` list in its frontmatter, rendered as a numbered set of collapsed tasks after the body:
+
+```yaml
+exitCriteria:
+  - task: "Two features have $\\mathbf{f}_i \\cdot \\mathbf{f}_j = 0.3$. Compute the ratio of the expected interference cost when each is active on 50% of inputs versus 1%."
+    answer: |
+      The expected cost scales as $(\mathbf{f}_i \cdot \mathbf{f}_j)^2 P(x_i \neq 0) P(x_j \neq 0)$, so
+      the geometric term $0.09$ is common to both and cancels.
+
+      - Dense: $0.09 \times 0.5 \times 0.5 = 0.0225$
+      - Sparse: $0.09 \times 0.01 \times 0.01 = 9 \times 10^{-6}$
+
+      A ratio of $2500$...
+```
+
+Both fields are Markdown, including `$math$`. `task` is rendered inline, `answer` as blocks, so an answer can use paragraphs, lists, and display math.
+
+**The task is a retrieval prompt, not a comprehension check.** The reader attempts it cold, in writing, then opens the answer to score themselves. That is the whole design: the answer stays collapsed so the attempt happens first, because retrieval followed by feedback is what builds durable memory, and reading an answer feels like learning without being it.
+
+Write tasks that require **inference**, not recognition. Definitional recall is the cheap kind and the least useful. The forms that work:
+
+- **Compute something.** Give numbers and make the reader do the arithmetic. Interference costs, attention weights, loss in nats, circuit counts, base rates.
+- **Name what a result does not establish.** Most articles report a finding with a boundary; ask the reader to locate it.
+- **Design the experiment that separates two explanations.** State a result, ask for the control.
+- **Apply the idea to a case the article does not discuss.**
+
+Answers are **worked**, not restated. An answer that repeats the article's sentences gives the reader nothing to score against. Show the arithmetic, name the alternatives, say which observation would discriminate. Answers run roughly 100 to 200 words; the build rejects anything under 80 characters as too short to score an attempt against.
+
+Three to six per article. Orientation pages test nothing and are exempt: the More Resources block and `mi-prerequisites`, which is itself a diagnostic. Placeholders state their exit criteria in the brief, under "What you should be able to do afterward", and the build rejects the frontmatter field on them.
 
 ## Further reading
 

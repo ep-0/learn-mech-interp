@@ -14,6 +14,40 @@ glossary:
   - term: "Probing Classifier"
     definition: "A simple model (typically linear) trained on neural network activations to predict properties of the input, used as a diagnostic tool to test what information is encoded at different layers of a network."
 
+exitCriteria:
+  - task: "Probes are usually restricted to be linear. State the reason, and explain what a high-accuracy nonlinear probe would leave ambiguous."
+    answer: |
+      The restriction bounds how much computation the *probe* can perform. A successful linear probe shows the labeled distinction is separable by a single affine boundary — the property is not merely present but linearly accessible, which is the form in which every downstream component of the model could read it, since attention and MLP blocks begin with linear maps.
+
+      A nonlinear probe with enough capacity can *compute* the target rather than detect it. Given rich activations, an MLP probe can derive part-of-speech from features that only correlate with it, or reconstruct a property from information that jointly determines it. High accuracy then tells you the activations contain enough raw material for your probe to solve the task, which is a much weaker statement, and one that gets weaker as the probe gets stronger. In the limit, a sufficiently powerful probe on the token embeddings alone would succeed and prove nothing about the layer.
+
+      Simplicity makes the result *interpretable*, not automatically correct. A linear probe can still track a correlate, and a nonlinear probe may recover real nonlinear structure. The gap between the two probe classes is informative only alongside control tasks, sample-complexity comparisons, and baselines.
+  - task: "$k$-sparse probing finds that a single middle-layer neuron in a large model classifies \"is Python code\" accurately, while \"contains a digit\" in early layers needs $k = 5$ or more. Connect both results to superposition, and say what the rotation baseline establishes."
+    answer: |
+      **$k = 1$ success** means one neuron coordinate makes the labels separable — a feature aligned with the privileged basis, which is what escaping superposition looks like at the neuron level. "Is Python code" is plausibly high-importance and dense within a document, the profile the phase diagram says earns a dedicated dimension.
+
+      **Needing $k \geq 5$** means the feature is spread across several polysemantic neurons, each individually responding to unrelated things. That is a distributed code — the predicted signature of superposition — and it appears in early layers, where the model is representing many low-level properties at once.
+
+      **The rotation baseline:** randomly rotate the activation space and repeat $k=1$ probing. Performance drops. This establishes that the model's *own* neuron coordinates are unusually aligned with these labels, rather than the result being an artifact of high-dimensional geometry — in $d$ dimensions, some direction is always well aligned with anything, so without this control a $k=1$ success is uninterpretable.
+
+      What none of it establishes: that the neuron is monosemantic (it may respond to other things the probe did not test), that its label is complete, or that the model reads it. Sparse probing locates candidates for causal tests.
+  - task: "Two representations both support 95% probe accuracy on a property. Explain what MDL probing distinguishes between them, and why it is still a correlational measure."
+    answer: |
+      **What MDL distinguishes: how much work the probe had to do.** One representation may support $95\%$ with a simple weight vector and a few hundred examples; the other may need thousands of examples and a high-rank weight matrix to reach the same number. Accuracy at convergence hides this entirely.
+
+      MDL reframes the question as compression: a representation that encodes the property *accessibly* compresses the labels well, so the description length of probe-plus-labels is short. High MDL means the probe is performing significant computation to recover the property — which is the nonlinear-probe concern reappearing quantitatively, and it is measurable even within the linear probe class.
+
+      This matters because the interesting claim is usually comparative: does layer 8 encode syntax more accessibly than layer 3? Two accuracies of $95\%$ answer no; two very different description lengths answer yes.
+
+      **Still correlational:** MDL measures how easily *a probe you trained* can access the property. Nothing in it touches whether the model's own downstream computation reads that information. A property can be maximally accessible — trivially decodable by the simplest probe — and completely ignored. Closing that gap requires intervention, which is what amnesic probing and activation patching supply.
+  - task: "A structural probe finds a linear map $B$ under which $\\|(\\mathbf{h}_i - \\mathbf{h}_j)B\\|_2^2$ approximates parse-tree distance. State what this establishes about the representation, and what the levelling-off with rank tells you."
+    answer: |
+      **What it establishes:** the representations encode *relational structure*, not just labels. Tree distance between every pair of words is recoverable from a single linear transform of the activation geometry — a much stronger claim than "a probe can tell nouns from verbs," because one map has to satisfy all pairwise constraints simultaneously. That is hard to achieve by accident.
+
+      **The levelling-off with rank:** as the rank of $B$ increases, reconstruction improves and then plateaus. The plateau locates a **lower-dimensional syntactic subspace** — beyond some rank, extra dimensions add nothing, so syntax occupies a bounded portion of the representation rather than being smeared across all of it. The plateau's location is the estimate of that subspace's size.
+
+      **What is still missing:** the probe is fitted, and $B$ is a learned object with real capacity — a rank-$k$ bilinear form over hundreds of dimensions. To show the model *uses* the geometry rather than merely permitting its extraction, you would need the usual escalation: a control task fitted to random tree structures to establish what the probe can achieve on nothing, and an intervention showing that perturbing the recovered subspace changes behavior that depends on syntax.
+
 furtherReading:
   - title: "Hewitt & Liang, *Designing and Interpreting Probes with Control Tasks*"
     url: "https://arxiv.org/abs/1909.03368"

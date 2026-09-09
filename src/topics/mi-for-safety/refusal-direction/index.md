@@ -12,6 +12,35 @@ glossary:
   - term: "Refusal Direction"
     definition: "A direction derived from activation differences between harmful and harmless prompts that causally mediates much of the tested models' refusal behavior. It is a mechanism for refusal, not a complete representation of safety or harmfulness."
 
+exitCriteria:
+  - task: "State the three predictions that make \"refusal is a linearly represented concept\" testable, and say why the third is needed alongside the first two."
+    answer: |
+      1. **Separation:** a single direction in activation space distinguishes harmful from harmless prompt processing.
+      2. **Ablation disables refusal:** projecting the direction out makes the model comply with harmful requests.
+      3. **Addition induces refusal:** adding the direction makes the model refuse *harmless* requests.
+
+      **Why the third is needed:** the first two together are consistent with the direction being necessary for refusal without being the representation of it. Ablation removes a component and behavior changes, which — as the RWKV gibberish case shows — can happen because the state was displaced rather than because refusal-specific information was removed. Damage is a general explanation for a behavioral drop.
+
+      Addition rules that out, because it makes a *specific and unlikely* prediction: not that the model degrades, but that it refuses a cake recipe. Disruption does not produce coherent, on-topic refusals of harmless requests. Only something carrying refusal content does.
+
+      The pair is the sufficiency-necessity structure at its cleanest, and the asymmetry is instructive — the necessity half admits a mundane alternative explanation, the sufficiency half does not.
+  - task: "The refusal direction is computed by exactly the CAA procedure, differing only in the target concept. Say what this generality demonstrates and what it warns about."
+    answer: |
+      **What it demonstrates:** the contrastive framework is indifferent to what the concept *is*. The same three steps — collect contrasting prompts, cache activations, average the difference — produce a sentiment direction, a sycophancy direction, or a refusal direction. That a safety-critical behavior shaped by extensive RLHF yields to the same method as a stylistic tendency is a substantive finding about how such behaviors are represented.
+
+      **What it warns about:** the method's ease is exactly the safety problem. Computing the direction needs only white-box access, a few hundred prompt pairs, and one matrix subtraction — no optimization, no fine-tuning, no gradient. Anyone who can run an open-weights model can do it in an afternoon, and the resulting jailbreak modifies no weights and leaves general capability intact.
+
+      It also warns about the interpretation. The generality means the method will return a direction for *whatever* contrast you construct, and a returned direction is not evidence that the concept is what organizes the model. The refusal case earns its claim through the ablation and addition results across 13 models — not through the vector's existence, which was never in doubt.
+  - task: "One model-specific direction mediates much of the refusal behavior across 13 models from 1.3B to 72B. Say what \"model-specific\" is doing in that sentence and why the scale range matters."
+    answer: |
+      **"Model-specific"** means the direction must be recomputed for each model — there is no universal refusal vector transferable across them. That is expected: the residual stream has no privileged basis, and two independently trained models express the same structure in unrelated coordinate systems. What recurs is the *organization* — one direction suffices — not the vector.
+
+      This is weak universality in the sense of the [universality](/topics/universality/) article: the same functional structure, different implementations. A finding of a shared literal direction would have been far more surprising and would have needed a different explanation.
+
+      **Why the scale range matters:** $1.3$B to $72$B is more than fifty-fold, spanning several architecture families and training pipelines. A result at one scale could reflect a quirk of that model's capacity or fine-tuning. Holding across the range makes "refusal is gated by one direction" a claim about how safety training shapes models generally, rather than about one checkpoint.
+
+      It also sharpens the safety implication: the vulnerability does not shrink as models get larger, which is the direction one might have hoped for and which nothing here supports.
+
 furtherReading:
   - title: "Arditi et al., *Refusal in Language Models Is Mediated by a Single Direction*"
     url: "https://arxiv.org/abs/2406.11717"

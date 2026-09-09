@@ -11,6 +11,28 @@ glossary:
   - term: "Mechanistic Interpretability"
     definition: "A subfield of AI safety research focused on reverse-engineering the internal computations of neural networks to understand how they process information and produce outputs, moving beyond behavioral analysis to study the mechanisms themselves."
 
+exitCriteria:
+  - task: "A colleague presents a saliency map over input tokens and says it explains *how* the model produced its answer. Locate their method on the three axes this article uses, and name the axis on which their claim overreaches."
+    answer: |
+      Saliency is **black-box** (it needs only inputs, outputs, and gradients with respect to the input, never an account of internal components), **post-hoc**, and **correlational**. The overreach is on the black-box axis. A saliency map answers *which inputs mattered*, which is a claim about the function $f: X \to Y$. "How" is a claim about the mechanism between them — which heads moved what information from where, and what the MLPs did with it. Two models could produce identical saliency maps by entirely different internal algorithms, and saliency cannot separate them.
+
+      The correlation axis is a second, weaker objection: a high attribution score does not establish that ablating that input changes the output in the predicted way.
+  - task: "Explain why a single attention head that has learned the skip trigrams `keep … in → mind` and `keep … at → bay` will also make errors on `keep … at mind`, and say what the model would need in order to avoid them."
+    answer: |
+      The QK circuit and the OV circuit are separate computations within a layer, and neither can condition on the other. When "keep" appears, the head cannot know which of "in" or "at" will follow, because causal masking hides the future. So it writes *both* completions into what it broadcasts. Later, the QK circuit matches the query at "at" to the key at "keep" — the match succeeds — and the OV circuit then moves the whole bundle, including "mind", without any ability to check that "bay" was the completion paired with "at".
+
+      Avoiding it requires conditional logic of the form *if the trigger is `at`, then retrieve `bay`*. That is a product of two input-dependent quantities, which one attention layer cannot compute; it needs composition across at least two layers, where the first layer's output can shape the second layer's query or key.
+  - task: "A head in layer 1 writes its output entirely into a subspace orthogonal to every direction a head in layer 5 reads from. Can head 5 use head 1's output? Now suppose the subspaces overlap by a small angle — what changes?"
+    answer: |
+      No. The residual stream is a sum, and head 5's read is a linear projection onto the directions in its query, key, and value weight matrices. If head 1's write is orthogonal to all of them, the projection is exactly zero, and head 1's contribution is invisible to head 5 no matter how large it is. Orthogonality is the mechanism by which components avoid interfering with each other.
+
+      With a small overlap the read is nonzero but attenuated by the cosine of the angle. Head 5 receives a faint copy of head 1's signal. Whether that faint copy matters depends on its magnitude relative to everything else head 5 reads — which is exactly the interference budget that makes superposition workable, and the reason a small overlap is not automatically evidence of a communication channel the model uses.
+  - task: "Olah et al. offer the three claims as an analogue of cell theory, one of whose three claims turned out false. Which of features, circuits, and universality is the best candidate for the false one, and what observation would settle it?"
+    answer: |
+      Universality, and the article says as much: it is the most speculative of the three, and the evidence is strongest for simple, forced motifs (previous-token heads, induction heads) that arise in almost any model trained on sequential data. Those may be universal for the same reason that many species evolved eyes — the task makes the solution nearly inevitable — which is a much weaker claim than a shared vocabulary of computational motifs.
+
+      What would settle it: take two models of similar capability trained on comparable data with different seeds or architectures, identify a *complex* circuit in one, and search for its analogue in the other under a matching procedure fixed in advance. Repeated failure on complex circuits while simple heads keep matching would show universality holds only where the task forces it. Note the asymmetry — finding a match is much easier to do accidentally than failing to find one, so the pre-registered matching procedure is doing most of the work.
+
 furtherReading:
   - title: "Olah et al., *Zoom In: An Introduction to Circuits*"
     url: "https://distill.pub/2020/circuits/zoom-in/"

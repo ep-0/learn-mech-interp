@@ -10,6 +10,33 @@ glossary:
   - term: "Attention Probe"
     definition: "A probing classifier that uses a learned attention mechanism to aggregate per-token hidden states into a single representation for classification, replacing fixed pooling strategies like mean pooling or last-token selection."
 
+exitCriteria:
+  - task: "A sequence-level property must be classified from a $[\\text{seq\\_len}, d_{\\text{model}}]$ matrix of hidden states. Say what mean pooling and last-token selection each discard, and give a task where each fails."
+    answer: |
+      **Mean pooling** discards *localization*. Every position is weighted equally, so a signal concentrated in a few tokens is divided by the sequence length. It fails on jailbreak detection in a long prompt: the adversarial construction may occupy ten tokens out of eight hundred, and its contribution to the mean is diluted by a factor of eighty.
+
+      **Last-token selection** discards *everything else*. It works when the model has aggregated the relevant information into the final position — which autoregressive models often do, since that is where the next-token prediction is formed — but it assumes the aggregation happened and that it preserved what you are looking for. It fails when the property is carried at the position where the evidence appeared and never propagated, or when the last token is punctuation or a template artifact whose representation is dominated by formatting.
+
+      The deeper point is that this is a **researcher choice made before training**, it substantially affects probe accuracy, and it is usually reported as an implementation detail. A negative probing result — "this information is not present at layer 8" — may be a fact about the pooling rule rather than about the layer.
+  - task: "Attention probes are more complex than linear probes. Explain why the added complexity does not obviously violate the probe-simplicity principle, and state the question for which it would."
+    answer: |
+      The attention operates **across token positions**, not across feature dimensions. It learns *where to look*; the classification is still a linear function of the attended representation, so the probe cannot synthesize features that were not already present in the hidden states. The worry behind probe simplicity — that a powerful probe computes the property rather than detecting it — concerns capacity to transform features, and this mechanism has none.
+
+      It is not free of learned computation. Position selection is a real degree of freedom, and it can exploit incidental structure: a probe that learns to attend to whichever tokens happen to correlate with the label in the training set is fitting the dataset, not reading the model.
+
+      **Which question it violates depends on what you are asking.** "Is this information accessible *somewhere* in the sequence?" — an attention probe is the right tool, and fixed pooling would understate accessibility. "Is this information accessible *at this token position*?" — the attention has answered a different question, and a per-token linear probe is required. The probe's design encodes the claim, so the claim has to be stated before the probe is chosen.
+  - task: "Improving a baseline's token pooling from max-pooling to attention-based pooling dropped SAE probes' win rate against it from 19.6% to 8.7%. Interpret this in light of the aggregation problem."
+    answer: |
+      It shows that a large share of the SAE probes' apparent advantage was an **aggregation artifact**, not a representational one.
+
+      SAE probes aggregate differently by construction: sparse features are typically max-pooled or summed over positions, and the sparsity means a feature firing strongly at one token survives aggregation intact. That is a *localization-preserving* pooling. Comparing it against a dense baseline that was mean- or max-pooled compared two things at once — the representation and the aggregation — and credited the difference entirely to the representation.
+
+      Give the baseline attention-based pooling and it can also concentrate on the informative tokens. More than half the gap disappears.
+
+      **The lesson generalizes:** when two methods differ in several respects, a performance gap attributes to whichever difference the authors were studying, unless the others are controlled. The correct comparison holds aggregation fixed and varies only the representation.
+
+      It also recovers a positive finding: for sequence-level properties, *how you pool* can matter more than *what you pool*, which makes the aggregation choice worth reporting and sweeping rather than fixing by convention.
+
 furtherReading:
   - title: "Kim & Kim, *Attention-Based Probes* and the mean-pooling baselines they replace"
     note: "Read whichever attention-probe paper the article cites alongside a simple mean-pooling baseline implemented yourself; the gap is smaller than expected on many tasks."

@@ -6,6 +6,39 @@ prerequisites:
   - title: "Ablation Steering"
     url: "/topics/ablation-steering/"
 
+exitCriteria:
+  - task: "Reading, addition, and ablation are described as the three basic linear operations on a one-dimensional subspace. State each as a geometric operation, and say why they are three rather than one."
+    answer: |
+      Given a unit direction $\hat{\mathbf{r}}$ and an activation $\mathbf{h}$:
+
+      - **Reading:** project onto the subspace, $\mathbf{h}\cdot\hat{\mathbf{r}}$ — a scalar measuring how much of the concept is present.
+      - **Addition:** translate along the subspace, $\mathbf{h} + \alpha\hat{\mathbf{r}}$ — change the coordinate without touching anything orthogonal.
+      - **Ablation:** project onto the orthogonal complement, $\mathbf{h} - (\mathbf{h}\cdot\hat{\mathbf{r}})\hat{\mathbf{r}}$ — set the coordinate to zero.
+
+      They are three because they answer three different questions. Reading is *measurement* and changes nothing. Addition *sets* the coordinate to something larger without regard to its current value. Ablation *clears* it regardless of what it was.
+
+      Note that addition and ablation compose to something neither gives alone: clear the coordinate, then set it to a chosen value. That is [affine concept editing](/topics/affine-steering/) minus its re-centering term, and it is the operation you usually want — replacement rather than push or erase.
+
+      The framing also makes the natural generalization visible. All three extend from a direction to a $k$-dimensional subspace by replacing scalar projection with subspace projection, which is what concept-erasure methods do.
+  - task: "Explain what you learn from a direction that reads well but steers poorly, and from one that steers well but reads poorly."
+    answer: |
+      **Reads well, steers poorly:** the concept is linearly *decodable* at this site but the direction is not causally used. The information is present as a byproduct — computed upstream, correlated with the label, and not read by anything downstream. This is the probing correlation-causation gap made concrete, and it is the more common case. It does not mean the concept has no causal representation; it means this direction is not it.
+
+      **Steers well, reads poorly:** the intervention works through a mechanism the probe does not capture. Several possibilities: the direction is a control input rather than a representation — pushing along it perturbs a gate or a routing decision rather than setting a value; or the intervention succeeds by displacing the state, so the behavior change is disruption rather than concept installation; or the concept is represented nonlinearly, and the linear probe fails while an additive push still has the right effect locally.
+
+      The asymmetry is worth keeping. Reading is cheap and weak evidence; steering is a genuine causal test and still admits the disruption explanation. Neither alone establishes that a direction *is* the model's representation of a concept — which is why the third capability in the framework, analysis of what the intervention reveals, is a separate step rather than a summary of the first two.
+  - task: "The framework unifies read, control, and analyze. Explain why treating a good probe direction as an automatically good control direction is a mistake, using the shape of the two experiments."
+    answer: |
+      The two operations use the same vector for different purposes, and each carries its own assumptions.
+
+      **Probing** asks whether a hyperplane separates two labeled sets of *observed* activations. It succeeds on the distribution of states the model naturally produces, and its criterion is discriminative — the direction only has to separate, not to mean anything to the model.
+
+      **Steering** asks what happens when you move an activation to a state the model *did not* produce. That is a different regime, and three things can go wrong that probing never tests: the direction may be unread by downstream components; the additive model may be wrong if the concept is encoded on a curved structure; and the displaced state may leave the distribution, where behavior is unconstrained.
+
+      So the intervention is a **new experiment**, not a corollary. It has its own failure modes, its own controls (a sweep over $\alpha$, off-target measurement, an equal-magnitude random-direction baseline), and its own possible outcome of null result that says nothing about the probing result.
+
+      The convenience of the shared vector is what makes the error easy: it costs nothing to try steering with a probe direction, which makes it tempting to report the probe result as though the steering claim followed.
+
 furtherReading:
   - title: "Zou et al., *Representation Engineering*"
     url: "https://arxiv.org/abs/2310.01405"

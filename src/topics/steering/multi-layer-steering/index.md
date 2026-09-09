@@ -9,6 +9,35 @@ glossary:
   - term: "Depth Schedule"
     definition: "A function assigning a per-layer steering weight across all layers of a model, distributing the intervention across depth rather than concentrating it at a single layer."
 
+exitCriteria:
+  - task: "Depth-schedule comparisons are run at equal total budget. Explain why this control is essential, and what would be wrong with the comparison without it."
+    answer: |
+      Without it, a multi-layer method can win simply by applying **more intervention**. Adding $\mathbf{v}$ at twelve layers is not a redistribution of a single-layer intervention; it is twelve times the total write unless the weights are normalized. A comparison that finds the multi-layer method more effective would then be reporting that a bigger push moves the model more, which is not a finding about depth.
+
+      The equal-budget design normalizes schedules to the same stated total magnitude and varies only the *shape*. Any difference is then attributable to how the intervention is distributed, which is the question.
+
+      This is the same discipline as fixing endpoints in manifold steering: hold everything constant except the variable whose effect you want to measure. In steering it is especially necessary because the effect is monotone in magnitude over much of the range, so almost any method can be made to look better by pushing harder — right up to the point where it degrades into incoherence.
+
+      The caveat the article attaches is worth keeping: equal *input* budgets need not produce equal *effective* budgets, because a write at layer 5 passes through more subsequent computation, more nonlinearities, and more normalization rescalings than a write at layer 25. The control equalizes what is added, not what arrives.
+  - task: "At equal budget, a Gaussian depth schedule outperformed uniform, random, and box-filter allocations. Say what this pattern suggests about how the target concept is represented across depth."
+    answer: |
+      It suggests the concept is represented over a **contiguous band of layers with a peak**, rather than at one layer or uniformly throughout.
+
+      Read the losers. A **box filter** spreads weight equally over a window and does worst — it treats every layer inside the window as equally good and every layer outside as useless, which is wrong at both boundaries. **Uniform** spreads across all layers, wasting budget on early layers too close to token space and late layers past the decision point, where the CAA layer sweep shows the effect is near zero. **Random** allocation does about as well as uniform, which is itself informative: it says the specific layers matter less than the overall concentration.
+
+      The **Gaussian** matches the shape the layer sweep implies — a smooth peak with tails — so it puts most of the budget where the concept is best represented and a little where it is partly represented, rather than nothing.
+
+      The underlying picture is that a concept is not localized to one layer. It is built up over several and then consumed, so the best single layer is the peak of a curve rather than a discrete site, and betting the whole budget on it discards the rest of the curve. A single-layer intervention is the $\sigma \to 0$ limit of this family.
+  - task: "\"Downstream transformations can make equal input budgets have unequal effects.\" Explain the mechanisms behind this caveat."
+    answer: |
+      Three mechanisms make a unit of write at one depth unequal to a unit at another.
+
+      1. **Normalization rescaling.** Each sublayer reads $\text{LN}(\mathbf{r})$, dividing by an input-dependent $\sigma$. The residual stream's norm typically grows with depth, so the *same* added vector is a larger fraction of the state early and a smaller fraction late. Its effect on what any block reads is scaled accordingly.
+      2. **Remaining computation.** A write at layer 5 passes through twenty more blocks, each able to amplify, redirect, suppress, or ignore it. A write at layer 25 reaches the unembedding almost directly. The first has more opportunity for effect and more opportunity for cancellation; neither is predictable from the magnitude added.
+      3. **Nonlinearity.** Attention softmaxes and MLP activations are not scale-linear, so doubling an input perturbation does not double its downstream consequence, and the relationship differs by depth and by how saturated the relevant units are.
+
+      The consequence for interpretation: an equal-budget comparison is a control on the *intervention*, not on the *dose*, so a schedule could win by placing weight where writes are effectively amplified. Reporting the resulting change in activation norm at a common later layer would measure the delivered dose and close the gap.
+
 furtherReading:
   - title: "Zou et al., *Representation Engineering*"
     url: "https://arxiv.org/abs/2310.01405"

@@ -18,6 +18,37 @@ glossary:
   - term: "Bridge (sparse-dense)"
     definition: "An encoder-decoder pair, trained per sublayer, that translates between a weight-sparse model's activations and those of a dense model trained alongside it, allowing an interpretable perturbation found in the sparse model to be applied to the dense one."
 
+exitCriteria:
+  - task: "Weight sparsity is contrasted with mixture-of-experts sparsity, which is called weight-*dense*. Explain the distinction and why it matters for interpretability."
+    answer: |
+      **Mixture of experts** is sparse in *activation*: almost all weights are nonzero, and the model simply does not use all of them on every token. Routing selects which experts run.
+
+      **Weight sparsity** removes the weights. Roughly 1 in 1000 entries is nonzero in the sparsest models, so each neuron has only a handful of connections at all — not connections it declines to use, connections that do not exist.
+
+      **Why it matters:** the interpretability problem is that a computation is distributed across many components with mixed roles. MoE does not help with that: within an active expert, the weights are as dense and entangled as any other network's, and routing has only reduced how many dense blocks run.
+
+      Weight sparsity changes the cost structure of distribution itself. A neuron reading three residual channels cannot directly combine information spread across thirty, and a distributed representation now consumes scarce connectivity. The constraint does not forbid superposition — earlier layers could compress information first — but it makes spreading a concept expensive, which may push the model toward more isolated channels.
+
+      The hypothesis is that this yields a network *easier to separate*, tested by whether its behaviors decompose into compact circuits.
+  - task: "The sparse model's minimal circuits are about 16× smaller at every accuracy level, against a dense model matched on *pretraining loss*. Explain why the matching criterion is what makes this result meaningful."
+    answer: |
+      Matching on **pretraining loss** means the two models are equally good at the task they were trained for. Any difference in circuit size is then a difference in *organization*, not in capability — one of them explains itself in a sixteenth of the parts while predicting text just as well.
+
+      The alternatives would each break the comparison. Matching on **parameter count** would compare a sparse model against a dense one that is substantially better at language modelling, so smaller circuits could just reflect a weaker model with less to explain. Matching on **compute** has the same problem in a different currency. Matching on nothing at all would make the number uninterpretable.
+
+      The honest cost is that pretraining-loss matching means the sparse model is *much larger* in nominal parameters, since forcing 999 of every 1000 weights to zero destroys a great deal of capacity. So the result is not "sparsity is free" — it is "at equal capability, the sparse model is more decomposable," with the price paid in size and training compute.
+
+      That is still the comparison that matters for the hypothesis. The question was whether an interpretable-by-construction network can be as good, not whether it can be as small.
+  - task: "The circuit graph here has nodes and edges \"stated directly in the model's own coordinates.\" Say what this avoids and what researcher discretion remains."
+    answer: |
+      **What it avoids:** the learned-dictionary problem. A node is one neuron, one attention channel, or one residual-channel read or write — rows and columns of the actual weight matrices — and an edge is a single nonzero weight. Nothing was trained to produce these units, so none of the failure modes of a learned basis apply: no reconstruction error, no non-uniqueness across seeds, no feature splitting where the count of components depends on a dictionary width you chose.
+
+      That is a real advantage over SAE- and transcoder-based circuits, where the nodes are artifacts of a fitted decomposition and the edge count moves with hyperparameters.
+
+      **What discretion remains:** which behavior to study, how to describe each component once found, the pruning target loss, and the ablation baseline — pruned nodes are mean-ablated to their average activation over the pretraining distribution, which is a choice with the usual consequences. The twenty hand-built Python tasks are also chosen, and a metric that is the geometric mean edge count across them inherits whatever the task set emphasizes.
+
+      So the *numerical* graph is objective and the *scientific* claim is not. What has been removed is one specific source of arbitrariness, not the general dependence of a circuit result on how the experiment was set up.
+
 furtherReading:
   - title: "Gao et al., *Weight-Sparse Transformers Have Interpretable Circuits*"
     url: "https://arxiv.org/abs/2511.13653"

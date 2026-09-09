@@ -13,6 +13,41 @@ glossary:
   - term: "Knowledge Neuron"
     definition: "An MLP neuron whose activation is causally linked to the expression of a specific factual association, such that suppressing it degrades and amplifying it strengthens the model's recall of that fact."
 
+exitCriteria:
+  - task: "Rewrite $\\sigma(\\mathbf{x} W_{\\text{in}}) W_{\\text{out}}$ as a sum over neurons. For each neuron, say precisely which slice of which matrix is its key and which is its value, and give the shape of each."
+    answer: |
+      $$\text{MLP}(\mathbf{x}) = \sum_{i=1}^{d_m} \sigma(\mathbf{k}_i \cdot \mathbf{x})\, \mathbf{v}_i.$$
+
+      With activations as row vectors, $W_{\text{in}} \in \mathbb{R}^{d \times d_m}$ and $W_{\text{out}} \in \mathbb{R}^{d_m \times d}$.
+
+      - **Key** $\mathbf{k}_i$ = the $i$-th **column** of $W_{\text{in}}$, a vector in $\mathbb{R}^{d}$. The $i$-th entry of $\mathbf{x}W_{\text{in}}$ is $\mathbf{x}$ dotted with that column, so the column is the direction in the residual stream that neuron $i$ detects.
+      - **Value** $\mathbf{v}_i$ = the $i$-th **row** of $W_{\text{out}}$, a vector in $\mathbb{R}^{d}$. Post-activation $\mathbf{m}$ times $W_{\text{out}}$ is $\sum_i m_i \times (\text{row } i)$, so the row is the direction the neuron writes.
+
+      Row and column are worth getting right, and they flip if you write activations as column vectors and multiply from the left. The check that always works: the key must be dot-product-compatible with the residual stream on the read side, and the value must be addable to the residual stream on the write side, so both are $d$-dimensional whichever convention you use.
+  - task: "Suppressing the top knowledge neurons for a fact dropped the correct answer's probability by $29\\%$; suppressing a random set of the same size dropped it by $1.5\\%$. Say what the control establishes, and state a claim the experiment does *not* support."
+    answer: |
+      **What the control establishes:** the effect is specific to *these* neurons, not a consequence of ablating that many neurons at all. Without it, $29\%$ is uninterpretable — perhaps any twenty ablations would do that much damage. The gap between $29\%$ and $1.5\%$ is the actual finding, and it makes the selection procedure, not the ablation, the thing doing the work.
+
+      **What it does not support:** that the fact is *stored in* those neurons. Three alternatives survive the experiment. The neurons may be one of several redundant pathways, so the fact is expressed through others when they are removed — which is consistent with a $29\%$ drop rather than a collapse to zero. The neurons may be downstream of storage, carrying the fact rather than holding it. And the identified set may be an arbitrary cut through a distributed representation, in which case the same fact would yield a different set under a different attribution method.
+
+      The honest statement is causal *participation*, tested on this distribution — a much weaker and more defensible claim than localization.
+  - task: "About 68% of MLP outputs are compositional: the layer's top promoted tokens differ from what any single neuron in it promotes. Explain what this implies about the method of reading a neuron's meaning off $\\mathbf{v}_i W_U$."
+    answer: |
+      It implies the method is measuring the right thing but at the wrong granularity most of the time.
+
+      The projection $\mathbf{v}_i W_U$ is exact as a description of neuron $i$'s direct write: those are the tokens it pushes on. But the layer's output is $\sum_i m_i \mathbf{v}_i$, and a sum of vectors can point somewhere none of the summands point. If one neuron promotes European places, another capital cities, and a third French things, none has "Paris" at the top, while their sum does. The layer's behavior is not recoverable from a list of its neurons' labels.
+
+      Two practical consequences. First, an interpretation built by labelling individual neurons will systematically miss what the layer computes — you will have a vocabulary of parts and no account of the whole. Second, the finding is a positive argument for methods that decompose the layer's *output* into a sparse basis chosen for interpretability, rather than accepting the neuron basis: transcoders and SAEs exist because the neuron basis is only sometimes the right one, and about two-thirds of the time it is not.
+  - task: "From the three-stage factual recall pipeline, predict where a causal tracing experiment on \"The Eiffel Tower is located in ___\" would show the strongest restoration effects, and explain the prediction stage by stage."
+    answer: |
+      Two peaks: **early-to-mid MLPs at the subject token position** and **late attention at the final position**.
+
+      - **Stage 1, subject enrichment.** Early MLPs at the "Tower" position write the entity's attribute bundle — location, type, material — into that position's residual stream. Corrupt the subject and restore an early-mid MLP there, and you restore the attributes the rest of the computation needs. This is the larger and more distinctive peak, and it is at the *subject* position, not the last one.
+      - **Stage 2, relation propagation.** Middle-layer attention carries "is located in" to the prediction position. Restoring here helps, but the signal is spread across heads and positions, so it shows as a weaker, more diffuse band.
+      - **Stage 3, attribute extraction.** Late attention heads at the final position read back to the enriched subject and pull out the location attribute. Restoring those gives a sharp peak at the last position in late layers.
+
+      The prediction is falsifiable in a useful way: if the only peak were at the final position, the subject-enrichment stage would be doing no work, and the whole account — along with ROME's choice to edit mid-layer MLPs at the subject token — would need revision.
+
 furtherReading:
   - title: "Geva et al., *Transformer Feed-Forward Layers Are Key-Value Memories* (EMNLP 2021)"
     note: "The full evidence for the key-value reading, including the experiments this article summarizes in a sentence."

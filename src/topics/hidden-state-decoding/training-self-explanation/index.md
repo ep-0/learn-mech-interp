@@ -10,6 +10,36 @@ glossary:
   - term: "Introspection Adapter"
     definition: "A shared lightweight adapter trained across model organisms with known implanted behaviors, then used to elicit behavioral self-reports from held-out fine-tunes."
 
+exitCriteria:
+  - task: "Trained self-explanation fine-tunes a model on explanation targets derived from existing interpretability methods. State the ceiling this imposes and what it means for the resulting explanations."
+    answer: |
+      **The ceiling:** the trained model cannot be more faithful than its targets. It is learning to reproduce the output of SAE feature analysis, activation patching, and gradient attribution, so whatever those methods get wrong is what it learns to say.
+
+      Concretely: an SAE latent labelled "mentions of US presidents" may be an interpretability illusion — good recall, poor precision, firing on much more. Train on that label and the self-explainer will confidently describe such activations as presidential mentions, inheriting the error and now expressing it in fluent first person, which makes it *harder* to audit than the original dashboard.
+
+      **What the method actually produces** is therefore **amortization**, not new evidence. The expensive analysis is run once to build targets, and the fine-tuned model reproduces its conclusions cheaply at inference. That is genuinely useful — it is the difference between an analysis that takes a GPU-hour and one that takes a forward pass — and it is a different thing from the model having introspective access.
+
+      The framing to keep: explanations are **inherited evidence**. Their reliability is the reliability of the source method, and any claim beyond that needs independent validation the training procedure does not provide.
+  - task: "Patching head 9.1 changes \"Paris\" to \"London.\" Give a supervision target that this licenses and one that it does not, and say what separates them."
+    answer: |
+      **Licensed:** "Replacing this head's output with its value from the corrupted run changed the predicted city." That is a restatement of the observation, scoped to the intervention performed.
+
+      **Not licensed:** "This head is responsible for retrieving the city." That adds a mechanistic role — retrieval — which the patch does not establish. The head might carry the city; or carry a pointer to where the city is stored; or gate the attention of a later head that does the retrieving; or be one of several redundant paths, so that the effect size understates or overstates its role in the intact model.
+
+      **What separates them:** the first describes a *counterfactual outcome under a specified intervention*; the second describes a *function in the intact computation*. Everything in this curriculum about self-repair, redundancy, and off-distribution effects lives in the gap.
+
+      The reason it matters here more than elsewhere is that the target becomes training data. A mechanistic-sounding target teaches the model to produce mechanistic-sounding claims for *all* patching results, including ones where the interpretation is wrong. The overreach is amortized along with the analysis, and it arrives in confident prose with no citation to the experiment behind it.
+  - task: "Fine-tuned self-explainers outperformed larger external explainers on the study's targets. Say why this is not the expected result and what it does not establish."
+    answer: |
+      **Why not expected:** explanation quality might be assumed to track linguistic and reasoning capability, in which case a larger model should describe a smaller one better. The result says otherwise, and the natural reading is that access matters more than capability — a self-explainer is fine-tuned on activations from *its own* representational space, so it has a well-matched interface, while a larger external model must interpret vectors from a geometry it does not share. The same alignment problem that limits cross-model Patchscopes.
+
+      **What it does not establish:**
+
+      1. **Privileged introspective access.** The self-explainer was *trained* to produce these descriptions. It has a fitted interface, not a native one, and nothing shows the model consults its own states rather than having learned a mapping from activation patterns to text.
+      2. **General faithfulness.** The comparison is on the study's targets, scored by its procedure. Both models are being measured against outputs of interpretability methods, so this ranks agreement with those targets — and the self-explainer was trained on them while the external model was not.
+
+      That second point is close to decisive on its own: the comparison is between a fine-tuned model and a zero-shot one on the fine-tuning distribution.
+
 furtherReading:
   - title: "Li et al., *Training Language Models to Explain Their Own Computations*"
     url: "https://arxiv.org/abs/2511.08579"

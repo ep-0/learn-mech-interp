@@ -17,6 +17,38 @@ glossary:
   - term: "LEACE"
     definition: "Least-squares Concept Erasure: a closed-form, covariance-aware transformation that makes a target label linearly guarded under its population assumptions with minimum expected squared distortion."
 
+exitCriteria:
+  - task: "State the LEACE guarantee precisely, including every qualifier, and say what each qualifier excludes."
+    answer: |
+      **The guarantee:** after the LEACE transformation, the representation is *linearly guarded* — under the **population distribution** used to compute the transformation, **linear predictors** cannot beat the best constant predictor for the **target label** under the **losses covered by the theorem**. Among linear guards in that setting, it minimizes expected squared distortion.
+
+      Each qualifier excludes something:
+
+      - **Linear predictors:** a nonlinear classifier may still recover the label. Whitening and projection remove first-order structure; information encoded in higher-order structure survives.
+      - **The population distribution:** the transformation is computed from moments of a particular distribution. On a shifted deployment distribution the guarantee does not apply, and a probe trained there may succeed.
+      - **The target label:** the theorem concerns one variable. Correlated attributes are not erased, and may remain fully predictable.
+      - **The covered loss family:** guarding is relative to a class of losses, not to every conceivable predictor.
+
+      The name is the hazard. "Concept erasure" suggests removal of every semantic and behavioral trace; the theorem is about linear predictability of a variable on a distribution. Keeping the qualifiers visible is what stops the second from being read as the first.
+  - task: "LEACE whitens, projects, then unwhitens, rather than projecting directly. Explain what whitening accomplishes and why the result is not an ordinary orthogonal projection in the original coordinates."
+    answer: |
+      **What whitening accomplishes:** it makes the covariance isotropic, so distances and angles are measured in a space where no direction is privileged by the data's own spread. In raw coordinates, activations have wildly unequal variance across directions, and a direction that separates the classes may do so because it is high-variance rather than because it carries the label. Projecting directly would remove a direction chosen partly by the data's scale.
+
+      After whitening, the label-correlated subspace can be identified and projected out on equal footing, and unwhitening restores the original covariance structure to everything that remains.
+
+      **Why not an ordinary projection:** conjugating a projection by the whitening map, $\Sigma^{1/2} P \Sigma^{-1/2}$, is generally not itself an orthogonal projection in the original coordinates. It is an affine map that removes the linear signal identified by the population moments while minimizing expected squared change — which is stronger than what a naive projection achieves, and is why LEACE has a minimality claim that directional ablation does not.
+
+      The general principle recurs: an operation should be defined in a geometry appropriate to the data, and applying a Euclidean operation to anisotropic data silently weights directions by their variance.
+  - task: "Contrast LEACE with directional ablation as used in refusal-direction work. Say what each guarantees and when the stronger guarantee is worth its cost."
+    answer: |
+      **Directional ablation** removes one chosen direction: $\mathbf{h} - (\mathbf{h}\cdot\hat{\mathbf{r}})\hat{\mathbf{r}}$. It guarantees that this component is gone and nothing more. Other linear directions predicting the same label may survive, and often do — the direction was estimated from a contrast set, not proven to exhaust the label's linear signal.
+
+      **LEACE** guarantees that *no* linear predictor beats a constant, on the stated population, for the stated label. It removes the whole linearly-predictive subspace rather than one estimate of it.
+
+      **When the stronger guarantee is worth it:** when the claim is about *absence*. "We removed the model's ability to use this attribute" needs LEACE-style coverage; a single projection cannot support it, because a residual direction is exactly what an adversary or a better probe would find. This is the fairness and privacy setting, where a partial removal is close to worthless.
+
+      **When ablation suffices:** when the goal is a *causal test* rather than a guarantee. Ablating a direction and observing behavior collapse is evidence about that direction's role, and the fact that other directions survive is not a defect — it is what makes the result attributable to the direction you chose.
+
 furtherReading:
   - title: "Belrose et al., *LEACE*"
     url: "https://arxiv.org/abs/2306.03819"

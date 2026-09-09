@@ -18,6 +18,34 @@ glossary:
   - term: "Weight Tying"
     definition: "Sharing parameters between the input embedding matrix and the output unembedding matrix, usually by setting the unembedding to the transpose of the embedding matrix."
 
+exitCriteria:
+  - task: "A model uses weight tying, $W_U = W_E^T$. What quantity is $\\mathbf{e}_t W_U$, what would you expect its largest entry to be, and why does computing it not tell you what the model predicts for token $t$?"
+    answer: |
+      It is the vector of logits you would get by unembedding token $t$'s input row directly, skipping every layer — the **direct path** through the network. Under tying, entry $j$ is $\mathbf{e}_t \cdot \mathbf{e}_j$, so the largest entry is almost always $j = t$ itself, since a vector's largest inner product with a set of vectors including itself is usually with itself.
+
+      It is not the model's prediction because it omits everything in between. The real computation is $\text{Norm}(\mathbf{r}^L) W_U$ where $\mathbf{r}^L$ is the embedding *plus* every attention and MLP write. The direct path is one term of that sum, and in a trained model it is typically a poor predictor on its own — which is the point, since a model whose prediction equalled its direct path would be doing no contextual work at all.
+  - task: "Show that the model's preference between two candidate tokens $a$ and $b$ is a projection of the final residual state onto a single direction. Then say why that fact is what makes direct logit attribution possible."
+    answer: |
+      The logits are $z_{i,a} = \mathbf{h}_i W_U[:,a] + b_{U,a}$ and likewise for $b$. Subtracting:
+
+      $$z_{i,a} - z_{i,b} = \mathbf{h}_i\left(W_U[:,a] - W_U[:,b]\right) + (b_{U,a} - b_{U,b}).$$
+
+      The bias term is a constant for the pair, so the input-dependent part is a dot product of $\mathbf{h}_i$ with the fixed direction $W_U[:,a] - W_U[:,b]$ — the "$a$ minus $b$" direction in residual space.
+
+      This is what DLA needs. The final residual state is a *sum* of component writes, and a dot product is linear, so the logit difference decomposes exactly into one scalar per component: each component's contribution is its own write projected onto that same direction. Without the reduction of a vocabulary comparison to a single direction, there would be no per-component number to attribute. (The final normalization is the wrinkle — DLA holds its scale fixed for the input in question.)
+  - task: "You want to test whether an attention head reads token identity. Contrast replacing the input token with replacing that position's embedding vector, and say what question each experiment actually answers."
+    answer: |
+      **Replacing the embedding** changes only the vector written at that position at layer 0. Tokenization, sequence length, and positional information all stay fixed. This isolates the question: *does the head's behavior depend on the identity information carried by that row of $W_E$?*
+
+      **Replacing the input token** re-runs the tokenizer. The substitution can change the number of tokens (one word becoming two subword pieces), which shifts every downstream position, changes what positional encodings apply, and changes every activation in the sequence. The question it answers is the coarser one: *does the model behave differently on this input than on that one?*
+
+      They are different experiments and can disagree. If a swap changes behavior only in the token version, the effect may be attributable to re-tokenization rather than to identity — which is why the embedding-level intervention is the cleaner instrument when the head's read is what you are testing.
+  - task: "A colleague reports that dimension 417 of the embedding matrix encodes formality. Explain why this claim is almost certainly not well-formed, and what claim in its neighborhood would be."
+    answer: |
+      The residual stream has no privileged basis. Rotate it by $R$ and compensate by replacing every reading matrix $W$ with $R^{-1}W$ and every writing matrix with $WR$, and the model computes exactly the same function while every individual coordinate of $W_E$ changes. "Dimension 417" is therefore a property of an arbitrary parameterization, not of the model — the same trained network expressed in a rotated basis has a different dimension 417 and is the same model.
+
+      The well-formed version is a claim about a **direction**: there is a unit vector $\mathbf{d}$ such that $\mathbf{e}_t \cdot \mathbf{d}$ tracks formality across tokens, and downstream components read along $\mathbf{d}$. That claim survives rotation, because the direction rotates with the basis. It also comes with obligations the coordinate claim does not: you must exhibit $\mathbf{d}$, show what reads it, and show that intervening along it changes behavior.
+
 furtherReading:
   - title: "Jurafsky & Martin, *Speech and Language Processing* (3rd ed.), the vector semantics chapter"
     url: "https://web.stanford.edu/~jurafsky/slp3/"

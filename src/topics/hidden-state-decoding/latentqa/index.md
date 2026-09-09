@@ -6,6 +6,33 @@ prerequisites:
   - title: "Training Models to Explain Their Computations"
     url: "/topics/training-self-explanation/"
 
+exitCriteria:
+  - task: "LatentQA is framed as an analogue of visual instruction tuning, with activations as a dense input modality. State the analogy precisely and name the disanalogy that matters most."
+    answer: |
+      **The analogy:** VIT trains on (image, question, answer) triples so a model learns a mapping from a dense non-text input plus a question to a natural-language answer. LatentQA trains on (activation, question, answer) triples for the same mapping, with an activation in place of an image. In both cases the dense input is projected into the decoder's context and the model is fine-tuned to answer questions about it.
+
+      **The disanalogy that matters:** an image has ground truth that exists independently of any model. Whether a photograph contains a dog is a fact about the world, checkable by anyone, and the training answers are grounded in it.
+
+      An activation has no such external referent. What an activation "contains" is exactly the interpretability question, so the training answers must be *generated* — in this pipeline, by prompting a model with the control that produced the activation and having it write plausible QA pairs. The supervision therefore encodes a prior belief about what the activation should mean, and the decoder learns to reproduce that belief.
+
+      So a LatentQA decoder can be right about the label-generating procedure and wrong about the model, and its accuracy measures agreement with the pipeline rather than with the activation.
+  - task: "The decoder is a copy of the target model fine-tuned with LoRA. Say what this choice buys and what it makes harder to rule out."
+    answer: |
+      **What it buys:** representational compatibility for free. A patched activation from the target model lands in a decoder whose layers, width, and learned geometry are identical, so no cross-model mapping is required and none of the alignment failures of cross-model Patchscopes apply. LoRA keeps the change small, so the decoder retains the target's language capability while learning to attend to the patched position.
+
+      **What it makes harder to rule out:** that the decoder is answering from the *target model's own priors* rather than from the activation. The decoder shares the target's weights, so everything the target believes about the world — its associations, its typical completions — is available to the decoder as a source of plausible answers. When the question is "does this activation encode sentiment?" and the decoder has the target's language model inside it, a confident correct-sounding answer can be generated from the question and general knowledge alone.
+
+      The controls are the same as for SelfIE and are more necessary here, not less: patch an unrelated activation, a mean activation, and an activation from a nearby layer, holding the question fixed. If the answers do not move, the decoder is reading the question.
+  - task: "Contrast LatentQA's question-answering framing with freeform description as in SelfIE. Say what the framing changes about validation."
+    answer: |
+      Freeform description produces an unconstrained paragraph with no answer space, so "is this right?" reduces to a human finding it plausible — the judgment a fluent model is optimized to satisfy.
+
+      Question-answering **narrows the answer space per query**. "Does this representation encode sentiment?" has a small set of admissible answers, so responses can be scored, aggregated, and compared across activations. It also allows the same activation to be interrogated from many angles, and inconsistency between answers becomes a detectable failure that a single description could never expose.
+
+      What it does not fix is the source of ground truth. The scoring is against the QA pairs the pipeline generated, so it measures agreement with the labelling procedure, not with the activation. A decoder can be perfectly consistent and reliably wrong.
+
+      The framing also introduces its own hazard: constrained answers make it easy to report accuracy, and an accuracy number reads as validation. The number is only meaningful alongside a baseline — the same questions answered from a mean activation, or with no activation patched at all. If that baseline is high, the questions were answerable from the question.
+
 furtherReading:
   - title: "Pan et al., *LatentQA: Teaching LLMs to Decode Activations Into Natural Language*"
     url: "https://arxiv.org/abs/2412.08686"

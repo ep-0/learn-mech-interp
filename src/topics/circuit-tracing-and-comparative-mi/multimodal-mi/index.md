@@ -10,6 +10,44 @@ glossary:
   - term: "Multimodal Interpretability"
     definition: "The application of mechanistic interpretability techniques to models that process multiple input modalities (such as vision and language), investigating how representations are shared or transformed across modalities."
 
+exitCriteria:
+  - task: "CLIP's shared embedding space lets you name a visual SAE feature by projecting its direction into text space. State the assumption this relies on and three ways it can fail."
+    answer: |
+      **The assumption:** proximity in the joint embedding space reflects the same concept across modalities — that if a visual direction is close to the text embedding of "golden retriever," the visual feature *is* golden retriever.
+
+      **Three failures:**
+
+      1. **No clean textual description exists.** Many visual features are textures, spatial arrangements, or statistical regularities that no phrase names. The projection still returns a nearest text embedding, so you get a confident label for something the vocabulary cannot express.
+      2. **The modalities carry different information.** CLIP's alignment is trained on image–caption pairs, and captions systematically omit what people do not mention: lighting, framing, image quality, watermarks. A feature tracking an unmentioned property is projected onto whatever text happens to correlate with it in the training data.
+      3. **The direction exploits a correlate.** Proximity can come from co-occurrence rather than identity — a feature detecting hospital-photo styling lands near "illness" because those captions co-occur, not because the feature is about illness.
+
+      The correct status is **candidate label**, to be tested against highly activating images *and* against images the label predicts should activate it but which may not. It is a cheap hypothesis generator, and its cheapness is exactly why it should not be treated as a result.
+  - task: "Diffusion models add a dimension language models lack. Name it, describe the coarse-to-fine pattern, and explain why it means a logit-lens analogue must be indexed differently."
+    answer: |
+      **Time.** In a language model, information flows through *layers* — a single spatial axis inside the network. A diffusion model also flows through *denoising steps*, so a feature exists at a (layer, timestep) pair rather than at a layer.
+
+      The commonly reported coarse-to-fine progression: early timesteps carry layout, colour palette, and scene composition; middle timesteps carry object boundaries and spatial relationships; late timesteps carry fine texture and detail. A feature is not fixed across this axis — "something red in the upper left" at an early step becomes "a specific red flower with detailed petals" later.
+
+      **Why the lens must be re-indexed:** the logit lens answers "what would this state predict if we read it out now," producing a trajectory over layers. In a diffusion model, the same question has to be asked over a *grid*, and the two axes are not interchangeable — the same layer at two timesteps is doing different work. A diffusion steering lens therefore tracks internal predictions across denoising steps, not only across depth.
+
+      The broader point is that a method carries an implicit model of what the computation's independent variables are. Transplanting it across architectures requires re-deriving that, not just re-running the code.
+  - task: "Separate three levels of evidence — an interpretable feature, a causal effect, an end-to-end mechanism — and say which multimodal MI has and which it lacks."
+    answer: |
+      **Level 1, interpretable candidate features.** SAEs on tested vision encoders including CLIP learn directions that correspond to recognizable objects, textures, and scene types. **Multimodal MI has this.**
+
+      **Level 2, causal effects.** Clamping a visual feature changes measured outputs predictably; steering CLIP's encoder output changes downstream VLM behavior; ablating diffusion attention heads degrades specific image properties. **Multimodal MI has this**, for selected features, with steerability rates that depend on model, dictionary, intervention strength, and success metric.
+
+      **Level 3, an end-to-end mechanism.** A traced account of how identified components interact to produce a behavior, validated by interventions on the edges as well as the nodes — what the IOI circuit is for language. **Multimodal MI lacks this.** VLM studies localize where integration effects appear; diffusion work identifies functional specialization among heads. Neither yields a wiring diagram.
+
+      The reason to keep them separate is that they answer different questions and the field's summaries tend to blur them: a labelled feature plus a successful steer reads like a mechanism and is not one. "We can name it and we can move it" is compatible with having no idea how it participates in the computation.
+  - task: "Steerable CLIP features can defend against typographic attacks — adversarial text written into an image that misleads the model about its content. Explain why this is a stronger result than a feature label, and what it does not show."
+    answer: |
+      **Why stronger:** it is a causal test with an *external* success criterion. A feature label is scored by whether a human finds the top-activating images coherent, which is a judgment about the analyst. Defending against typographic attacks is scored by whether the model's classification recovers on adversarially constructed inputs — an outcome fixed independently of the interpretation and not gameable by relabelling. It also demonstrates a specific prediction: if this feature carries the text-in-image signal that the attack exploits, suppressing it should restore the visual judgment. That prediction could have failed.
+
+      **What it does not show:** that the feature *is* "text in image" as a semantic matter. It shows there is a direction whose suppression restores performance on this attack family. The direction may be broader (any high-contrast overlay), narrower (this rendering style), or entangled with something correlated in the SAE's training data. Nor does it show completeness — a different attack construction may route around it entirely, which is the standard failure mode for defenses validated on one attack.
+
+      The honest claim is a causally effective handle on a specific failure mode, which is genuinely useful and is not a semantic account of the feature.
+
 furtherReading:
   - title: "Gandelsman, Efros & Steinhardt, *Interpreting CLIP's Image Representation via Text-Based Decomposition*"
     url: "https://arxiv.org/abs/2310.05916"

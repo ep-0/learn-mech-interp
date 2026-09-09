@@ -12,6 +12,43 @@ glossary:
   - term: "Feature Dashboard"
     definition: "A visualization tool that displays the top-activating dataset examples, logit effects, and other statistics for individual SAE features, helping researchers assess whether a feature corresponds to an interpretable concept."
 
+exitCriteria:
+  - task: "A feature is described as \"responds to safety-related content.\" Explain the interpretability illusion this description can hide, in terms of precision and recall."
+    answer: |
+      The description is checked in the direction that cannot falsify it. You look at the feature's top activations, and they are all safety-related — so the description has **good recall**: it covers what the feature does fire on.
+
+      What goes untested is **precision**: whether the feature fires on safety content *in general*. The feature may actually respond to a much broader category that happens to include safety text — a particular register, a discourse marker, a formatting pattern — of which your top examples are the safety-flavored slice. Reading the description forward, you would predict it fires on safety content it in fact ignores, and on nothing else when it in fact fires widely.
+
+      The asymmetry comes from the sampling procedure. Top-$k$ activations condition on the feature, so they can only ever show you what it does fire on. Precision requires the other direction: take the description, generate inputs it predicts should activate the feature, and check whether they do; and sample the feature's *moderate* activations, not its extremes, where a second population would live.
+
+      Broad descriptions are the dangerous case because they are hardest to falsify — "this feature fires on text" has perfect recall.
+  - task: "Automated interpretability tests a generated description on held-out examples. Say what a passing test establishes, and name the structural concern with using one language model to interpret another."
+    answer: |
+      **What passing establishes:** the description is *predictive*, not merely fitted. It was generated from one set of activations and correctly anticipates the feature's behavior on inputs the describing model never saw — firing on new legal citations, staying quiet on non-legal text. That is a real step up from a label chosen to summarize top examples, which is unfalsifiable by construction.
+
+      **What it still does not establish:** monosemanticity, since the held-out set may simply not contain the feature's second activating pattern; or causal relevance, since nothing in the pipeline touches what the model does with the feature.
+
+      **The structural concern is circularity.** The evaluating model has its own blind spots, and they are correlated with the target model's — similar architectures, similar training data, similar inductive biases. A feature tracking something no language model represents well is a feature the interpreter is least equipped to describe. Concretely: a feature responding to a specific syntactic construction can look like noise to an interpreter attending to semantics, and will be scored as uninterpretable rather than as interpretable-and-missed.
+
+      The failures are therefore not random. They are systematically concentrated on whatever both models are bad at, which is the worst possible place for an evaluation to be blind.
+  - task: "A dashboard shows minimal ablation impact for a feature. List four explanations besides \"the feature is unimportant,\" and say what the list implies about reading dashboards."
+    answer: |
+      1. **Redundancy.** Another feature or component carries the same information, so removing this one changes nothing — the OR-gate structure that also hides primary components under noising.
+      2. **The wrong baseline.** Ablation replaces the feature's reconstructed contribution with something, and that something has consequences. A choice that is off-distribution can produce effects unrelated to the feature; a choice too close to the natural value can produce none.
+      3. **The wrong metric or dataset.** The feature may matter for a behavior your ablation does not measure, or on text your evaluation set does not contain. A feature for legal citations shows nothing on a corpus without legal text.
+      4. **Self-repair.** Downstream components compensate, including LayerNorm rescaling, which is mechanical and always present.
+
+      **What it implies:** each dashboard panel is a hypothesis generator, not a verdict, and a null result is the weakest evidence of the three. Activation examples show what the feature responds to on selected inputs; logit effects show the direct write only; ablation shows one intervention under one baseline. The dashboard's value is that the three views *agree or disagree*, and disagreement is the signal worth chasing.
+  - task: "512 neurons yielded about 4,000 features — an 8× ratio. Extrapolate to a frontier model, and say what evaluation strategy the resulting number forces."
+    answer: |
+      GPT-2 Small's 768 residual dimensions would give roughly $6{,}000$ features per layer, so around $70{,}000$ across 12 layers. A frontier model with tens of thousands of dimensions and many more layers reaches millions — and the Claude 3 Sonnet SAEs did, with dictionaries up to $34$ million latents and about $12$ million active.
+
+      At one minute per dashboard, a million features is roughly two person-years of continuous inspection, so manual review of everything is not a resourcing problem but an impossibility.
+
+      **The strategy this forces is stratified, not uniform.** Automated interpretability handles breadth: generate a description for every latent and score it by prediction on held-out activations, which gives a coverage number and flags the latents worth a human. Human evaluation runs on a *random sample*, which is what supports a claim about the population — the 70% figure is a sample statistic, and it is only meaningful because the sample was random. Detailed case studies and causal tests go to the small set that matters for a specific question.
+
+      What this cannot deliver is per-feature confidence at scale. Any claim of the form "we understand this model's features" is a claim about an aggregate, with unexamined individuals inside it.
+
 furtherReading:
   - title: "Bills et al., *Language Models Can Explain Neurons in Language Models*"
     url: "https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html"

@@ -14,6 +14,44 @@ glossary:
   - term: "Inference-Time Intervention (ITI)"
     definition: "A technique that improves model truthfulness at inference time by shifting activations along truth-correlated directions identified via probing, implementing a probe-then-steer pipeline."
 
+exitCriteria:
+  - task: "CCS assumes truth is \"the most natural property\" satisfying consistency and confidence. Name other properties that satisfy the same constraints, and say what that implies about an unsupervised probe's output."
+    answer: |
+      The constraints are: the probe assigns probabilities to a statement and its negation that sum to one, and it commits rather than sitting at $0.5$. **Any binary feature that flips under negation satisfies both.** Candidates:
+
+      - **What a character in the prompt would assert**, if the context sets up a persona — negation-consistent, and not the model's belief.
+      - **What the training distribution asserts**, which diverges from truth exactly on the common misconceptions that make truthfulness benchmarks interesting.
+      - **Surface features of the negation itself** — the presence of "not," or the grammatical form of the completion — which flip mechanically between the two members of every contrast pair.
+      - **Topic or sentiment properties** that happen to be anti-correlated across the pairs in the dataset.
+
+      **What this implies:** the objective identifies a *class* of features, and which member the optimizer converges to is determined by the activations, the initialization, and the dataset — not by the loss. There is no term anywhere in CCS that prefers truth. So an unsupervised probe's output requires the same validation as a supervised one: does it transfer across topics, survive adversarial prompts, and change behavior causally in the predicted direction? "No labels were used" removes one source of bias and adds an identification problem.
+  - task: "Difference-in-means probes match or exceed trained logistic regression on generalization, despite having no optimization and no hyperparameters. Explain why."
+    answer: |
+      Because the two methods have different amounts of freedom to fit the wrong thing.
+
+      Logistic regression optimizes a discriminative objective over all $d$ dimensions and will use *any* direction that separates the training classes. In a high-dimensional space with finite data, many such directions exist, and most of them encode dataset-specific correlates — topic, sentence length, template artifacts, which entities appear. The optimizer has no way to prefer the one that generalizes, so it finds a boundary that is excellent on the training distribution and partly built from cues that do not transfer.
+
+      Difference in means computes $\mathbf{v} = \bar{\phi}_{\text{true}} - \bar{\phi}_{\text{false}}$ and stops. It captures only the *average* displacement between the two classes, and idiosyncratic per-example variation cancels in the averaging. It cannot exploit a correlate that is not present on average, which is precisely the constraint that makes it transfer.
+
+      The general form: fewer degrees of freedom means fewer ways to overfit, and in a regime where the signal is a consistent offset rather than a complicated boundary, the constrained estimator wins. This is also why the same construction serves as a steering vector — an average displacement is exactly the object you want to add.
+  - task: "ITI intervenes at selected attention head outputs rather than on the residual stream. Say what this does and does not buy, and how you would test a specificity claim."
+    answer: |
+      **What it buys:** per-head control. ITI can choose a different learned direction and a different coefficient for each selected head, and leave the unselected heads untouched. That is genuinely finer-grained than one write at one layer, and it lets the intervention concentrate where probing said truth is most accessible — layers 14 to 20 in LLaMA.
+
+      **What it does not buy:** downstream isolation. Once a vector is added to a head's output it enters the shared residual stream, and every later component that reads that direction is affected exactly as if the write had come from anywhere else. The residual stream does not record provenance. So "we intervened on a head, not the residual stream" is a statement about where the write originated, not about who receives it.
+
+      **Testing the specificity claim:** construct a matched residual-stream intervention with the same *total write* — same summed vector, same layer — and compare off-target behavior. If the head-level version is genuinely more specific, it should preserve unrelated capabilities better at equal truthfulness gain. Without that comparison, the specificity is asserted rather than measured, and the $32.5\% \to 65.1\%$ improvement says nothing about it.
+  - task: "A linear probe predicts semantic entropy from a single forward pass, matching a sampling-based estimate. Say precisely what has been shown, and why this is not a hallucination detector."
+    answer: |
+      **Shown:** a particular uncertainty *measure* — semantic entropy, normally computed by generating several responses and clustering them by meaning — is partly predictable from internal states at a single forward pass, under the tested conditions. That is a real efficiency result: many samples plus clustering, replaced by one pass plus a small classifier.
+
+      **Why not a hallucination detector, in two steps:**
+
+      1. **The probe predicts the metric, not the truth.** Its target is semantic entropy, so it inherits whatever gap exists between that metric and falsehood. A model can be confidently wrong — low semantic entropy, high error — which is the most dangerous failure and the one this signal is blind to by construction.
+      2. **The probe was fitted, so it can track a correlate of the metric.** Question type, topic familiarity, or prompt length may predict entropy well on the evaluation set and fail elsewhere.
+
+      **What deployment would additionally need:** calibration on the target model and its actual traffic, and evidence that predicted entropy separates the errors users care about — not just that it correlates with a resampling statistic on a benchmark. Transfer across models, tasks, and error types is unestablished.
+
 furtherReading:
   - title: "Burns et al., *Discovering Latent Knowledge in Language Models Without Supervision*"
     url: "https://arxiv.org/abs/2212.03827"

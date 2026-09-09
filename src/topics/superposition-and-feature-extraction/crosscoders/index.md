@@ -10,6 +10,40 @@ glossary:
   - term: "Crosscoder"
     definition: "A variant of sparse autoencoders trained jointly on activations from multiple models (or the same model at different training stages), learning a shared feature dictionary that enables direct comparison of representations across models."
 
+exitCriteria:
+  - task: "A crosscoder concatenates activations from two sources and encodes them with one shared encoder. Explain why separate encoders with a shared bottleneck would not achieve the same thing."
+    answer: |
+      With separate encoders, each source's activations get their own map into the latent space. Nothing then forces a concept present in both sources onto the *same* latent: encoder A can route "proper noun" to latent 412 and encoder B to latent 8,900, and reconstruction is unaffected. The shared bottleneck constrains capacity but not correspondence, so you can end up with two independent dictionaries wearing one label — which is exactly the situation crosscoders exist to escape.
+
+      Under concatenation there is one encoder reading $[\mathbf{x}_{\text{base}};\, \mathbf{x}_{\text{chat}}]$, so each latent is a single direction in the joint space. A latent that fires must explain variation in *both* halves at once, and the sparsity penalty makes representing a shared concept twice strictly more expensive than representing it once. The cheapest solution is one latent with two decoder directions.
+
+      That is what makes the shared/exclusive distinction meaningful: a latent whose decoder norm is substantial in one half and near zero in the other is source-specific, and this is only interpretable because both halves were competing for the same latent in the first place.
+  - task: "The crosscoder loss weights the reconstruction terms for both sources equally. Name a conclusion that is sensitive to this choice and say how you would check it."
+    answer: |
+      **The sensitive conclusion is the shared/exclusive classification itself** — the primary output of model diffing.
+
+      The weighting sets whose reconstruction the dictionary is optimized to serve. If one source has larger-norm activations, more variance, or simply more of the training data, equal weighting still favours it in practice, because reducing squared error there buys more loss reduction. Latents drift toward explaining that source, and structure unique to the other appears as unexplained residual rather than as an exclusive feature. The finding "fine-tuning added these features and removed those" can then partly reflect the loss weighting.
+
+      **How to check:** re-train with the weights swapped and with activations normalized per source, and see which latents keep their classification. Report the classification's stability rather than one run's assignment. The latents that flip were never evidence.
+
+      This belongs to a family with dictionary size and sparsity level: choices the analyst makes that determine the answer, and that are usually reported as setup rather than as part of the result. The general discipline is to vary each one and report which conclusions survive.
+  - task: "A feature like \"this token is a proper noun\" may be active from layer 3 to layer 15. Explain how representing it once rather than per-layer simplifies a circuit, and what the simplification is discarding."
+    answer: |
+      **The simplification:** with per-layer SAEs, that one property becomes thirteen latents joined by strong edges, and the circuit graph fills with a chain that represents nothing but information persisting. A reader must recognize the chain as one thing; every path through it is inflated in length; and the visible structure is dominated by transport rather than computation. A crosscoder gives one node whose edges go to the places the feature is actually *consumed*.
+
+      This is the same problem cross-layer transcoders address for MLP features, from the representation side.
+
+      **What is discarded:** the possibility that the feature is *not* the same thing at every layer. Collapsing to one node asserts identity across depth, and that assertion could be wrong — the direction may drift, the property may be re-derived rather than carried, or a downstream component may read only a rotated version of it. If "proper noun" at layer 3 is computed from tokens and "proper noun" at layer 12 is recomputed from richer context, they are two computations, and the crosscoder has hidden one.
+
+      The collapse is a hypothesis about identity, and it is worth checking that the shared latent's per-layer decoder directions are actually aligned rather than merely co-active.
+  - task: "A crosscoder trained on a base model and its chat-tuned version labels a latent \"chat-exclusive.\" List three explanations besides \"fine-tuning created this feature.\""
+    answer: |
+      1. **The feature exists in the base model but is rarely active on the training sample.** Exclusivity is measured over whatever activations were collected. If the crosscoder was trained mostly on chat-formatted text, a base-model feature that only fires in other contexts contributes little to the base half and reads as chat-exclusive. This is the dead-latent problem wearing a different hat.
+      2. **The feature exists in both but the fine-tune moved its direction.** The crosscoder assigns one latent per dictionary element with a decoder direction per source. If fine-tuning rotated the representation, the base half's direction no longer aligns and the latent looks one-sided — while the concept is present in both, just relocated.
+      3. **It is an artifact of the dictionary's capacity allocation.** With reconstruction error, non-uniqueness, and a loss weighting that favours one source, some structure will be represented asymmetrically for reasons that are properties of the SAE rather than of either model. A different seed can reassign it.
+
+      The check that discriminates them: does the base model exhibit the *behavior* associated with the feature? A feature genuinely absent from the base model should correspond to a capability the base model lacks.
+
 furtherReading:
   - title: "Lindsey, Templeton et al., *Sparse Crosscoders for Cross-Layer Features and Model Diffing*"
     url: "https://transformer-circuits.pub/2024/crosscoders/index.html"

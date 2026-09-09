@@ -11,6 +11,52 @@ glossary:
   - term: "Selectivity"
     definition: "The extent to which an intervention changes the target phenomenon while preserving other behaviors or attributes that the proposed mediator should not control."
 
+exitCriteria:
+  - task: "\"The whole network is perfectly faithful to itself.\" Use this observation to explain why faithfulness alone cannot evaluate an explanation, and name the three criteria that have to accompany it."
+    answer: |
+      Faithfulness asks whether the selected units reproduce or predict the behavior being explained. The trivial explanation — "the mechanism is the entire model" — scores perfectly on it and explains nothing. Faithfulness is a constraint that any adequate account must satisfy, not a measure of how good an account is, so maximizing it alone drives you toward the model itself.
+
+      The three that must accompany it:
+
+      - **Sparsity:** how much of the model the explanation uses — neurons, heads, edges, dimensions. This is what makes faithfulness non-trivial; the interesting question is always faithfulness *at a given size*.
+      - **Generality:** whether the account survives new prompt templates, entities, domains, and sometimes new models. A circuit that is faithful on one prompt family may be a template-specific shortcut.
+      - **Selectivity:** what the intervention leaves unchanged. A patch can move the target and also move everything adjacent to it, which is a causal effect without an attribute-specific claim.
+
+      The four trade off rather than ranking. A full activation vector is faithful and general but not sparse or selective; a one-dimensional learned direction can be sparse and selective on its training distribution and fail to generalize.
+  - task: "You want to argue that a model represents a city's continent *separately* from its language. Say which mediator type you would choose and which you would reject, and give the reason in terms of what an intervention on each changes."
+    answer: |
+      **Reject the full layer or residual-stream vector at the entity position.** An intervention there changes every variable represented at that site at once — city identity, country, continent, language, token identity, position. It will produce a large Cause score, because it carries the answer, and it cannot support a separability claim, because it never separated anything. Its usefulness is reconnaissance: cheap to sweep, few sites to enumerate.
+
+      **Choose a learned direction or low-dimensional subspace**, found with counterfactual supervision. An intervention there changes one scalar (or a few coordinates) that you can then test against neighbors, which is exactly the claim's shape: this coordinate moves continent and does not move language.
+
+      The cost you accept is that the mediator is now a product of a search procedure with its own inductive bias, so the finding could reflect your optimizer rather than the model. That is why the claim requires held-out evaluation — new entities, new templates — separated from the data the direction was fitted on.
+
+      A neuron is the wrong middle ground here: it is basis-aligned by definition, and the residual stream has no privileged basis, so there is no reason a continent feature would sit on a coordinate.
+  - task: "A supervised subspace aligns cleanly with a target attribute's labels. Give the two explanations this is consistent with, and the controls that separate them."
+    answer: |
+      1. **The model already represents the attribute** in a linear subspace, and the search found it. The alignment reflects the model.
+      2. **The search procedure manufactured it.** The subspace is a flexible learned object fitted on labeled examples, and a sufficiently expressive search over directions in a high-dimensional space can extract a dataset-specific correlate that predicts your labels without corresponding to anything the model uses.
+
+      **Controls that separate them:**
+
+      - **Held-out interventions.** Test on entities, prompt templates, and attribute combinations never seen during the search. A fitted correlate degrades; a real representation transfers. Wu et al.'s 94% on unseen price brackets is this control done well.
+      - **A simpler baseline.** Compare against a difference-in-means direction or an unsupervised alternative. If a method with far less capacity does nearly as well, the extra flexibility was not buying you structure.
+      - **Off-target tests.** A fitted correlate has no reason to be selective. Run the Isolate half — apply the same patch where the attribute should not matter and check nothing moves.
+      - **Randomized labels.** Fit the same procedure to shuffled labels. Whatever score that reaches is your floor, and it is often not zero.
+
+      None of these eliminates the ambiguity; together they bound it.
+  - task: "Explain why \"we used sparse autoencoders\" does not by itself say which features cause a behavior, and what the sentence is confusing."
+    answer: |
+      It confuses a **featurizer** with a **search method**, which are separate choices that a study must report separately.
+
+      An SAE defines a *basis*: it proposes a dictionary of candidate units into which activations can be decomposed. That is a claim about coordinates, arrived at by an unsupervised reconstruction objective that never saw your task. It tells you what units are available to talk about.
+
+      Deciding which of those units *causes* a behavior is a different operation, and it requires intervention — ablating or patching feature activations and measuring the effect on a metric. An SAE latent that fires reliably on your task may be a bystander, exactly as a probe direction may be. The reconstruction objective gives no reason to expect otherwise.
+
+      The same decoupling runs the other way: activation patching is a search method that can range over heads, neurons, layers, or learned features. "We did activation patching" does not say what units were searched.
+
+      So a complete methods statement has two parts — *these were the candidate units, found this way; these were the causal tests, run this way* — and a paper stating only one of them has left out half of what determines the result.
+
 furtherReading:
   - title: "Mueller et al., *The Quest for the Right Mediator*"
     url: "https://arxiv.org/abs/2408.01416"

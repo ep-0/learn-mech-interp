@@ -13,6 +13,38 @@ glossary:
   - term: "Tracing Context"
     definition: "A Python context manager in nnsight where code is captured rather than executed immediately. Operations on model internals within a tracing context build up an intervention graph that is executed as a batch when the context exits."
 
+exitCriteria:
+  - task: "nnsight's tracing context captures operations into an intervention graph instead of executing them immediately. Explain what this deferral makes possible that direct hooks do not."
+    answer: |
+      Deferring execution turns an experiment into a **data structure**, and a data structure can be moved.
+
+      With ordinary PyTorch hooks, the intervention is a Python callback running in the same process as the model. That binds the experiment to wherever the model lives. An intervention graph is instead a *description* — what to read, what to modify, what to compute — which is serializable and therefore portable.
+
+      That is what makes remote execution work, and remote execution is the point. The most capable open-weight models need multiple high-end GPUs for inference alone, and caching activations for interpretability makes it worse. Separating experimental design from model deployment lets a researcher write the experiment on a laptop and execute it on shared infrastructure where a 405B model is already resident.
+
+      Two secondary benefits follow from the same property. The whole graph executes as one batch, so the framework can schedule it efficiently rather than paying per-hook overhead. And `.save()` becomes meaningful: tensors not explicitly marked exist only inside the graph and are discarded, which keeps memory minimal when you need a few specific activations from a very large model.
+
+      The cost is a layer of indirection — code inside the context does not behave like ordinary Python.
+  - task: "TransformerLens reimplements each architecture; nnsight wraps any PyTorch model. State the bottleneck this removes and the two kinds of coverage it buys."
+    answer: |
+      **The bottleneck:** every new model family requires someone to write conversion code, verify numerical equivalence against the original, and maintain it as the upstream implementation changes. When a new Llama or Qwen variant is released there is an unavoidable lag before it can be studied — and that lag falls on exactly the models people most want to study.
+
+      **Coverage bought, two kinds:**
+
+      1. **Temporal.** A model is available the moment it exists in PyTorch, because nothing needs reimplementing.
+      2. **Architectural.** Interpretability questions apply to vision models, multimodal models, diffusion models, and state space models, none of which a transformer-specific library can reach. Wrapping arbitrary PyTorch removes the restriction entirely — which matters directly for the [multimodal](/topics/multimodal-mi/) and cross-architecture [universality](/topics/universality/) work.
+
+      **What is given up** is the uniform vocabulary. TransformerLens's canonical hook names are a shared language precisely because the library imposes one convention; a general wrapper exposes whatever the underlying module graph happens to be called. That is why nnterp exists — a standardized TransformerLens-like interface layered on nnsight, recovering the convention without the reimplementation.
+  - task: "In the example, `hidden = model.transformer.h[5].output[0].save()` uses HuggingFace-native module paths. Say what this implies for portability, and what nnterp adds."
+    answer: |
+      **The implication:** the experiment is written against *this model's* module names. `model.transformer.h[5]` is GPT-2's naming; a Llama model calls the same thing `model.model.layers[5]`, and a vision transformer something else again. So an nnsight experiment is portable in the sense that the *framework* runs anywhere, and not portable in the sense that matters — the code does not transfer between architectures without editing every path.
+
+      This is the direct tradeoff for wrapping the native model rather than converting it. Preserving the original implementation means preserving its vocabulary, including its inconsistencies.
+
+      **What nnterp adds:** a standardized interface over nnsight, so the same experiment can be written once against generalized components and run across transformer architectures without reimplementation. It recovers TransformerLens's shared vocabulary while keeping nnsight's execution model.
+
+      The general shape here is worth noting, because it recurs across all three tools: uniformity of interface and fidelity to the original implementation pull against each other, and each library picks a point on that line. TransformerLens 3's move to a bridge is the same tension resolved from the other side.
+
 furtherReading:
   - title: "Fiotto-Kaufman et al., *NNsight and NDIF: Democratizing Access to Foundation Model Internals*"
     url: "https://arxiv.org/abs/2407.14561"

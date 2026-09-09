@@ -12,6 +12,37 @@ glossary:
   - term: "MLP Layer"
     definition: "The feedforward sublayer in a transformer block, consisting of two linear projections with a nonlinearity between them. MLP layers process each token position independently and are believed to store factual knowledge and perform feature transformations."
 
+exitCriteria:
+  - task: "On an IOI prompt the total logit difference is $+3.2$. DLA gives head 9.9 a contribution of $+1.6$ and head 10.7 a contribution of $-0.9$. Interpret both numbers, and say what you would get by summing the contributions of every component."
+    answer: |
+      Head 9.9 writes a vector whose projection onto the $W_U[:,\text{Mary}] - W_U[:,\text{John}]$ direction is $+1.6$ — half the entire logit difference from one head. It is pushing hard toward the correct name. Head 10.7's projection is $-0.9$: it writes *against* the correct answer. That is not an error in the analysis; Negative Name Mover heads are a real and reproducible finding.
+
+      Summing every component — embeddings, all $144$ heads, all MLPs — recovers the logit difference, but only under a consistent treatment of the final normalization. The raw projections do not add up on their own, because each component's write is scaled by $1/\sigma$ from the full forward pass before reaching the unembedding. The standard implementation freezes that scale factor from the real run and applies the same affine map to every component, after which the terms sum to the observed value (biases handled separately).
+
+      That freezing is the approximation. It gives an exact decomposition *of this forward pass* and says nothing about how $\sigma$ would change if a component were actually removed.
+  - task: "DLA reports a large *negative* direct effect for a head. Give two mechanistically different explanations, and name the experiment that separates them."
+    answer: |
+      1. **The head is genuinely suppressing the answer**, and the model's final prediction is the net of a promoting group and a suppressing group. The suppression may be calibration — damping an over-confident write — or it may implement something like copy suppression, where a head reduces the logit of a token that has already been attended elsewhere.
+      2. **The head is compensating for the analysis, not the model.** The negative write may exist to cancel a systematic component of the residual stream that has nothing to do with this task, and its alignment with your chosen logit-difference direction is incidental. Your direction is one of many; a write can have a negative projection onto it without being *about* it.
+
+      **The separating experiment is ablation.** Remove the head and measure the logit difference. If it *rises* by roughly $0.9$, the head was suppressing this prediction. If it barely moves, the direct write was being cancelled or compensated downstream — evidence of [self-repair](/topics/self-repair/), and a sign the direct number was overstating the head's role. If it moves in an unrelated direction, the head's write mattered for something your metric does not measure.
+
+      Running the ablation across a distribution of prompts, not one, is what makes the answer a finding rather than an anecdote.
+  - task: "A head's DLA is close to zero. Give three distinct reasons this is not evidence that the head is unimportant to the behavior."
+    answer: |
+      1. **It acts through a later component, not the unembedding.** DLA measures only the *direct* path from a write to the logits. A head that writes information a later MLP or head reads and acts on has a large total effect and can have a near-zero direct one. In the IOI circuit, the S-Inhibition heads are exactly this: they matter by changing the Name Movers' queries, and they barely touch the logit difference themselves.
+      2. **It affects an attention pattern.** A write consumed on the query or key side of a downstream head changes *where* that head reads. That is a routing effect, invisible to any projection onto an output direction.
+      3. **Its write is orthogonal to your chosen direction.** DLA is a projection onto one vector — here, one token pair. A head doing important work along a different axis (suppressing a third candidate, or handling a part of the task your metric ignores) projects to near zero on the axis you picked.
+
+      All three share a structure: DLA answers "what did this write contribute along this direction on the skip path," and importance is a causal question. Screening on DLA and then testing only the survivors will systematically miss the components that matter indirectly, which is why circuit work pairs it with patching.
+  - task: "Explain in one argument why DLA is cheap enough to run on every component, and why that cheapness is exactly what limits its conclusions."
+    answer: |
+      **Cheap because it is linear bookkeeping.** The residual stream is a sum, the unembedding is a linear map, and matrix multiplication distributes over addition. So one forward pass with a cache gives you every component's write, and a dot product with the logit direction turns each into a number. There is no second model run, no gradient, no intervention: $144$ heads and $12$ MLPs cost the same as one forward pass plus some arithmetic.
+
+      **Limited for the same reason.** Everything DLA gains comes from never perturbing the model. It reads off contributions from a single, undisturbed forward pass, so it cannot see anything that only shows up when the model is different — which is the entire class of counterfactual questions. What would the later MLP compute if this head's write were absent? Would another component take over? Would the attention pattern change? None of these is a property of the pass you observed.
+
+      The honest summary is that DLA is an exact answer to an observational question, used as a fast proxy for a causal one. It earns its place by ranking $156$ components at negligible cost, so that the expensive interventions get spent where they are most likely to pay off — and by being understood as a screen, not a verdict.
+
 furtherReading:
   - title: "Wang et al., *Interpretability in the Wild*"
     url: "https://arxiv.org/abs/2211.00593"

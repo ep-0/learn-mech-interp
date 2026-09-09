@@ -273,6 +273,15 @@ The convention is stated for the reader once, in the attention article, which is
 - Can include the answer/discussion in the collapsed section.
 - Aim for 1-3 per article.
 
+### Exit criteria
+
+Every published article ends with a set of exit criteria in its frontmatter: tasks the reader attempts cold, each with a worked answer that stays collapsed until they have written something down. They are the article's self-test, and `CONTRIBUTING.md` covers the field's shape and the kinds of task that work.
+
+Two points affect how you write the *article*:
+
+- **Write the criteria last, and let them audit the draft.** If a task you want to set cannot be answered from the article, either the task is out of scope or the article has a hole. Both are worth knowing before publishing.
+- **Do not duplicate a Pause and Think.** The two serve different moments. A Pause and Think interrupts the reader mid-article to make them work with an idea while it is being introduced, and its answer is immediately available. An exit criterion is retrieval after the fact, attempted from memory. If a question is good enough for both, it belongs in the exit criteria, where the reader meets it cold.
+
 ### Cross-references
 - Link to other articles in the curriculum where relevant: `[topic name](/topics/topic-slug/)`.
 - Forward references ("We will cover this in [later article]") and backward references ("As we saw in [earlier article]") both help readers navigate.

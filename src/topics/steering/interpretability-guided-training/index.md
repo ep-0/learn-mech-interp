@@ -16,6 +16,38 @@ glossary:
   - term: "Reinforcement Learning from Feature Rewards (RLFR)"
     definition: "Using scores read from model activations, usually through trained probes, as part of the reward for reinforcement learning."
 
+exitCriteria:
+  - task: "Interpretability-guided training uses an internal signal at four intervention points. Name them, and say what all four have in common that a probing or steering result lacks."
+    answer: |
+      1. **Before an update** — score training examples with a direction, probe, or sparse feature, then filter, relabel, reweight, or generate data.
+      2. **During the forward pass** — add, remove, or transform an activation along a concept direction while training.
+      3. **In the objective** — use a probe or feature score as part of a loss or reward.
+      4. **Across checkpoints** — monitor a probe or feature to detect drift and decide whether to continue, stop, or revise training.
+
+      **What they share:** the intervention changes the *learning signal*, and the claim is then tested by **retraining and evaluating the resulting model**. That is a stronger causal setup than either probing or inference-time steering.
+
+      Probing observes a correlation. Steering changes an activation at inference and observes the immediate output — a real intervention, but one whose effect may be disruption rather than concept manipulation, and which leaves the model unchanged. Here the intervention alters what the model *becomes*, and the evidence is a differently-trained model that behaves differently. A confound that would explain an inference-time steering result — off-distribution displacement, say — has no path to explain a behavioral difference in a model trained on filtered data.
+  - task: "Preference examples are scored by $a_i = \\frac{\\mathbf{d}_i \\cdot \\mathbf{b}}{\\|\\mathbf{d}_i\\|\\|\\mathbf{b}\\|}$, where $\\mathbf{d}_i$ is the chosen-minus-rejected activation difference. Say what this ranks, and why the direction $\\mathbf{b}$ must be constructed independently."
+    answer: |
+      **What it ranks:** how much each preference pair's chosen-versus-rejected contrast resembles the activation change associated with the target behavior. A high $a_i$ means that training on this pair pushes the model in the direction $\mathbf{b}$ points — so if $\mathbf{b}$ is a sycophancy direction, the top-scoring examples are the ones whose preference labels teach sycophancy, whatever their surface content. Those can then be inspected, removed, or relabelled.
+
+      The cosine normalization matters: it ranks by *alignment* rather than magnitude, so a pair with a large but off-target activation difference does not outrank a small well-aligned one.
+
+      **Why $\mathbf{b}$ must be independent:** if the direction were derived from the same preference data it is used to score, the procedure would be circular — you would be selecting the examples that most exemplify whatever the data already contains, and finding them well aligned. The score would be guaranteed regardless of whether the behavior is present.
+
+      An independently constructed $\mathbf{b}$ — from separate contrast prompts, on a different data source — makes the ranking a genuine test, and makes it possible for the top-scoring examples to turn out *not* to exhibit the behavior, which is the outcome that would falsify the approach.
+  - task: "Explain why interpretability-guided training is a more demanding claim to validate than inference-time steering, despite being causally stronger."
+    answer: |
+      The causal logic is stronger and the *experiment* is much more expensive and more confounded.
+
+      **Cost.** Every condition requires a full retraining run. A steering result can be swept over ten values of $\alpha$ and five layers in an afternoon; the equivalent sweep here is fifty training runs, so in practice the design space is explored far less thoroughly and the reported configuration may be one of few tried.
+
+      **Confounds introduced by the intervention itself.** Filtering data changes the dataset *size* and its distribution over everything else, not just the target behavior. If you remove the top 5% by sycophancy score, you have also removed whatever those examples were about — a topic, a length, a response style. The resulting behavioral difference needs a matched control: remove 5% at random, or 5% scored by an unrelated direction, and compare.
+
+      **Attribution across the pipeline.** With training changed, any downstream difference could come from the intended mechanism or from a different optimization trajectory, a different effective learning rate on the remaining data, or ordinary run-to-run variance. Seed variance across retraining runs is the baseline that has to be established before any effect size means anything.
+
+      So it trades a weaker inference for a harder measurement.
+
 furtherReading:
   - title: "Chen et al., *Persona Vectors*"
     url: "https://arxiv.org/abs/2507.21509"

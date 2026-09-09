@@ -6,6 +6,41 @@ prerequisites:
   - title: "Patchscopes"
     url: "/topics/patchscopes/"
 
+exitCriteria:
+  - task: "SelfIE describes an injected state as \"a moral conflict about harming one person to save several.\" Design the controls that distinguish a grounded interpretation from a prompt-driven guess, and give the pattern each predicts."
+    answer: |
+      Two families of control, varying one factor at a time.
+
+      **Hold the prompt fixed, vary the state.** Compare the original state against unrelated states, a mean-state baseline, and states from nearby layers and positions.
+      - *Grounded:* descriptions change with the state; the moral-conflict description appears only for states from the moral scenario; the mean-state baseline yields something generic or incoherent.
+      - *Prompt-driven:* every state produces a similar description, because the wording of "describe what this represents" plus the model's priors is doing the work.
+
+      **Hold the state fixed, vary the prompt.** Paraphrase the interpretation prompt several ways.
+      - *Grounded:* the content survives rewording; only the phrasing changes.
+      - *Prompt-driven:* the description tracks the prompt's framing, and a differently-framed prompt yields a differently-themed answer from the same vector.
+
+      The two patterns are opposite in a way that makes the test decisive: a grounded interpretation is sensitive to the state and insensitive to the prompt, and a guess is the reverse.
+
+      The layer-neighbour control is the sharpest of the state variations. Adjacent layers carry nearly the same information, so a readout claiming fine-grained content should be stable across them — and if it is not, the specificity was manufactured.
+  - task: "SelfIE emphasizes freeform description while Patchscopes uses targeted prompts. State what each design buys, and why freeform is the harder one to validate."
+    answer: |
+      **Targeted prompts** buy *checkability*. `"[PATCH] is the capital city of"` has a small answer space and often a known correct answer, so the readout can be scored — accuracy against ground truth, agreement across prompts. The cost is that you can only extract properties you thought to ask for.
+
+      **Freeform** buys *discovery*. An open-ended description can surface aspects of a representation no researcher would have queried, which is the only way to learn something you did not already suspect. That is a real advantage and it is why the design exists.
+
+      **Why freeform is harder to validate:** there is no answer key and no answer space. A multi-sentence description cannot be scored against ground truth, and "is this description right?" collapses into a human judging plausibility — which is precisely the judgment a fluent language model is optimized to satisfy. The interpretability-illusion structure applies directly: a description with good recall (it fits the examples) and unknown precision (it may fit much else) reads as correct.
+
+      So freeform output should be treated as **hypothesis generation**, with the hypothesis then converted into something targeted and testable: derive a prediction from the description, and check it with a probe, a targeted patch, or an intervention.
+  - task: "SelfIE is described as producing \"an elicited readout rather than a direct transcript of the model's reasoning.\" Explain the distinction and why it matters for claims about introspection."
+    answer: |
+      A **transcript** would mean the text reports internal content that was already there in propositional form — the model reading out something it had computed. An **elicited readout** means the text was *generated*, conditioned on the injected state, by the same next-token machinery that produces any other output. The state influences the generation; it does not dictate it.
+
+      The difference shows up in what else the generation draws on: the interpretation prompt's framing, the model's linguistic priors, and whatever completions are plausible given the injected vector's rough position in activation space. All of that is mixed into the output, and none of it is marked.
+
+      **Why it matters for introspection claims:** "the model can describe its own internal states" reads as evidence for a self-model, and this method cannot support that. Conditioning is causal relevance, not access. A description could be accurate because the model has an introspective route to its own representations, or because the injected vector shifts generation toward text associated with similar inputs — a purely associative mechanism with no self-knowledge involved.
+
+      Separating them requires an experiment where the two predict differently, which is what [concept injection](/topics/concept-injection/) is designed to do: inject a known direction and ask whether the model reports the *internal change* before expressing the concept.
+
 furtherReading:
   - title: "Chen et al., *SelfIE: Self-Interpretation of Embeddings*"
     url: "https://arxiv.org/abs/2403.10949"

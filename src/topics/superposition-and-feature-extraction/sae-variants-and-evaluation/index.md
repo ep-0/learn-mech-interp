@@ -18,6 +18,55 @@ glossary:
   - term: "Turn-Averaged SAE"
     definition: "A sparse autoencoder trained on the mean activation across all tokens in a conversation turn, producing turn-level features rather than one feature vector per token."
 
+exitCriteria:
+  - task: "Explain the two distinct questions the L1 penalty conflates, and why a feature that should activate at $5.0$ reaching only $3.0$ is a problem for downstream analysis rather than just an inaccuracy."
+    answer: |
+      The two questions are **which features are active** (a binary selection decision) and **how active they are** (a continuous magnitude). $L_1 = \sum_i |f_i|$ penalizes both at once, because the objective can be reduced either by turning a feature off or by shrinking one that is on. What we actually want is $L_0$, a count of active features that says nothing about magnitudes — but $L_0$ is discontinuous at zero, so gradient descent cannot optimize it, and $L_1$ is the differentiable convex surrogate.
+
+      **Why the $5.0 \to 3.0$ shrinkage matters downstream:**
+
+      - **Reconstruction is systematically biased**, not noisy. Every active feature is pulled the same direction, so the errors do not average out — they sum into a reconstruction that consistently under-represents the activation, and that error propagates into every circuit built on top.
+      - **Feature magnitudes are used as evidence.** "This feature fires at strength 8 here and 2 there" underlies attribution and comparisons across inputs. If magnitudes are compressed by an amount depending on how many features are co-active, those comparisons are distorted in a way that correlates with input complexity.
+
+      The selection may be entirely correct and the analysis still wrong, which is why Gated SAEs separate the pathways rather than tuning $\lambda$.
+  - task: "Describe the feature absorption mechanism using the \"starts with A\" / \"Apple\" example, and explain why it is described as a possible structural consequence of the objective rather than a bug."
+    answer: |
+      **The mechanism:** an ideal decomposition of the token "Apple" fires both the parent feature (*starts with the letter A*) and the child (*the word Apple*). But if the child alone reconstructs the activation adequately, firing both costs one extra unit of $L_0$ for no reconstruction gain. The sparsity objective prefers one. So the parent is suppressed *for exactly the inputs that match a child*, and the result is a "starts with A" feature that fires on Axolotl and Azure but not on Apple.
+
+      **Why structural:** the SAE is doing precisely what it was asked to. There is no optimization failure, no bad hyperparameter — the absorbed solution has lower loss. Chanin et al. found it persists across dictionary sizes, sparsity levels, and training configurations, which is what you expect from a preference built into the objective rather than an artifact of a particular run.
+
+      **Why it is serious:** it attacks the premise of feature circuits. Tracing "starts with A" through the model requires the feature to fire reliably when the property holds, and absorption guarantees it does not — with the failures concentrated on the most specific, most interesting cases. A monitored safety feature can go quiet exactly where a sufficiently specific child feature exists.
+  - task: "SAE probes beat logistic-regression baselines on 2.2% of 113 classification tasks. Separately, improving the baseline's token pooling dropped the SAE win rate from 19.6% to 8.7%. State the methodological lesson."
+    answer: |
+      **The lesson: a comparison measures the baseline as much as the method.** Half the apparent SAE advantage in prior work disappeared when the baseline was allowed to use attention-based pooling instead of max-pooling — a change with nothing to do with SAEs. The reported win rate had been partly a measurement of how much effort went into the comparison arm.
+
+      This is a systematic bias, not an occasional one. Researchers optimize the method they are proposing and implement the baseline to a reasonable-looking standard, so the gap in tuning effort runs one way by default. Every step of care on the baseline eats into the claimed advantage, and the sequence $19.6\% \to 8.7\% \to 2.2\%$ under successively stronger comparisons is what that looks like.
+
+      **What to do about it:** state what the baseline was allowed to do, tune it with comparable effort, and report the result as a function of baseline strength rather than as a single number. When reading, treat "we beat a baseline" as a claim about the specific baseline, and ask what a well-motivated stronger one would score.
+
+      The honest framing of the SAE result is narrower: when a concept is already labeled, a supervised method optimizing for it directly is hard to beat by selecting a latent from an unsupervised dictionary.
+  - task: "You train a new SAE architecture and it achieves better reconstruction loss at matched $L_0$ than the previous best. State what you have established and what SAEBench's central finding says you have not."
+    answer: |
+      **Established:** a Pareto improvement on the reconstruction–sparsity frontier. That is real: it means less of the activation is being discarded per active feature, and it addresses a genuine failure mode — shrinkage, or rigid sparsity, or whatever the architecture targeted.
+
+      **Not established:** that the dictionary is more useful for any interpretability task. SAEBench's central finding is that proxy metrics do not reliably predict task performance. Better reconstruction or $L_0$ did not consistently improve concept detection, description quality, or disentanglement, and Gated, TopK, and JumpReLU were often hard to distinguish on practical metrics even where their proxy metrics differed clearly.
+
+      The reason is that reconstruction loss weights errors by squared magnitude in activation space, and that weighting has no particular relationship to which directions carry the concepts you want or which errors change the model's predictions. An SAE can reconstruct better while decomposing worse.
+
+      **What follows practically:** the evaluation has to match the use. If the dictionary is for detecting a concept, benchmark concept detection; if for circuit tracing, measure how much weight lands on reconstruction-error nodes. Reporting a frontier improvement and inferring usefulness skips the step that SAEBench shows does not hold.
+  - task: "\"This model has a deception feature.\" Given SAE non-uniqueness, say what this sentence is actually a claim about, and what would be needed to make it a claim about the model."
+    answer: |
+      As written it is a claim about **one SAE**: a particular dictionary, trained with a particular architecture, expansion factor, sparsity setting, data sample, and random seed, contains a latent whose top activations a human labelled "deception." SAEs trained with different seeds on the same activations learn substantially different feature sets, so a second run might find a different deception latent, split it across several, or not produce one.
+
+      **To promote it to a claim about the model:**
+
+      1. **Stability across runs.** Show the latent recurs under independent training with matched direction — the feature is in the *robust* subset, not the run-specific one.
+      2. **Causal validation.** Ablating or clamping it changes deceptive behavior as predicted, with an Isolate-style control showing neighbouring properties do not move.
+      3. **Precision, not just recall.** Test inputs the label predicts should activate it. This is where the illusion lives: a latent firing on social interaction broadly, of which deception is a subset, passes every recall check and is not a deception feature.
+      4. **A comparison against a supervised direction.** If difference-in-means on labelled deception data finds a better-behaved direction, the SAE latent is not the model's deception representation in any privileged sense.
+
+      Without these, the safety use is unsupported: a monitored latent that is not what its label says gives false assurance rather than none.
+
 furtherReading:
   - title: "Karvonen et al., *SAEBench: A Comprehensive Benchmark for Sparse Autoencoders*"
     url: "https://arxiv.org/abs/2503.09532"

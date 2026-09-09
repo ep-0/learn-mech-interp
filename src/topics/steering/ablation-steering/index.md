@@ -6,6 +6,37 @@ prerequisites:
   - title: "Addition Steering"
     url: "/topics/addition-steering/"
 
+exitCriteria:
+  - task: "Write the directional ablation operation and say precisely what it removes and preserves. Then explain why applying it at every layer and position is a stronger intervention than it may appear."
+    answer: |
+      $$\mathbf{h}' = \mathbf{h} - (\mathbf{h}\cdot\hat{\mathbf{r}})\,\hat{\mathbf{r}}.$$
+
+      It removes the component of the activation along $\hat{\mathbf{r}}$ and preserves everything orthogonal to it — geometrically, flattening the state onto the hyperplane perpendicular to the direction.
+
+      **Why applying it everywhere is strong:** a single-layer ablation removes the component once, and the model can rebuild it — later components write to the residual stream, and a direction the model reconstructs will be back by the next layer. Ablating at every layer and every token position means the direction is *never available*, at any point in the computation, to any component. The model cannot route around it in depth.
+
+      That strength is also the interpretive cost. The intervention is no longer a localized test of where the information matters; it is a global constraint on the whole forward pass. It cannot distinguish a behavior implemented at one site from one implemented redundantly across many, and it tells you nothing about *where* the direction is read. A layer-by-layer ablation sweep answers that question and is a different experiment.
+  - task: "Ablating one direction dropped refusal rates from 80–90% to near zero across the models tested. State the mechanistic finding and the safety warning, and say which is better supported."
+    answer: |
+      **The mechanistic finding:** refusal, across these models, is mediated to a large extent by a *single* linear direction. That is a substantive and somewhat surprising claim about organization — a behavior shaped by extensive safety training turns out to be gated by one dimension rather than distributed across a complex mechanism. It is well supported: the effect is large, consistent across models, and paired with the addition experiment in the other direction.
+
+      **The safety warning:** refusal behavior may be far easier to bypass than capability benchmarks suggest. A model that refuses $90\%$ of harmful requests appears robustly aligned by behavioral evaluation, and one projection applied at inference removes the behavior without touching the weights or degrading general capability.
+
+      **Which is better supported:** the mechanistic finding. The safety warning requires the additional step that this generalizes to models and threat conditions beyond those tested — that the direction remains findable under defenses, that no future training makes refusal genuinely distributed. Those are extrapolations.
+
+      Both point the same way about evaluation, though: a behavioral refusal rate measures a surface, and the surface can be thin.
+  - task: "Addition establishes sufficiency and ablation establishes necessity. Explain why \"necessity\" overstates what an ablation result gives you."
+    answer: |
+      The pairing is a useful heuristic and each half is weaker than the label.
+
+      Ablation shows that *under this intervention*, on *these inputs*, with the behavior measured by *this metric*, removing the direction removes the behavior. Three gaps separate that from necessity:
+
+      1. **Redundancy.** A behavior can be implemented along several directions. Ablating one and observing collapse shows this direction was load-bearing in the intact model, not that no alternative exists — and if the model were retrained, or fine-tuned, or the ablation applied during training, another route might carry it.
+      2. **The intervention changes the model.** You are measuring a modified network. Downstream components respond to the altered state, and self-repair, LayerNorm rescaling, and released suppression all contribute to the number you observe.
+      3. **Off-distribution effects.** Projection can move activations somewhere the model was never fitted, so a behavior can fail for reasons unrelated to the information removed. This is exactly what happens on RWKV, where ablating the refusal direction yields gibberish rather than compliance.
+
+      The defensible statement is *causal participation under a specified intervention* — which is what every causal claim in this field reduces to, and worth saying plainly rather than borrowing a stronger word.
+
 furtherReading:
   - title: "Arditi et al., *Refusal in Language Models Is Mediated by a Single Direction*"
     url: "https://arxiv.org/abs/2406.11717"

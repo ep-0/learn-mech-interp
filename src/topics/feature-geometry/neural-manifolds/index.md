@@ -16,6 +16,49 @@ glossary:
   - term: "Compact Manifold Capture"
     definition: "An SAE representation in which a small, stable group of decoder features spans a manifold well, rather than different manifold regions requiring largely different feature groups."
 
+exitCriteria:
+  - task: "Points sampled from a circle need two PCA components for accurate linear reconstruction but have intrinsic dimension one. Explain the distinction and say why both numbers should be reported."
+    answer: |
+      **Intrinsic dimension** counts the local coordinates needed to specify a point on the object: for a circle, one angle. **PCA rank** counts the dimensions of the smallest *flat* subspace containing it: for a circle, two, because a circle does not fit in a line.
+
+      The gap between them measures **curvature**. A flat object has equal values; a circle has one and two; a sufficiently twisted one-dimensional curve can have intrinsic dimension one and need many principal components. This is exactly why a manifold is not just another name for a subspace — a subspace is flat and closed under linear combination, a manifold can wander through many linear dimensions while remaining locally one-dimensional.
+
+      **Why report both:** each answers a question the other cannot. PCA's explained variance says how much of the cloud is linearly capturable, which bounds what linear methods — probes, difference-in-means directions, SAE dictionary elements — can do with it. The intrinsic dimension says how many variables the model is actually tracking. A single number invites the standard error: reading a high PCA rank as high complexity, when it may be one variable on a curved path.
+  - task: "Ages from 10 to 100 and days of the week both have intrinsic dimension one. Say what distinguishes them, and what an unconstrained line fit would get right and wrong."
+    answer: |
+      **Topology.** An age sequence is an open curve with two endpoints; weekdays form a **loop**, where the coordinate must identify the end of Sunday with the beginning of Monday. Both need one local coordinate, so dimension does not separate them.
+
+      An unconstrained line fit gets the **dimension** right and the **topology** wrong. For weekdays it would place Sunday and Monday at opposite ends of a segment — maximally far apart — when the model treats them as adjacent. Every prediction that depends on the closure fails: "two days after Saturday" requires wrapping, and a linear coordinate has nowhere to wrap to. The modular arithmetic the model performs by rotation is inexpressible.
+
+      **How to check topology rather than assume it:** use distances and neighborhoods in the original space, not the appearance of a projection. A 2D plot can introduce a false crossing where the curve passes through well-separated regions, and a neighborhood-preserving method can tear a real loop open to display it flat. Ask whether Sunday's nearest neighbors include Monday in the ambient space — that is a fact about the activations, not about the plotting algorithm.
+  - task: "A flexible manifold fitter can trace almost any finite point cloud. Name the three baselines that catch a convenient story, and say what each rules out."
+    answer: |
+      1. **A matched linear baseline.** Compare the nonlinear fit against PCA on the same training examples *and the same held-out prompts*. This rules out the case where the curve buys nothing: if a flat model predicts new data as well, the curvature is decoration.
+      2. **Shuffled concept labels.** Refit the whole pipeline with the labels permuted. If performance is similar, the apparent semantic ordering came from generic activation density or prompt structure rather than from the concept. This is the essential one, because a flexible fitter plus a selection of the best-looking projection can manufacture an ordered-looking curve from unstructured data.
+      3. **Cross-template evaluation.** Fit on one prompt template family, test on another. This rules out template leakage — a "manifold" that is really the model's representation of your sentence frames, with the concept along for the ride.
+
+      Behind all three is one question: does the fit's inductive assumption *predict* data it was not given? A curve drawn through points is not evidence; a curve that anticipates where new points land is.
+
+      A fourth degree of freedom deserves the same treatment: if dozens of layers and token positions were searched, the best-looking site is exploratory, and confirming it requires freezing the choice and running a fresh dataset.
+  - task: "Distinguish an ablation, a patch, and a path intervention on a proposed manifold. Say what claim each tests, and give a case where two of them disagree."
+    answer: |
+      - **Ablation:** is the represented family *necessary* for the behavior? Remove the manifold's ambient subspace, or better its local tangent space, and see whether performance degrades. Coarse: an ambient-subspace ablation may erase unrelated variables sharing those dimensions.
+      - **Patch:** does moving between intrinsic coordinates *transfer the variable*? Patch a "47 characters" state into a 40-character context and check that the boundary prediction shifts in the predicted direction. This tests the coordinate's meaning, not just the subspace's importance.
+      - **Path intervention:** do the *connections and distances* within the structure matter? Compare several intermediate states between shared endpoints and ask whether behavior changes smoothly and in order. This is the only one that tests the geometry and topology rather than the span.
+
+      **A disagreement:** the subspace can be necessary while the fitted curve is wrong. Ablation succeeds — behavior collapses — because the dimensions carry the variable; the patch may also succeed at the endpoints; and the path intervention fails, because intermediate points along your curve leave the model's natural activation distribution and produce erratic behavior. You have a real causal subspace and a fictitious geometry.
+
+      Reporting the three separately prevents "causal manifold" from collapsing three distinct results into one oversized claim.
+  - task: "An SAE can relate to a concept manifold by compact capture, shattering, or dilution. Define each, and say which one a good reconstruction score fails to distinguish from the others."
+    answer: |
+      - **Compact capture:** one small, stable set of decoder features spans the manifold, and the set does not need to grow much beyond the manifold's ambient linear dimension. The features act as paving stones on a curved road — each a good local approximation, the sequence revealing the global shape.
+      - **Shattering:** different regions of the manifold depend on nearly *disjoint* feature groups. There is no shared vocabulary; the tiling exists but the tiles have nothing in common, so no small set describes the whole.
+      - **Dilution:** many overlapping, partly redundant features participate, with no small stable group explaining the structure. Coverage without compression.
+
+      **Reconstruction fails to distinguish all three.** Every one of them can reconstruct individual activations accurately — that is the point of an overcomplete dictionary with enough active features. Reconstruction asks whether each point is recoverable using whichever features happen to fire; compact capture asks whether *one stable small set* spans the object. Those are different questions, and only the second supports treating the features as coordinates on the manifold.
+
+      This is the same lesson as SAEBench at a different scale: a proxy metric that is easy to compute answers a question adjacent to the one being asked.
+
 furtherReading:
   - title: "Chung, Lee & Sompolinsky, *Classification and Geometry of General Perceptual Manifolds*"
     url: "https://arxiv.org/abs/1710.06487"

@@ -13,6 +13,31 @@ glossary:
   - term: "Safety Monitor"
     definition: "A system that uses mechanistic interpretability techniques (such as probes or feature monitors) to detect potentially dangerous model behaviors at inference time, enabling intervention before harmful outputs are produced."
 
+exitCriteria:
+  - task: "One direction acts as a bottleneck for refuse-or-comply behavior across 13 models. State what this establishes about safety mechanisms and the stronger claim it does not support."
+    answer: |
+      **Establishes:** at least some safety-relevant behaviors have a **linearly accessible mediator** — a direction that can be found by a mean difference, measured by projection, and manipulated by addition, ablation, or weight orthogonalization. That is a real and useful fact, and it is what makes the intervention so cheap.
+
+      **Does not support:** that the model's safety computation is linear, or simple, or fully characterized. A mediator sits at a narrow point in a pathway; the upstream computation that *recognizes harmful content* — parsing the request, inferring intent, matching it against learned categories — may be arbitrarily complex and distributed. All the direction tells you is that whatever that computation concludes is written into one dimension before the refuse-or-comply decision reads it.
+
+      The valve-versus-reservoir distinction again. Finding the valve is genuinely useful: it explains the jailbreak, it gives you a monitoring signal, and it is a real structural fact. It is not an account of the mechanism, and an audit that verified the direction was intact would have verified almost nothing about whether harm recognition works.
+  - task: "Emergent misalignment from a rank-1 LoRA adapter is described as isolating a low-dimensional *training change*, which is \"related to but not identical with\" finding a misalignment direction in activations. Explain the distinction."
+    answer: |
+      A rank-1 LoRA constrains the **weight update** to a one-dimensional family: $\Delta W = \mathbf{a}\mathbf{b}^T$. Whatever fine-tuning did, it did through that single rank-one modification. This is a fact about the intervention, guaranteed by the setup rather than discovered.
+
+      A **misalignment direction in activations** would be a direction in the residual stream along which the model's misaligned state is represented — something to be found, and something that could be distributed across many latents regardless of how low-rank the weight change was.
+
+      The two are related because a rank-one weight change has a limited footprint: it can only add a multiple of one vector to one layer's write, which constrains but does not determine what happens in activation space. Downstream nonlinearities, normalization, and interactions with the rest of the network mean a rank-one parameter change can produce activation changes spread across many directions.
+
+      The distinction matters for what the model organism demonstrates. It shows misalignment can be *installed* through a one-dimensional weight change, which is a striking fact about how little it takes. It does not show that misalignment is *represented* one-dimensionally — that would need the activation-space direction found and validated separately.
+  - task: "The misalignment direction is learned in a narrow window of training steps — a mechanistic phase transition rather than gradual emergence. Say why this matters for monitoring and what it does not tell you."
+    answer: |
+      **Why it matters for monitoring:** a gradual change can be caught by periodic checks, because the quantity you are watching drifts and you have many chances to see it cross a threshold. A phase transition can complete between two checkpoints, so a monitoring cadence tuned to gradual drift will observe the before and after and nothing in between. It also means an early-training measurement is weak evidence about a later state — the property was not there and then it was, with no intermediate to extrapolate from.
+
+      The practical implication is that checkpoint frequency has to be set against the transition width, not against total training length, and that a smooth loss curve is not evidence that internals are changing smoothly. Induction heads showed the same pattern.
+
+      **What it does not tell you:** that other misaligned behaviors emerge this way. This is one direction, in one model organism, produced by a rank-1 adapter on a narrow fine-tune — a setup with a single low-dimensional degree of freedom, which is about as favourable to a sharp transition as a setup can be. Whether a phase transition would appear under full fine-tuning, or in ordinary training, is not established by it.
+
 furtherReading:
   - title: "Anthropic, *A Framework for Sabotage Evaluations* and the sabotage-evaluation reports"
     url: "https://arxiv.org/abs/2410.21514"

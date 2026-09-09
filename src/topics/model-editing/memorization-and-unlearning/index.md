@@ -17,6 +17,35 @@ glossary:
   - term: "Machine Unlearning"
     definition: "Modifying a trained model so that specified training data no longer influences it, while preserving behavior and capabilities unrelated to the removal target."
 
+exitCriteria:
+  - task: "A prompt that used to extract a memorized passage no longer works after unlearning. Give three explanations besides \"the data was removed,\" and say what each implies for evaluation."
+    answer: |
+      1. **A different prompt still works.** Memorization is prompt-dependent: a passage inaccessible from one prefix may be reproduced exactly from a shorter one, a paraphrase, or a neighbouring sentence. *Implication:* evaluation needs multiple extraction attempts with varied and adversarially chosen prompts, not the one prompt the unlearning was tuned against.
+      2. **One output route was suppressed while the information remains recoverable.** This is the insertion-versus-editing problem from fact editing, transplanted: the update overrides an answer without erasing what supports it. *Implication:* probe for the content in the representations, and test indirect elicitation — multi-hop questions, a different language, a task that requires the information without asking for it.
+      3. **General capability was damaged.** If the procedure degraded the model's language modelling, the passage is harder to elicit for a reason unrelated to the target. *Implication:* utility controls on held-out capabilities are mandatory, or apparent unlearning success is confounded with damage.
+
+      The common structure: a single failed extraction is evidence about that prompt. Unlearning claims are claims about a *set* of elicitation routes, so the evaluation has to sample that set adversarially — and cannot enumerate it.
+  - task: "Extractable memorization grows approximately log-linearly with model capacity, duplication count, and prompt context length. Say how these interact and why deduplication does not solve the problem."
+    answer: |
+      **How they interact:** they trade off against one another. A sequence duplicated many times can be recovered from a smaller model or a shorter prefix; a rare sequence may need both a large model and a highly specific context. So extraction success is a joint function, and holding one variable fixed while reporting another gives a misleading picture of risk.
+
+      The context-length relationship is the one that matters most for threat modelling: it means an attacker's *effort* is a variable. More context is something an adversary can supply, so a passage that appears safe under short-prefix testing may be extractable by someone who tries harder.
+
+      **Why deduplication does not solve it:** it reduces one driver, not the phenomenon. The GPT-2 extraction study recovered sequences appearing in a *single* document — contact information, code, identifiers — so duplication is sufficient for memorization and not necessary. And a single document can repeat a string internally, so document-level duplicate counts miss within-document repetition entirely.
+
+      The practical conclusion is that privacy evaluation cannot stop at duplicate counts, and that these are empirical regularities across studied families rather than architecture-independent laws to extrapolate from.
+  - task: "Define verbatim memorization carefully and explain why prompt dependence makes a binary memorized/not-memorized label unsatisfactory."
+    answer: |
+      **Definition:** a model verbatim-memorizes a training sequence if it can reproduce it exactly given an *appropriate eliciting context*. The qualifier is load-bearing and easy to drop.
+
+      **Why binary fails:** the property is not of the sequence alone but of the (sequence, prompt) pair. The same passage can be inaccessible from a 10-token prefix and reproduced exactly from a 50-token one, so any binary label is really reporting the outcome of whichever attack was run.
+
+      That makes extraction success a **conjunction of two things**: what the model retained, and how well the attack found an eliciting prompt. A negative result confounds them — you cannot tell a model that does not hold the passage from an attack that did not find the key, and only one of those is a fact about the model.
+
+      The consequences run in both directions. A reported memorization rate is a lower bound, set by the attack's strength. And an unlearning evaluation reporting that extraction failed has measured its own attack, which is why such evaluations should report the search budget and the prompt-construction method as part of the result.
+
+      Extraction is *one test* for the ability, not an inventory of everything training changed.
+
 furtherReading:
   - title: "Carlini et al., *Quantifying Memorization Across Neural Language Models*"
     url: "https://arxiv.org/abs/2202.07646"

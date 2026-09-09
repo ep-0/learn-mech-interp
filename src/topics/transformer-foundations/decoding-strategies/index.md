@@ -17,6 +17,38 @@ glossary:
   - term: "Nucleus Sampling (top-p)"
     definition: "A decoding strategy that samples from the smallest set of tokens whose cumulative probability exceeds a threshold p. Unlike top-k, it adapts the number of candidate tokens to the shape of the distribution, including fewer tokens when the model is confident and more when it is uncertain."
 
+exitCriteria:
+  - task: "Two tokens have logits $5.0$ and $4.0$. Compute the ratio of their probabilities at $T = 1$, $T = 0.5$, and $T = 2.0$, and say what stays fixed across all three."
+    answer: |
+      Temperature divides the logits before the softmax, so the ratio is $\exp((z_a - z_b)/T)$ with $z_a - z_b = 1.0$:
+
+      - $T = 1$: $e^{1.0} \approx 2.72$
+      - $T = 0.5$: $e^{2.0} \approx 7.39$
+      - $T = 2.0$: $e^{0.5} \approx 1.65$
+
+      What stays fixed is the **ranking**. Temperature is a monotone transformation of the logits, so the most probable token is the most probable token at every $T > 0$; only the concentration of mass changes. Two consequences follow. Greedy decoding is temperature-independent, which is why $T \to 0$ recovers it. And any claim of the form "raising the temperature makes the model prefer X over Y" is false as stated — raising the temperature makes the model *sample* Y more often, which is not the same thing.
+  - task: "A model outputs: `the` $0.40$, `a` $0.25$, `this` $0.15$, `that` $0.10$, `one` $0.05$, and $0.05$ spread over the rest of the vocabulary. Give the candidate set under top-$k$ with $k=3$ and under nucleus with $p=0.9$. Then repeat both for a distribution where `the` has $0.95$."
+    answer: |
+      **First distribution.** Top-$k$, $k=3$: $\{$`the`, `a`, `this`$\}$, renormalized to $\{0.50, 0.31, 0.19\}$ (dividing by $0.80$). Nucleus, $p=0.9$: accumulate until the total reaches $0.9$ — $0.40, 0.65, 0.80, 0.90$ — so the set is $\{$`the`, `a`, `this`, `that`$\}$, renormalized to $\{0.44, 0.28, 0.17, 0.11\}$.
+
+      **Second distribution.** Top-$k$, $k=3$: still three tokens, so two near-zero-probability tokens are admitted even though the model is nearly certain. Nucleus, $p=0.9$: `the` alone already exceeds $0.9$, so the set is $\{$`the`$\}$ and sampling collapses to greedy.
+
+      That contrast is the whole argument for nucleus sampling. A fixed $k$ is a statement about the candidate *count*, which is the wrong quantity — it is too permissive when the model is confident and too restrictive when it is uncertain. A fixed $p$ is a statement about how much probability mass to keep, which adapts to the shape of the distribution automatically.
+  - task: "Does the choice of decoding strategy change a model's internal activations? Answer for a single forward pass and for multi-step generation, and say why the distinction matters for designing an experiment."
+    answer: |
+      **Single forward pass: no.** Attention patterns, residual stream states, and MLP activations are deterministic functions of the input and the weights. Decoding happens strictly downstream, consuming the logits. Greedy, nucleus, and beam search all see identical internals.
+
+      **Multi-step generation: yes, indirectly.** The token selected at step $n$ becomes part of the input at step $n+1$. Different selection rules produce different continuations, and those different inputs produce genuinely different internal computations from that point on.
+
+      Why it matters for experimental design: any claim about internals measured on a *single* forward pass is decoding-independent and needs no sampling controls. Any claim measured over *generated* text is confounded by the sampling rule, and the same model with $T = 0.7$ and $T = 1.2$ can produce different rates of whatever behavior you are measuring. If you are studying, say, how often a model produces a certain kind of reasoning, you must fix and report the decoding parameters, and preferably show the result is stable across them — otherwise you may be measuring a property of the sampler.
+  - task: "Beam search finds sequences with higher total log-probability than greedy decoding, yet produces text people judge as worse for open-ended generation. Explain the mismatch."
+    answer: |
+      Beam search optimizes $\sum_i \log P(t_i \mid t_{<i})$, and does so well. The problem is that this objective is not the one we want.
+
+      Human language has entropy: a person writing a sentence does not choose the most predictable next word at every step, and text that does is recognizably degenerate. The highest-probability sequences under a language model are systematically short, generic, and repetitive — a loop like "the cat sat on the mat, the cat sat on the mat" has high per-token probability at every step precisely because it is predictable. Searching harder finds *more* of that, so widening the beam can make open-ended output worse rather than better.
+
+      The mismatch disappears when the task genuinely has a correct answer. In machine translation or structured generation, the high-probability sequence is the right one and there is little value in surprise, which is why beam search remains standard there. The lesson generalizes past decoding: optimizing a proxy harder is only an improvement while the proxy and the goal still agree.
+
 furtherReading:
   - title: "Holtzman et al., *The Curious Case of Neural Text Degeneration*"
     url: "https://arxiv.org/abs/1904.09751"
