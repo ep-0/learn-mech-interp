@@ -58,7 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Hastie, Tibshirani & Wainwright, *Statistical Learning with Sparsity*, chapters 1-2 — The lasso, the geometry, and the shrinkage bias. Freely available.
+- Hastie, Tibshirani & Wainwright, *Statistical Learning with Sparsity*, chapters 1-2 — Start here. The lasso, the geometry, and the shrinkage bias. Freely available.
 - Boyd & Vandenberghe, *Convex Optimization*, chapter 6 — Approximation and fitting, including the regularization framing.
 - Beck & Teboulle, 'A Fast Iterative Shrinkage-Thresholding Algorithm' (2009) — ISTA and FISTA. Read section 1-2 for the proximal view.
 - Fit it: run lasso and ridge on the same data across a range of penalties and plot the coefficient paths — The geometric argument for why $L_1$ produces exact zeros and $L_2$ does not is convincing on the page and obvious in the plot.

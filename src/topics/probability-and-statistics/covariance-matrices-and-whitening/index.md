@@ -58,7 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Murphy, *Probabilistic Machine Learning: An Introduction*, sections 3.2 and 7.4 — Covariance matrices, the multivariate Gaussian, and their geometry.
+- Murphy, *Probabilistic Machine Learning: An Introduction*, sections 3.2 and 7.4 — Start here. Covariance matrices, the multivariate Gaussian, and their geometry.
 - Murphy, *Probabilistic Machine Learning: An Introduction*, the chapter 3 and 7 exercises, plus whitening a real activation matrix and confirming the result has identity covariance — Free. The check takes two lines and catches the sign and scaling errors that this topic invites.
 - Kessy, Lewin & Strimmer, 'Optimal whitening and decorrelation' (2018) — Whitening is not unique. This paper enumerates the choices and what each preserves.
 - Ledoit & Wolf, 'A well-conditioned estimator for large-dimensional covariance matrices' (2004) — Read the introduction for why the naive empirical covariance fails in high dimension.

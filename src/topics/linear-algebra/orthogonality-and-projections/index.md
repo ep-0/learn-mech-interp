@@ -50,7 +50,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Strang, *Introduction to Linear Algebra*, chapter 4 — Projections, least squares, and orthogonality developed together, which is how they are used.
+- Strang, *Introduction to Linear Algebra*, chapter 4 — Start here. Projections, least squares, and orthogonality developed together, which is how they are used.
 - 3Blue1Brown, *Essence of Linear Algebra*, chapter 9 — Projection as the geometric content of the dot product.
 - MIT OCW 18.06SC, Unit II problem sets — Free, with solutions. Projections, Gram-Schmidt, and orthogonal complements. Work the projection-matrix problems specifically.
 - Trefethen & Bau, *Numerical Linear Algebra*, lectures 6-8 — Projectors, QR, and why Gram-Schmidt is taught but not used.

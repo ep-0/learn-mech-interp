@@ -67,7 +67,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Turpin et al., *Language Models Don't Always Say What They Think* (arXiv:2305.04388) — The clearest demonstration of unfaithfulness, with the biasing-cue design that later work reuses.
+- Turpin et al., *Language Models Don't Always Say What They Think* (arXiv:2305.04388) — Start here. The clearest demonstration of unfaithfulness, with the biasing-cue design that later work reuses.
 - Lanham et al., *Measuring Faithfulness in Chain-of-Thought Reasoning* (arXiv:2307.13702) — The battery of tests, and the finding that faithfulness varies systematically with model size.
 - Baker et al., *Monitoring Reasoning Models for Misbehavior and the Risks of Promoting Obfuscation* (arXiv:2503.11926) — Optimizing against a monitor destroys the property the monitor depends on. The most consequential result here.
 - Test it yourself: take a reasoning trace, perturb a step so the stated logic no longer supports the conclusion, and see whether the answer changes — Cheap to run on any model with a visible scratchpad, and it will calibrate how much weight to put on stated reasoning faster than the papers will.

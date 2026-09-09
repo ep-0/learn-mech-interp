@@ -50,7 +50,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- 3Blue1Brown, *Essence of Linear Algebra*, chapters 3-4 and 7-8 — Linear transformations, composition, and inverses, presented geometrically.
+- 3Blue1Brown, *Essence of Linear Algebra*, chapters 3-4 and 7-8 — Start here. Linear transformations, composition, and inverses, presented geometrically.
 - Strang, *Introduction to Linear Algebra*, chapters 2-3 — The four fundamental subspaces, which is the framing that makes rank feel inevitable later.
 - MIT OCW 18.06SC, Unit I problem sets — Free, with solutions. Elimination and the four subspaces, drilled until you can find a null space without thinking about it.
 - Axler, *Linear Algebra Done Right*, chapter 3 — Linear maps as objects in their own right, with the matrix as a representation chosen after a basis.

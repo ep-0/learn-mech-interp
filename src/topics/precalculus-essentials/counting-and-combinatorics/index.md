@@ -58,7 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Blitzstein & Hwang, *Introduction to Probability*, chapter 1 — Counting introduced as the foundation of probability, which is exactly the framing this article wants. Free lectures accompany it as Harvard Stat 110.
+- Blitzstein & Hwang, *Introduction to Probability*, chapter 1 — Start here. Counting introduced as the foundation of probability, which is exactly the framing this article wants. Free lectures accompany it as Harvard Stat 110.
 - Graham, Knuth & Patashnik, *Concrete Mathematics*, chapter 5 — Binomial coefficients in depth. Read the first sections only unless you enjoy it.
 - Khan Academy, 'Counting, permutations, and combinations' — Free drills.
 - OpenStax, *Precalculus*, the sequences and counting chapter — Reference for the mechanics.

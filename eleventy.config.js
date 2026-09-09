@@ -278,6 +278,19 @@ function validate() {
           errors.push(`${topic.slug}: brief lists ${count} sources; an unwritten article needs at least 4, ` +
             `because the sources are the only teaching it has`);
         }
+
+        // Four sources with nothing to rank them is a menu, not a syllabus. Exactly
+        // one entry says "Start here", and it is the first, so the reader opening a
+        // topic cold knows which door to take and what the rest are for.
+        const marked = sources
+          ? sources[1].split("\n").filter(line => line.trim().startsWith("- ") && line.includes("Start here."))
+          : [];
+        if (marked.length !== 1) {
+          errors.push(`${topic.slug}: brief marks ${marked.length} sources with "Start here."; ` +
+            `exactly one is required, so the reader knows where to begin`);
+        } else if (!sources[1].split("\n").find(line => line.trim().startsWith("- ")).includes("Start here.")) {
+          errors.push(`${topic.slug}: the "Start here." source is not first in the list`);
+        }
       }
       for (const item of data.exitCriteria || []) {
         if (!item.task) {

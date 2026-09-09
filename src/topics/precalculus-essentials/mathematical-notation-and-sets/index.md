@@ -64,7 +64,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Serge Lang, *Basic Mathematics*, chapters 1-2 — Notation and the number systems, developed with more care than a typical high-school text and no more length.
+- Serge Lang, *Basic Mathematics*, chapters 1-2 — Start here. Notation and the number systems, developed with more care than a typical high-school text and no more length.
 - Daniel Velleman, *How to Prove It*, chapters 1-2 — Logic, quantifiers, and sets. Read for how to parse a statement, not to become a proof writer.
 - Graham, Knuth & Patashnik, *Concrete Mathematics*, chapter 2 — Sums. The best treatment of summation manipulation there is, and directly useful later.
 - Paul's Online Math Notes, the algebra preliminaries — For drilling notation until it stops slowing you down. Free.

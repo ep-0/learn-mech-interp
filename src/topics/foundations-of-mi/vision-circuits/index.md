@@ -64,7 +64,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Olah et al., *Zoom In: An Introduction to Circuits* (Distill, 2020) — The founding statement, and the clearest account of the three claims this curriculum rests on.
+- Olah et al., *Zoom In: An Introduction to Circuits* (Distill, 2020) — Start here. The founding statement, and the clearest account of the three claims this curriculum rests on.
 - Cammarata et al., *Curve Detectors* and *Curve Circuits* (Distill, 2020-2021) — The full case study. Read both: the first establishes the neurons exist, the second reads the circuit off the weights.
 - Olah et al., *Multimodal Neurons in Artificial Neural Networks* (Distill, 2021) — The CLIP result, including the typographic attacks. The most vivid demonstration of modality-independent features.
 - Explore the figures: the Distill circuits articles ship interactive feature visualizations and weight diagrams alongside the text — Spend time in them. The claim these papers make is that you can read a mechanism off the weights, and the figures are the evidence rather than an illustration of it.

@@ -66,8 +66,8 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
+- 3Blue1Brown, *Essence of Calculus*, chapter 7 — Start here. Limits, including a clear account of why $\epsilon$-$\delta$ says what it says.
 - Spivak, *Calculus*, chapters 5-6 — Limits and continuity with the $\epsilon$-$\delta$ definition treated as the point rather than an aside.
-- 3Blue1Brown, *Essence of Calculus*, chapter 7 — Limits, including a clear account of why $\epsilon$-$\delta$ says what it says.
 - MIT OCW 18.01SC, the limits unit — Free lectures and problem sets at the standard first-course level.
 - Paul's Online Math Notes, 'Limits' — Free, with worked examples of every indeterminate form you will meet.
 

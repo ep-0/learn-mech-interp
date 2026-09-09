@@ -50,7 +50,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- 3Blue1Brown, *Essence of Calculus*, chapter 11 (Taylor series) — The clearest geometric account of what the higher terms are doing.
+- 3Blue1Brown, *Essence of Calculus*, chapter 11 (Taylor series) — Start here. The clearest geometric account of what the higher terms are doing.
 - MIT OCW 18.01SC, the Taylor series unit — For the remainder term done carefully, which is the part usually skipped.
 - Paul's Online Math Notes, the Taylor series practice problems — Free, with full solutions. Expand a few functions by hand and bound the remainder; the first-order approximations throughout interpretability are only as trustworthy as your feel for that bound.
 - Sundararajan, Taly & Yan, 'Axiomatic Attribution for Deep Networks' (arXiv:1703.01365) — Integrated gradients, including the axioms that motivate it. Read sections 1-3.

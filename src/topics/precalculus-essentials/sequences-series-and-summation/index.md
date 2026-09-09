@@ -66,8 +66,8 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
+- 3Blue1Brown, *Essence of Calculus*, chapter 11 — Start here. Taylor series presented visually. Watch for the intuition about what a series is doing.
 - Michael Spivak, *Calculus*, chapters 22-23 — Sequences and infinite series done rigorously. Demanding, and the standard against which others are measured.
-- 3Blue1Brown, *Essence of Calculus*, chapter 11 — Taylor series presented visually. Watch for the intuition about what a series is doing.
 - Paul's Online Math Notes, 'Series and Sequences' — Free, complete, and organized for looking things up.
 - Paul's Online Math Notes, the Series and Sequences practice problems — Free, with worked solutions. Convergence tests are procedural, and the only way to stop guessing which one to apply is to have applied all of them.
 - Graham, Knuth & Patashnik, *Concrete Mathematics*, chapter 2 — Return here for manipulating sums once the convergence ideas are in place.

@@ -52,7 +52,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- 3Blue1Brown, *Essence of Linear Algebra*, chapter 9 (dot products and duality) — The duality view, that a dot product is a linear map to $\mathbb{R}$, is the one that pays off later in direct logit attribution.
+- 3Blue1Brown, *Essence of Linear Algebra*, chapter 9 (dot products and duality) — Start here. The duality view, that a dot product is a linear map to $\mathbb{R}$, is the one that pays off later in direct logit attribution.
 - Strang, *Introduction to Linear Algebra*, section 1.2 and chapter 4 opening — Dot products, lengths, angles, and the Cauchy-Schwarz inequality.
 - Khan Academy, 'Vectors' and 'Dot products and duality' — Free drills. Elementary, and worth twenty minutes if computing a projection or an angle is not currently automatic.
 - Goodfellow et al., *Deep Learning*, section 2.5 — Norms in the notation used by the deep learning literature.

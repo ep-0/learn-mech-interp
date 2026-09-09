@@ -50,10 +50,10 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Karpathy, 'Neural Networks: Zero to Hero', videos 1-3 — Build the thing from scratch. This is the fastest route to a working mental model.
-- Goodfellow et al., *Deep Learning*, chapter 6 — Feedforward networks, activation functions, and the approximation results.
-- Prince, *Understanding Deep Learning*, chapters 3-4 — Shallow then deep networks, built up carefully and with the exercises to make it stick. Free, and the best current first textbook.
-- Bishop & Bishop, *Deep Learning: Foundations and Concepts*, chapters 6-7 — A modern textbook treatment, more current than PRML on architecture.
+- Karpathy, 'Neural Networks: Zero to Hero', videos 1-3 — Start here. Build the thing from scratch. This is the fastest route to a working mental model.
+- Prince, *Understanding Deep Learning*, chapters 3-4 — The one to read if you read only one: shallow then deep networks, built up carefully, free, and with exercises. Modern enough to carry you to the transformer.
+- Goodfellow et al., *Deep Learning*, chapter 6 — The older standard, for the approximation results stated more formally. A reference rather than a second read-through.
+- Bishop & Bishop, *Deep Learning: Foundations and Concepts*, chapters 6-7 — A third register if neither of the above lands; more probabilistic in its framing than either.
 - Elhage et al., 'Toy Models of Superposition', the polysemanticity sections — Read for the empirical claim that neurons are not features. It motivates the rest of the curriculum.
 
 ## Where the curriculum uses it

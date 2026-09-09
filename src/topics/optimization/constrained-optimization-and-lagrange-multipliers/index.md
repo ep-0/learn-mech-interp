@@ -55,7 +55,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Boyd & Vandenberghe, *Convex Optimization*, chapters 4-5 — Constrained problems and duality. Chapter 5 is the one to work through carefully.
+- Boyd & Vandenberghe, *Convex Optimization*, chapters 4-5 — Start here. Constrained problems and duality. Chapter 5 is the one to work through carefully.
 - Nocedal & Wright, *Numerical Optimization*, chapter 12 — KKT conditions with the geometry spelled out.
 - Klaus-Robert Müller's or Stephen Boyd's lecture videos for the same material — Use if the text is heavy going; the worked examples are what make multipliers click.
 - Belrose et al., 'LEACE' (2023), the derivation section — A constrained optimization problem whose closed-form solution is the whole method.

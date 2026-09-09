@@ -66,7 +66,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Tristan Needham, *Visual Complex Analysis*, chapter 1 — Complex numbers as geometry from the first page. Read only chapter 1; the rest is a different subject.
+- Tristan Needham, *Visual Complex Analysis*, chapter 1 — Start here. Complex numbers as geometry from the first page. Read only chapter 1; the rest is a different subject.
 - 3Blue1Brown, 'Euler's formula with introductory group theory' — Twenty minutes, and it makes $e^{i\theta}$ inevitable rather than mysterious.
 - Axler, *Precalculus: A Prelude to Calculus*, the complex numbers sections — The algebra done carefully, with exercises.
 - Khan Academy, 'Complex numbers' — Free drills for the arithmetic and polar conversions.

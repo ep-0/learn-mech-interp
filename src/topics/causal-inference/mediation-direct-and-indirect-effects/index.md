@@ -56,7 +56,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- VanderWeele, *Explanation in Causal Inference: Methods for Mediation and Interaction*, chapters 1-2 — The standard reference. Dense, but the definitions are worth getting exactly right.
+- VanderWeele, *Explanation in Causal Inference: Methods for Mediation and Interaction*, chapters 1-2 — Start here. The standard reference. Dense, but the definitions are worth getting exactly right.
 - Pearl, 'Interpretation and Identification of Causal Mediation' (2014) — Pearl's own account of the natural effects and the cross-world assumption.
 - Vig et al., 'Investigating Gender Bias in Language Models Using Causal Mediation Analysis' (arXiv:2004.12265) — The paper that brought this framework into NLP interpretability. Read it fully.
 - Zhang & Nanda, 'Towards Best Practices of Activation Patching' (arXiv:2309.16042) — The methodological consequences, including the noising/denoising distinction.

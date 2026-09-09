@@ -50,8 +50,8 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
+- Strang, *Introduction to Linear Algebra*, chapter 6 (positive definite matrices) — Start here. The tests, the geometry, and the connection to minima.
 - Boyd & Vandenberghe, *Convex Optimization*, appendix A and section 3.1 — Quadratic forms and definiteness in the notation the optimization literature uses. Freely available from the authors.
-- Strang, *Introduction to Linear Algebra*, chapter 6 (positive definite matrices) — The tests, the geometry, and the connection to minima.
 - Strang, *Introduction to Linear Algebra*, the chapter 6 exercises, and Boyd & Vandenberghe's chapter 3 exercises — Test definiteness by hand several ways (pivots, eigenvalues, completing the square) until you can pick the cheapest one for a given matrix.
 - Petersen & Pedersen, *The Matrix Cookbook* — A reference, not a text. Bookmark it for identities involving quadratic forms and derivatives.
 - Kessy, Lewin & Strimmer, 'Optimal whitening and decorrelation' — Whitening is not unique, and this paper is the clearest account of which choice does what.

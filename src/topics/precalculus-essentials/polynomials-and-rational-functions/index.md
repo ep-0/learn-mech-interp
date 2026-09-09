@@ -58,7 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Axler, *Precalculus: A Prelude to Calculus*, chapter 2 — Polynomials and rational functions, with the algebra done cleanly.
+- Axler, *Precalculus: A Prelude to Calculus*, chapter 2 — Start here. Polynomials and rational functions, with the algebra done cleanly.
 - Simmons, *Precalculus Mathematics in a Nutshell*, the algebra section — Short and targeted at what calculus actually uses.
 - Paul's Online Math Notes, 'Polynomial Functions' — Free, with the graphing and root-finding exercises.
 - OpenStax, *Precalculus*, chapter 5 — Reference for anything the shorter sources leave out.

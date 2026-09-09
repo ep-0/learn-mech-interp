@@ -56,7 +56,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Sennrich, Haddow & Birch, 'Neural Machine Translation of Rare Words with Subword Units' (arXiv:1508.07909) — The BPE paper. Short and clear.
+- Sennrich, Haddow & Birch, 'Neural Machine Translation of Rare Words with Subword Units' (arXiv:1508.07909) — Start here. The BPE paper. Short and clear.
 - Jurafsky & Martin, *Speech and Language Processing*, the tokenization sections of chapter 2 — The algorithm with worked examples.
 - Karpathy, 'Let's build the GPT Tokenizer' — Implement BPE and see every artifact appear as a consequence of the algorithm.
 - Rumbelow & Watkins, 'SolidGoldMagikarp' (LessWrong, 2023) — Glitch tokens. A good demonstration of tokenizer artifacts producing apparently mysterious model behavior.

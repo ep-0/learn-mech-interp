@@ -168,6 +168,7 @@ Run `npm run build`. The build-time validator checks:
 - Every published concept article has at least three `exitCriteria`, and every entry has a task and a worked answer long enough to score an attempt against
 - Review item ids are unique, so no two questions can share a reader's scheduling history
 - Every placeholder brief lists at least four sources, since a brief's source list is the only teaching it has
+- Every placeholder brief marks exactly one source `Start here.`, and it is the first in the list
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
 - Every `/topics/<slug>/` key in `pageContexts.json` matches a live article
@@ -234,12 +235,14 @@ The brief is written before the article, and it is what makes the article writab
 
 A written article teaches the topic itself; the further reading beside it is optional depth. A brief teaches nothing, so its source list is the only instruction the reader gets. Build it to stand alone, covering four roles — a single source may fill more than one, and the fourth is often already there:
 
-1. **An entry point.** One source to start from, named as such, so the reader is not choosing between four equals on a topic they do not yet know. Prefer a well-known text, lecture series, or course over a blog post.
+1. **An entry point.** One source to start from, and it must say so: begin its note with `Start here.` and put it first in the list. Exactly one entry carries the marker, and the build enforces both the count and the position. Without it a reader opening a topic cold is choosing between four equals on material they do not yet know. Prefer a well-known text, lecture series, or course over a blog post.
 2. **Somewhere to practise.** Where the skill is procedural — anything in precalculus, linear algebra, calculus, probability, or programming — name the problem sets, the exercise chapters, or an "Implement it:" entry with a concrete thing to build. Reading a linear algebra chapter and doing its exercises are different activities, and only one of them produces the skill.
 3. **A second explanation in a different register.** A lecture beside a book, a visual treatment beside a formal one. The reader who bounces off the first source needs somewhere to go that is not the same explanation again.
 4. **What the curriculum does with it.** The MI-facing payoff — the paper or article downstream that makes the topic worth the effort.
 
-Validation enforces the count (at least four) and nothing else; the roles are a judgement call. Prefer sources that are freely readable, and prefer established authorities over recent posts: a reader working through a brief has no way to tell a fringe source from a standard one, so that filtering has to happen here.
+Order the list so it can be read top to bottom: the entry point, then practice, then the alternative explanation, then the payoff. Where two comprehensive textbooks cover the same ground, say which one to open and what the other is for — three interchangeable notes are worse than one, because the reader now has a decision to make instead of a book to read.
+
+Validation enforces the count (at least four) and the single leading `Start here.`; the roles themselves are a judgement call. Prefer sources that are freely readable, and prefer established authorities over recent posts: a reader working through a brief has no way to tell a fringe source from a standard one, so that filtering has to happen here.
 
 Foundational articles are scoped by what the curriculum uses, not by what a subject contains. The precalculus block is the clearest case: it covers the unit circle because cosine similarity and rotary embeddings need it, and skips solving triangles; it covers binomial coefficients because probability starts with counting, and skips generating functions. When adding a foundational article, justify each required section by a downstream use, and put the rest under "Deliberately out of scope" rather than leaving the boundary implicit.
 

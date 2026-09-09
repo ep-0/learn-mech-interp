@@ -56,7 +56,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Jurafsky & Martin, *Speech and Language Processing* (3rd ed. draft), the n-gram and neural LM chapters — The clearest development of the objective, from counting to neural models. Freely available.
+- Jurafsky & Martin, *Speech and Language Processing* (3rd ed. draft), the n-gram and neural LM chapters — Start here. The clearest development of the objective, from counting to neural models. Freely available.
 - Karpathy, 'Let's build GPT: from scratch, in code, spelled out' — The objective implemented end to end, which makes the masking concrete.
 - Stanford CS224N, the lectures on language models — Free video from the group that has taught this longest. Use it for the framing that connects n-gram models, neural LMs and transformers as one lineage rather than three topics.
 - Radford et al., 'Language Models are Unsupervised Multitask Learners' (GPT-2) — Read for the argument that the objective alone induces general capability.

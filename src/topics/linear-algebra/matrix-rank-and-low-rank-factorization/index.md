@@ -50,7 +50,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Strang, *Introduction to Linear Algebra*, chapters 3 and 7 — Rank, the four subspaces, and the factorization view Strang has pushed hardest in recent editions.
+- Strang, *Introduction to Linear Algebra*, chapters 3 and 7 — Start here. Rank, the four subspaces, and the factorization view Strang has pushed hardest in recent editions.
 - Trefethen & Bau, *Numerical Linear Algebra*, lectures 1-5 — Matrix-vector products, rank, and the low-rank picture, written for people who will compute with them.
 - MIT OCW 18.06SC, Unit I problem sets on rank and the four subspaces — Free, with solutions. Rank arguments are the ones most often waved at in interpretability papers, so they are worth being able to do.
 - Elhage et al., 'A Mathematical Framework for Transformer Circuits', the QK and OV circuit derivation — The payoff. Come back to it after the attention article, but skim the algebra now.

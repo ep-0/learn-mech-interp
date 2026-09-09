@@ -57,7 +57,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Karpathy, 'The spelled-out intro to neural networks and backpropagation' (micrograd) — Build reverse-mode autodiff from nothing. Two hours, and it removes all mystery.
+- Karpathy, 'The spelled-out intro to neural networks and backpropagation' (micrograd) — Start here. Build reverse-mode autodiff from nothing. Two hours, and it removes all mystery.
 - Baydin et al., 'Automatic Differentiation in Machine Learning: a Survey' (arXiv:1502.05767) — The modes, the terminology, and the misconceptions the field carries.
 - Goodfellow et al., *Deep Learning*, sections 6.5 — Backpropagation stated with computation graphs.
 - The PyTorch autograd mechanics documentation — How the tape, hooks, and `no_grad` actually behave, which matters for writing interventions.

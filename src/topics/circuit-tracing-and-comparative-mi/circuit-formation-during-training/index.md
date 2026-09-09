@@ -66,7 +66,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Olsson et al., *In-Context Learning and Induction Heads* (transformer-circuits.pub, 2022) — The phase-change evidence in full, including the authors' own caveats about the causal claim.
+- Olsson et al., *In-Context Learning and Induction Heads* (transformer-circuits.pub, 2022) — Start here. The phase-change evidence in full, including the authors' own caveats about the causal claim.
 - Biderman et al., *Pythia: A Suite for Analyzing Large Language Models Across Training and Scaling* (arXiv:2304.01373) — The checkpoint suite most of this work runs on, plus the analyses it was built to support.
 - Singh et al., *What Needs to Go Right for an Induction Head?* (arXiv:2404.07129) — Formation dynamics in a controlled setting, which explains the phase change rather than reporting it.
 - Use the checkpoints: EleutherAI's Pythia suite was released with intermediate training checkpoints precisely so questions like this can be asked — Pick a behavior with a known circuit, run the same probe or patch at a series of checkpoints, and plot when it appears.

@@ -57,7 +57,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Karpathy, 'Deep Dive into LLMs like ChatGPT' — Free, about three and a half hours, and the clearest end-to-end account of the pipeline: pretraining, supervised fine-tuning, reward models, and RLHF as one continuous story. Watch this before the papers below, which each cover one stage.
+- Karpathy, 'Deep Dive into LLMs like ChatGPT' — Start here. Free, about three and a half hours, and the clearest end-to-end account of the pipeline: pretraining, supervised fine-tuning, reward models, and RLHF as one continuous story. Watch this before the papers below, which each cover one stage.
 - Ouyang et al., 'Training language models to follow instructions with human feedback' (arXiv:2203.02155) — The InstructGPT paper. The reference description of the pipeline.
 - Rafailov et al., 'Direct Preference Optimization' (arXiv:2305.18290) — DPO, and the derivation showing what RLHF was implicitly optimizing.
 - Hoffmann et al., 'Training Compute-Optimal Large Language Models' (Chinchilla, arXiv:2203.15556) — Scaling, and why current models are trained the way they are.

@@ -66,7 +66,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- The matplotlib 'Quick start' and 'Artist tutorial' — Free. Learn the object-oriented interface first; the stateful one causes trouble later.
+- The matplotlib 'Quick start' and 'Artist tutorial' — Start here. Free. Learn the object-oriented interface first; the stateful one causes trouble later.
 - Nicolas Rougier, *Scientific Visualization: Python + Matplotlib* — Free book. Read the chapters on figure anatomy and on colormaps.
 - Claus Wilke, *Fundamentals of Data Visualization* — Free online. Not about code: it is about which figure is honest. Read the colormap and uncertainty chapters.
 - Reproduce a figure: pick an attention-pattern heatmap or a patching grid from a paper in this curriculum and rebuild it from your own run — Faster than any tutorial at exposing what matplotlib defaults get wrong, and you end up with a figure you can reuse.

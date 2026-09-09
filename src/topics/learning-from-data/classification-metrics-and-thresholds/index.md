@@ -56,7 +56,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Hastie, Tibshirani & Friedman, *The Elements of Statistical Learning*, section 9.2.5 and chapter 7 — ROC and model assessment in the statistical framing.
+- Hastie, Tibshirani & Friedman, *The Elements of Statistical Learning*, section 9.2.5 and chapter 7 — Start here. ROC and model assessment in the statistical framing.
 - Saito & Rehmsmeier, 'The Precision-Recall Plot Is More Informative than the ROC Plot' (PLOS ONE, 2015) — The argument, with the imbalanced-data demonstrations.
 - Guo et al., 'On Calibration of Modern Neural Networks' (arXiv:1706.04599) — Calibration, why deep networks lose it, and the standard fixes.
 - Goldowsky-Dill et al., 'Detecting Strategic Deception Using Linear Probes' (arXiv:2502.03407) — Read the evaluation section for how these metrics are used, and argued over, in practice.

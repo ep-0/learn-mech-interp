@@ -58,7 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Parr & Howard, 'The Matrix Calculus You Need For Deep Learning' (arXiv:1802.01528) — The Jacobian sections, which are the clearest treatment aimed at exactly this audience.
+- Parr & Howard, 'The Matrix Calculus You Need For Deep Learning' (arXiv:1802.01528) — Start here. The Jacobian sections, which are the clearest treatment aimed at exactly this audience.
 - Baydin et al., 'Automatic Differentiation in Machine Learning: a Survey' (arXiv:1502.05767), sections 2-3 — Forward versus reverse mode, and the VJP framing.
 - Boyd & Vandenberghe, *Convex Optimization*, appendix A — Derivative and Hessian conventions stated precisely, which resolves most transpose confusion.
 - Derive it, then check it: write a two-layer network by hand, compute its Jacobian on paper, and confirm it against `torch.autograd.functional.jacobian` — An hour, and it settles the transpose conventions permanently. Every shape convention in this curriculum can be re-derived from that one check.

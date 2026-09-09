@@ -58,7 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Cover & Thomas, *Elements of Information Theory*, chapter 2 — KL, mutual information, and the data processing inequality, done properly.
+- Cover & Thomas, *Elements of Information Theory*, chapter 2 — Start here. KL, mutual information, and the data processing inequality, done properly.
 - MacKay, *Information Theory, Inference, and Learning Algorithms*, chapters 2 and 8 — The intuitive development, with better exercises.
 - Chris Olah, 'Visual Information Theory' — Read again for KL specifically, once entropy is solid.
 - Pimentel et al., 'Information-Theoretic Probing for Linguistic Structure' (arXiv:2004.03061) — The argument that probing accuracy is an estimate of mutual information, and what follows from taking that seriously.

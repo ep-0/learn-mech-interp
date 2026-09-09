@@ -56,7 +56,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Blitzstein & Hwang, *Introduction to Probability*, chapters 4 and 6-7 — Expectation, variance, covariance, and the limit theorems, with unusually good exercises.
+- Blitzstein & Hwang, *Introduction to Probability*, chapters 4 and 6-7 — Start here. Expectation, variance, covariance, and the limit theorems, with unusually good exercises.
 - Harvard Stat 110, the lectures on expectation and the Strategic Practice sets — Free, with solutions. Linearity of expectation is the most underused tool in the subject, and these problems are built to show why.
 - Wasserman, *All of Statistics*, chapters 3-5 — Compact statements and the inequalities you will want to cite.
 - Murphy, *Probabilistic Machine Learning: An Introduction*, sections 2.2-2.4 and 3.2 — Moments in ML notation, including the multivariate case.

@@ -58,7 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Goodfellow et al., *Deep Learning*, sections 6.2.2 and 4.1 — Softmax, cross-entropy, and the numerical stability discussion.
+- Goodfellow et al., *Deep Learning*, sections 6.2.2 and 4.1 — Start here. Softmax, cross-entropy, and the numerical stability discussion.
 - Prince, *Understanding Deep Learning*, chapter 5 — Loss functions derived from maximum likelihood rather than asserted, so that cross-entropy follows instead of appearing. Free.
 - Karpathy, 'Neural Networks: Zero to Hero', the makemore videos — Softmax and cross-entropy implemented and debugged in front of you.
 - Bishop, *Pattern Recognition and Machine Learning*, section 4.3.4 — The derivation of the softmax gradient.
