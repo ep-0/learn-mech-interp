@@ -17,6 +17,35 @@ glossary:
   - term: "Activation Cache"
     definition: "A mapping from HookPoint names to intermediate activations recorded during a model run, used for post-hoc inspection and as sources for interventions."
 
+exitCriteria:
+  - task: "TransformerLens gives internal locations stable names across architectures. Say what problem this solves, and state clearly what it does not make true of an experiment."
+    answer: |
+      **The problem it solves:** PyTorch hooks can expose intermediate values, but the module names are architecture-specific. The same experiment written for GPT-2 will not run on Gemma or Llama without rewriting every path, so results are hard to reproduce and harder to compare. A HookPoint is a *named* location — after each attention head, after each MLP — that means the same thing across models, which is what makes an experimental protocol portable and a published result checkable.
+
+      **What it does not make true:** that the experiment is valid. A hook identifies *where* an intervention occurred; everything that determines what the result means is still the researcher's: the prompt contrast, the replacement value, the metric, and the controls.
+
+      The warning is worth taking seriously, because the library makes the mechanics so easy that the hard parts become the invisible ones. `run_with_cache` and a hook function will happily produce a patching heatmap from a badly-chosen corruption, a saturating metric, and a single prompt — and the plot looks the same as one from a well-designed experiment. The infrastructure removes the engineering obstacle that used to force people to think about the design first.
+  - task: "TransformerLens 3 loads models through TransformerBridge, wrapping the native Hugging Face implementation, rather than converting weights into a unified `HookedTransformer`. Explain the tradeoff."
+    answer: |
+      **The old approach** converted pretrained weights into TransformerLens's own implementation. Its advantage was unusual transparency — one forward pass, fully readable, with everything in one convention. Its cost was that each architecture's forward pass had to be *reimplemented* inside the library, so coverage lagged, and any subtle divergence between the reimplementation and the original was a silent source of error.
+
+      **The bridge** keeps the native Hugging Face model running and maps its module graph onto generalized components — embeddings, attention, MLPs, normalizations, blocks — with architecture adapters exposing uniform hooks over them.
+
+      **The tradeoff:** forward-pass fidelity and architecture coverage, in exchange for a layer of indirection. The model you are studying is now literally the model everyone else runs, which matters for any result meant to say something about a deployed system. The cost is that the hooks sit on a mapping rather than on a transparent implementation, so understanding exactly where a hook lands requires understanding the adapter.
+
+      The practical consequence: `HookedTransformer` is deprecated in the 3.x line and scheduled for removal, and it is useful mainly for reproducing older notebooks during migration. New experiments should start with the bridge.
+  - task: "Canonical hook names are described as a shared vocabulary. Explain why a naming convention is a scientific contribution rather than an engineering convenience."
+    answer: |
+      Because it makes claims **comparable and checkable across papers**.
+
+      A result stated as "we patched the residual stream before layer 8" is ambiguous — before or after the attention sublayer, before or after normalization, at which position — and each reading is a different experiment with different consequences for whether the additive decomposition holds. A result stated as `blocks.8.hook_resid_pre` is not ambiguous. Two groups can run the same intervention and be confident they ran the same intervention.
+
+      That is the precondition for replication, which is the precondition for a body of results rather than a collection of demonstrations. It also lets a reader who knows the convention audit a method section for a mistake the authors did not flag — patching post-normalization when the argument requires pre-normalization, say.
+
+      The convention travels beyond the library, too. Papers that never call TransformerLens still describe sites in its vocabulary, which is how a shared name becomes shared infrastructure.
+
+      The residual risk is that a convention encodes assumptions. Naming a site `hook_resid_pre` presupposes the pre-norm architecture where that object is meaningful, and a field whose vocabulary is built around one architecture may find its questions shaped accordingly.
+
 furtherReading:
   - title: "The TransformerLens documentation and *Main Demo* notebook"
     url: "https://transformerlensorg.github.io/TransformerLens/"

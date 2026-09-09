@@ -12,6 +12,46 @@ glossary:
   - term: "Cascade Classifier"
     definition: "A two-stage deployment architecture where a cheap, fast classifier (such as a linear probe) screens all traffic and only escalates uncertain or flagged cases to a more expensive classifier (such as an LLM), dramatically reducing average inference cost while maintaining accuracy."
 
+exitCriteria:
+  - task: "A standard attention probe trained on short sequences missed 87.9% of long-context attacks while performing well on short inputs from its training distribution. Explain the mechanism."
+    answer: |
+      **Softmax dilution.** The probe aggregates by computing $\alpha = \text{softmax}(HW_q)$ over positions and taking a weighted average. Softmax produces a distribution summing to one over *all* positions, so as the sequence grows the mass available to any single position shrinks.
+
+      If the harmful signal occupies a handful of tokens in a sequence of thousands, the probe must place nearly all its attention on those few positions to preserve the signal. But the logits were learned on short sequences, where a moderate preference for the right tokens sufficed — a few points of logit advantage over a hundred competitors. Against thousands of competitors, the same logits leave most of the mass on benign tokens, and the aggregated representation is dominated by them.
+
+      The failure is *silent and length-dependent*: the probe is not broken, and it still performs well on inputs resembling its training data. That is what makes it dangerous. Every offline evaluation on the research distribution looks fine, and adversarial users can trigger the failure deliberately by padding context.
+
+      Mean-pooling and last-token probes fail for the same reason in different clothing: any fixed aggregation rule assumes a signal-to-noise ratio that varies with length.
+  - task: "MultiMax replaces the softmax-weighted average with $\\sum_h \\max_j [\\mathbf{v}_h \\cdot \\mathbf{y}_j]$. Explain why this fixes the length problem and what it costs."
+    answer: |
+      **Why it fixes it:** the max is **length-invariant**. Adding a thousand benign tokens cannot reduce the score of the most suspicious one, because nothing is being divided by anything. If harmful content appears anywhere in the sequence, its score reaches the output undiluted. Multiple heads let the probe track several suspicious positions at once rather than only the single global maximum.
+
+      **What it costs:** the max is also insensitive to *everything except* the extreme, which cuts two ways.
+
+      - **False positives.** One unusually high-scoring token triggers detection, and long benign sequences contain more draws from the score distribution. Even with a well-behaved per-token score, the maximum over $n$ tokens grows with $n$, so the operating threshold drifts with length unless it is calibrated for it.
+      - **Lost evidence from accumulation.** A pattern spread thinly across many turns — a request fragmented into individually benign pieces — has no single high-scoring token, and max-aggregation is exactly the wrong architecture for it.
+
+      So neither extreme is right: averaging dilutes localized signals, max ignores diffuse ones. The rolling-window architectures sit between them, taking a max over windowed attention-weighted means.
+  - task: "One probe achieves 1.7% false negatives with 13.5% false positives; another gets 3.0% and 1.2%. Explain why the second is preferable in production, using base rates."
+    answer: |
+      Because production traffic is overwhelmingly benign, so the false-positive rate multiplies against a huge denominator and the false-negative rate against a tiny one.
+
+      Take a million requests with an attack base rate of $0.1\%$ — a thousand attacks, $999{,}000$ benign.
+
+      - **Probe A:** $1.7\%$ of $1{,}000 \approx 17$ attacks missed; $13.5\%$ of $999{,}000 \approx 134{,}865$ legitimate requests flagged.
+      - **Probe B:** $3.0\%$ of $1{,}000 = 30$ attacks missed; $1.2\%$ of $999{,}000 \approx 11{,}988$ flagged.
+
+      Probe A catches $13$ more attacks and wrongly blocks about $123{,}000$ more legitimate users. Its precision is roughly $983/135{,}848 \approx 0.7\%$ — over $99\%$ of its alarms are false, which destroys the system's usability and the human reviewers' trust in it.
+
+      **The general point:** FNR and FPR are not commensurable when the base rate is skewed, and comparing them as if a point of one traded against a point of the other is the base-rate fallacy. The quantity that matters is precision at the operating threshold, computed with the deployment's actual base rate — which is why a research evaluation on a balanced dataset can rank probes in the opposite order from production.
+  - task: "Training probes directly on long contexts helps but cost 22× more in the reported setting. Explain why an architectural fix was preferred, and what the choice assumes."
+    answer: |
+      **Why architectural:** the $22\times$ cost comes from memory-bandwidth constraints on long sequences, and it is a recurring cost — paid again for every probe, every retrain, and every context-length increase. An aggregation architecture that is length-invariant by construction is a one-time design change that transfers from short training data to long deployment for free. It also generalizes past the lengths you trained on, whereas data-based fixes only cover the range sampled.
+
+      **What it assumes:** that the *representation* transfers across lengths and only the *aggregation* does not. The architectural fix keeps training on short sequences, so it assumes a token's hidden state at position 50 of a short prompt resembles its hidden state at position 5,000 of a long one. That is not obviously true — attention patterns change with context length, positional encodings are used differently, and phenomena like attention sinks and massive activations behave differently at scale.
+
+      So the fix works to the extent that length affects pooling but not per-token representation. The evidence that it largely does is the result itself: FNR from $87.9\%$ to low single digits with no change to training data. But it is an empirical finding for these models and lengths, and it should be rechecked when either changes.
+
 furtherReading:
   - title: "Goldowsky-Dill et al., *Detecting Strategic Deception Using Linear Probes*"
     url: "https://arxiv.org/abs/2502.03407"

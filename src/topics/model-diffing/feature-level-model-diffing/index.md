@@ -14,6 +14,40 @@ glossary:
   - term: "Latent Scaling"
     definition: "A diagnostic technique for crosscoders that measures how well a supposedly model-specific latent can explain activations in both models, detecting false attributions caused by L1 sparsity artifacts."
 
+exitCriteria:
+  - task: "Write what $\\Delta_{\\text{norm}}(j)$ measures and how its extreme values are read. Then say why a value near $+1$ is not by itself evidence that fine-tuning created the feature."
+    answer: |
+      $$\Delta_{\text{norm}}(j) = \frac{\|\mathbf{d}_j^{\text{chat}}\|_2 - \|\mathbf{d}_j^{\text{base}}\|_2}{\max(\|\mathbf{d}_j^{\text{chat}}\|_2, \|\mathbf{d}_j^{\text{base}}\|_2)}$$
+
+      It compares how much each model's reconstruction depends on latent $j$. Near $+1$: the base decoder norm is near zero, so the latent is chat-only. Near $-1$: base-only. Near $0$: comparable norms, a candidate shared feature.
+
+      **Why $+1$ is not evidence of creation:** the quantity is a property of the *learned dictionary*, and several things produce a one-sided decoder norm without fine-tuning having introduced anything.
+
+      - The feature exists in the base model but is rarely active on the crosscoder's training sample, so it contributes little to the base reconstruction.
+      - Fine-tuning *rotated* an existing feature's direction, so the base decoder no longer aligns with it — the concept is present and relocated.
+      - Sparsity and capacity artifacts allocate a latent asymmetrically for reasons internal to the SAE objective.
+
+      The categories "belong to the decomposition" and need artifact controls before being treated as facts about the models. The behavioral check discriminates directly: does the base model exhibit the capability the feature is supposed to name?
+  - task: "A crosscoder finds that the vast majority of features are shared between a base model and its chat variant. Give the two incompatible readings and say what settles it."
+    answer: |
+      1. **A fact about fine-tuning:** post-training preserves most of the base representation and changes a smaller set of directions. This fits the [refusal direction](/topics/refusal-direction/) picture, where a behavior shaped by extensive safety training turns out to be gated by one direction.
+      2. **A fact about the crosscoder:** the decomposition failed to distinguish corresponding features from genuinely shared ones, so differences that exist were absorbed into shared latents rather than surfaced as exclusive ones.
+
+      The second is not exotic. The objective rewards reconstructing both halves, and representing a concept once is cheaper under sparsity than representing it twice — so the method has a built-in pull toward classifying things as shared, exactly the pull that produces feature absorption in ordinary SAEs.
+
+      **What settles it:** artifact controls. Vary the dictionary size, sparsity level, seed, and loss weighting, and report which classifications survive; a latent that changes category across runs was never evidence. Then check behaviorally — for a sample of putatively shared features, confirm both models exhibit the associated behavior, and for exclusives, confirm only one does.
+
+      Until then the shared/exclusive split is a hypothesis produced by a learned decomposition, not a measurement of what fine-tuning changed.
+  - task: "Feature-level diffing and logit diff amplification both compare two models. Say what each observes and why the pair is more informative than either alone."
+    answer: |
+      **Logit diff amplification** compares at the **output** level: it magnifies the difference between two checkpoints' predicted distributions, surfacing inputs where they disagree. It requires no learned decomposition, so it has no dictionary artifacts — what it reports is a genuine behavioral difference.
+
+      **Feature-level diffing** compares at the **representation** level, proposing which internal latents are shared or one-sided. It can find differences that never surface behaviorally on the inputs you tried, but everything it reports is filtered through a trained crosscoder with its own non-uniqueness and sparsity artifacts.
+
+      **Why the pair is stronger:** their failure modes are disjoint. The output method cannot tell you *what changed inside*, only where the models diverge; the feature method cannot tell you whether a proposed internal difference matters, only that the dictionary allocated a latent one-sidedly. Used together, one supplies inputs on which the models actually differ and the other supplies candidate mechanisms — and a feature classification that predicts where behavioral divergence appears has passed a test that no amount of dictionary-internal checking could provide.
+
+      The general pattern: a method with artifacts and a method without, agreeing, is much stronger than either.
+
 furtherReading:
   - title: "Minder et al., *Robustly Identifying Concepts Introduced During Chat Fine-Tuning Using Crosscoders*"
     url: "https://arxiv.org/abs/2504.02922"

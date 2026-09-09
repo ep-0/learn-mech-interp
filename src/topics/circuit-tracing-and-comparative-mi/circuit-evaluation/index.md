@@ -17,6 +17,56 @@ glossary:
   - term: "Minimality (circuit)"
     definition: "A circuit evaluation criterion measuring whether the circuit contains only components that are necessary for the task. A minimal circuit has no redundant parts whose removal would leave performance unchanged."
 
+exitCriteria:
+  - task: "The IOI circuit recovers about 87% of the full model's logit difference. Say what the missing 13% represents, and name two things the 87% figure does not establish."
+    answer: |
+      The $13\%$ is behavior produced by components outside the circuit — MLPs, which were largely not searched, and minor attention contributions below the discovery threshold. It is a measure of what the circuit-only run fails to reproduce, and it is a lower bound on what is missing, since components can cancel.
+
+      **Two things it does not establish:**
+
+      1. **That the circuit is the mechanism.** Faithfulness is a behavioral match under ablation of everything else. A different subgraph could reach $87\%$ by a different route; the criterion cannot distinguish extensionally equivalent accounts. The number says the circuit *suffices* to approximate the behavior, not that the intact model computes it this way.
+      2. **That it generalizes.** The figure is measured on the IOI prompt distribution with this metric and this ablation baseline. A circuit faithful on templated prompts may capture a template-specific shortcut; the templates were varied, but variation within a family is not the same as unrestricted text.
+
+      A third caution: $87\%$ is not $87\%$ of "the behavior" in any partitionable sense. Change the ablation baseline for the non-circuit components — zero, mean, resample — and the number moves.
+  - task: "Ablating a Negative Name Mover head *improves* IOI performance on individual examples. Explain why this does not show the model would be better off without it."
+    answer: |
+      The model was not trained to maximize accuracy on IOI examples. It was trained to minimize expected cross-entropy over the whole pretraining distribution, and those objectives differ in a specific way: cross-entropy punishes **confident wrong** predictions far more than it rewards confident right ones, because $-\log p$ blows up as $p \to 0$ while flattening near $p \to 1$.
+
+      That asymmetry makes hedging profitable. If the Name Movers are sometimes wrong — on other prompts, other names, other constructions — a head that shaves confidence off their predictions loses a little on the cases they get right and saves a lot on the cases they get wrong. The expected loss falls.
+
+      So a head that looks counterproductive on IOI is optimizing the objective it was trained on, measured across a distribution your benchmark does not sample. Ablating it improves your metric and would raise the model's training loss.
+
+      The general lesson: a component's function may be **distributional** rather than per-example, and any evaluation restricted to a task where the model succeeds will systematically misread such components. Copy suppression turns out to be the general form of this head class, serving calibration across pretraining rather than anything IOI-specific.
+  - task: "Backup Name Movers were found by ablating the primaries and re-running attribution. Explain why the same method cannot rule out undiscovered backup mechanisms for the other head classes."
+    answer: |
+      Backups are invisible under normal operation by definition — they activate only when the components they back up are removed. So finding them requires ablating *the right set* first, and then looking.
+
+      The search space is the set of subsets. Ablating one head at a time from $144$ is $144$ experiments; pairs are about $10{,}000$; and a backup that only activates when two specific heads are both gone is invisible to every one-at-a-time screen. The combinations grow exponentially, and there is no cheap criterion for which combination to try, because the thing you are looking for leaves no trace until you try it.
+
+      The Backup Name Movers were found because someone ablated a *functionally coherent* group — the primary Name Movers — for an independent reason. That heuristic works when you already have a hypothesis about which components form a class. It offers no coverage guarantee: there could be backup S-Inhibition heads, or backup Duplicate Token heads, undiscovered because nobody ablated that particular set.
+
+      This is a real limit on completeness claims, not a gap that better tooling closes. Any claim that a circuit contains everything that matters is a claim about ablations that were not run.
+  - task: "Causal scrubbing is described as simultaneously too strict and too permissive. Explain how a single method can fail in both directions, and give the shape of a hypothesis that exploits each failure."
+    answer: |
+      The two failures come from opposite ends of hypothesis **specificity**, and the method's strictness scales with it.
+
+      **Too strict.** A precise hypothesis licenses many resampling swaps, and each one is a chance to fail. A hypothesis that is useful and approximately right — correct about the main pathway, silent about a secondary contribution — will be rejected, because some swap it permitted degrades behavior more than the threshold allows. The exploit here is unintentional: a good, incomplete explanation gets a failing grade indistinguishable from a wrong one.
+
+      **Too permissive.** A vague hypothesis licenses few swaps, because it makes few commitments about what each node computes. In the limit, a hypothesis saying "this node computes whatever it computes" permits only resampling from identical inputs, which trivially preserves behavior. The exploit is to under-specify: pass the test by claiming little.
+
+      So the method does not measure correctness on a single axis. It measures how well a hypothesis's claimed invariances match the model's actual ones, and both over-claiming and under-claiming shift the result — in opposite directions.
+
+      The deeper limitation is that no behavior-preservation test distinguishes extensionally equivalent hypotheses. That underdetermination is not specific to causal scrubbing; escaping it needs finer-grained interventions or inputs on which the rival accounts diverge.
+  - task: "Faithfulness, completeness, and minimality pull against each other. Give a concrete case from the IOI circuit where improving one degrades another, and say what that implies about reporting a circuit."
+    answer: |
+      **Backup Name Movers, completeness against minimality.** Including them improves completeness: ablate the circuit and behavior should collapse, which it does more cleanly when the backups that would compensate are inside the circuit rather than outside it. It degrades minimality: they contribute nothing in the intact model, so a reader asking "what does this model do on IOI?" is handed components that are silent on every unperturbed forward pass.
+
+      Whether they belong depends on what the circuit is meant to explain. If the target is the intact computation, they are out. If the target is behavior *under intervention* — which is what every ablation experiment actually measures — they are in.
+
+      **Negative Name Movers, faithfulness against minimality.** Removing them raises task performance and simplifies the account, and it makes the circuit less faithful to what the model does.
+
+      **What this implies for reporting:** there is no single circuit and no scalar score. A paper should state the behavior, the distribution, the interventions, and which criterion it optimized — and report the others rather than choosing whichever flatters the result. "87% faithful with 26 heads" is informative; "we found the IOI circuit" is not, because it hides every choice that determined which circuit was found.
+
 furtherReading:
   - title: "Chan et al., *Causal Scrubbing*"
     url: "https://www.alignmentforum.org/posts/JvZhhzycHu2Yd57RN/causal-scrubbing-a-method-for-rigorously-testing"

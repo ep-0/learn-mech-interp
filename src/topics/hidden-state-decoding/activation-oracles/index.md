@@ -9,6 +9,34 @@ prerequisites:
   - title: "Distribution Shift and Held-Out Evaluation"
     url: "/topics/distribution-shift-and-evaluation/"
 
+exitCriteria:
+  - task: "An Activation Oracle trained before fine-tuning can recover biographical knowledge that fine-tuning later installed. State the two explanations this is consistent with, and what would distinguish them."
+    answer: |
+      1. **Transferable structure.** The oracle learned something general about how activations encode content — a decoding scheme that applies to representations it never saw, including those produced by weights that did not exist at training time. This is the interesting reading and would make oracles a genuinely reusable instrument.
+      2. **Distributional similarity.** Fine-tuning on biographical facts produces activations that resemble the oracle's training distribution, because the model is representing entities and attributes using machinery it already had. The oracle is interpolating, not generalizing to a new code.
+
+      **What distinguishes them:** push the fine-tuned model further from the training distribution and see where the oracle breaks. Fine-tune to install content of a kind the oracle never saw — an artificial symbol system, a task with no natural-language analogue, or knowledge encoded through a mechanism the base model did not use. Under (1), performance should degrade gracefully with distance; under (2), it should fall off sharply once the resemblance is gone.
+
+      A second discriminator: test on a model from a *different family*. Shared architecture and pretraining data account for a lot of the similarity in (2), and removing them isolates how much of the decoding is genuinely code-level.
+  - task: "Activation Oracles are trained on classification tasks, self-supervised context prediction, and narrow specialized datasets. Say what each contributes and why the mixture is the point."
+    answer: |
+      - **Classification across many problems** (sentiment, topic, entity) teaches *property detection*, and crucially teaches it across many different label spaces, so success cannot depend on one fixed set of categories.
+      - **Self-supervised context prediction** — predict properties of the surrounding context from an activation — teaches *holistic* reading and requires no labels, so it can be scaled far beyond what annotation supports.
+      - **Narrow specialized datasets** add *fine-grained discrimination* on interpretation challenges that the broad tasks cover only coarsely.
+
+      **Why the mixture is the point:** a decoder trained on one task family learns that family's answer space, and its apparent competence is then inseparable from that space. Breadth is what makes the resulting capability a candidate for something general — and the empirical claim is exactly that the mixed-task oracle transfers better than narrower mixtures.
+
+      It is also what makes the evaluation meaningful. If the training and evaluation label spaces overlap, high accuracy is unsurprising. Only a mixture broad enough that held-out tasks are genuinely held out supports a transfer claim, which is why the evaluation is on unseen questions *and* unseen activation sources rather than a held-out split.
+  - task: "Give the baseline that every Activation Oracle result should be reported against, and explain what it controls for."
+    answer: |
+      **The no-activation baseline:** run the oracle on the same questions with no activation patched in, or with a mean activation, and report its accuracy.
+
+      What it controls for is the oracle's ability to answer from the **question alone**. The oracle is a language model, and many interpretation questions have skewed priors: "does this activation encode harmful content?" is answerable at well above chance by guessing no, and "what entity is referenced?" can often be narrowed by the question's phrasing. Any accuracy attributable to that is not evidence about activations.
+
+      Two further baselines sharpen it. A **mismatched-activation** condition — correct question, activation from an unrelated input — tests whether performance requires the *right* activation or merely some activation. And a **nearby-layer** condition tests whether claimed layer-specific findings survive a perturbation that should barely change the content.
+
+      The reason to insist on this is structural: the oracle was fine-tuned to produce well-formed answers, so it will produce one regardless. There is no null output and no signal in the output's confidence. Without a floor, an accuracy figure has no scale — and the same argument applied to SAE probes moved a reported win rate from $19.6\%$ to $2.2\%$.
+
 furtherReading:
   - title: "Pan et al., *LatentQA*"
     url: "https://arxiv.org/abs/2412.08686"

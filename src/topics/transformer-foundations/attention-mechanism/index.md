@@ -24,6 +24,45 @@ glossary:
   - term: "Value Vector"
     definition: "The vector produced by applying the value weight matrix (W_V) to a token's representation. Value vectors carry the content information that gets written to the residual stream, weighted by the attention pattern."
 
+exitCriteria:
+  - task: "A head with $d_k = 4$ computes raw dot products $\\mathbf{q}_i\\mathbf{k}_j^T$ of $3$, $1$, and $1$ against three allowed positions. Work out the attention weights, then say what they would have been without the $\\sqrt{d_k}$ scaling."
+    answer: |
+      Scale by $\sqrt{4} = 2$: the scores become $1.5, 0.5, 0.5$. Exponentiate: $e^{1.5} \approx 4.482$, $e^{0.5} \approx 1.649$ twice, summing to $7.779$. So the weights are
+
+      $$\alpha \approx (0.576,\; 0.212,\; 0.212).$$
+
+      Without the scaling the scores stay at $3, 1, 1$: $e^3 \approx 20.09$, $e^1 \approx 2.718$ twice, total $25.52$, giving $(0.787, 0.107, 0.107)$. The unscaled pattern is markedly sharper.
+
+      That is the point of the division. Dot products of two $d_k$-dimensional vectors with independent entries have standard deviation growing like $\sqrt{d_k}$, so without normalizing, the spread of the scores grows with head width. Large-magnitude differences push softmax toward a one-hot output, where its gradient with respect to every logit is near zero — the head stops learning. Dividing by $\sqrt{d_k}$ keeps the score variance roughly constant as $d_k$ changes, so the same architecture trains at any head width.
+  - task: "Explain why a head's output cannot be added straight into the residual stream, and say what the matrix that fixes this has to do with the OV circuit."
+    answer: |
+      A head works in a $d_v$-dimensional subspace, where typically $d_v = d_{\text{model}}/H$ — $64$ against $768$ in GPT-2 small. Its weighted sum of values is a $64$-dimensional vector, and the residual stream is $768$-dimensional. The shapes do not match, so there is nothing to add.
+
+      $W_O \in \mathbb{R}^{(H \cdot d_v) \times d_{\text{model}}}$ maps back. It is not merely a shape fix: it is where the head learns *which directions of the residual stream to write along*, and therefore which downstream components can read it. Two heads computing identical value mixtures but with different $W_O$ slices are doing different things.
+
+      That is why the interpretable object is the composite $W_V^h W_O^h$, the **OV circuit** — a single $d_{\text{model}} \times d_{\text{model}}$ map (of rank at most $d_v$) from "what is in the residual stream at the source position" to "what gets written at the destination position." Splitting it into $W_V$ and $W_O$ separately is a parameterization artifact; only the product is basis-independent.
+  - task: "A GQA layer has $8$ query heads and $2$ key-value heads, so heads 0–3 share a key and value projection. Must those four heads have the same attention pattern? What does ablating their shared value projection intervene on, and what does it not?"
+    answer: |
+      **No.** Each head keeps its own $W_Q^h$, so each computes different queries against the same shared keys, and the softmax patterns can differ completely. Each also keeps its own slice $W_O^h$, so even where two heads land on the same weighted mixture of the shared values, they write it along different residual directions. Sharing keys and values constrains *what is available to read*, not *where each head looks* or *how it writes*.
+
+      **Ablating the shared $W_V$ intervenes on all four heads at once.** Every head in the group loses the same information source, so a loss change attributes to the group, not to any member of it. To isolate one head you must intervene after its weighted sum — on that head's output, or on its $W_O$ slice.
+
+      This is a live methodological trap: an ablation script written for MHA that indexes value projections by head number will silently apply a group-wide intervention on a GQA model, and the resulting effect sizes will be inflated by a factor of roughly the group size.
+  - task: "Causal masking is described as making mechanistic interpretability easier, not just as an architectural requirement. Explain what experimental guarantee it provides."
+    answer: |
+      It fixes the information set exactly. At position $i$, the model's computation is a function of tokens $0$ through $i$ and nothing else — mask entries for $j > i$ are $-\infty$ before the softmax, so those weights are exactly zero, not merely small.
+
+      That converts a family of otherwise hard questions into arithmetic. If a behavior appears at position $i$, any explanation appealing to information that only exists at position $i+3$ is ruled out without an experiment. If you patch a source position, you know which destination positions could possibly be affected. And when you construct a counterfactual prompt, you know that changing a token affects only positions at or after it, which is why patching results are usually reported as a grid over (layer, position) rather than a single number.
+
+      It also underwrites the skip-trigram argument: a head cannot condition what it writes at the trigger token on a completion that has not been read yet, because causal masking makes that completion unavailable at the source position where the write is decided.
+  - task: "Argue that the attention *pattern* is not by itself an explanation of what a head does, using the separation the mechanism makes between two computations."
+    answer: |
+      The pattern is the output of the QK computation: $\alpha_{i,j}$ says where position $i$ reads from. The values, and hence what actually gets moved, are computed by an entirely separate pathway that the pattern does not touch. A head with a beautiful, legible pattern — a clean diagonal stripe one position back, say — can be moving nothing useful, if its OV circuit writes a near-zero or irrelevant vector.
+
+      So an attention pattern supports a claim of the form *this head reads from there*, and nothing stronger. Three things it does not establish: what information is carried along that edge (the OV circuit decides that), whether the write lands in a subspace any later component reads, and whether the behavior would change if the head were removed.
+
+      The legibility is what makes this a trap rather than an obvious point. Attention patterns are the most human-readable object in a transformer — both axes are token positions — so they invite over-reading. The discipline is to treat a pattern as a hypothesis generator, then confirm the edge matters with an intervention.
+
 furtherReading:
   - title: "Elhage et al., *A Mathematical Framework for Transformer Circuits*"
     url: "https://transformer-circuits.pub/2021/framework/index.html"

@@ -17,6 +17,47 @@ glossary:
   - term: "J-Space"
     definition: "The subspace of residual-stream activations spanned by sparse non-negative combinations of J-lens vectors. Empirically, this space carries the concepts the model is 'poised to verbalize' at a given layer and position."
 
+exitCriteria:
+  - task: "State the shape of $J_{\\ell,t,t'}$ and explain why both of its dimensions are $d_{\\text{model}}$. Then say why the construction only considers destination positions $t' \\ge t$."
+    answer: |
+      $J_{\ell,t,t'}$ is $d_{\text{model}} \times d_{\text{model}}$. Both dimensions match because the residual stream is a shared bus of *fixed width* at every depth: the input to the Jacobian is $\mathbf{h}_{\ell,t}$ and the output is $\mathbf{h}_{\text{final},t'}$, and these live in the same-sized space even though they are many layers apart. Nothing in a transformer widens or narrows the stream, which is what makes a layer-to-layer linear map square and composable.
+
+      The transpose in the definition is a convention: with activations as row vectors and weights acting from the right, we want $\Delta\mathbf{h}\, J$ to be the output perturbation, so $J$ carries inputs along its rows — the textbook Jacobian transposed.
+
+      **Why $t' \ge t$:** causal masking. A perturbation at position $t$ can only propagate to positions at or after $t$, because no attention head at an earlier position is permitted to read from $t$. For $t' < t$ the derivative is identically zero, so including those terms would only dilute the average with structural zeros.
+  - task: "A Jacobian computed on a single prompt mixes two kinds of structure. Name them, say which one averaging is meant to remove, and explain why the result is still not a property of the weights alone."
+    answer: |
+      **Context-specific structure:** on this prompt, these attention patterns route information along these paths, and these MLP gates are open. This changes with every input.
+
+      **Distribution-averaged structure:** how a perturbation at layer $\ell$ tends to translate into a final-layer perturbation across contexts. This is what we want when asking what a *direction* at layer $\ell$ generally means.
+
+      Averaging over source positions, reachable destinations, and roughly a thousand prompts is meant to cancel the first. It is the same logic as averaging gradients across a dataset: individual gradients are dominated by per-example noise, the mean points where the loss actually wants to go.
+
+      **Why it is still not weights-only:** the expectation is taken over a *sampling distribution*, and different choices give different answers. Change the corpus from web text to code, weight positions differently, restrict the range of $t' - t$, and $J_\ell$ changes. So the J-lens is derived from the model's weights *evaluated on a chosen distribution* — closer to the model than a probe fitted to output labels, but not an input-free object. Any claim built on it inherits the corpus.
+  - task: "A linear probe direction $\\mathbf{w}_c$ and a J-lens vector $\\mathbf{v}_t^{(\\ell)}$ are both directions whose inner product with $\\mathbf{h}_\\ell$ yields a score. Explain the mechanistic difference in where each comes from, and what each score therefore means."
+    answer: |
+      The geometry is identical; the provenance is not.
+
+      **Probe direction:** fitted to an external label. You collect activations, tag them with whether concept $c$ is present, and optimize $\mathbf{w}_c$ to separate them. The score means *this activation resembles the ones I labelled $c$*. Nothing constrains $\mathbf{w}_c$ to be a direction the model reads; a probe can succeed on information the downstream computation ignores entirely. This is the correlational gap that motivates causal follow-ups.
+
+      **J-lens vector:** derived, not fitted. It is column $t$ of $J_\ell W_U$, where $J_\ell$ came from differentiating the model's own downstream computation. The score means *to first order, and averaged over contexts, this activation pushes the model toward emitting token $t$*. No labels were involved.
+
+      The consequence is that the J-lens comes with a prediction a probe does not: because the direction was built from a causal derivative, adding $\alpha \mathbf{v}_t^{(\ell)}$ to $\mathbf{h}_\ell$ should make the model likelier to say $t$ — and it does. A probe direction has no such guarantee, and steering along one often fails.
+  - task: "All three lenses share the form $\\text{softmax}(\\text{norm}(\\mathbf{h}_\\ell M_\\ell) W_U)$. Give $M_\\ell$ for each, and explain why all three agree at the final layer but diverge in early layers."
+    answer: |
+      - **Logit lens:** $M_\ell = I$. It assumes the layer-$\ell$ basis already matches what $W_U$ expects.
+      - **Tuned lens:** $M_\ell = A_\ell$, a learned affine map fitted to minimize KL to the final output distribution.
+      - **Jacobian lens:** $M_\ell = J_\ell = \mathbb{E}[(\partial \mathbf{h}_L / \partial \mathbf{h}_\ell)^T]$, derived from the weights and averaged over a corpus.
+
+      **Agreement at the last layer:** with $\ell = L$ there is nothing downstream. $J_L$ is approximately the identity because the final state maps to itself; the tuned lens's optimal $A_L$ is likewise near-identity, since the thing it is fitted to predict is exactly what the identity already gives. All three collapse to the model's own unembedding.
+
+      **Divergence early:** each choice is an answer to a different question, and the answers only coincide when there is no downstream computation to disagree about. Early on, the identity is simply wrong (the basis has not been rotated yet), the learned map is free to use any linearly predictive signal including ones the model does not use, and the Jacobian reflects what the remaining layers actually do to first order. The observed pattern — logit lens agreeing with J-lens in the last several layers, diverging earlier — is exactly what this predicts.
+  - task: "The J-space accounts for less than about 10% of activation variance at any layer. Argue both that this is a feature and that it is a limit on what the tool can tell you."
+    answer: |
+      **A feature.** The J-lens is indexed by vocabulary tokens, so J-space is by construction the part of the residual stream that is *verbalizable* — the component disposed to surface as something the model could say. There is no reason to expect that to be most of the stream. A transformer spends capacity on positional bookkeeping, attention routing signals, normalization-related directions, and features that only matter as inputs to other features. If the verbalizable subspace were 90% of the variance, that would suggest the tool was picking up generic structure rather than selecting for anything. A small, selective subspace is what a meaningful criterion looks like.
+
+      **A limit.** More than 90% of what the model is doing is invisible to this lens, and the invisible part is not random — it is systematically the non-verbalizable computation. Any mechanism that operates through routing, gating, or intermediate quantities with no single-token name will be missed, and missed *silently*: the lens returns a confident top-token list either way. Combined with the first-order restriction (a concept exerting influence only through a strongly nonlinear gate is invisible) and the single-token indexing (most named entities span several tokens), the honest framing is a lens onto one specific, well-chosen slice — not a decoder for the residual stream.
+
 furtherReading:
   - title: "Elhage et al., *A Mathematical Framework for Transformer Circuits*"
     url: "https://transformer-circuits.pub/2021/framework/index.html"

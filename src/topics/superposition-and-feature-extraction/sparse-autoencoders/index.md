@@ -18,6 +18,45 @@ glossary:
   - term: "Sparse Autoencoder (SAE)"
     definition: "A dictionary-learning model that encodes activations into a wider sparse latent vector and reconstructs them with learned decoder directions. Some latents admit useful human interpretations."
 
+exitCriteria:
+  - task: "A standard autoencoder is forced to learn structure by its bottleneck. An SAE has no bottleneck — its latent space is wider than its input. Say what plays the analogous role, and what an SAE would learn if you removed the L1 term."
+    answer: |
+      **Sparsity plays the role of the bottleneck.** A bottleneck constrains *how many dimensions* the code may use; the L1 penalty constrains *how many may be active at once*. Both force the model to spend a limited budget, and it is the budget that makes the learned representation informative.
+
+      **Without the L1 term** the problem becomes trivial. With $d_{\text{SAE}} \gg d_{\text{model}}$ and no penalty, the encoder and decoder can learn something arbitrarily close to an identity map on a $d_{\text{model}}$-dimensional subspace — reconstruction error near zero, every latent active on every input, and no decomposition at all. You would have re-expressed the activation in a larger basis and learned nothing, because a dense code in 32,768 dimensions is no more interpretable than a dense code in 768.
+
+      The reason expansion plus sparsity is the right combination is the superposition picture: the hypothesis is that the model packs *many* features into few dimensions, active *rarely*. So the decomposition needs more slots than dimensions (expansion) and few active at once (sparsity). Either alone recovers nothing.
+  - task: "An SAE turned 512 MLP neurons into 4,000+ interpretable latents. Explain why this does not establish that the SAE recovered the model's true features."
+    answer: |
+      An **overcomplete dictionary admits many decompositions of the same activation.** With more dictionary directions than dimensions, there are infinitely many coefficient vectors reconstructing any given $\mathbf{x}$. Sparsity narrows this, and can make recovery identifiable when the active set is small and the dictionary has suitable geometry (low coherence). Those are *conditions*, not guarantees, and nothing verifies that a trained SAE satisfies them.
+
+      Three specific gaps between the result and the claim:
+
+      1. **Non-uniqueness.** A different seed, expansion factor, or $\lambda$ yields a different dictionary that reconstructs comparably well. If all are "the" features, the word has lost its meaning.
+      2. **Feature splitting.** Larger dictionaries subdivide what smaller ones treated as one feature. The count 4,000 is a function of the expansion factor you chose, so it cannot be a fact about the model.
+      3. **Interpretable is not the same as used.** A latent can be statistically present in the activations and read by nothing downstream — the concern behind deliberately weak dictionary learning. Labelability is a property of the decomposition; causal relevance has to be tested separately.
+
+      The defensible claim: the SAE found a much sparser basis containing many labelable units, which is real progress and not a recovery result.
+  - task: "Bricken et al. deliberately used a one-layer autoencoder with a linear decoder rather than a more powerful extractor. Explain the reasoning, and what failure a powerful extractor would risk."
+    answer: |
+      The risk is **hiding computation inside the interpreter**. If the encoder is a deep network, then a "feature" it reports may be something the encoder computed from the activations rather than something the activations contain. You would be interpreting your own extractor's outputs and attributing them to the model.
+
+      The sharp version: suppose a powerful extractor finds a feature that is statistically present but that no computation in the model ever reads or writes. Interpreting the model through it produces explanations that are false as causal accounts, and nothing in the extraction procedure would reveal this.
+
+      A linear decoder bounds how much can be hidden. Each latent contributes a fixed direction scaled by a scalar, so "feature $i$ is active at strength $a$" means exactly "add $a \mathbf{d}_i$ to the reconstruction" — a claim about the activation space, in the same terms the model's own downstream reads use. Since every component reads the residual stream through a linear projection, a linear dictionary direction is at least the *kind* of object the model could act on.
+
+      It is a bound, not a solution. Even a linear direction can be present without being read, which is why causal tests remain necessary.
+  - task: "Human raters judged about 70% of sampled SAE latents interpretable under a rubric. State what this establishes, and two reasons it should not be read as \"70% of features are correctly understood.\""
+    answer: |
+      **Establishes:** in this setting, human raters could assign a coherent label to about 70% of sampled latents, against a much lower rate for individual neurons. That is a real comparison against the right baseline, and it is the core evidence that the decomposition improved on the neuron basis.
+
+      **Two reasons it is not 70% understood:**
+
+      1. **Raters see top-activating examples, which condition on the answer.** A latent whose top activations are all legal citations will be labelled "legal citations" whether or not it also fires moderately on something unrelated. This is the wolf-neuron failure: labels drawn from a selected sample are incomplete in a direction the sample cannot reveal. Coherent-looking is easier than correct.
+      2. **Labelable is not causally validated.** The rubric asks whether a description fits the activations, not whether the model uses the latent or whether intervening on it has the predicted effect. A latent could be perfectly labelled and causally inert.
+
+      This is why the paper reported four lines of evidence rather than one — case studies, human rating, and two automated methods that test whether a description *predicts* held-out activations. Agreement across methods is stronger than any single score, and still does not identify the model's computational units.
+
 furtherReading:
   - title: "Bricken et al., *Towards Monosemanticity*"
     url: "https://transformer-circuits.pub/2023/monosemantic-features/index.html"

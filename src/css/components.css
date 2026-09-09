@@ -2064,6 +2064,123 @@
 }
 
 /* ==========================================================================
+   EXIT CRITERIA
+   Per-article self-test carried in frontmatter. Each item is a task the
+   reader attempts cold; the worked answer stays collapsed until they open
+   it, so the retrieval attempt happens before the feedback. Inside the
+   Pagefind-indexed region, so the tasks are searchable.
+   ========================================================================== */
+
+.exit-criteria {
+  margin-top: var(--spacing-2xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.exit-criteria h2 {
+  margin-top: 0;
+}
+
+.exit-criteria-intro {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-small);
+  margin-bottom: var(--spacing-md);
+}
+
+.exit-criteria-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: exit-criterion;
+}
+
+.exit-criteria-item {
+  counter-increment: exit-criterion;
+  margin-bottom: var(--spacing-sm);
+}
+
+.exit-criterion {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-background-subtle);
+}
+
+.exit-criterion[open] {
+  border-color: var(--color-border-strong);
+}
+
+.exit-criterion-summary {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Replace the disclosure triangle with the criterion number, so the list
+   reads as a numbered set of tasks rather than as collapsed prose. */
+.exit-criterion-summary::-webkit-details-marker {
+  display: none;
+}
+
+.exit-criterion-summary::before {
+  content: counter(exit-criterion) ".";
+  flex: none;
+  min-width: 1.25em;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-link);
+}
+
+.exit-criterion-task {
+  flex: 1 1 auto;
+  line-height: 1.5;
+}
+
+.exit-criterion-summary::after {
+  content: "Answer";
+  flex: none;
+  align-self: center;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.exit-criterion[open] .exit-criterion-summary::after {
+  content: "Hide";
+}
+
+.exit-criterion-summary:hover::after,
+.exit-criterion-summary:focus-visible::after {
+  color: var(--color-link);
+}
+
+.exit-criterion-answer {
+  padding: 0 var(--spacing-md) var(--spacing-md);
+  margin-left: calc(1.25em + var(--spacing-sm));
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--spacing-sm);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.exit-criterion-answer > :first-child {
+  margin-top: 0;
+}
+
+.exit-criterion-answer > :last-child {
+  margin-bottom: 0;
+}
+
+.exit-criterion-answer ul,
+.exit-criterion-answer ol {
+  padding-left: var(--spacing-lg);
+}
+
+/* ==========================================================================
    FURTHER READING
    Per-article reading list carried in frontmatter, for depth the article
    itself does not have room for. Rendered after the body, inside the

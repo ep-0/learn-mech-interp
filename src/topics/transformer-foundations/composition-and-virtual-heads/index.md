@@ -12,6 +12,44 @@ glossary:
   - term: "Virtual Attention Head"
     definition: "An emergent attention head that does not correspond to any single physical head in the model but arises from the composition of two or more heads across different layers communicating through the residual stream."
 
+exitCriteria:
+  - task: "An induction head is built from a previous-token head in an earlier layer and a matching head in a later layer. Identify which of Q-, K-, or V-composition connects them, and justify the choice by saying what the earlier head's output is used *as*."
+    answer: |
+      **K-composition.**
+
+      The previous-token head at layer 0 writes, into the residual stream at each position $p$, the identity of the token at $p-1$. Each position now advertises "the token before me was $X$."
+
+      The layer-1 induction head, sitting at the current position holding token $A$, forms a **query** from $A$ and needs to find positions whose *predecessor* was $A$. The information it is matching against lives in the **keys** of the earlier positions — and that information is exactly what the layer-0 head wrote there. So the earlier head's output is consumed as key material: K-composition.
+
+      The distinguishing test is which side of the bilinear form the earlier write lands on. It is not Q-composition, because the query is formed from the current token's own identity, which needs no help from layer 0. It is not V-composition, because the layer-0 write is used to *decide where to attend*, not as content to be moved: the content the induction head copies is the attended token itself, through its own OV circuit.
+  - task: "You compute a K-composition score of $0.8$ between heads $h_1$ and $h_2$. State precisely what you have learned and what you have not, and name the experiment that closes the gap."
+    answer: |
+      You have learned something about the **weights**: the output subspace of $W_{OV}^{h_1}$ is well aligned with the key-side read of $W_{QK}^{h_2}$, so a large fraction of $h_1$'s writing capacity lands where $h_2$ can see it. The channel exists and is wide.
+
+      You have *not* learned that anything flows through it. The score is computed from parameters alone and never touches an input. On any given distribution, $h_1$ may write almost nothing (its attention pattern may be parked on the BOS position), or it may write a large vector that $h_2$'s query never asks about, or the composed path may be present but irrelevant to the behavior you are studying. High capacity is not high traffic.
+
+      The experiment that closes the gap is **path patching**: run the model on a corrupted prompt, restore only the edge from $h_1$ to $h_2$'s keys, and measure whether the behavior returns. That is a claim about this distribution and these inputs, which is what a circuit claim needs.
+
+      The asymmetry is worth remembering: a low score does bound *that particular* normalized product, so it is weak evidence against direct composition — but the heads may still interact through a third head or an MLP.
+  - task: "GPT-2 small has $12$ layers and $12$ heads per layer. Count the ordered cross-layer head pairs, then the triples, and say what the two numbers imply about how circuit discovery has to work."
+    answer: |
+      **Pairs:** choose two distinct layers and order them by depth, $\binom{12}{2} = 66$, then a head in each: $12^2 = 144$. That gives $66 \times 144 = 9{,}504$ candidate two-head paths.
+
+      **Triples:** $\binom{12}{3} = 220$ layer choices and $12^3 = 1{,}728$ head choices, so $220 \times 1{,}728 = 380{,}160$.
+
+      The implication is that exhaustive search dies immediately, and it dies on the *smallest* model anyone studies. Characterizing all $144$ heads one at a time is a day's work and leaves every one of the $9{,}504$ interactions untested; going one step further multiplies the space by $40$.
+
+      So circuit discovery cannot be enumeration. It has to be either **hypothesis-driven** — start from a behavior, use patching to find the few positions and layers that matter, and expand only there — or **gradient-based**, using a cheap linear approximation to rank the whole space before spending real forward passes on the top candidates ([attribution patching](/topics/attribution-patching/) exists for exactly this reason). Weight-based composition scores are a third pre-filter: cheap enough to compute for all $9{,}504$ pairs, and used to decide where to spend the expensive causal tests.
+  - task: "Distinguish K-composition from Q-composition in terms of what each changes about the later head's behavior, and give a task where you would expect to find each."
+    answer: |
+      Both change the later head's attention pattern, but from opposite sides of the bilinear form $\mathbf{x}_i W_{QK} \mathbf{x}_j^T$.
+
+      **K-composition** changes the *source* side: it alters what earlier positions advertise about themselves. The later head's search criterion is unchanged; what changed is which positions now match it. Expect it wherever a position must be found by a property it does not carry at the token level — induction being the standard case, where a position must be findable by *what preceded it*.
+
+      **Q-composition** changes the *destination* side: it alters what the current position is searching for. The advertisements are unchanged; the query is now a function of earlier computation. Expect it wherever the model must decide what to look for based on something it worked out first — a head that writes "this position is a verb," enabling a later head to query for that verb's subject, or in the IOI circuit, where S-Inhibition heads modify the Name Mover heads' queries so they search for the *non-duplicated* name.
+
+      A useful diagnostic: if freezing the later head's attention pattern while patching the earlier head kills the effect, the composition ran through the pattern (Q or K); if the effect survives, it ran through the values (V).
+
 furtherReading:
   - title: "Elhage et al., *A Mathematical Framework for Transformer Circuits*"
     url: "https://transformer-circuits.pub/2021/framework/index.html"

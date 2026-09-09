@@ -11,6 +11,39 @@ glossary:
   - term: "Temporal Feature Analysis"
     definition: "A feature-extraction objective that decomposes each representation into a context-predictable component and a residual component containing information not predicted from earlier context."
 
+exitCriteria:
+  - task: "A turn-averaged SAE reconstructs $\\bar{\\mathbf{x}} = \\frac{1}{|T|}\\sum_{t \\in T}\\mathbf{x}_t$ instead of individual token activations. Say what survives the averaging and what cancels, and why this is a granularity choice rather than an improvement."
+    answer: |
+      **Survives:** directions that are sustained across many positions in the span — topic, register, the response's overall function, a persona, a maintained goal. These add coherently, so their contribution to the mean is roughly their typical magnitude.
+
+      **Cancels:** token-specific components that vary across the turn. Averaging is a low-pass filter over position, so anything high-frequency — which exact word appeared, where evidence was introduced, token order — is attenuated toward zero.
+
+      **Why a choice, not an improvement:** the two sets are both real content. The averaging does not remove noise; it removes information that is genuinely there and genuinely useful for a different class of question. A dictionary trained on turn means cannot tell you which sentence introduced a constraint, because the evidence that would distinguish it was cancelled before the SAE ever saw it. Equally, a token-wise dictionary represents a maintained topic as a scattered set of weakly-related activations rather than as one variable.
+
+      The design decision is which unit the *question* is about. The mean stays in $\mathbb{R}^{d_{\text{model}}}$, so nothing about the architecture changes — only what the objective is rewarded for keeping.
+  - task: "Per-token features aggregated by maximum activation reached 95.0% on a ten-way text-matching task; turn-averaged features won 87.9% of pairwise comparisons on covering structured turn summaries. Explain why different methods win these two metrics."
+    answer: |
+      The metrics reward opposite properties.
+
+      **Ten-way matching** is a *discrimination* task: given a feature list, identify which of ten texts produced it. Discrimination is won by distinctive, low-frequency signals — a rare word, an unusual construction — because those are what separate one text from nine others. Max-aggregated per-token features preserve exactly that: the peak activation on the most distinctive token survives aggregation intact.
+
+      **Covering a turn summary** is a *description* task: does the feature set say what the response was about and what it did? Description is won by properties that hold across the whole span, which is what averaging preserves and what max-pooling over token features represents only incidentally.
+
+      A distinctive token is a good fingerprint and a poor summary; a sustained topic is a good summary and a poor fingerprint. Neither method is better, and reporting either number alone would misrepresent the comparison.
+
+      The general lesson is that an evaluation encodes a purpose. "Which features are better" is not well posed until the metric says what better means, which is the same lesson SAEBench teaches for reconstruction versus downstream tasks.
+  - task: "Turn-level features change attribution-graph candidate nodes from roughly $NLk$ to $TLk$. For a ten-turn, 250-token, four-layer example with $k$ active features per unit, work out both counts given that the per-token figure is about 128,000."
+    answer: |
+      **Per-token:** $NLk = 250 \times 4 \times k \approx 128{,}000$, so $k = 128{,}000 / 1000 = 128$ active features per unit.
+
+      **Per-turn:** $TLk = 10 \times 4 \times 128 = 5{,}120$.
+
+      A reduction of about $25\times$, which is exactly the ratio $N/T = 250/10$ — the average tokens per turn. The saving comes entirely from coarsening the position axis, and nothing else in the formula changes.
+
+      **Why this matters:** attribution graphs are already hard to read at thousands of nodes, and the count grows linearly with context length. A long conversation makes per-token graphs unusable before the analysis is even wrong. Coarsening the unit is one of the few levers that scales with the problem.
+
+      **The cost, quantified by the same paper:** turn-level attribution weights correlate with observed feature effects, but less strongly than per-token weights, and the correlation *decreases* at longer contexts. That is the concerning direction — the regime where you most need the compression is the regime where the compressed attribution is least trustworthy, so the saving and the error grow together rather than trading off against each other.
+
 furtherReading:
   - title: "Lubana et al., *A Percolation Model of Emergence* and the priors literature it draws on"
     note: "For the modeling assumptions behind treating features as time-independent, which is the assumption this article questions."

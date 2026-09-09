@@ -11,6 +11,44 @@ glossary:
   - term: "Binding ID"
     definition: "A context-specific identifier represented by corresponding entity-side and attribute-side vectors, allowing later computation to retrieve values by matching the pair."
 
+exitCriteria:
+  - task: "State the two causal predictions binding IDs make — factorizability and position independence — and say which competing account each one rules out."
+    answer: |
+      **Factorizability.** Entity and attribute content can be replaced separately: swap the attribute activation at slot $i$ for slot $i$'s activation from another context, and entity $i$ becomes bound to the new attribute while other pairs stay intact. This rules out the account where an entity–attribute pair is stored as one indivisible representation. If "Ann-loves-pie" were a single unit, there would be no attribute component to replace on its own.
+
+      **Position independence.** Retrieval follows the identifier, not the slot: permute the entity and attribute representations while preserving matching IDs and the associations survive. This rules out the positional account — "the second person maps to the second food" — which would break as soon as positions are rearranged.
+
+      Together they pin down a specific claim: association is carried by a *transportable code* attached to content, not by content itself and not by location. That is a much more constrained hypothesis than "the model tracks the pairs," and each prediction has a clean way to fail.
+
+      Both held in the Pythia and LLaMA models tested — a finite set of checkpoints on controlled binding tasks, not all transformers.
+  - task: "Replacing Ann's full activation with Pete's makes the model answer *jam*. Explain why this does not establish a binding-ID mechanism, and describe an intervention that would."
+    answer: |
+      The full activation carries everything at that position at once: Pete's identity, Pete's attributes, whatever positional information the site encodes, and any binding code. Moving all of it and observing that the answer becomes Pete's attribute is consistent with the binding account and equally consistent with several rivals — that the site stores an inseparable person-food pair, or that the answer was transplanted directly, or that retrieval is positional and you moved what sits at that position.
+
+      The experiment has established Cause with no Isolate: a large effect and no evidence for the *level of abstraction* the interpretation claims.
+
+      **A discriminating intervention:** change the identifier while holding content fixed. Attach Ann's binding vector to the representation of *jam* and leave both content components alone. The binding account predicts the model now answers *jam* for Ann; every account where association is carried by content or position predicts otherwise, since neither the content nor the position moved.
+
+      The stronger version composes sources that do not contain the answer, so no source could have supplied it. That is the general recipe for testing a variable rather than transplanting a result — the same discipline as RAVEL's Cause-and-Isolate pairing.
+  - task: "Interpolations between valid binding vectors usually still work as identifiers; random vectors of comparable scale usually do not. Say what this establishes about the code, and what capacity failure the geometry predicts."
+    answer: |
+      **What it establishes:** the identifiers occupy a *continuous subspace with meaningful distances*, not a discrete set of labels. If binding IDs were one-hot slots, the midpoint of two valid IDs would be a meaningless vector, and it is not. The scale-matched random control does the essential work here: it shows the effect comes from the direction lying in the binding subspace, not from adding a vector of the right magnitude.
+
+      That nearby identifiers are harder for the model to distinguish than distant ones sharpens the picture. Retrieval is a separation problem: it succeeds when downstream computation can tell two points apart, and degrades continuously as they converge.
+
+      **The predicted capacity failure:** as more entities are bound in one context, their identifiers must be packed into the same usable region, so typical separation falls and collisions or near-collisions become more likely. The prediction is graded rather than a cliff — errors should first appear as confusions between the *most similar* identifiers rather than as uniform degradation — and it says the failure should look like attribute swapping between specific pairs, not general forgetting.
+
+      This is a falsifiable structural prediction, which is what makes the continuous-subspace claim more than a description.
+  - task: "Retrieval combines positional, lexical, and reflexive routes, with the mixture varying by task and position. Explain why observing positional retrieval in a short synthetic list does not establish it for longer text."
+    answer: |
+      Because the mixture is a function of the setting, and a short list is the setting where the positional route works best. Positional retrieval degrades as lists grow and is noisiest in middle positions, so a two- or three-item list is close to its best case — and correspondingly close to the worst case for detecting the other routes, which have nothing to contribute when position alone suffices.
+
+      So the finding generalizes to "in this regime, position dominates," and the natural extrapolation — that the model retrieves positionally — is exactly the inference the data cannot support.
+
+      This compounds a second problem: a behavioral answer underdetermines the mechanism. The same correct token can be produced by different mixtures, so getting the answer right tells you nothing about which route produced it.
+
+      **What earns the general claim** is what the mixture study did: nine models, ten binding tasks, longer contexts interleaved with unrelated text, and a causal model reaching about 95% agreement with the next-token distributions across all of them. Varying the regime is the point — a mechanism claim needs the conditions under which each route dominates, not one condition where one route happens to be enough.
+
 furtherReading:
   - title: "Feng & Steinhardt, *How Do Language Models Bind Entities in Context?*"
     url: "https://arxiv.org/abs/2310.17191"

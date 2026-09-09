@@ -10,6 +10,35 @@ glossary:
   - term: "Activation Difference Lens"
     definition: "A model diffing technique that interprets the average activation difference between a finetuned model and its base model on early tokens of unrelated text, using tools like Patchscope and steering to reveal information about the finetuning domain."
 
+exitCriteria:
+  - task: "The Activation Difference Lens computes $\\bar{\\boldsymbol{\\delta}} = \\bar{\\mathbf{h}}^{\\text{ft}} - \\bar{\\mathbf{h}}^{\\text{base}}$ on the first few tokens of *random pretraining text*. Explain why using unrelated text is what makes the result surprising."
+    answer: |
+      If you computed the difference on text from the fine-tuning domain, recovering domain information would be near-trivial: both models are processing cake-baking text, the fine-tuned one processes it differently, and the difference is about cakes because the input is about cakes.
+
+      Using **random pretraining text** removes that route. The inputs have nothing to do with the fine-tuning domain, so any domain information in the difference cannot have come from the input. It must be an **input-independent component** — a constant offset the fine-tuned model applies regardless of what it is reading.
+
+      That is the surprising finding: narrow fine-tuning leaves a persistent bias in the activations, present even on text where it is irrelevant, and readable by standard tools. A model fine-tuned on cake facts carries a culinary offset while reading about anything.
+
+      The caveat attached to the averaging is worth keeping: averaging over 10,000 samples *isolates* the constant component by cancelling text-dependent variation. Individual activation differences still depend on the text being processed, so $\bar{\boldsymbol{\delta}}$ describes an offset that exists on average rather than a component present identically in every forward pass.
+  - task: "An interpretability agent with ADL access identified fine-tuning objectives 91% of the time with 5 interactions, against 39% for the best black-box baseline with 50. Say what makes this comparison well designed, and what the grade-4 numbers add."
+    answer: |
+      **What makes it well designed:** the baseline is given *ten times* the interaction budget and still loses by a wide margin. That forecloses the obvious deflation — that ADL merely saves queries — and shows the internal access supplies information black-box probing does not reach at any reasonable budget. The zero-interaction condition sharpens it further: ADL insights alone reach $82\%$, so most of the signal is in the activation difference rather than in the agent's follow-up questioning.
+
+      **What the grade-4 numbers add:** $30\%$ versus $1\%$ for identifying *specific details* correctly, against $91\%$ versus $39\%$ for the broad objective. Two things follow. The gap is proportionally much larger at the demanding grade, so ADL's advantage grows with the precision required — the opposite of what a method producing vague domain hints would show. And $30\%$ is a candid ceiling: on a large majority of cases the method identifies roughly what the fine-tuning was about and not what it specifically did.
+
+      Reporting both grades is what makes the result readable. A single "success rate" at grade $\geq 2$ would have hidden the ceiling entirely.
+  - task: "ADL interprets $\\bar{\\boldsymbol{\\delta}}$ with Patchscopes, the logit lens, and steering. Say why using three readouts is better than one, given what each inherits."
+    answer: |
+      Each carries different failure modes, so agreement across them is evidence that the signal is in $\bar{\boldsymbol{\delta}}$ rather than in a readout.
+
+      - **Logit lens** applies the final normalization and unembedding directly. It is the most direct — no learned components, no prompt — and the most limited: it can only report vocabulary alignment, and it inherits the raw lens's bias toward frequent tokens.
+      - **Patchscopes** inserts $\lambda\bar{\boldsymbol{\delta}}$ into a prompt and reads the continuation. More expressive, and it inherits the target prompt as an uncontrolled degree of freedom — a prompt can shape the answer.
+      - **Steering** adds $\alpha\bar{\boldsymbol{\delta}}$ during generation and inspects the text. It is a *behavioral* test rather than a readout, so it shows the difference vector has causal effect, not merely vocabulary alignment. It inherits the off-distribution problem at large $\alpha$, which is why the coefficient is binary-searched for the largest value preserving coherence.
+
+      None alone would be convincing: a prompt could produce the Patchscope tokens, the logit lens could reflect frequency, steering could disrupt. All three pointing at cake baking is much harder to explain any way except that the vector encodes it.
+
+      Token relevance of $20\%$–$80\%$ of the top 20 also honestly reports how noisy a single readout is.
+
 furtherReading:
   - title: "Betley et al., *Emergent Misalignment*"
     url: "https://arxiv.org/abs/2502.17424"

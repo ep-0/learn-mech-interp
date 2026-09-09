@@ -14,6 +14,37 @@ glossary:
   - term: "Adversarial Pruning"
     definition: "Selecting a subnetwork by minimizing its size subject to reconstruction holding up under adversarially chosen ablations of the excluded nodes, rather than under no ablation or stochastic ablation. Non-adversarially pruned subgraphs are systematically too small."
 
+exitCriteria:
+  - task: "Attribution graphs hold attention patterns fixed, and the article says the reason is structural rather than incidental. Explain why a transcoder cannot decompose an attention score."
+    answer: |
+      A transcoder is a map from one activation vector to another: it approximates an MLP, which reads $\mathbf{x}_{\text{in}}$ at a position and produces $\mathbf{y}_{\text{out}}$ at that position. Its whole shape is one-in, one-out at a single position.
+
+      An attention score is not that shape. It is **bilinear in the activations at two different positions**: $e_{i,j} = \mathbf{x}_i W_{QK} \mathbf{x}_j^T$. There is no single input vector to decompose, because the quantity depends jointly on a destination and a source, and the decomposition would need to say how *pairs* of things combine.
+
+      So the frozen attention in attribution graphs is not a shortcut anyone chose for convenience. It is what happens when the available decomposition tool has the wrong type signature for half the architecture, and several activation-based decompositions of attention have been proposed without a satisfactory one emerging.
+
+      Parameter space escapes this because it never commits to a shape. Subcomponents are vectors of weights, so decomposing $W_Q$ and $W_K$ **automatically** decomposes $W_{QK} = W_Q W_K^T$ — the bilinear structure falls out of the substitution rather than having to be accommodated.
+  - task: "Every attention score becomes $e_{i,j} = \\sum_{c,c'} (\\mathbf{u}_{Q,c}^h \\cdot \\mathbf{u}_{K,c'}^h)(\\mathbf{x}_i \\cdot \\mathbf{v}_{Q,c})(\\mathbf{x}_j \\cdot \\mathbf{v}_{K,c'})$. Identify the three scalars, say which are data-dependent, and state what a strongly interacting pair means."
+    answer: |
+      - $\mathbf{x}_i \cdot \mathbf{v}_{Q,c}$ — **data-dependent**: how strongly the *destination* token matches what query subcomponent $c$ reads for.
+      - $\mathbf{x}_j \cdot \mathbf{v}_{K,c'}$ — **data-dependent**: how strongly the *source* token matches what key subcomponent $c'$ reads for.
+      - $\mathbf{u}_{Q,c}^h \cdot \mathbf{u}_{K,c'}^h$ — **fixed by the weights**: whether the two subcomponents' write directions in the head's $d_{\text{head}}$-dimensional query-key space point the same way.
+
+      **A strongly interacting pair is a rule:** *destination tokens with property $c$ attend to source tokens with property $c'$.* If the write directions align, a destination matching $c$ and a source matching $c'$ together push the score up; if they are orthogonal, the pair contributes nothing regardless of which tokens are present.
+
+      The head's attention pattern is then the **sum of however many such rules are active** — which is a much better account of a head than a single label. It explains directly how one head can implement several behaviors, and it makes the weight-level and input-level parts of the mechanism separable: the rules live in the weights and can be enumerated once, while which rules fire depends on the input.
+  - task: "Most $W_Q$ and $W_K$ subcomponents carry nonzero norm in all six heads of layer 1, and none is localized to a single head. Say what this suggests and why the article calls it suggestive rather than conclusive."
+    answer: |
+      **What it suggests:** the head is not the natural unit. $W_Q$, $W_K$, $W_V$, and $W_O$ are stored concatenated across heads, so a parameter subcomponent spans all heads in its layer *by default* — and the finding is that when you split each subcomponent per head and measure the norm, the mass really is spread rather than concentrating on one. If mechanisms respected head boundaries, subcomponents would have localized without being asked to.
+
+      That matters because heads are the standard carving of an attention layer, and a single computation being spread across several of them means head-level analysis is cutting mechanisms rather than isolating them.
+
+      **Why suggestive:** **nonzero weights are not the same as used weights.** A subcomponent can carry small norm in a head and contribute nothing on any real input, because the relevant data-dependent scalars are always near zero there. Norm is a property of the parameters; use is a property of parameters and inputs together.
+
+      Settling it means seeing what the subcomponents *compute* — which is what the QK-pair analysis does, by identifying which pairs actually interact and on which inputs.
+
+      One further scope note: this is one decomposition of one four-layer 67M-parameter model.
+
 furtherReading:
   - title: "Ameisen et al., *Circuit Tracing: Methods*"
     url: "https://transformer-circuits.pub/2025/attribution-graphs/methods.html"

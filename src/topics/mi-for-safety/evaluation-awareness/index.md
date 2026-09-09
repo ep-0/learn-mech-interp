@@ -12,6 +12,35 @@ glossary:
   - term: "Verbalized Evaluation Awareness"
     definition: "Text in a model's reasoning or response that identifies the interaction as an evaluation, test, benchmark, or artificial scenario without being explicitly told so."
 
+exitCriteria:
+  - task: "Evaluation awareness is defined as a *capability*, with behavior change stated as a separate claim. Explain why the definition insists on the split."
+    answer: |
+      Because the two are separately measurable and separately false. A model can distinguish evaluation from deployment contexts and behave identically in both, in which case the capability exists and is harmless. Conversely, behavior could differ between the two for reasons having nothing to do with recognition — evaluation prompts are shorter, more artificial, more likely to resemble safety-training data — so a behavioral gap is not evidence of awareness.
+
+      Collapsing them produces the standard overreach: "models know when they are being tested" gets read as "benchmark scores are unreliable," when only the first has been shown.
+
+      The split also separates the evidence types cleanly. Discrimination above chance on 1,000 transcripts from 61 datasets establishes the **capability**. A linear probe reaching AUROC $0.816$ establishes that the distinction is **linearly accessible internally**. Neither touches behavior. The within-question refusal comparison ($3$ to $18$ percentage points) is correlational about behavior, and only the intervention on reasoning traces — removing an awareness statement raises compliance, inserting one raises refusal — is causal.
+
+      Four different claims, four different experiments. The definition's insistence on the split is what keeps them from being reported as one finding.
+  - task: "Frontier models discriminate evaluation from deployment above chance but are poorly calibrated, over-classifying interactions as evaluations. Say why calibration matters here as much as accuracy."
+    answer: |
+      Discrimination above chance says a signal exists. Calibration says whether the model's judgment functions as a **reliable internal label** it could act on.
+
+      A model that flags too many interactions as evaluations is not maintaining a trustworthy belief about its situation; it is responding to cues that correlate with test conditions. That matters for the threat model in a specific way: strategic behavior conditioned on a badly-calibrated signal would fire often in deployment, making it *more* visible rather than less. The concerning scenario requires a signal accurate enough to distinguish reliably, and the measurement says this one is not.
+
+      It also affects how the discrimination result should be read. Above-chance performance with a heavy bias toward "evaluation" can be produced by a shallow heuristic — benchmark formatting, prompt length, the absence of conversational noise — rather than by anything deserving the name situational awareness. The higher performance on agentic trajectories than on chat transcripts fits this: agentic traces have more surface structure to key on.
+
+      The methodological point generalizes. An AUROC or accuracy number describes ranking, and says nothing about whether the underlying quantity is usable as a decision variable. Both should be reported.
+  - task: "Verbalized awareness is called stronger evidence than correct classification under a direct question. Explain why, and give the confound the direct question introduces."
+    answer: |
+      **Why stronger:** verbalization is an *unprompted* statement, arising during the task itself, identifying the interaction as a test. Nobody asked. So the distinction was salient to the model while it was doing something else, which is the condition under which awareness would matter — a model that only notices when asked cannot be conditioning its behavior on the distinction during ordinary operation.
+
+      **The confound in the direct question:** asking "did this come from an evaluation?" *makes testing salient*. The question introduces the concept, and the model's subsequent reasoning happens in a context where evaluation is under discussion. This is measurement disturbing the thing measured: a correct classification tells you the model can make the judgment on request, not that the judgment was present during the original task.
+
+      It is also the reason the behavioral-classifier and activation-probe measurements answer different questions — the probe reads a state produced while processing the original prompt, with no question asked.
+
+      **Verbalization is still incomplete.** A model can represent the distinction without saying so, so absence is not evidence of absence; and a statement about being tested can be mistaken or post-hoc rationalization. Which is why the causal intervention on the traces is the piece that does the real work.
+
 furtherReading:
   - title: "Needham et al., *Large Language Models Often Know When They Are Being Evaluated*"
     url: "https://arxiv.org/abs/2505.23836"

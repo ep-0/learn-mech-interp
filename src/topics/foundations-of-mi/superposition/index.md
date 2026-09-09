@@ -16,6 +16,40 @@ glossary:
   - term: "Superposition"
     definition: "The phenomenon where neural networks represent more features than they have dimensions by encoding features as nearly orthogonal directions in activation space, allowing models to store more concepts than their parameter count would naively permit."
 
+exitCriteria:
+  - task: "You train one sparse autoencoder on an MLP hidden layer and another on the residual stream. Say what each one is decomposing, and why only one of them starts with natural units."
+    answer: |
+      The MLP hidden layer has a **privileged basis**: GELU or ReLU is applied elementwise, so each coordinate has its own gate and "neuron 42" is a meaningful object independent of any change of basis. An SAE there decomposes *neurons* into finer-grained features — it is splitting units that already exist but are overloaded. This is computational superposition.
+
+      The residual stream has no elementwise nonlinearity acting on it. Rotate it by $R$ and compensate in every reading and writing matrix — $(\mathbf{r}R)(R^{-1}W_Q) = \mathbf{r}W_Q$ — and the function is unchanged, so "dimension 42" has no basis-independent meaning. An SAE there decomposes *the whole space*, with no natural units to start from. This is representational superposition.
+
+      The practical difference: a claim about a residual-stream dimension is almost always a mistake, while a claim about an MLP neuron is at worst incomplete.
+  - task: "Two features have $\\mathbf{f}_i \\cdot \\mathbf{f}_j = 0.3$. Compute the ratio of the expected interference cost when each is active on 50% of inputs versus 1% of inputs, assuming independence. Then say which assumption is doing the most work."
+    answer: |
+      The expected cost scales as $(\mathbf{f}_i \cdot \mathbf{f}_j)^2 \, P(x_i \neq 0) \, P(x_j \neq 0)$, so the geometric term $0.09$ is common to both and cancels.
+
+      - Dense: $0.09 \times 0.5 \times 0.5 = 0.0225$
+      - Sparse: $0.09 \times 0.01 \times 0.01 = 9 \times 10^{-6}$
+
+      A ratio of $2500$. Dropping each activation probability by a factor of $50$ drops the co-occurrence, and hence the cost, by $50^2$. That quadratic scaling is why superposition is such a good deal for sparse features.
+
+      **Independence** is doing the most work, and it is the assumption most likely to be false in a real model. Features that co-occur — two senses of a word in the same document, two properties of the same entity — collide at a rate far above the product of their marginals. Correlated features in superposition can pay close to the dense cost while occupying the sparse regime by any marginal-frequency measure.
+  - task: "The toy model's phase diagram predicts which features escape superposition. State the prediction, then name the observation in real language models that matches it."
+    answer: |
+      The prediction: features escape superposition when they are **high-importance and low-sparsity** — the blue region. Importance matters because interference on a feature that carries a lot of loss is expensive; density matters because a feature that is almost always active pays its interference cost on almost every input, so the sparsity discount never arrives. Such a feature is worth an orthogonal dimension of its own.
+
+      The matching observation: sparse probing on production language models finds that the minority of neurons which *are* cleanly monosemantic tend to be things like language-detection neurons — fires reliably on French text, say. That is exactly a high-importance (getting the language wrong is catastrophic for next-token prediction) and dense (it is active on every token of the document) feature. The prediction and the exception point at the same place, which is the kind of agreement that makes the toy model worth taking seriously.
+  - task: "Two features share one dimension antipodally, at $+1$ and $-1$, giving a dot product of $-1$ — maximal interference. Explain why the model does this anyway, and construct the input on which it fails."
+    answer: |
+      Because the feature activations are **nonnegative**, the sign of the stored scalar identifies which feature is on. If only feature 1 is active the hidden value is positive; if only feature 2 is active it is negative. Under high sparsity, "exactly one active" is by far the most common non-empty case, and in that regime the sign is a perfect code. The model has bought two features for one dimension at almost no expected cost.
+
+      It fails when **both are active at once**. With $x_1 = 1$ and $x_2 = 1$ the stored value is $1 - 1 = 0$, indistinguishable from neither being active, and the ReLU decoder reconstructs both as zero. Nor is it a graceful failure: at $x_1 = 3, x_2 = 1$ the stored value is $+2$, so feature 1 is reported at $2$ instead of $3$ and feature 2 is reported as absent. The whole bargain rests on that case being rare, which is why the antipodal solution appears only above a sparsity threshold.
+  - task: "\"Bigger models have more dimensions, so superposition should decrease with scale.\" Say why this does not follow, and what would have to be measured to settle it."
+    answer: |
+      Superposition is governed by the ratio $m/n$ — features the model wants over dimensions available — not by $n$ alone. Scale increases $n$, but it also increases $m$: a larger model trained on more data learns more distinguishable properties, finer distinctions within properties it already had, and features for phenomena a smaller model could not represent at all. If $m$ grows at least as fast as $n$, the ratio does not shrink and superposition does not go away.
+
+      To settle it you would need an estimate of $m$ that does not presuppose the answer, which is the hard part: the usual proxy is the number of alive, interpretable SAE latents at a fixed sparsity, and that number is bounded by the dictionary size you chose. So the measurement has to sweep dictionary size and look for saturation, and demonstrate that features found at larger widths are genuine rather than splits of existing ones. Feature splitting makes $m$ resist definition, which is why the question is open rather than merely unmeasured.
+
 furtherReading:
   - title: "Elhage et al., *Toy Models of Superposition*"
     url: "https://transformer-circuits.pub/2022/toy_model/index.html"

@@ -12,6 +12,35 @@ glossary:
   - term: "Tool-to-Agent Gap"
     definition: "The gap between a tool surfacing useful evidence in isolation and an investigator agent successfully using that evidence to reach the correct conclusion."
 
+exitCriteria:
+  - task: "\"A safety audit that finds no dangerous circuits may simply have looked at the wrong features.\" Unpack the two distinct failures this sentence combines."
+    answer: |
+      **Failure 1: the features are mislabelled** (interpretability illusion). You examined features, assigned labels from top-activating examples, and found nothing labelled dangerous. But a label from top examples is evidence for a description, not a definition — a feature tracking a correlate can carry an innocuous label while responding to the thing you were looking for. The dangerous feature was inspected and misread.
+
+      **Failure 2: the features were never examined** (coverage). With millions of latents, an audit samples. A feature the sampling missed contributes nothing either way, and there is no signal marking its absence.
+
+      The two need different remedies. Mislabelling is addressed by precision testing — generate inputs the label predicts should activate the feature, sample moderate activations rather than the tail. Coverage is addressed by sampling strategy and by reporting what fraction of the dictionary was examined.
+
+      Both share the structure that makes negative safety results weak: **absence of evidence produced by a procedure with unknown recall**. A detector's silence is informative only in proportion to its measured sensitivity, and the sentence's real content is that no such measurement is usually available.
+  - task: "Two mechanistic explanations both pass a test asking whether the isolated circuit reproduces the behavior. State why the test cannot separate them, and what would."
+    answer: |
+      The test measures **behavioral equivalence of the isolated subgraph**, and both explanations were selected for producing that behavior. Any evaluation whose criterion is "does this reproduce the output" is blind to differences that do not show up in the output on the inputs tested — which is what extensional equivalence means. This is the same underdetermination that limits causal scrubbing, and it is not specific to any method.
+
+      **What would separate them:** inputs on which the two accounts predict *different* outputs. If explanation A says the mechanism routes through a comparison and B says it routes through a lookup, construct cases where the two diverge — inputs off the distribution where they were fitted, edge cases, adversarially chosen items — and see which account survives. This is ordinary hypothesis testing, and it requires the accounts to be specific enough to make divergent predictions, which vaguely-stated circuit descriptions often are not.
+
+      Failing that, finer-grained interventions: the accounts differ in *how* components interact, so edge-level path patching may discriminate where node-level tests cannot.
+
+      **The safety consequence:** an analysis identifying one circuit for a behavior may miss an alternative that also implements it. "We found the mechanism" should read "we found a mechanism sufficient to reproduce the behavior on the inputs we tested."
+  - task: "The article says the right question is not whether an MI tool works, but which threat, model, input distribution, and error rate it has been tested against. Explain why a working detector can still create false confidence."
+    answer: |
+      Because "works" is a claim relative to conditions, and a detector carries no record of its own conditions into deployment.
+
+      Each of the four dimensions can silently shift. **Threat:** a probe validated on planted backdoors is evidence about planted backdoors; an emergent conditional policy shares neither the clean trigger nor the separated policies. **Model:** directions are model-specific and must be recomputed. **Input distribution:** a probe trained on short research inputs missed $87.9\%$ of long-context attacks while performing well on its own distribution. **Error rate:** a probe at $13.5\%$ false positives is unusable against a low base rate however good its recall.
+
+      The false confidence comes from the asymmetry between how the detector fails and how it reports. It does not announce that it is out of distribution; it returns a clean negative, indistinguishable from a genuine one. So a monitoring system that has quietly stopped working looks exactly like one finding nothing because there is nothing to find.
+
+      This is why the deployment claim should be stated with its conditions attached, and why the conditions should be *monitored* — a detector needs its own inputs checked for drift, not only its outputs read.
+
 furtherReading:
   - title: "Sharkey et al., *Open Problems in Mechanistic Interpretability*"
     url: "https://arxiv.org/abs/2501.16496"

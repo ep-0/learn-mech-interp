@@ -11,6 +11,34 @@ glossary:
   - term: "Residual Stream"
     definition: "The central communication channel in a transformer, implemented as skip connections that allow each layer's output to be added to a running sum. All attention heads and MLP layers read from and write to this shared stream."
 
+exitCriteria:
+  - task: "A model reports an average cross-entropy loss of $3.0$ nats per token. Convert that into a statement about probability, and say why the same loss can describe very different models."
+    answer: |
+      Cross-entropy is the mean of $-\log P(\text{correct token})$, so a loss of $3.0$ means the *geometric mean* probability assigned to the true token is $e^{-3.0} \approx 0.050$ — about $5\%$. For calibration: $-\log 0.5 \approx 0.69$ and $-\log 0.99 \approx 0.01$, so $3.0$ is a long way from confident, which is unsurprising given that most next tokens in natural text are genuinely uncertain.
+
+      The same average can describe very different models because the mean hides the distribution. A model that assigns $\approx 5\%$ to every token and a model that is near-certain on the $80\%$ of tokens that are formulaic (" the", punctuation, the second half of a word) while being badly wrong on the rest can share a loss of $3.0$. This is why loss deltas from an ablation should be reported per-token or by distribution, not only as a mean — a mean that moves by $0.01$ can hide a component that is catastrophic on a narrow slice of inputs.
+  - task: "An attention pattern shows a strong vertical stripe: many query positions attending heavily to position 0. Give the most likely explanation and the inference a careless reader would draw from it."
+    answer: |
+      The most likely explanation is that the head is **idle on this input**. Softmax attention must sum to one over the allowed positions, so a head with nothing it wants has to put its mass somewhere. Position 0 — the BOS token, or whatever sits there in a model without one — is a fixed landmark available to every query, and heads learn to use it as a rest position.
+
+      The careless inference is that position 0 contains information the model needs, and that this head is retrieving it. The stripe is evidence of the opposite: the head is parking. A follow-up test settles it — ablate the head on these inputs and see whether anything changes, or check whether the head's OV write has meaningful norm at those positions.
+
+      (The related phenomenon in larger models, where the sink position carries genuinely enormous activations, is a real effect with its own explanation, and is treated in [Attention Sinks and Massive Activations](/topics/attention-sinks-and-massive-activations/).)
+  - task: "You build a patching experiment by looking up the token ID for `cat` and substituting it into a prompt. The intervention has no effect. Name the first thing to check, before you conclude anything about the model."
+    answer: |
+      Whether you used `" cat"` or `"cat"`. Most tokenizers attach a leading space to the word that follows it, so in ordinary prose the token that actually appears is `" cat"` (with the space), and `"cat"` is a *different token* that occurs mainly after a line break, a quotation mark, or inside a compound. Substituting the wrong one puts a rare token into a position where the model expects a common one, and the resulting activations may be dominated by that oddity rather than by the semantic change you intended.
+
+      The general lesson is that a null result in an intervention experiment has a large space of mundane explanations that must be cleared before any claim about the model is warranted. Check that the substituted token is the one that appears in natural text, that the sequence length did not change, and that the position you patched is the one you think it is — print the decoded token sequence rather than trusting the IDs.
+  - task: "The final residual stream is exactly the sum of every component's write. Explain why this does *not* mean each component's causal effect can be measured by projecting its own write onto the output direction."
+    answer: |
+      The decomposition is exact as bookkeeping and approximate as causation, and the gap is everything the model does *after* the write.
+
+      Projecting component $c$'s write onto an output direction gives its **direct contribution** on this particular forward pass: how much of the final logit difference is traceable to that write travelling the skip path untouched. That number is real and exactly defined.
+
+      The causal question — what happens to the output if $c$ is removed — is different, because later attention heads, MLPs, and normalization all read the *combined* state. Removing $c$ changes what they read, so they compute something else. Three concrete ways the two diverge: a later component that was suppressing $c$'s contribution no longer has anything to suppress ([self-repair](/topics/self-repair/)); a later head whose attention pattern depended on $c$'s write now attends elsewhere; and the normalization factor $1/\sigma$ changes for every downstream read.
+
+      The practical rule: direct logit attribution generates hypotheses; [activation patching](/topics/activation-patching/) tests them.
+
 furtherReading:
   - title: "Vaswani et al., *Attention Is All You Need*"
     url: "https://arxiv.org/abs/1706.03762"

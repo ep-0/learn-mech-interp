@@ -13,6 +13,52 @@ glossary:
   - term: "Transcoder"
     definition: "A sparse autoencoder variant applied to MLP layers that maps from MLP inputs to MLP outputs, learning interpretable features that describe what transformations the MLP performs rather than what it represents."
 
+exitCriteria:
+  - task: "An SAE maps $\\mathbf{h} \\to \\mathbf{h}$; a transcoder maps $\\mathbf{x}_{\\text{in}} \\to \\mathbf{y}_{\\text{out}}$ across an MLP. Explain why only the second lets you trace a causal path through the MLP."
+    answer: |
+      Tracing a path means following *this input feature produced that output feature*. That is a claim about a map, and an SAE never models one.
+
+      An SAE at the MLP output tells you which features are present *after* the computation. Put another SAE at the input and you have two independent vocabularies with nothing connecting them: latent 4,102 is active before and latent 891 is active after, and nothing in either decomposition says the first caused the second. The MLP remains a gap in the graph, and it is a large gap — MLPs hold roughly two-thirds of the non-embedding parameters.
+
+      A transcoder is trained so that its sparse code, produced from the MLP's *input*, decodes to the MLP's *output*. The same latents therefore appear on both sides of the transformation, and "which input features produce this output direction" is answerable from the encoder and decoder weights.
+
+      The caveat travels with it: the transcoder is an approximation, so a path traced through it is a claim about the replacement. Confirming it requires an intervention on the original model.
+  - task: "Transcoder circuits factorize into an input-dependent and an input-invariant term. Say what each is, and what kind of analysis the input-invariant half makes possible."
+    answer: |
+      **Input-dependent:** which latents fire on this particular input. This is the encoder's job — $\text{ReLU}(\mathbf{x}_{\text{in}} W_{\text{enc}} + \mathbf{b}_{\text{enc}})$ — and it changes with every token.
+
+      **Input-invariant:** how an active latent maps to an output direction. This is the decoder: each latent has one fixed row of $W_{\text{dec}}$, the same on every input.
+
+      **What the invariant half enables: weight-based analysis.** Because each latent's output direction is fixed, you can ask what a latent *would* contribute without running the model — compose its decoder direction with a downstream component's read weights and get a number that holds across all inputs. That is the same move as the end-to-end OV matrix for an attention head, now available through an MLP.
+
+      This matters because input-specific evidence is expensive and narrow. A weight-level statement about a latent's downstream reach covers the whole distribution at once and can be computed for every latent, so it serves as a screen for where to spend input-specific tests.
+
+      The factorization is exact for the transcoder and approximate for the MLP, so both halves inherit the reconstruction gap.
+  - task: "The IOI circuit had 26 attention heads as nodes; a feature-level circuit can have thousands. State what the higher resolution buys and what it costs."
+    answer: |
+      **Buys:**
+
+      - **A meaningful hypothesis per node.** A head is polysemantic and participates in many unrelated behaviors, so "head 9.9" names a component, not a function. A feature is at least a candidate for a label that holds across inputs.
+      - **MLPs stop being gaps.** Head-level circuits are attention-only by construction; transcoder features let paths run through the MLPs.
+      - **Sub-computations become visible.** The greater-than circuit turned out more modular than head-level analysis had shown — structure that existed but had no nodes to be expressed in.
+
+      **Costs:**
+
+      - **Legibility.** A 26-node diagram can be read; a 2,000-node graph cannot, so understanding now depends on pruning, automated summarization, and thresholds — each a place for a decision to hide.
+      - **Completeness is harder to check.** With more nodes and edges, verifying that no important path was dropped becomes a much larger problem, and the pruning threshold determines the answer.
+      - **The nodes are now learned.** A head exists in the model; a feature exists in a dictionary you trained, with non-uniqueness and reconstruction error attached.
+
+      The tradeoff is resolution against auditability, and it is not obviously worth taking for every question.
+  - task: "Skip transcoders add an affine skip connection and achieve lower reconstruction loss without a measured interpretability reduction. Explain why this is not automatically an argument for always using them."
+    answer: |
+      The skip connection is a path from input to output that bypasses the sparse code entirely. Whatever it carries is reconstructed *without being decomposed into features* — so lower reconstruction loss may come partly from moving computation out of the interpretable part and into an uninterpreted affine term.
+
+      That is not necessarily bad. If the affine component is a genuinely linear part of the MLP's function, factoring it out is honest, and the remaining sparse code then describes only the nonlinear residual — arguably cleaner. But it changes what the transcoder's features *are*, and a circuit traced through one has a term that no feature accounts for.
+
+      "No measured interpretability reduction" is doing less work than it appears. The measurements score whether individual latents are labelable, which is a property of the latents that survive. They do not ask how much of the MLP's function now runs through the skip, and a decomposition can score well on its remaining pieces precisely because the hard part was routed around them.
+
+      The question worth asking is what fraction of the output the skip path carries, and whether the circuit's conclusions depend on it. Same structure as the reconstruction-error nodes in attribution graphs: what matters is that the unexplained part is visible.
+
 furtherReading:
   - title: "Dunefsky, Chlenski & Nanda, *Transcoders Find Interpretable LLM Feature Circuits*"
     url: "https://arxiv.org/abs/2406.11944"

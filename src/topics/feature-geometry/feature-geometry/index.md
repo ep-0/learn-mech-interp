@@ -14,6 +14,44 @@ glossary:
   - term: "Hierarchical Orthogonality"
     definition: "The geometric property where a parent concept's representation vector is orthogonal to the difference vector between a child concept and the parent. This ensures that manipulating the parent (e.g., 'animal') does not shift the relative probabilities among children (e.g., 'mammal' vs. 'bird')."
 
+exitCriteria:
+  - task: "A categorical concept with $k$ values forms a $(k{-}1)$-simplex. Work out the dimensional cost for \"US state\" and say what the answer implies about fine-grained categories in a fixed-width residual stream."
+    answer: |
+      Fifty values give a $49$-simplex, whose vertices require at least $49$ linearly independent dimensions. In GPT-2 Small's $768$-dimensional residual stream that is over $6\%$ of the whole space for one concept; and "US state" is not an unusually large category — countries, chemical elements, and programming languages are all comparable or larger.
+
+      **What it implies:** either the model does not represent such categories as full simplices, or it pays a cost that cannot be paid many times over. Both are informative.
+
+      The likely resolution is that fine-grained categorical distinctions are *not* stored as independent simplices but decomposed into shared attributes — a state is represented by region, size, coastal or not, and other reusable properties, from which identity is reconstructed. That is much cheaper, because attributes are shared across categories, and it predicts that intervening on "California" should also move states that share its attributes.
+
+      It also suggests where superposition bites hardest. A simplex needs its vertices well separated to be readable, so packing many large categories into overlapping subspaces degrades exactly the angular separation that made the simplex the optimal arrangement.
+  - task: "Hierarchical concepts satisfy $\\mathbf{v}_{\\text{animal}} \\perp (\\mathbf{v}_{\\text{mammal}} - \\mathbf{v}_{\\text{animal}})$. Give the functional reason this should hold, in terms of what an intervention on the parent direction ought to do."
+    answer: |
+      Consider increasing the model's confidence that a token is an animal, by adding to the residual stream along $\mathbf{v}_{\text{animal}}$. That intervention should make the token more animal-like *without* changing whether it is more likely a mammal or a bird — those are separate questions, and a well-organized representation should let you set one without disturbing the other.
+
+      The orthogonality condition is exactly what guarantees this. The parent direction and the child-versus-parent differences span orthogonal subspaces, so a component added along the parent has zero projection onto any child-distinction direction. The two are independently addressable.
+
+      The converse tells you what a violation would cost: if they were not orthogonal, every adjustment to a superordinate category would silently bias the subordinate distinctions, and the model would have to correct for that coupling everywhere it used either.
+
+      Park et al. verify this across 900+ WordNet concepts in Gemma and LLaMA, with parent and child-difference vectors far more orthogonal than random baselines — which is the necessary control, since two random vectors in high dimensions are nearly orthogonal anyway and the effect must be shown to exceed that floor.
+  - task: "Days of the week trace a heptagon on a circle in a 2D subspace. Explain precisely why this feature is *irreducible* — why the two axes are not simply two one-dimensional features."
+    answer: |
+      Because the coordinates are **constrained**, not independent. Points on a circle satisfy $\cos^2\theta + \sin^2\theta = r^2$, so knowing the first coordinate determines the second up to sign. Two genuinely independent 1D features can take any pair of values; these cannot.
+
+      That constraint is not incidental decoration — it is what makes the representation useful. The model performs modular arithmetic on this geometry: "two days after Monday" is computed by rotating the Monday position by $2 \times (2\pi/7)$, and rotation is an operation on the *pair* of coordinates. Split them into independent features and rotation is no longer expressible, because there is nothing for it to act on.
+
+      The geometry also carries a second variable in the radius: the angle encodes *which* day, the radius encodes strength of association, so an ambiguous token sits nearer the origin. That is the same direction-identity/magnitude-strength split as the binary case, one dimension up.
+
+      So "irreducible" is a claim about the computation, not about how many numbers it takes to write the state down. Any decomposition that destroys the constraint destroys the thing the model uses.
+  - task: "A standard SAE decomposes activations as $\\hat{\\mathbf{x}} = \\sum_i f_i \\mathbf{d}_i$ with each $\\mathbf{d}_i$ a single direction. Predict what such an SAE does when it encounters a 2D circular feature, and say why the result is misleading rather than merely inefficient."
+    answer: |
+      It **tiles the circle**. A dictionary of 1D directions can only approximate a circle by placing several directions pointing at different parts of it — plausibly one per day, each a spoke from the origin toward one vertex of the heptagon — and firing whichever spokes are nearest the current point. The reconstruction can be quite good.
+
+      **Why misleading rather than inefficient:** the resulting dictionary elements look like exactly what an interpreter wants to find. Each has a coherent top-activation set (all the Mondays), each admits a clean label, and each scores well on automated interpretability. Nothing in a feature dashboard reveals that seven "independent" features are seven local patches of one object.
+
+      So the analysis proceeds with seven day-features and no way to express the relation between them. The rotation operation the model actually performs is invisible, because it acts on a structure the decomposition denies exists. A circuit traced through these features will describe transitions between spokes rather than a rotation, and will get the mechanism wrong while getting every individual label right.
+
+      The same concern applies to hierarchical concepts, where colinear parent and child directions get reported as independent features.
+
 furtherReading:
   - title: "Park et al., *The Geometry of Categorical and Hierarchical Concepts in Large Language Models*"
     url: "https://arxiv.org/abs/2406.01506"

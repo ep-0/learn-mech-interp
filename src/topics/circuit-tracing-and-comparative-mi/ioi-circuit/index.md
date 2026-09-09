@@ -14,6 +14,46 @@ glossary:
   - term: "Name Mover Head"
     definition: "An attention head in the IOI circuit that attends to the indirect object name and copies it to the final token position, directly promoting that name in the output logits. Name movers are the output stage of the IOI circuit."
 
+exitCriteria:
+  - task: "Wang et al. traced the circuit backward from the output rather than forward from the input. Explain why that direction is more efficient, in terms of the structure of the search at each end."
+    answer: |
+      The two ends have opposite sparsity.
+
+      **At the output**, only a few heads write vectors with a large projection onto the $\text{logit}(\text{IO}) - \text{logit}(\text{S})$ direction. One pass of direct logit attribution over all $144$ heads ranks them, and the ranking is sharply peaked — a handful of Name Movers stand out and most heads sit near zero. The search collapses immediately.
+
+      **At the input**, nearly every head is doing something: reading tokens, tracking positions, processing structure that may or may not concern this task. There is no cheap criterion for relevance, because "processes the input" does not distinguish the IOI pathway from everything else the model does on the same sentence.
+
+      So backward tracing starts where the signal is concentrated and expands only along the paths that feed what you have already established matters. Each step asks a narrow question — *what determines the Name Movers' queries?* — answerable by path patching against a specific target, rather than the unbounded question of what each early head contributes to.
+
+      The general heuristic: begin at whichever end of the computation your metric makes sparse.
+  - task: "S-Inhibition Heads act at the END position, even though the duplicated name sits earlier at S1 and S2. Explain why the architecture requires this, and what would fail if they wrote only at S2."
+    answer: |
+      The residual stream is **per-position**. Each position has its own vector, and a head's write lands at the destination position where it computed its output.
+
+      Name Movers form their queries at END, because that is where the next-token prediction is made: $\mathbf{q}_{\text{NM}} = \mathbf{r}'_{\text{END}} W_Q^{\text{NM}}$. To change what the Name Movers look for, something must change $\mathbf{r}_{\text{END}}$. S-Inhibition heads therefore act at END, attending back to S2 to read the duplicate signal and writing the suppression vector into the END stream — where the query is built.
+
+      **If they wrote only at S2:** the vector would sit in S2's residual stream. Name Movers would encounter it only as *key or value* material at that source position, never in their query. It could change what a head reads if it attended to S2, but it could not change where the head chooses to attend, which is the entire function.
+
+      The general lesson is that information does not float free in a transformer. To affect a computation you must get the signal to the *position* where that computation happens, and moving it there is what attention is for. "S-Inhibition attends to S2 and writes at END" is the model doing exactly that transport.
+  - task: "Without upstream input, Name Mover heads attend to all name tokens roughly equally. Explain why this fact is the crux of the circuit, and what it implies about where the task-specific computation lives."
+    answer: |
+      A head that attends equally to Mary and John and copies what it attends to produces roughly equal logits for both — no answer at all. So the Name Movers, despite having the largest direct effect on the metric, are not solving the task. Their OV circuit is a generic name-copying mechanism; it would behave the same way on a sentence with no duplicate.
+
+      The task-specific work is therefore entirely in **the query**, and hence upstream. Everything that makes this an IOI circuit rather than a name-copier — detecting which name repeats, converting that into a signal, delivering it to END, biasing the query away from the duplicate — happens before layer 9.
+
+      Two consequences follow. First, the component with the largest attribution is not the component doing the interesting computation, which is a general warning about reading circuits off attribution scores. Second, it explains the discovery path: finding the Name Movers is easy and tells you almost nothing, and the real question — *who modifies these queries?* — is what path patching was needed to answer.
+
+      It also predicts the ablation result: cut the S-Inhibition-to-query path and Name Mover attention becomes unselective between the names, which is what is observed.
+  - task: "The circuit contains 26 of GPT-2 Small's 144 attention heads. Explain why \"the task uses 18% of the model\" misstates what was found."
+    answer: |
+      Three reasons the fraction does not mean that.
+
+      1. **The denominator is incomplete.** Heads are not the model. GPT-2 Small also has $12$ MLP layers holding roughly two-thirds of its non-embedding parameters, plus embeddings and unembeddings. A ratio over heads alone silently excludes most of the computation, and MLPs are not established to be uninvolved — they were largely not searched.
+      2. **The 26 are not disjoint from the rest.** All heads read and write the same residual stream. The circuit heads operate on a state that every other head has contributed to, so they are not a self-contained $18\%$ that could be lifted out. Whether the circuit works *in isolation* is a separate question — that is faithfulness, and it has to be measured.
+      3. **"Uses" implies a partition of capacity that does not exist.** Heads are reused across tasks; a head in this circuit is doing other jobs on other inputs. There is no allocation of the model into task-shares to take a percentage of.
+
+      What was actually found: much of the *measured behavior on this benchmark, under this metric and these interventions* can be traced through a comparatively small set of components. That is a real and useful result, and it is a statement about the tractability of the analysis rather than about how much of the model is involved.
+
 furtherReading:
   - title: "Wang et al., *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small*"
     url: "https://arxiv.org/abs/2211.00593"

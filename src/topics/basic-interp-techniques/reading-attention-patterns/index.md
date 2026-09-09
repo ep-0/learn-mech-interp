@@ -8,6 +8,34 @@ prerequisites:
   - title: "Plotting and Visualizing Results"
     url: "/topics/plotting-and-visualizing-results/"
 
+exitCriteria:
+  - task: "Two heads produce nearly identical attention heatmaps on the same prompt. One copies the attended token's identity; the other writes the negative of its unembedding direction. Say what the heatmaps show, what they cannot show, and what you would inspect instead."
+    answer: |
+      The heatmaps show the output of the QK circuit — the routing decision, $\alpha_{i,j}$, which is where each destination position reads from. Identical heatmaps mean the two heads made the same routing decision, and nothing more.
+
+      What they cannot show is the OV circuit, which decides what the read produces. Attention weight is a *coefficient* on a value vector; the vector itself is computed by an entirely separate pathway that never touches the pattern. A copying head and a suppressing head are the same picture.
+
+      What to inspect: the head's actual output vector at the destination position, projected onto the logit direction you care about — the copying head projects positive, the suppressor negative. At the weight level, the end-to-end OV matrix $W_E W_{OV}^h W_U$ distinguishes them structurally: copying shows a large positive diagonal, suppression a negative one. Then confirm with an ablation, since a weight-level pattern still has to matter on real inputs.
+  - task: "You are handed an attention heatmap with no axis labels, from a tool that may have transposed it. Describe how to determine which axis is destination and which is source, using only the image."
+    answer: |
+      Find the blank triangle. Causal masking sets $\alpha_{i,j} = 0$ for every $j > i$, so exactly half the matrix is empty, and its orientation identifies the axes: destination positions can only read *backwards*, so the filled region is the one where the source index does not exceed the destination index.
+
+      Concretely, with destination on the vertical axis and source on the horizontal (the usual convention), the lower-left triangle is filled and the upper-right is blank. If the image shows the opposite, the axes are transposed.
+
+      This check is worth doing every time, because the failure it catches is silent. A diagonal is symmetric under transposition, so a previous-token head looks like a previous-token head either way — but a *vertical* stripe becomes a *horizontal* one, which turns "many positions read from position 0" into "position 0 reads from many positions." The second is impossible under causal masking, and a reader who has not checked the axes may not notice that they have just described something the architecture forbids.
+  - task: "Separate evidence from hypothesis in the claim \"this head tracks syntactic dependencies.\" Write the evidence-level statement it should have been, and list what would have to be added to earn the original claim."
+    answer: |
+      **Evidence level:** "On this prompt, each row of the pattern places most of its weight on a single earlier column, and those columns coincide with the syntactic head of each word under a dependency parse." That is a description of the heatmap plus an alignment with an external annotation — checkable, and it commits to nothing about mechanism.
+
+      **To earn "tracks syntactic dependencies" you would need:**
+
+      1. **Generality.** The same alignment across many sentences, varied constructions, and ideally another language — not one example. A single prompt cannot distinguish a syntactic rule from a lexical coincidence.
+      2. **A control that breaks the confound.** Syntactic heads correlate with position and with content. Test sentences where the syntactic head is *not* the nearby or semantically obvious token, and see whether attention follows syntax or the confound.
+      3. **The OV circuit.** Routing to the syntactic head is not tracking it unless something is moved. Show what the head writes when it attends there.
+      4. **An intervention.** Ablate or patch the head and show that a behavior depending on that dependency changes.
+
+      The general rule: a heatmap licenses a claim about where a head reads on the inputs you tested. Every stronger word — tracks, computes, represents, understands — is a promissory note that an experiment has to pay.
+
 furtherReading:
   - title: "Jain & Wallace, *Attention Is Not Explanation* and Wiegreffe & Pinter, *Attention Is Not Not Explanation*"
     url: "https://arxiv.org/abs/1902.10186"

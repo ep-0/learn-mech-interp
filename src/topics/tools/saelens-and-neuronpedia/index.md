@@ -9,6 +9,36 @@ prerequisites:
   - title: "TransformerLens"
     url: "/topics/transformerlens/"
 
+exitCriteria:
+  - task: "\"A successful load does not prove that the SAE is suitable for the target distribution.\" Say what must be checked before interpreting features from a loaded SAE, and why loading succeeds anyway."
+    answer: |
+      **What to check, in two groups:**
+
+      *Compatibility* — that the SAE is attached to the space it was trained on: the same model, the same activation site (residual stream at layer 8 is not MLP output at layer 8), the same hook identity and tensor shape, and the same weight or activation preprocessing. SAE Lens records this metadata precisely because mismatches are easy.
+
+      *Fitness for your data* — reconstruction error and sparsity measured **on the data the experiment will actually use**. A dictionary trained on English web text may reconstruct code or another language poorly, and features reflect the activations used for training.
+
+      **Why loading succeeds anyway:** the loader checks that shapes are compatible, and shape compatibility is nearly free. Every residual-stream site in a model has width $d_{\text{model}}$, so an SAE trained at layer 8 attaches to layer 20 without complaint and produces sparse activations that look entirely normal.
+
+      That is the hazard: the failure is silent and the output is well-formed. You get feature indices, activation values, and a dashboard, and nothing signals that the dictionary is describing a space it never saw. Measuring reconstruction error on your own data is the cheapest check that would catch it.
+  - task: "Four choices are said to determine what SAE features can mean: architecture, activation site, dictionary size, and training distribution. For each, name the specific way it constrains the resulting features."
+    answer: |
+      - **Architecture** (ReLU, Gated, TopK, JumpReLU) determines *how sparsity is imposed*, and therefore the systematic distortion in the features. A vanilla $L_1$ SAE shrinks magnitudes, so feature activations are biased low; TopK forces exactly $k$ features per token whether the token is simple or complex.
+      - **Activation site** determines *what computation the features describe*. Residual stream, MLP output, attention output, and transcoder targets are different objects — an MLP-hidden-layer SAE decomposes neurons in a privileged basis, a residual-stream SAE decomposes a space with no privileged basis at all.
+      - **Dictionary size** determines *granularity*. Larger expansion separates more patterns and also splits one phenomenon across several features, so the number of features you find is partly a hyperparameter.
+      - **Training distribution** determines *what exists in the dictionary*. Features reflect the activations trained on, so a dictionary trained on one language or domain may simply lack the structure you need, and its absence will look like the model not representing it.
+
+      All four are analyst choices made before any result, and each one bounds the conclusions. "We found feature X" is always relative to the full tuple.
+  - task: "Neuronpedia hosts feature dashboards and lets researchers test interpretations in a browser; SAE Lens is programmatic. Say what each surface is good for and where the convenience of the hosted one becomes a risk."
+    answer: |
+      **SAE Lens** is for the work that must be reproducible and specific to your setup: training a dictionary when no release fits, encoding your own data, measuring reconstruction on your distribution, and feeding sparse activations into downstream experiments like feature-level circuit tracing. It is where the choices are yours and therefore recorded.
+
+      **Neuronpedia** is for orientation and triage: browsing hosted decompositions, searching features and vectors, and testing a candidate interpretation quickly enough that the test is worth running. It also hosts probes, custom vectors, and circuit-tracing tools, which lowers the cost of a first look enormously.
+
+      **Where convenience becomes risk:** a hosted dashboard presents a feature already selected, already labelled, and already illustrated by top-activating examples — with the tuple of architecture, site, dictionary size, and training distribution invisible in the interface. Every caveat about feature labels applies with full force, and the presentation makes them easy to forget: top examples condition on the answer, so the label has good recall and untested precision.
+
+      The rule that follows is to treat a hosted dashboard as a hypothesis generator whose provenance you look up, and to run the precision test yourself before any claim depends on the label.
+
 furtherReading:
   - title: "The SAE Lens documentation and training tutorials"
     url: "https://jbloomaus.github.io/SAELens/"

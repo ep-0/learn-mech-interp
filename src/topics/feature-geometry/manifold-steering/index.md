@@ -18,6 +18,44 @@ glossary:
   - term: "Scaled Isometry"
     definition: "A correspondence between two spaces that approximately preserves distances up to one common scale factor. Here it describes similar geodesic distance relationships in activation and behavior manifolds."
 
+exitCriteria:
+  - task: "The straight path and the manifold path share endpoints and differ only in intermediate states. Explain why that design choice is what makes the comparison informative."
+    answer: |
+      Because it isolates the variable of interest: the **assumed geometry between two known states**.
+
+      If the two methods reached different endpoints, any behavioral difference would be confounded by target choice — the curved path might simply be aiming somewhere better. With endpoints fixed, both interventions agree on where they are going and disagree only about what lies between, so a difference in behavior is attributable to the path and to nothing else.
+
+      This matters because the substantive claim is geometric rather than about steering strength. The concern with a straight path is the crescent-island problem: the chord between two points on a curved structure passes through regions where natural activations do not occur, and the model's response there is unconstrained by anything it saw in training. The endpoints are familiar; the middle is not.
+
+      The test therefore has a clean prediction. If activation geometry is incidental, both paths should behave comparably, since both connect the same two states. If it is real, the straight path should degrade in the middle — erratic or off-distribution behavior — while the manifold path traces a smooth, ordered behavioral trajectory. This is a path intervention in the sense of the previous article: a test of the structure, not of the span.
+  - task: "State the condition under which interpolating in intrinsic coordinates gives the same path as interpolating between the ambient activations, and what it implies about when manifold steering is worth the trouble."
+    answer: |
+      They coincide when the relevant part of the parameterization $\mathbf{s}$ is **affine** over the route. If $\mathbf{s}(\mathbf{u}) = A\mathbf{u} + \mathbf{b}$, then
+
+      $$\mathbf{s}\big((1-t)\mathbf{u}_0 + t\mathbf{u}_1\big) = (1-t)\mathbf{s}(\mathbf{u}_0) + t\,\mathbf{s}(\mathbf{u}_1),$$
+
+      which is exactly the straight line between the endpoint activations. Affine maps commute with convex combinations, so a flat manifold gives nothing new.
+
+      **Curvature is the entire source of the difference**, and it follows that manifold steering is worth the machinery only where the structure actually bends over the interval being traversed. Two nearby states on a gently curving manifold are nearly collinear, and the straight path is fine. The gap grows with the arc traversed.
+
+      This also predicts where standard addition steering should be *most* unreliable: large coefficients. A small $\alpha$ stays in the locally-flat neighborhood where the linear approximation holds; a large one travels far enough for curvature to matter, which is a mechanistic account of why steering at high strength tends to produce degenerate output rather than more of the intended effect.
+  - task: "The behavior manifold is fitted to output distributions represented in square-root coordinates, $\\mathbf{p} \\mapsto \\sqrt{\\mathbf{p}}$. Say what this buys and why treating probability vectors as ordinary Euclidean points would be wrong."
+    answer: |
+      Euclidean distance in the square-root coordinates equals **Hellinger distance** between the distributions, which is a proper metric on probability distributions. The transformation maps the simplex onto a portion of a sphere, so the geometry respects the constraint that probabilities are nonnegative and sum to one.
+
+      **Why raw Euclidean distance is wrong:** it treats the simplex as an unconstrained flat space it is not. Two consequences. First, straight-line interpolation between probability vectors can leave the simplex — intermediate points with negative entries or the wrong total — so a "path" in behavior space may pass through objects that are not distributions. Second, the metric ignores where on the simplex you are: moving a probability from $0.50$ to $0.55$ and from $0.001$ to $0.051$ are the same Euclidean distance and enormously different as changes in belief. Hellinger weights the low-probability region appropriately.
+
+      The general principle recurs: a metric encodes assumptions about the space, and applying a Euclidean metric to a constrained space silently assumes the constraint away. The same reasoning motivates fitting a curved manifold in activation space rather than a linear subspace.
+  - task: "Density geometry and pullback geometry use different information. Say what each sees, and what it would establish if their preferred paths coincided."
+    answer: |
+      **Density geometry** sees only which internal states occur naturally. It derives a metric from the distribution of activations on ordinary forward passes, making paths through frequently observed regions cheap and shortcuts through sparse regions expensive. It never consults the output.
+
+      **Pullback geometry** sees only how internal changes affect behavior. It starts with a metric in behavior space and transfers it back through the model's activation-to-output map — locally, through the Jacobian — so a movement's cost is the size of the behavioral change it produces. Directions that barely move the output are cheap; directions producing large or unnatural changes are expensive. It never consults which activations are common.
+
+      **If their preferred paths coincide:** that is evidence the natural activation manifold is **aligned with the model's behavioral organization** rather than being an incidental shape in the residual stream. The shape would not merely be where activations happen to sit; it would be the structure the model's computation is organized around. Two independent sources of information agreeing on the same geometry is much stronger than either alone, since neither could have produced the other's answer by construction.
+
+      The caveat is that both are computed after PCA reduction and low-dimensional fits, so the agreement is between two approximations.
+
 furtherReading:
   - title: "Tan et al., *Analysing the Generalisation and Reliability of Steering Vectors*"
     url: "https://arxiv.org/abs/2407.12404"

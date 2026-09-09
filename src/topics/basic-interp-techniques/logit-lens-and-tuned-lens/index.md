@@ -13,6 +13,39 @@ glossary:
   - term: "Tuned Lens"
     definition: "An improvement on the logit lens that trains a learned affine transformation at each layer (rather than reusing the final unembedding matrix), producing more accurate predictions of the model's evolving computation at intermediate layers."
 
+exitCriteria:
+  - task: "The tuned lens translators are trained to minimize KL divergence to the *final layer's* output distribution, not to ground-truth next tokens. Explain why that choice makes \"the model believes Paris at layer 8\" the wrong reading of a tuned-lens output."
+    answer: |
+      The training objective defines what the translator is: a **forecaster of the model's own eventual output**, given the layer-8 state. It is rewarded for predicting what layer 12 will say, by any linearly accessible route.
+
+      So a confident "Paris" at layer 8 means: *there is an affine map from the layer-8 state that predicts the final distribution well.* That is compatible with the model having computed Paris by layer 8, but it is equally compatible with layer 8 carrying some other signal — the entity, the relation type, the language, a stylistic cue — that happens to be linearly predictive of what the model will conclude. The translator will happily use it, because the loss does not distinguish.
+
+      The confusion is between what a *probe you trained* can extract and what the *model* computes. Nothing in the setup constrains the translator to resemble the model's actual layers 9 through 12; it is an entirely separate learned map. Calling its output a belief attributes to the model a computation performed by the analyst's probe.
+  - task: "The raw logit lens produces garbled output at middle layers of GPT-Neo while the tuned lens produces coherent predictions there. Give two incompatible explanations of that gap, and say what would distinguish them."
+    answer: |
+      1. **Basis mismatch.** The prediction is present at that layer in essentially readable form, but expressed in a coordinate frame that later layers systematically transform before the unembedding sees it. The affine translator undoes a rotation-and-shift the model would have applied anyway, so the tuned lens is reading something real that the raw lens was misaligned with.
+      2. **The translator is doing the work.** The layer's state contains predictive *ingredients* rather than a prediction, and the affine map is performing genuine computation — combining features into an answer the model has not yet formed. The coherence is manufactured by the probe.
+
+      **What distinguishes them:** the capacity and behavior of the translator. Under (1) the translator should be close to a well-conditioned near-orthogonal map and should transfer across prompts with little loss; under (2) it will be doing something more like a learned classifier. The stronger test is causal: patch the layer-8 state with one whose tuned-lens readout says a different token, and see whether the final output follows. Under (1) it should; under (2) the model's own later layers may compute the original answer regardless, because the intermediate variable the lens reported was never there.
+  - task: "Middle-layer vocabulary projections in a multilingual model skew toward English even on non-English input and output. Name the confounds that make \"the model thinks in English\" unsafe, and state the control each requires."
+    answer: |
+      **Confound 1: the unembedding is English-skewed.** The logit lens projects through $W_U$, whose columns were shaped by a training corpus that is mostly English. An intermediate state that is not "about" any language will still project onto English directions more than others, simply because there are more of them and they occupy more of the space. *Control:* compare against a baseline state — a random residual vector, or a state from a matched position on an unrelated prompt — and report the English skew relative to that, not in absolute terms.
+
+      **Confound 2: token frequency.** English tokens are more frequent, and the raw logit lens is known to be biased toward frequent tokens at intermediate layers. *Control:* re-run with the tuned lens, which is calibrated against the final distribution, and check whether the effect survives.
+
+      **Confound 3: tokenization.** English words are usually single tokens while other languages fragment into subwords, so the top-1 projected token is structurally more likely to be an English word. *Control:* compare at the level of a language's full word forms, or restrict to languages with comparable token granularity.
+
+      What would earn the claim is causal: intervene on the putative English intermediate representation and show the non-English output changes as the account predicts.
+  - task: "A logit lens shows \"Paris\" entering the top-1 at layer 8. State precisely what this licenses, what it does not, and the experiment that closes the gap."
+    answer: |
+      **Licensed:** at layer 8, the residual state at that position has a positive projection onto the "Paris" unembedding direction, larger than onto any other token's. That is a fact about alignment on this input, and it is exactly true.
+
+      **Not licensed:** that layer 8 *computed* Paris; that the computation at layer 8 is necessary for the final prediction; that the model would predict Paris if you stopped there (the model has no mechanism for stopping there, and the later layers were trained expecting to run); or that the France-to-Paris transition between layers reflects a refinement step the model performs. Each of these is a causal claim, and the lens performs no intervention.
+
+      **The experiment:** patch. Take a counterfactual prompt about a different landmark, cache its layer-8 residual state at that position, substitute it into the original run, and measure the change in the Paris logit. A large change establishes that the layer-8 state at that position mediates the prediction. Sweeping layer and position turns this into the standard grid, which is what identifies *where* the information is required rather than merely where it is visible.
+
+      The general form: observation proposes; a specified counterfactual disposes.
+
 furtherReading:
   - title: "Belrose et al., *Eliciting Latent Predictions from Transformers with the Tuned Lens*"
     url: "https://arxiv.org/abs/2303.08112"

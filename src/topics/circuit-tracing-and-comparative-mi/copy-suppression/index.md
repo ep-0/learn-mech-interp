@@ -10,6 +10,44 @@ glossary:
   - term: "Copy Suppression"
     definition: "An attention head algorithm pattern where the head attends to positions where a predicted token appeared earlier in context and outputs the negative of that token's unembedding direction, suppressing the model's tendency to predict tokens it has already seen."
 
+exitCriteria:
+  - task: "Copy suppression outputs approximately $-\\alpha\\, W_U[\\text{token}_s]$ when attending to position $s$. Say what property the head's OV circuit must have for this, and why the head needs its QK circuit to read the *prediction* rather than the input token."
+    answer: |
+      **The OV property:** the composition $W_E W_V W_O$ must approximate $-W_U^T$ for common tokens. That is, mapping a token's *input embedding* through the head's value-and-output pathway must produce a vector pointing roughly opposite that token's *output* direction. It is a learned near-negation of the embedding-to-unembedding correspondence, imperfect but reliable enough to suppress consistently.
+
+      **Why the query must read the prediction:** the algorithm is *suppress what is about to be predicted and has already appeared*. Both conditions are needed. A head keying only on token identity would suppress every repeated token indiscriminately, including the many cases where repetition is the correct continuation. By late layers the residual stream at the current position already carries a strong signal about the upcoming prediction, so the query can read that and the keys can carry token identity; attention is then high exactly where the two overlap.
+
+      That is why McDougall et al. call it *predict-attend*: the routing depends on the intersection of what the model expects and what the context contains, which is not something a purely positional or purely lexical pattern could compute.
+  - task: "Head A contributes $+5$ to the logit difference and copy-suppression head B contributes $-2$. Ablating A drops the logit difference by only $4$. State A's contribution under three different definitions and say which is the intrinsic one."
+    answer: |
+      - **Direct effect:** $+5$. A's own write, projected onto the logit-difference direction, on the unperturbed forward pass. Exactly defined.
+      - **Total effect through all paths:** $+5$ minus the suppression it induces. A's write is what B's query detects, so part of A's influence is spent triggering B against itself. This is not directly observable in one pass.
+      - **Observed ablation effect:** $4$. Removing A also removes the prediction signal B was reading, so B suppresses less and the net damage is smaller than A's direct write.
+
+      **None is intrinsic.** "True contribution" presupposes that causal credit partitions, and it does not when components condition on each other. Each number answers a well-posed but different question — what did A write, what did A cause overall, what happens when A is gone — and they disagree by construction rather than by measurement error.
+
+      The reporting discipline follows: name the quantity and the intervention, never "head A accounts for X." Note also that this is a mechanism for [self-repair](/topics/self-repair/) that has nothing to do with backup heads: some of the recovery after ablating a positive component is simply released suppression.
+  - task: "Explain how copy suppression accounts for anti-induction heads — heads that see $[A][B]\\ldots[A]$ and *suppress* $[B]$ — without positing a separate mechanism."
+    answer: |
+      An anti-induction head is a copy-suppression head operating in a context where an induction head has already fired.
+
+      Walk the two conditions. After $[A][B]\ldots[A]$, an induction head has written a strong signal for $[B]$ into the residual stream, so **$B$ is being predicted** — the first condition. And $[B]$ appeared earlier in the context, at the position after the first $[A]$ — the second condition. Both hold, so the copy-suppression head does what it always does: attends to the earlier occurrence of $B$ and outputs its negative unembedding.
+
+      No separate anti-induction algorithm is required. The head is not detecting the induction pattern or opposing induction; it is applying one rule that happens to trigger whenever induction has produced a confident repeat-prediction.
+
+      This is the value of the account: two behaviors documented separately, in different papers, on different tasks — Negative Name Movers on IOI and anti-induction on repeated sequences — turn out to be one mechanism seen through two benchmarks. It also predicts where else to look: any context where the model confidently predicts a token already in the context should show the same heads active.
+  - task: "A head has a clearly negative effect on a benchmark. Explain why that is compatible with it improving the model, and state what evaluation is required before either conclusion."
+    answer: |
+      Because the head was shaped by expected loss over pretraining, and your benchmark is a narrow, non-random slice of that distribution — typically one chosen because the model succeeds on it.
+
+      IOI is a worked example of exactly the wrong slice. Its correct answer is always a name that already appears in the context. A head whose policy is *suppress tokens that are both strongly predicted and already present* is guaranteed to fight the correct answer on every IOI prompt. The benchmark selects for the head's worst case, and reports its policy as a defect.
+
+      **The required evaluation is distribution-wide.** Run the head's ablation over a broad sample of pretraining-like text and measure the change in loss, then break the result down by token type — repeated versus novel continuations — rather than reporting a mean. The prediction is a non-uniform effect: loss should rise where the model over-predicts something already seen, and fall on the sequences where the correct continuation is the repeat.
+
+      And note the inference runs in both directions. Neither the benchmark result nor the distributional result defines the head; they answer different questions, and a paper should report both.
+
+      The general form: task-specific circuit analysis gives a partial picture of a component that is not task-specific.
+
 furtherReading:
   - title: "McDougall et al., *Copy Suppression: Comprehensively Understanding an Attention Head*"
     url: "https://arxiv.org/abs/2310.04625"

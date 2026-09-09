@@ -14,6 +14,39 @@ glossary:
   - term: "RMSNorm"
     definition: "A simplified variant of layer normalization that normalizes by the root mean square of activations without centering by the mean. Used in LLaMA, Gemma, and other modern architectures for its computational efficiency and comparable performance."
 
+exitCriteria:
+  - task: "In a pre-norm transformer, name the activation at which the residual stream is exactly the sum of all previous component writes, and explain why the post-norm architecture does not offer the same object."
+    answer: |
+      The pre-normalization residual stream — `hook_resid_pre` in TransformerLens. In pre-norm the update rule is $\mathbf{r}^{l+1} = \mathbf{r}^l + \text{Sublayer}(\text{LN}(\mathbf{r}^l))$. Normalization sits *inside* the branch, applied to what the sublayer reads, and never touches the stream itself. So the stream at any depth is exactly $\mathbf{e} + \sum(\text{writes so far})$, and any linear readout of it decomposes exactly into per-component terms.
+
+      In post-norm the rule is $\mathbf{r}^{l+1} = \text{LN}(\mathbf{r}^l + \text{Sublayer}(\mathbf{r}^l))$: the normalization is applied to the stream after the addition, at every layer. The stream is then a normalized function of a sum rather than a sum, and the additive decomposition is destroyed at each step rather than only at the point of reading. This is a large part of why MI research works almost entirely on pre-norm models.
+  - task: "A component's write happens to scale the whole residual vector at that position by a factor of $2$ without changing its direction. What does the next sublayer see as input, and what has been lost?"
+    answer: |
+      It sees essentially the same input as before. With $\mathbf{x} \mapsto c\mathbf{x}$ for $c > 0$, the mean becomes $c\mu$ and the standard deviation becomes $c\sigma$, so
+
+      $$\frac{c\mathbf{x} - c\mu}{\sqrt{c^2\sigma^2 + \epsilon}} \approx \frac{\mathbf{x} - \mu}{\sqrt{\sigma^2}},$$
+
+      exactly equal up to the $\epsilon$ term, and then the learned affine $\gamma, \beta$ applies identically. The doubling is invisible downstream.
+
+      What is lost is the **overall scale**, one scalar. This matters for interpretation in both directions. A component that writes a large-norm vector has not necessarily had a large effect on what the next block reads. And a claim that some quantity is encoded in the *magnitude* of the residual stream describes something no normalized sublayer can read directly — though it survives along the skip path to the final unembedding, which is why norm-growth phenomena still show up in the logits.
+  - task: "TransformerLens offers `fold_ln`. State precisely what it does and what it does not do, and name an analysis that would be wrong if you confused the two."
+    answer: |
+      It **does** absorb the learned affine parameters $\gamma$ and $\beta$ into the adjacent weight matrices and biases. This is an exact reparameterization: the model computes the same function, and the weights you inspect are now the ones that act on the centered-and-scaled vector, so a claim about a row of $W_Q$ is a claim about what the head actually reads.
+
+      It **does not** remove the input-dependent part — the centering by $\mu$ and the division by $\sigma$, both of which are functions of the current residual state and cannot be folded into any fixed parameter.
+
+      The analysis that goes wrong: treating the folded model as globally linear and concluding that a head's effect on the logits is a fixed linear map of its input, independent of the rest of the stream. The scale factor $1/\sigma$ changes with the input, so two components' effects are not independent even after folding. Any argument that composes fixed matrices across layers — the $W_E W_Q W_K^T W_E^T$ style — is using this approximation and should say so.
+  - task: "State the high-dimensional argument for why layer normalization can be ignored to first order, then construct a case where it fails."
+    answer: |
+      The argument: $\mu$ and $\sigma^2$ are averages over all $d$ coordinates. Changing one coordinate by a typical-sized amount moves $\mu$ by roughly $1/d$ of that amount and moves $\sigma$ by a comparably small term. In a stream of width $768$ or more, the resulting change in the normalization factor is small enough that the coupling between coordinates can be neglected at first order, and the residual stream can be treated as if each write's downstream effect were independent.
+
+      It fails in two ways, both of which appear in real analyses:
+
+      1. **A write spread across many coordinates.** The $1/d$ suppression applies per coordinate. A component that writes a moderate amount to every dimension can change $\sigma$ substantially, because the contributions add rather than average away.
+      2. **A large write.** An intervention that changes the residual norm materially — a steering vector applied at a large coefficient, or an ablation of a high-norm component — changes $1/\sigma$ by a factor that no first-order argument covers.
+
+      The check is cheap and worth doing: record $\sigma$ before and after the intervention and report the ratio.
+
 furtherReading:
   - title: "Xiong et al., *On Layer Normalization in the Transformer Architecture*"
     url: "https://arxiv.org/abs/2002.04745"

@@ -12,6 +12,38 @@ glossary:
   - term: "Function Vector"
     definition: "A direction in activation space that encodes an input-output function (such as 'translate English to French' or 'convert to past tense') rather than a static concept, enabling task transfer when added to unrelated prompts."
 
+exitCriteria:
+  - task: "Contrast a function vector with a concept direction like the truth or refusal direction. What kind of thing does each encode, and why is that difference notable?"
+    answer: |
+      A **concept direction** encodes *what is present*: this text is truthful, this request is harmful, this token is about sentiment. It is a property of the input, and steering along it changes what the model treats the situation as being.
+
+      A **function vector** encodes *what to do*: translate English to Spanish, return the antonym, extract the first letter. It is a property of the task, and inserting it makes the model perform an operation rather than adopt a stance.
+
+      The difference is notable because it says the model carries a compact, transportable representation of an *operation* — something closer to a program than a label. Insert it into a prompt with no demonstrations, and the model performs the demonstrated task, so the few-shot examples were not needed as examples; what they produced was this vector, and the vector alone suffices to reinstate part of the behavior.
+
+      It also arose differently. Every other steering vector on this site is engineered — a human designed contrasting stimuli and subtracted. A function vector is produced by the model's own in-context-learning computation and located by causal mediation. The researcher still chooses the task, the examples, the heads, and the extraction method, so it is less hand-designed rather than unsupervised.
+  - task: "A function vector extracted from cat/gato and dog/perro pairs affects new translation items not among the demonstrations. Say what this transfer rules out and what it leaves open."
+    answer: |
+      **Rules out:** that the vector is a lookup of the demonstration tokens. If it merely carried "gato" and "perro" — the answers it was extracted from — it could not help on a word it never saw. Transfer to held-out items means the vector carries something at the level of the *operation*, not the instances.
+
+      That is the crucial control, and it is easy to fail: a vector built from few-shot examples has every opportunity to encode the specific outputs, and a demonstration of the model repeating them would look like task transfer.
+
+      **Leaves open:**
+
+      - **How much of the task it carries.** Recovery is partial in the reported settings, so the vector is a component of the mechanism rather than the whole of it.
+      - **Whether the vector is task-specific.** Does the translation vector do anything on antonym prompts? Without an off-target test, "translate" may be a label for a broader effect.
+      - **Whether the intact model uses it.** The vector was extracted by mediation analysis and validated by insertion. Whether the model's ordinary in-context learning routes through this direction is a further claim.
+      - **Scope.** Success depends on task, model, layer, and target prompt, none of which the transfer result characterizes.
+  - task: "The article notes that \"function\" describes the vector's tested effect, not an exhaustive decoding of its contents. Explain the risk this warning is guarding against."
+    answer: |
+      The risk is **reifying a label into a mechanism**. Once a vector is called a function vector for translation, it is natural to reason about it as if it were the model's representation of the translation operation — to ask where the model stores its functions, whether they compose, what the function inventory is. Every one of those questions presupposes something the evidence does not establish.
+
+      What was established: adding this vector at this site recovers part of this behavior on held-out inputs. Consistent with that: the vector is a task representation; or it is one component of a distributed task signal; or it primes a set of heads whose activity happens to produce translation-like behavior; or it carries an output-format cue that constrains generation into the demonstrated shape.
+
+      The warning matters most where it is least visible. A well-chosen name compresses a finding, and then the compression gets reasoned with rather than the finding. "Knowledge neuron," "deception feature," "induction head" in a large model, and "function vector" share this shape: a tested effect, named for its most interesting possible interpretation, subsequently treated as having established it.
+
+      The defense is to keep the operational statement attached — what was inserted, where, and what fraction of what behavior returned.
+
 furtherReading:
   - title: "Todd et al., *Function Vectors in Large Language Models*"
     url: "https://arxiv.org/abs/2310.15213"

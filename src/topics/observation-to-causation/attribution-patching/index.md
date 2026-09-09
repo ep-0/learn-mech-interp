@@ -16,6 +16,43 @@ glossary:
   - term: "Path Patching"
     definition: "A refined variant of activation patching that isolates the effect of a specific computational path between two components, controlling for all other paths. This enables precise attribution of behavior to individual connections in a circuit."
 
+exitCriteria:
+  - task: "Write the attribution patching estimate, name what each factor contributes, and explain why the cost is three passes regardless of how many components you are estimating."
+    answer: |
+      $$\text{Patch effect of } a_i \approx \nabla_{a_i}\mathcal{L} \cdot (a_i^{\text{clean}} - a_i^{\text{corrupt}}).$$
+
+      - **The gradient** $\nabla_{a_i}\mathcal{L}$: how sensitive the metric is to a perturbation at this site. Sensitivity alone is not enough — a site the metric depends on strongly does not matter if nothing changes there between the two runs.
+      - **The activation difference:** how much this site actually differs between clean and corrupted. Magnitude alone is not enough either — a site that changes a lot but that the metric ignores contributes nothing.
+
+      The product is the first-order estimate of what swapping one for the other would do.
+
+      **Why three passes:** one forward pass on the clean prompt caches every $a_i^{\text{clean}}$; one on the corrupted prompt caches every $a_i^{\text{corrupt}}$; one backward pass computes $\nabla_{a_i}\mathcal{L}$ at *every* site simultaneously, because that is what backpropagation does — a single reverse sweep populates gradients throughout the graph. Every remaining step is a dot product on cached tensors. So the cost is fixed while full patching is $O(n)$: for GPT-3's roughly 4.7 million neurons, three passes instead of 4.7 million.
+  - task: "You attribution-patch an entire layer's residual stream and get a small estimate; full activation patching at the same site gives a large effect. Explain the disagreement and say what the disagreement is useful for."
+    answer: |
+      The Taylor expansion is a statement about *small* perturbations: it uses the slope at the current point and assumes the function stays near its tangent. Replacing an entire residual stream is a large perturbation, and everything between that site and the output is nonlinear — softmax in every attention layer, the MLP activation, LayerNorm's input-dependent scale. Far from the linearization point the true function has curved away from its tangent, and the gradient no longer predicts the finite change.
+
+      The extreme case makes it concrete: at a site where small perturbations do nothing but a large one triggers a qualitative change, the local gradient is near zero and attribution reports approximately no effect, while full patching reports a large one.
+
+      This is why the approximation is trustworthy at head and neuron granularity — those writes are small relative to the stream — and untrustworthy for whole layers.
+
+      **The disagreement is useful as a diagnostic.** A large gap between the attribution estimate and the verified patch is direct evidence that the local linear approximation fails at that site, which is itself a finding about the computation. The recommended workflow — sweep with attribution, verify the top candidates with real patching — produces this comparison for free.
+  - task: "Activation patching implicates both S-Inhibition heads and Name Mover heads in IOI. State the additional thing path patching established, and why node-level patching could not have shown it."
+    answer: |
+      Path patching established *which downstream consumer* uses the S-Inhibition output, and the answer was specific: the route into the Name Movers' **queries**, not their values. That supports a mechanistic account — S-Inhibition changes *where* the Name Movers look (steering them away from the duplicated name), rather than changing *what* their value pathway copies.
+
+      Node-level patching could not show this because it replaces a head's entire output in the residual stream. That write is then read by every downstream component through all of its projections at once. The measurement is the net effect of every path leaving the head, and there is no way to attribute it to one edge. A head that supplies critical information to $K$ and irrelevant information to $J$ yields one number covering both.
+
+      The general shift is from **nodes** to **edges**: "is this component important" to "is this connection important." The second is what a circuit claim actually asserts — a circuit is a wiring diagram, and a list of important components is not a wiring diagram. Implementation-wise, the edge is isolated by patching the input to the downstream head's Q, K, or V computation rather than the upstream head's output.
+  - task: "ACDC prunes an edge when removing it changes behavior by less than a threshold $\\tau$. Describe what goes wrong at each extreme, and name a property of the algorithm that means even a well-chosen $\\tau$ does not give you the minimal circuit."
+    answer: |
+      **$\tau$ too high:** aggressive pruning. Edges with modest individual effects are removed, so secondary structure disappears — Backup Name Movers are the canonical loss, since their individual effect in the intact model is small by construction. The circuit is minimal and unfaithful: it no longer reproduces the behavior under the conditions where the backups matter.
+
+      **$\tau$ too low:** almost nothing is pruned. The circuit retains most of the graph and offers little simplification over the full model, which defeats the purpose.
+
+      **Why no $\tau$ gives the minimum:** the algorithm is **greedy**. It walks edges in reverse topological order and commits to each pruning decision permanently, but effects interact. Two edges that are individually below threshold may be jointly essential — prune the first and the second's measured effect rises, or prune in the other order and both survive. The result therefore depends on the traversal order, the chosen graph, the metric, and the ablation baseline, none of which are determined by the task.
+
+      The practical response is to sweep $\tau$ and compare the resulting circuits, treating the sequence of nested circuits as the output rather than any single one.
+
 furtherReading:
   - title: "Nanda, *Attribution Patching: Activation Patching at Industrial Scale*"
     url: "https://www.neelnanda.io/mechanistic-interpretability/attribution-patching"

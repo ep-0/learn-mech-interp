@@ -16,6 +16,38 @@ glossary:
   - term: "Mechanistic Faithfulness"
     definition: "The requirement that every subset of components containing the causally important ones suffices to reproduce the network's output. Stronger than requiring that the output survives ablating all unimportant components together."
 
+exitCriteria:
+  - task: "Every activation-space method fits a new object to stand in for part of the network. Say what this costs, and why parameter space is proposed as the alternative."
+    answer: |
+      **The cost:** you cannot tell the model's structure from the replacement's. A transcoder is not the MLP — it is a different function, from a larger function class, that agrees with the MLP on the training distribution. Read a circuit off it and you may be reading the model's mechanism or an artifact of the substitute you chose.
+
+      **Feature splitting is the clearest symptom.** Widen the dictionary and the same computation shatters into narrower latents, so the number of features you find is partly a property of your hyperparameters rather than of the network. If a count changes when you change a setting you chose, it is not a measurement.
+
+      **Why parameter space:** the weights are the thing that performs the computation. Flatten every matrix into $\theta^* \in \mathbb{R}^N$ and you have the network itself, not a stand-in — $\theta^*$ does everything the network does, the zero vector does nothing, and points in between are candidates for "some but not all of it." A decomposition into $\sum_c \theta_c = \theta^*$ is exact by construction, with no reconstruction error and no replacement model.
+
+      The difficulty moves rather than disappearing: there are infinitely many ways to write $\theta^*$ as a sum, and almost all are useless. What is gained is that the object being decomposed is the real one.
+  - task: "A parameter vector \"can span whatever it needs to\" in a way an activation-space decomposition cannot. Explain the property and its consequence for what a mechanism can be."
+    answer: |
+      In parameter space, every weight in the network is a coordinate of one flat vector. A component is just a vector there, so it can place mass on three neurons in layer 4 and two attention heads in layer 7 with no more difficulty than on adjacent weights. Nothing about the representation privileges layers, components, or sublayer types — those are labels on coordinates, not structure the decomposition must respect.
+
+      An activation-space decomposition has to **commit in advance**: an SAE lives at a site, a transcoder is defined by the sublayer it replaces. A mechanism spanning heads and MLPs across layers has no single object to be represented by, and has to appear as several latents at several sites with edges drawn between them.
+
+      **The consequence:** a mechanism can be whatever the network actually implements, rather than whatever fits the analyst's chosen carving. This is also why parameter decomposition is architecture-agnostic in a way transcoders are not — a subcomponent does not care which matrix it occupies, so the method transfers to architectures with different sublayer structure without redefinition.
+
+      The cost is legibility. A component distributed across the whole network has no natural description in the vocabulary of heads and layers that the rest of the field uses.
+  - task: "State the four criteria VPD requires of a decomposition, and explain why mechanistic faithfulness is stronger than it first appears."
+    answer: |
+      - **Parameter-faithful:** the components sum to the network's parameter vector.
+      - **Minimal:** as few components as possible are causally important on any given input.
+      - **Mechanistically faithful:** every subset of components containing the causally important ones suffices to compute the network's output on that input.
+      - **Simple:** each component uses as little computational machinery as possible.
+
+      **Why mechanistic faithfulness is stronger than it looks:** the quantifier is *every subset*, not "the set of important ones." The weak reading — the output survives ablating all the unimportant components at once — is much easier to satisfy, and it admits decompositions that reconstruct the network perfectly while describing nothing about how it computes.
+
+      The reason is cancellation. Two components can have large opposing effects that sum to nothing. Remove both and the output is unchanged, so they pass the weak test; remove either alone and the output breaks, so they fail the strong one. Calling them unimportant is exactly wrong, and only the every-subset version catches it.
+
+      The first three constrain each other: parameter-faithfulness alone is satisfied by the trivial one-component decomposition, minimality alone by discarding the network. The set is what makes the problem well posed.
+
 furtherReading:
   - title: "Braun et al., *Interpretability in Parameter Space: Minimizing Mechanistic Description Length with Attribution-Based Parameter Decomposition*"
     url: "https://arxiv.org/abs/2501.14926"

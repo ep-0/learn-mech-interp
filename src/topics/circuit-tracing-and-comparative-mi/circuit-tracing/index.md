@@ -21,6 +21,48 @@ glossary:
   - term: "QK Attribution"
     definition: "A decomposition of a pre-softmax attention score into contributions from pairs of query-side and key-side features, plus bias and reconstruction-error terms."
 
+exitCriteria:
+  - task: "A feature like \"this token is a proper noun\" may be relevant from layer 3 through layer 15. Say what happens to it under per-layer SAEs versus a cross-layer transcoder, and why the difference matters for a circuit graph."
+    answer: |
+      **Per-layer SAEs:** the feature is discovered independently at each layer, producing twelve or thirteen separate latents that are the same feature. The graph then contains a chain of nodes with edges between them, and a reader has to recognize that the chain is one persistent property rather than a sequence of computations. Worse, the apparent "circuit" contains a great deal of structure that is really just information being carried forward.
+
+      **Cross-layer transcoder:** the feature is represented once and its influence on all subsequent MLP layers is captured in a single set of decoder weights. The graph has one node, and its edges are to the places the feature is actually *used*.
+
+      **Why it matters:** a circuit graph is supposed to show computation, and the per-layer version buries the computation in persistence. It also inflates every path length, so the traced explanation of a behavior is longer and less legible than the mechanism it describes.
+
+      The second limitation CLTs address is that per-layer SAE features do not cross MLP boundaries, so a per-layer circuit cannot trace information *through* an MLP computation — which is where a large fraction of the model's parameters are.
+  - task: "Attribution graphs hold attention patterns, normalization terms, and active feature gates fixed, then compute a backward Jacobian. Explain in what sense the result is exact and what class of effects it cannot capture."
+    answer: |
+      **Exact in what sense:** with those quantities frozen, the replacement model becomes a linear function of the feature activations for this input, and the Jacobian is its exact derivative. There is no Taylor error in the usual sense — the local model really is linear, so feature-to-feature effects within it are computed rather than approximated.
+
+      **What it cannot capture:** any effect that works by changing one of the frozen quantities. Three concrete classes:
+
+      1. **Attention rerouting.** A feature whose real function is to change *where* a downstream head reads has its effect zeroed by construction, because the pattern is held fixed. This is the S-Inhibition mechanism, and an attribution graph would not show it.
+      2. **Gate flips.** A feature whose influence is to turn another feature on or off contributes nothing, because the active set is frozen. The graph describes the computation *given* which features fired, not what determined that.
+      3. **Normalization coupling.** Changes to $\sigma$ that would rescale every downstream read.
+
+      So the graph is an exact account of a linearized slice, and the excluded classes are not exotic — they include some of the best-established circuit mechanisms. Feature-level attention tracing exists to recover the first of them.
+  - task: "The attribution graph describes a replacement model in which CLTs stand in for the MLPs, not the original network. Explain why this is a real limitation and what appears in the graph to bound it."
+    answer: |
+      It is a limitation because every claim the graph supports is, strictly, a claim about a different model. The CLTs were trained to approximate the MLPs and do so imperfectly; the replacement model behaves *similarly*, not identically. A mechanism visible in the replacement model might be an artifact of the approximation, and a mechanism in the original might be absent from the replacement.
+
+      **What bounds it:** the reconstruction error appears in the graph as its own node type. Where the CLTs fail to explain an MLP's output, the residual is represented explicitly rather than silently absorbed, so a reader can see how much of the traced path runs through approximation rather than through interpreted features. A graph in which error nodes carry much of the weight is telling you the explanation is thin, and it is telling you where.
+
+      That design choice is the honest part of the method. The failure mode it avoids is the one where a decomposition with 20% unexplained variance produces a clean-looking graph that quietly attributes everything to the 80% it could interpret.
+
+      The remaining check is behavioral: verify that the original model, not just the replacement, responds to interventions the graph predicts.
+  - task: "An attribution graph shows a cross-token edge: a \"Sally\" feature at an earlier position influences a feature at the final token. Name the two further questions this leaves open and say which of a head's circuits each concerns."
+    answer: |
+      **Question 1: which heads carried it?** The edge is attention-mediated, but the graph aggregates over heads. Head loadings decompose it:
+
+      $$L_h(s \to t) = a_s a_t\, \alpha_h(p_t, p_s)\left(\mathbf{f}_s W_{OV}^h \mathbf{f}_t^T\right),$$
+
+      where the scalar $\mathbf{f}_s W_{OV}^h \mathbf{f}_t^T$ measures how well what head $h$ writes from the source direction aligns with the target direction. This concerns the **OV circuit** — what the head moves.
+
+      **Question 2: why did the head attend there?** The graph holds attention fixed, so it reports that position $p_s$ was read and not why that position rather than another. QK attribution decomposes the pre-softmax score into interactions between features at the query position and features at the key position. This concerns the **QK circuit** — where the head reads.
+
+      Together they convert an unexplained edge into a candidate mechanism: *this head, selecting this position because of this query-key feature pair, moved this information*. Without both, an attribution graph says information flowed and leaves the routing — the part that makes a transformer a transformer — outside the explanation.
+
 furtherReading:
   - title: "Ameisen et al., *Circuit Tracing: Revealing Computational Graphs in Language Models*"
     url: "https://transformer-circuits.pub/2025/attribution-graphs/methods.html"

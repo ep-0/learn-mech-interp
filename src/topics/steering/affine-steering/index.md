@@ -10,6 +10,50 @@ glossary:
   - term: "Affine Concept Editing (ACE)"
     definition: "A steering intervention that erases the component along a concept direction, re-centers at the null-behavior mean, and adds a tunable amount of the direction back. Generalizes both addition steering and directional ablation as special cases."
 
+exitCriteria:
+  - task: "Explain why the origin of activation space is the wrong reference point for directional ablation, using the geometry of the two behavior clusters."
+    answer: |
+      Compliant activations cluster around a mean $\mathbf{r}^-$; refusing activations cluster around $\mathbf{r}^+$; the concept direction is $\mathbf{r} = \mathbf{r}^+ - \mathbf{r}^-$.
+
+      Directional ablation projects onto the hyperplane orthogonal to $\mathbf{r}$ — and that hyperplane **passes through the origin**, because $\mathbf{h} - (\mathbf{h}\cdot\hat{\mathbf{r}})\hat{\mathbf{r}}$ has zero component along $\mathbf{r}$ by construction.
+
+      But the compliant cluster is not at zero along $\mathbf{r}$. It sits at $\mathbf{r}^-$, which has some non-zero component in that direction. So ablation does not move activations to *where compliant activations live*; it moves them to a hyperplane that may be far from the compliant cluster along the very axis being manipulated.
+
+      The error is treating zero as the default. Zero is a coordinate artifact — the origin of a space with no privileged basis — and the model has never produced an activation near it. "Remove the refusal component" and "make this look like a compliant activation" are different operations, and only the second is what the intervention is trying to achieve.
+
+      The fix is to reference the null-behavior mean instead of the origin, which is what makes the correct intervention affine rather than linear.
+  - task: "Write the three terms of the ACE intervention and say what each does. Identify the term that plain ablation omits and the term that plain addition omits."
+    answer: |
+      $$\mathbf{v}' = \underbrace{\mathbf{v} - \text{proj}_{\mathbf{r}}(\mathbf{v})}_{\text{erase}} + \underbrace{\text{proj}_{\mathbf{r}}(\mathbf{r}^-)}_{\text{re-center}} + \underbrace{\alpha\,\mathbf{r}}_{\text{steer}}$$
+
+      - **Erase:** remove the activation's own component along the concept direction. Identical to directional ablation.
+      - **Re-center:** add back the component the *null-behavior mean* has along that direction, placing the state where compliant activations actually live rather than at the origin.
+      - **Steer:** add a tunable amount of the direction, setting how much of the target behavior to install.
+
+      **Plain ablation omits re-center and steer.** It erases and stops, leaving the state on a hyperplane through the origin with no control over what replaces the removed behavior.
+
+      **Plain addition omits erase.** It shifts toward the target without removing the existing tendency, so the model's original inclination is still present and competing — which is why addition can fail to overcome a strong behavior even at coefficients large enough to damage coherence.
+
+      The combination is what makes the intervention a *replacement* rather than a removal or a push: set the concept coordinate to a chosen value, holding everything orthogonal fixed.
+  - task: "On RWKV v5, directional ablation of the refusal direction produced gibberish while addition steering with the same direction worked. Explain this using the affine argument, and say what it implies for reading ablation results generally."
+    answer: |
+      The direction is fine; the *reference point* is not. Ablation sends activations to a hyperplane through the origin. If RWKV's activations have a large component along the refusal direction — that is, if $\mathbf{r}^-$ sits far from zero along $\mathbf{r}$ — then removing that component displaces the state a long way from anything the model produces, and the downstream computation is operating on an input outside its fitted domain. The output is incoherent for the same reason over-large addition steering is: the model has left its distribution.
+
+      Addition works because it *adds* to an activation that is already where it should be, so a modest coefficient keeps the state nearby.
+
+      **What it implies for reading ablation results:** a behavioral collapse under ablation has two possible causes — the information was necessary, or the intervention pushed the model off-distribution — and the observation alone does not distinguish them. Gibberish is the visible case; the dangerous case is a plausible-looking failure that gets read as necessity.
+
+      The control is to compare against ACE-style re-centered ablation, or to check that ablated activations remain within the range of natural ones along the manipulated axis.
+  - task: "The class means motivate reading $\\alpha = 0$ and $\\alpha = 1$ as the null-behavior and target-behavior reference points. Explain why values outside that range are extrapolations rather than \"more steering.\""
+    answer: |
+      The two anchors are *fitted quantities*: $\mathbf{r}^-$ and $\mathbf{r}^+$ are empirical means of observed activations, so $\alpha = 0$ and $\alpha = 1$ place the state at locations the model demonstrably produces. Between them, the intervention interpolates between two observed regions, which is the regime the construction supports.
+
+      Outside, nothing anchors the claim. At $\alpha = 3$ you are three times as far along the direction as the *entire observed separation* between the two behavior classes, in a region no natural activation occupies. Two things follow. The behavior need not be "more refusing" — there is no reason a linear extension of a fitted axis continues to mean what it meant between the anchors. And the state may be off-distribution enough that downstream computation degrades, so the output changes for reasons unrelated to the concept.
+
+      Even inside the range, interpolation is not guaranteed: the behavior need not vary monotonically with $\alpha$ just because the endpoints are correct, since the concept may live on a curved structure the straight path cuts across.
+
+      The practical discipline is to report $\alpha$ relative to the fitted separation rather than as a bare number, so a reader can see which results are interpolations.
+
 furtherReading:
   - title: "Marshall et al., *Refusal in LLMs Is an Affine Function*"
     url: "https://arxiv.org/abs/2411.09003"

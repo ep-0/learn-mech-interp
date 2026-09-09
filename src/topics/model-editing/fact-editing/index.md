@@ -12,6 +12,35 @@ glossary:
   - term: "ROME"
     definition: "Rank-One Model Editing: a method for editing factual associations by performing a rank-one update to a specific MLP layer's weights, modifying the key-value mapping for a targeted fact while attempting to preserve other knowledge."
 
+exitCriteria:
+  - task: "ROME's rank-one update changes $W_{\\text{out}}$ so the MLP retrieves a new value for one subject key. State the insertion-versus-editing problem and why edit success cannot settle it."
+    answer: |
+      **The problem:** ROME assumes the update *replaces* the stored association — Paris out, London in. The alternative is that it *inserts* an override, leaving the original association intact underneath while changing what the model outputs.
+
+      **Why edit success cannot settle it:** both accounts predict identical behavior on the tests ROME runs. Prompt the model about the Eiffel Tower and it says London under either story — because either the memory was overwritten, or the old value is still there and a stronger new write dominates downstream. Success on paraphrases shows the override generalizes across phrasings, which an insertion produces just as readily as a replacement. Success on unrelated facts shows the update is narrow, which both predict.
+
+      The two accounts differ only in what remains *recoverable inside the model*, and behavioral evaluation on edited prompts never looks there.
+
+      **What would distinguish them:** probe for the original association after the edit — can a linear probe still decode Paris from the subject representation? Does the fact resurface under a different elicitation route, a different language, or a multi-hop question that must pass through the location rather than state it? A persistent decodable Paris is insertion, and it means the edit is a surface patch over intact knowledge.
+  - task: "ROME's Stage 1 localizes facts with causal tracing using Gaussian-noise corruption. Explain why this specific choice complicates the interpretability claim that motivated the method."
+    answer: |
+      Gaussian noise at $\mathcal{N}(0, 3\sigma)$ on the subject embeddings puts the model far outside its training distribution, and downstream components then operate in abnormal regimes. Under that corruption, restoring an upstream activation cannot repair the damage already done to intermediate components, so the restoration sites that appear most effective are biased toward those closest to the readout.
+
+      Comparing corruption methods directly, symmetric token replacement — which keeps both prompts as natural sentences — produces no comparable mid-layer MLP peak on the same model and task, and the Gaussian-noise peak was two to five times larger.
+
+      **Why this complicates the claim:** the mid-layer MLP localization is what motivated editing mid-layer MLPs specifically, and it may be partly an artifact of the corruption method rather than a fact about where the model stores facts. The editing technique still works — that is a behavioral result and does not depend on the localization being right — but the mechanistic story that made ROME interesting is weakened.
+
+      This is the pattern the article names: a practical intervention outrunning its interpretation. Editing at layer $\ell$ succeeding does not establish that the fact lived at layer $\ell$, any more than a successful patch establishes a mechanism.
+  - task: "\"Editing a fact by modifying specific weights would constitute strong evidence that the fact is localized in those weights.\" Assess this claim."
+    answer: |
+      It is the argument that makes model editing interesting to interpretability rather than only to engineering, and it does not hold as stated.
+
+      **Why it seems compelling:** if you can change one fact by touching one small set of weights, and nothing else moves, the natural inference is that those weights were where the fact was.
+
+      **Why it fails:** a successful edit shows the location is a **sufficient point of intervention**, not the site of storage. Two counter-accounts survive the evidence intact. Insertion: the update overrides a fact stored elsewhere, and the original remains recoverable. And a *bottleneck* account: the edited site may be a place every route to the answer must pass through — a shared pathway — so intervening there is effective regardless of where the association is held. A valve is not a reservoir.
+
+      The general form is one this curriculum keeps returning to: an intervention that changes behavior establishes causal participation under that intervention, and localization is a stronger claim requiring evidence that the information is *absent elsewhere*. Editing success and localization evidence came apart in exactly this way, which is why ROME reads better as a case study than as a localization result.
+
 furtherReading:
   - title: "Meng et al., *Locating and Editing Factual Associations in GPT* (ROME)"
     url: "https://arxiv.org/abs/2202.05262"

@@ -10,6 +10,46 @@ glossary:
   - term: "Self-Repair"
     definition: "The phenomenon where ablating or patching a model component causes later components to compensate, partially restoring the original behavior. Self-repair means that ablation effects systematically understate component importance."
 
+exitCriteria:
+  - task: "Name the three sources of self-repair identified in GPT-2 Small, say which requires no learned behavior at all, and state what the third tells you about the state of the field."
+    answer: |
+      1. **LayerNorm rescaling.** Removing a component changes the residual stream's magnitude, so the normalization divides by a different $\sigma$ and the surviving contributions are scaled up. This is purely mechanical — it follows from the architecture and requires no learned compensation whatsoever. It accounts for a substantial fraction of measured self-repair, and its direction and size depend on the removed vector, so it should be measured rather than assumed.
+      2. **Backup heads.** Heads that contribute little under normal operation increase their contribution once the primaries are ablated. This is input-dependent and looks like learned redundancy, though "backup" describes the intervention result rather than establishing that training created a spare on purpose.
+      3. **An unexplained residual.** After accounting for both, a significant fraction remains uncharacterized.
+
+      That third category is the honest part of the finding. It means the correction we apply to ablation results is itself incomplete: we can name two mechanisms and quantify them, and we still cannot fully predict how much of a measured ablation effect is real. Every ablation number in the literature carries an error bar of unknown size for this reason.
+  - task: "You ablate component A. Behavior barely changes, but attribution shifts substantially toward components B, C, and D. State what this establishes and what it does not."
+    answer: |
+      **Establishes:** the *intervened* network can produce the behavior without A, by routing through B, C, and D. The network has a reorganization capacity you have now measured.
+
+      **Does not establish:** that A was unimportant in the intact run. You have two different networks — the original and the one missing A — and you observed the second. The near-zero behavioral change tells you about the second network's competence, not about the first network's mechanism. This is the Hydra effect: cut off one head and others grow, so the output survives while the internal pathway has changed completely.
+
+      The error this guards against is the standard reading of a null ablation result: "removing it didn't matter, so it wasn't doing anything." In a system with redundancy, that inference is invalid in general, and the attribution shift is the evidence that it fails here specifically.
+
+      What closes the gap is mapping *both* computations — attribution in the intact run and in the intervened run — and reporting the difference. If B, C, and D carried little of the effect before and much of it after, you have identified a primary pathway and its recruited backups, which is a stronger result than either measurement alone.
+  - task: "Explain why denoising is less vulnerable to self-repair than noising, and say why \"less vulnerable\" is not \"immune.\""
+    answer: |
+      Denoising starts from the corrupted run and restores a clean activation. The corrupted run typically lacks the compensatory structures that the clean run has — the backup heads that would fire in response to a disruption are responding to a state that was already disrupted before your intervention, not to your intervention. So the measured recovery is less likely to be masked by a component quietly taking over.
+
+      Noising starts from the intact clean run and breaks something. That is precisely the condition self-repair responds to: LayerNorm rescales, backups activate, and the damage you inflicted is partly undone before it reaches the output. The measured effect is a lower bound of unknown tightness.
+
+      **Why not immune:** denoising is still an intervention, and it still produces a network state that no input would produce. Restoring one clean activation into an otherwise-corrupted run creates an inconsistent context — the patched value was computed under surroundings that are no longer present — and downstream components respond to that inconsistency too. The compensation dynamics are different, not absent.
+
+      The practical answer is to run both directions and report the disagreement, since the asymmetry itself is informative about circuit structure.
+  - task: "Rewrite the claim \"head 9.9 accounts for 30% of the IOI behavior\" as a defensible report, and list what the rewrite must specify."
+    answer: |
+      **Defensible version:** "On the IOI prompt distribution described above, with logit difference as the metric, mean-ablating head 9.9 reduces the clean logit difference by 30%. Attribution in the ablated run shifts toward heads 10.2 and 11.2, indicating partial compensation, so this figure is a lower bound on the head's contribution to the intact computation."
+
+      What the rewrite has to specify:
+
+      - **The intervention and its direction** — ablation versus patching, noising versus denoising.
+      - **The baseline** — zero, mean, resample, or a specific counterfactual run. The number changes with this choice, sometimes substantially.
+      - **The metric** — logit difference, probability, loss. Probability would have missed negative components entirely.
+      - **The distribution** — which prompts, how many, and how varied. A number from one prompt is an anecdote.
+      - **Evidence about compensation** — whether downstream attribution moved, which converts an unqualified number into a bounded one.
+
+      The original phrasing fails because "accounts for 30% of the behavior" implies a decomposition of the behavior into shares that sum to a whole. No such decomposition exists when components interact, and stating it that way invites readers to add percentages that were never additive.
+
 furtherReading:
   - title: "McGrath et al., *The Hydra Effect: Emergent Self-Repair in Language Model Computations*"
     url: "https://arxiv.org/abs/2307.15771"

@@ -47,6 +47,23 @@ layout: layouts/base.njk
     <div class="article-body" data-pagefind-body>
       {{ content | safe }}
 
+      {% if exitCriteria and exitCriteria.length %}
+      <section class="exit-criteria" aria-labelledby="exit-criteria-heading">
+        <h2 id="exit-criteria-heading">Exit Criteria</h2>
+        <p class="exit-criteria-intro">Work each one on paper before opening the answer. An attempt you get wrong leaves a more durable trace than an answer you read, so a wrong answer written down beats a right one recognized.</p>
+        <ol class="exit-criteria-list">
+          {% for item in exitCriteria %}
+          <li class="exit-criteria-item">
+            <details class="exit-criterion">
+              <summary class="exit-criterion-summary"><span class="exit-criterion-task">{{ item.task | mdInline | safe }}</span></summary>
+              <div class="exit-criterion-answer">{{ item.answer | mdBlock | safe }}</div>
+            </details>
+          </li>
+          {% endfor %}
+        </ol>
+      </section>
+      {% endif %}
+
       {% if furtherReading and furtherReading.length %}
       <section class="further-reading" aria-labelledby="further-reading-heading">
         <h2 id="further-reading-heading">Further Reading</h2>

@@ -12,6 +12,37 @@ glossary:
   - term: "Grounded Self-Report"
     definition: "A description of an internal state that changes when that state is intervened on, rather than following only from the prompt, prior beliefs, or sampled output."
 
+exitCriteria:
+  - task: "Concept injection reverses the SelfIE experiment. State what reversing it buys, and why a known target is what makes the self-report checkable."
+    answer: |
+      SelfIE starts with an activation of uncertain meaning and asks the model to decode it. The answer cannot be scored, because there is no ground truth — a fluent description is consistent with genuine decoding and with a plausible guess from the prompt.
+
+      Concept injection starts from the other end: build a direction for a **known** concept, add it, and ask whether the model notices. Now there is a target. The self-report can be compared against what was injected, so the experiment produces a right-or-wrong outcome rather than a description requiring judgment.
+
+      What this buys is a **causal link that ordinary prompting cannot provide**. Asking a model whether it is thinking about bread gets an answer, and nothing distinguishes an introspective report from a confabulated one, because both are just text conditioned on the question. Injecting the concept and observing that the self-report changes with the intervention makes the internal state a manipulated variable rather than an inferred one.
+
+      The claim stays narrow, and deliberately so: a functional capacity to report *some* internal states, tested on directions the experimenter constructed. Not general self-understanding, and not a claim about experience.
+  - task: "The concept vector is built as $\\mathbf{h}_{c,l}$ minus the mean over other concepts, rather than as a raw activation. Say why the subtraction is necessary."
+    answer: |
+      A raw activation $\mathbf{h}_{c,l}$ from the prompt "Tell me about $c$" contains far more than the concept. It carries the prompt's template structure, the instruction-following state, position information, and whatever the model represents about being asked a question at all — components shared by *every* prompt of this form.
+
+      Adding that raw vector would inject all of it. The model's state would be shifted along many dimensions that have nothing to do with $c$, and any change in behavior would be unattributable.
+
+      Subtracting the mean over other concepts cancels everything common to the prompt family, because those components appear identically in $\mathbf{h}_{c,l}$ and in the average. What survives is the part specific to $c$.
+
+      This is the CAA construction with a many-way contrast rather than a pair: the "negative" class is every other concept rather than one chosen opposite, which makes the residual less likely to encode an arbitrary axis between two particular concepts.
+
+      It also fixes what the injection *means*, which the experiment needs. Without it, a positive result could be the model detecting any of the shared components, and the concept identification in the self-report would be the only evidence tying the effect to $c$.
+  - task: "A successful trial requires the model to report detecting something unusual *before* naming the injected concept. Explain why the ordering is the crux of the experiment."
+    answer: |
+      Because ordinary activation steering already predicts that the concept word appears. Inject a bread direction and the model becomes more likely to emit bread-related tokens — that is what steering does, and it involves no introspection whatsoever. A response containing the injected concept is therefore uninformative on its own.
+
+      What steering does *not* predict is a report about the model's own internal state: "I notice something unusual in my processing." That is a claim about a detected anomaly, not an expression of the concept, and it requires the model to have some read on its own activations rather than merely being pushed by them.
+
+      The ordering makes the two separable. Detection first, identification second, matches an introspective account — notice the intrusion, then characterize it. Identification alone, or the concept leaking into the text before any acknowledgment, matches the steering account.
+
+      This also constrains the injection strength. Too large an $\alpha$ and the concept dominates generation, producing the word mechanically and destroying the distinction the experiment rests on. The usable regime has to change the internal state enough to be detectable and little enough that reporting it remains a choice.
+
 furtherReading:
   - title: "Lindsey, *Emergent Introspective Awareness in Large Language Models*"
     url: "https://transformer-circuits.pub/2025/introspection/index.html"

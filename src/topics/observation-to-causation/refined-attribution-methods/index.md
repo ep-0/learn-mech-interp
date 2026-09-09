@@ -10,6 +10,50 @@ glossary:
   - term: "EAP-IG"
     definition: "Edge Attribution Patching with Integrated Gradients. Replaces the single gradient evaluation in EAP with an average of gradients along the interpolation path from corrupted to clean activations, fixing zero-gradient failures and improving circuit faithfulness."
 
+exitCriteria:
+  - task: "A component has a true direct effect of $+5$ and a true indirect effect of $-4.8$. The gradient approximation estimates the indirect effect as $-5.1$. Compute the true and estimated totals, and state the general principle this illustrates."
+    answer: |
+      True total: $5 - 4.8 = 0.2$. Estimated total: $5 - 5.1 = -0.1$.
+
+      The error in the indirect term is $0.3$ out of $4.8$, about $6\%$ — the approximation is doing well by any ordinary standard. But the total has flipped sign and changed magnitude by $150\%$.
+
+      **The principle: catastrophic cancellation.** When a quantity is the near-cancelling sum of two large opposing terms, the *relative* error of the sum is the absolute error of the terms divided by the small difference, not by the terms. A small relative error on the inputs becomes an arbitrarily large relative error on the output as the cancellation tightens.
+
+      This is why the failure is systematic rather than occasional: it appears wherever a component has offsetting direct and indirect effects, and transformers are full of such components — a head that writes toward an answer while triggering downstream suppression is the normal case, not the exception. On MLP neurons in GPT-2 and Pythia-12B, the resulting false negatives had true effects 5 to 12 times the estimate.
+  - task: "A head attends with probability $0.99$ to one token on the clean input and diffusely on the corrupted input. Explain why attribution patching reports approximately no effect, and describe the fix."
+    answer: |
+      The estimate multiplies an activation difference by a gradient. Here the activation difference is enormous — $0.99$ concentrated versus diffuse is about as large a change in an attention pattern as exists. The problem is the other factor.
+
+      Softmax at $p = 0.99$ is **saturated**: the output is pinned near its ceiling, and its derivative with respect to the logits is proportional to $p(1-p) \approx 0.01$, near zero. A first-order estimate says "nudging the logits here changes nothing," which is locally true and globally false — the patch is not a nudge.
+
+      **The fix (AtP\*'s QK fix): stop linearizing through the softmax.** Compute the patched attention pattern and the clean attention pattern *exactly*, take their true difference, and use that as the perturbation fed into the rest of the gradient computation. The gradient still approximates how a change in the attention pattern propagates downstream, but the change itself is now exact rather than a tangent-line estimate of a saturated function.
+
+      The cost is under two extra forward passes, which is negligible against full activation patching over every head.
+
+      The diagnostic: if a head your patching says matters is missed by attribution, check whether its clean attention probabilities sit near $0$ or $1$.
+  - task: "Explain the intuition behind GradDrop: why should zeroing one layer's gradient contribution, then averaging absolute values, recover effects that cancellation had hidden?"
+    answer: |
+      Cancellation is a coincidence of the *full* computation: the direct and indirect terms happen to be close in magnitude and opposite in sign when every path is included. That balance is fragile. It depends on all the paths being present at once, in the proportions the full gradient assigns them.
+
+      GradDrop computes the attribution $L$ times, each run zeroing the gradient contribution from one layer, and averages the **absolute values**:
+
+      $$\hat{c}(n) = \frac{1}{L-1}\sum_{\ell} \left|\hat{\mathcal{I}}_{\text{GradDrop}_\ell}(n)\right|.$$
+
+      Removing a layer removes some of the paths on one side of the balance. It is unlikely that the remaining terms cancel in the same way, so at least some of the $L$ variants report a large magnitude. The absolute value is essential: without it, the variants would average back toward the cancelled total.
+
+      The cost is $L$ extra backward passes. That is a real cost but $L$ is the layer count — 12 for GPT-2 Small — against a component count in the thousands, so the method stays in the screening regime rather than becoming full patching by another route.
+
+      The tradeoff: taking absolute values discards sign information, so GradDrop scores importance, not direction.
+  - task: "Two circuit-discovery methods produce circuits with similar node overlap against a ground-truth circuit, yet one is substantially less faithful. Say what that combination means, and which metric should be reported."
+    answer: |
+      It means the methods found approximately the same *components* and different *wiring*, or the same components at different thresholds where the missing pieces matter. Overlap counts membership; faithfulness measures whether the extracted circuit, run in isolation, reproduces the model's behavior. Those come apart whenever a circuit's function depends on edges or on components that a set-membership score treats as interchangeable.
+
+      **Faithfulness is the metric that should be reported**, because it measures what a circuit claim asserts: that this subgraph does the job. Overlap only measures agreement with a previous investigator's answer, which inherits that investigator's errors and cannot be computed at all on a task with no annotated ground truth — which is most tasks.
+
+      The empirical case: on Subject-Verb Agreement in GPT-2 Small, EAP circuits stayed near zero faithfulness until more than $1{,}000$ edges were included, while EAP-IG was faithful throughout, and the two looked similar by node overlap. A reader given only the overlap number would have concluded the methods were comparable.
+
+      The general form of the mistake is evaluating against a proxy for the answer instead of against the thing the answer is supposed to do.
+
 furtherReading:
   - title: "Kramár, Lieberum, Shah & Nanda, *AtP*: An Efficient and Scalable Method for Localizing LLM Behaviour to Components*"
     url: "https://arxiv.org/abs/2403.00745"

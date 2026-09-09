@@ -15,6 +15,60 @@ glossary:
   - term: "Causal Intervention"
     definition: "Any experimental technique that actively modifies model internals (activations, weights, or attention patterns) to test causal hypotheses about how a model computes its outputs, as opposed to purely observational analysis."
 
+exitCriteria:
+  - task: "A head shows a large denoising effect and a near-zero noising effect. What circuit structure does that combination indicate, and what would the opposite combination indicate?"
+    answer: |
+      **Large denoising, small noising: a redundant (OR-gate) structure.** Denoising restores the head's clean value into a corrupted run and recovers the behavior, so the head alone carries enough information — it is sufficient in this context. Noising replaces its clean value with a corrupted one and nothing happens, because a parallel component supplies the same information. The IOI circuit's Backup Name Movers are the standard case: they are close to inactive normally and take over when the primaries are disabled, so noising a primary understates its role.
+
+      **Large noising, small denoising: a serial (AND-gate) structure.** The component is necessary — breaking it breaks the behavior — but restoring it alone is not enough, because the rest of the corrupted run still lacks the other links in the chain.
+
+      The practical consequence is that patch direction is part of the result, not an implementation detail. A paper reporting only one direction has answered only one of the two questions, and a component that looks unimportant under noising may be central under denoising.
+  - task: "Consider a network computing $\\max(x,y) = \\operatorname{ReLU}(x-y) + y$ for positive inputs. Use it to explain why zero ablation does not install \"no information\" at a site."
+    answer: |
+      The hidden value $\operatorname{ReLU}(x-y)$ is zero *precisely when $y \ge x$*. Zero is not the absence of a signal here; it is the assertion that the second branch condition holds. Forcing it to zero does not blank the computation — it makes the network behave as though $y$ were the maximum, whether or not that is true. On an input with $x = 10, y = 1$, zero-ablating that unit changes the output from $10$ to $1$: a large effect that reflects the meaning zero carries at that site, not the removal of a contribution.
+
+      The general point is that a baseline is a *substituted value*, and every value means something to the downstream computation. Zero is a defensible choice for a component's additive write into the residual stream, where zero really does mean "contributed nothing to the sum." It is not defensible for an activation sitting inside a nonlinearity, where the surrounding computation reads zero as a particular state.
+
+      So the question to ask before ablating is not "how do I remove this?" but "what does the value I am substituting tell the rest of the network?"
+  - task: "Gaussian-noise corruption produces a sharp MLP importance peak around layer 16 of GPT-2 XL that symmetric token replacement does not reproduce, and the GN peak is two to five times larger. Explain the mechanism behind the inflation."
+    answer: |
+      **Out-of-distribution activation propagation.** GN adds noise at $\mathcal{N}(0, 3\sigma)$ to token embeddings, producing vectors far outside anything a real token yields. Downstream components then operate in regimes they never saw in training: measured on the IOI task, Name Mover heads that normally place $0.58$ probability on the indirect object instead spread their attention diffusely. The corrupted run is not the model computing a different answer; it is the model malfunctioning.
+
+      That breaks the logic of the denoising patch. Restoring an upstream activation is supposed to hand the rest of the network what it needs, but here the intermediate components are already deranged and cannot use it. So upstream patches under-recover, and whichever site sits closest to the readout — after which less broken machinery remains — appears disproportionately important. The peak is partly a map of where the damage stops mattering.
+
+      Under STR both prompts are natural sentences, every component stays in-distribution, and an upstream patch propagates cleanly.
+
+      The uncomfortable implication is for the ROME literature: the localization of facts to mid-layer MLPs, which motivated editing exactly there, may be partly an artifact of the corruption method rather than a fact about the model.
+  - task: "Explain why probability fails as a patching metric when the corrupted run already assigns near-zero probability to the correct token, and what logit difference does instead."
+    answer: |
+      Probability is bounded below by zero. If the corrupted run already puts the correct token at $10^{-4}$, a component that makes things *worse* cannot show it — there is no room below the floor. The metric is saturated, and every harmful component reads as approximately no effect.
+
+      This is not hypothetical. On IOI, probability and logit difference identify different sets of important heads, and probability missed all three Name Mover heads under some configurations.
+
+      Logit difference, $\text{logit}(\text{Mary}) - \text{logit}(\text{John})$, is unbounded in both directions, so a component that pushes toward the wrong answer produces a negative number of proportionate size. It has two further advantages: it is *linear* in residual-stream contributions, so per-component effects decompose additively in a way probabilities cannot; and it isolates the competition you care about rather than mixing in how the rest of the $50{,}000$-token distribution moved.
+
+      The general lesson is that a saturated metric fails silently. It does not report that it cannot see the effect; it reports zero, which is indistinguishable from a component that does not matter.
+  - task: "You patch a hypothesized \"continent\" feature from a Tokyo source into \"Paris is in the continent of\" and the model answers *Asia*. State what this establishes, and give the second experiment your interpretation requires."
+    answer: |
+      It establishes **Cause**: the intervention is causally effective, and the site mediates the continent answer. That is real, and it is only half of an attribute-specific claim.
+
+      The missing half is **Isolate**. Your interpretation says this site represents *continent* specifically — not "everything about the entity." So apply the identical patch to a prompt controlled by a neighboring attribute: "People in Paris speak ___". If the answer is still *French*, the feature is selective. If it flips to *Japanese*, you have not found a continent feature; you have found a general entity representation, and the patch swapped the whole entity.
+
+      High Cause with low Isolate is a common and easy failure — it means the intervention works but the label is wrong, which is worse than a null result because it looks like success.
+
+      The control set should be chosen adversarially: the attributes most likely to share a representation with the target, not a broad benchmark of unrelated capabilities. Passing on "can the model still do arithmetic" is nearly free and shows almost nothing.
+  - task: "\"Patching head 9.9 recovers 38% of the logit difference.\" Explain why it does not follow that head 9.9 is 38% of the circuit, and why per-head recoveries need not sum to 100%."
+    answer: |
+      The number describes **one intervention**: replacing this activation, in this direction, with this baseline, on this prompt distribution, moves the metric $38\%$ of the way from corrupted to clean. It is a measurement of an experiment, not an allocation of credit.
+
+      Why the sum is unconstrained:
+
+      - **Interactions.** Components act jointly. Two heads that each recover $60\%$ alone may recover $70\%$ together, not $120\%$, if they carry overlapping information. The total is not a sum of parts because the parts are not independent.
+      - **Redundancy inflates each measurement.** In an OR structure every member of a redundant set can score high individually, so the sum exceeds $100\%$ while no member is necessary.
+      - **Self-repair deflates it.** LayerNorm rescaling alone can recover up to $30\%$ of an ablated effect with no intelligent compensation, and backup components supply more, so individual measurements understate roles and the sum can fall well short.
+
+      Causal credit only partitions when the mechanism is a chain of independent stages, which is exactly what a circuit is not. The defensible use of the number is comparative — ranking candidates for further study — not as a share of a fixed total.
+
 furtherReading:
   - title: "Zhang & Nanda, *Towards Best Practices of Activation Patching in Language Models*"
     url: "https://arxiv.org/abs/2309.16042"
