@@ -60,6 +60,7 @@ If any of these is still out of reach, the article is not finished.
 
 - Hastie, Tibshirani & Friedman, *The Elements of Statistical Learning*, chapters 2 and 7 — Supervised learning and model assessment. Chapter 7 is the one on generalization. Freely available.
 - Murphy, *Probabilistic Machine Learning: An Introduction*, chapter 4.5 and chapter 5 — Overfitting, regularization, and model selection in modern notation.
+- Prince, *Understanding Deep Learning*, chapter 8 — Measuring performance, including double descent, which the older texts here predate entirely. Free, with exercises and runnable notebooks.
 - Hewitt & Liang, 'Designing and Interpreting Probes with Control Tasks' (arXiv:1909.03368) — The paper that made probe selectivity standard. Short and essential for this curriculum.
 - Belinkov, 'Probing Classifiers: Promises, Shortcomings, and Advances' (arXiv:2102.12452) — A survey of what probing does and does not establish.
 

@@ -51,6 +51,7 @@ If any of these is still out of reach, the article is not finished.
 ## Sources to learn from
 
 - Pearl, Glymour & Jewell, *Causal Inference in Statistics: A Primer*, chapter 4 — Counterfactuals with worked computations, which is rarer than it should be.
+- Brady Neal, *Introduction to Causal Inference*, the lectures on confounding and identification — Free video. The backdoor criterion is considerably easier watched than read.
 - Hernán & Robins, *Causal Inference: What If*, parts I-II — The applied-science treatment of confounding and design. Freely available.
 - Zhang & Nanda, 'Towards Best Practices of Activation Patching' (arXiv:2309.16042) — The corruption-design failure modes, empirically demonstrated.
 - Heimersheim & Nanda, 'How to use and interpret activation patching' (arXiv:2404.15255) — A practical companion covering the same design questions.

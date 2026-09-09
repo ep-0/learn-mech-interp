@@ -80,6 +80,9 @@ furtherReading:
   - title: "Mueller et al., *MIB: A Mechanistic Interpretability Benchmark*"
     url: "https://arxiv.org/abs/2504.13151"
     note: "A shared benchmark for circuit localization, so methods can be compared rather than each defended on its own example."
+  - title: "Gelman & Loken, *The Garden of Forking Paths*"
+    url: "https://sites.stat.columbia.edu/gelman/research/unpublished/forking.pdf"
+    note: "Why a finding can be a false positive with no explicit multiple testing anywhere, because the analysis was chosen after seeing the data. Every source above is from inside interpretability; this is the outside view of what a circuit result's threshold, metric, corruption method, and layer choice add up to."
 ---
 
 ## Beyond Discovery

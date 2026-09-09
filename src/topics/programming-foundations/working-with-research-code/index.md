@@ -73,6 +73,7 @@ If any of these is still out of reach, the article is not finished.
 - Patrick Mineault, *The Good Research Code Handbook* — Free, short, and written for exactly this situation: a researcher who needs code to work rather than to be beautiful.
 - Software Carpentry, 'The Unix Shell' and 'Version Control with Git' — Free lesson material with exercises. Do the Git one even if you have used Git.
 - Scott Chacon, *Pro Git*, chapters 1-3 — Free. Read for what a commit and a branch actually are; skip the plumbing.
+- Godbole, Dahl, Gilmer, Shallue & Nado, *Deep Learning Tuning Playbook*, the sections on experiment scoping and analysis — Free. How to organise a study so its results mean something, which is the part that version control and reproducibility tooling do not touch.
 - The Turing Way, the reproducibility chapters — Free, and good on what recording an experiment means in practice.
 
 ## Where the curriculum uses it
