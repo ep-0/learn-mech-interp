@@ -34,7 +34,7 @@ exitCriteria:
       - **Whether the vector is task-specific.** Does the translation vector do anything on antonym prompts? Without an off-target test, "translate" may be a label for a broader effect.
       - **Whether the intact model uses it.** The vector was extracted by mediation analysis and validated by insertion. Whether the model's ordinary in-context learning routes through this direction is a further claim.
       - **Scope.** Success depends on task, model, layer, and target prompt, none of which the transfer result characterizes.
-  - task: "The article notes that \"function\" describes the vector's tested effect, not an exhaustive decoding of its contents. Explain the risk this warning is guarding against."
+  - task: "In the term \"function vector,\" *function* describes the vector's tested effect rather than an exhaustive decoding of its contents. Explain the risk that distinction is guarding against."
     answer: |
       The risk is **reifying a label into a mechanism**. Once a vector is called a function vector for translation, it is natural to reason about it as if it were the model's representation of the translation operation — to ask where the model stores its functions, whether they compose, what the function inventory is. Every one of those questions presupposes something the evidence does not establish.
 

@@ -12,7 +12,7 @@ glossary:
     definition: "A subfield of AI safety research focused on reverse-engineering the internal computations of neural networks to understand how they process information and produce outputs, moving beyond behavioral analysis to study the mechanisms themselves."
 
 exitCriteria:
-  - task: "A colleague presents a saliency map over input tokens and says it explains *how* the model produced its answer. Locate their method on the three axes this article uses, and name the axis on which their claim overreaches."
+  - task: "A colleague presents a saliency map over input tokens and says it explains *how* the model produced its answer. Locate their method on the three axes of interpretability — black-box versus white-box, post-hoc versus intrinsic, correlational versus causal — and name the axis on which their claim overreaches."
     answer: |
       Saliency is **black-box** (it needs only inputs, outputs, and gradients with respect to the input, never an account of internal components), **post-hoc**, and **correlational**. The overreach is on the black-box axis. A saliency map answers *which inputs mattered*, which is a claim about the function $f: X \to Y$. "How" is a claim about the mechanism between them — which heads moved what information from where, and what the MLPs did with it. Two models could produce identical saliency maps by entirely different internal algorithms, and saliency cannot separate them.
 

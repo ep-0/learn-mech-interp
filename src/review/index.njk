@@ -1,0 +1,109 @@
+---
+title: Review
+layout: layouts/base.njk
+description: Spaced retrieval practice over every exit criterion on the site, scheduled at expanding intervals so that each question comes back just as it is about to slip.
+permalink: /review/
+eleventyExcludeFromCollections: true
+---
+<div class="review-page" data-review-page>
+  <h1>Review</h1>
+
+  <p class="review-lead">
+    Every written article ends with <a href="/topics/">exit criteria</a>: tasks you attempt cold, with worked
+    answers. This page schedules those {{ reviewItems | length }} tasks so each one returns shortly before you would
+    have forgotten it, drawn from across the curriculum rather than one article at a time.
+  </p>
+
+  <div class="review-stats" data-review-stats hidden>
+    <div class="review-stat"><span class="review-stat-value" data-review-due>0</span><span class="review-stat-label">due now</span></div>
+    <div class="review-stat"><span class="review-stat-value" data-review-learning>0</span><span class="review-stat-label">in progress</span></div>
+    <div class="review-stat"><span class="review-stat-value" data-review-known>0</span><span class="review-stat-label">on long intervals</span></div>
+    <div class="review-stat"><span class="review-stat-value" data-review-pool>0</span><span class="review-stat-label">in scope</span></div>
+  </div>
+
+  <p class="review-loading" data-review-loading>Loading the deck…</p>
+
+  <div class="review-message" data-review-empty hidden></div>
+
+  <section class="review-session" data-review-session aria-live="polite" hidden>
+    <p class="review-last" data-review-next aria-live="polite"></p>
+
+    <div class="review-card">
+      <p class="review-card-meta">
+        <span data-review-position></span>
+        <span class="review-card-source">
+          <a href="/topics/" data-review-source-link></a><span data-review-lesson></span>
+        </span>
+      </p>
+
+      <div class="review-task" data-review-task></div>
+
+      <div class="review-actions" data-review-reveal-row>
+        <button type="button" class="btn btn-primary" data-review-reveal>Show answer</button>
+        <button type="button" class="btn btn-secondary" data-review-skip>Skip</button>
+        <span class="review-hint">Write your attempt down first.</span>
+      </div>
+
+      <div class="review-answer" data-review-answer hidden></div>
+
+      <div class="review-grade" data-review-grade hidden>
+        <p class="review-grade-prompt">How did the attempt go?</p>
+        <div class="review-grade-buttons">
+          <button type="button" class="btn btn-secondary" data-grade="missed">Missed it</button>
+          <button type="button" class="btn btn-secondary" data-grade="hard">Got there, slowly</button>
+          <button type="button" class="btn btn-primary" data-grade="got">Got it</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="review-message" data-review-done hidden></div>
+
+  <details class="review-settings" data-review-settings hidden>
+    <summary>Deck settings</summary>
+
+    <fieldset class="review-scope">
+      <legend>Draw questions from</legend>
+      <label><input type="radio" name="review-scope" value="plan" data-review-scope> Articles I have ticked off in the <a href="/plan/">learning plan</a></label>
+      <label><input type="radio" name="review-scope" value="all" data-review-scope> Every written article</label>
+    </fieldset>
+
+    <p class="review-reset-row">
+      <button type="button" class="btn btn-secondary" data-review-reset>Reset all review history</button>
+    </p>
+  </details>
+
+  <section class="review-how">
+    <h2>How the scheduling works</h2>
+
+    <p>
+      An item you get right moves to a longer interval; an item you miss goes back to the start. The intervals
+      expand — one day, three, a week, sixteen days, five weeks, three months — because a retrieval that is
+      slightly difficult does more than an easy one, and an item recalled without effort has been asked too soon.
+    </p>
+
+    <p>
+      The queue is shuffled and avoids putting two questions from the same article next to each other where it can.
+      Blocked practice, where you work everything on one topic together, produces better performance during the
+      session and worse retention afterwards. Interleaving feels worse and is worth it.
+    </p>
+
+    <p>
+      Grading yourself honestly is the part that decides whether any of this works. <em>Got there, slowly</em> exists
+      so that the choice is not only between a clean success and a failure; use it whenever you needed a run-up,
+      and the item will come back at the same interval rather than a longer one.
+    </p>
+
+    <p class="review-privacy">
+      Review history lives in this browser and nowhere else. It is not sent anywhere, and it will not follow you
+      to another device.
+    </p>
+  </section>
+
+  <noscript>
+    <p class="review-message">
+      Review scheduling needs JavaScript. Without it, the exit criteria are still on the articles themselves —
+      start from the <a href="/topics/">topics page</a>.
+    </p>
+  </noscript>
+</div>

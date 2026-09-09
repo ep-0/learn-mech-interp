@@ -15,7 +15,7 @@ glossary:
     definition: "Selecting a subnetwork by minimizing its size subject to reconstruction holding up under adversarially chosen ablations of the excluded nodes, rather than under no ablation or stochastic ablation. Non-adversarially pruned subgraphs are systematically too small."
 
 exitCriteria:
-  - task: "Attribution graphs hold attention patterns fixed, and the article says the reason is structural rather than incidental. Explain why a transcoder cannot decompose an attention score."
+  - task: "Attribution graphs hold attention patterns fixed, and the reason is structural rather than incidental. Explain why a transcoder cannot decompose an attention score."
     answer: |
       A transcoder is a map from one activation vector to another: it approximates an MLP, which reads $\mathbf{x}_{\text{in}}$ at a position and produces $\mathbf{y}_{\text{out}}$ at that position. Its whole shape is one-in, one-out at a single position.
 
@@ -33,7 +33,7 @@ exitCriteria:
       **A strongly interacting pair is a rule:** *destination tokens with property $c$ attend to source tokens with property $c'$.* If the write directions align, a destination matching $c$ and a source matching $c'$ together push the score up; if they are orthogonal, the pair contributes nothing regardless of which tokens are present.
 
       The head's attention pattern is then the **sum of however many such rules are active** — which is a much better account of a head than a single label. It explains directly how one head can implement several behaviors, and it makes the weight-level and input-level parts of the mechanism separable: the rules live in the weights and can be enumerated once, while which rules fire depends on the input.
-  - task: "Most $W_Q$ and $W_K$ subcomponents carry nonzero norm in all six heads of layer 1, and none is localized to a single head. Say what this suggests and why the article calls it suggestive rather than conclusive."
+  - task: "Most $W_Q$ and $W_K$ subcomponents carry nonzero norm in all six heads of layer 1, and none is localized to a single head. Say what this suggests about the head as a unit of analysis, and why it is suggestive rather than conclusive."
     answer: |
       **What it suggests:** the head is not the natural unit. $W_Q$, $W_K$, $W_V$, and $W_O$ are stored concatenated across heads, so a parameter subcomponent spans all heads in its layer *by default* — and the finding is that when you split each subcomponent per head and measure the norm, the mass really is spread rather than concentrating on one. If mechanisms respected head boundaries, subcomponents would have localized without being asked to.
 

@@ -166,6 +166,7 @@ Run `npm run build`. The build-time validator checks:
 - No TeX reaches the built pages unrendered
 - Every published article has `furtherReading`, and every entry has a title, a note, and an absolute URL if it has one at all
 - Every published concept article has at least three `exitCriteria`, and every entry has a task and a worked answer long enough to score an attempt against
+- Review item ids are unique, so no two questions can share a reader's scheduling history
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
 - Every `/topics/<slug>/` key in `pageContexts.json` matches a live article
@@ -378,6 +379,39 @@ Write tasks that require **inference**, not recognition. Definitional recall is 
 Answers are **worked**, not restated. An answer that repeats the article's sentences gives the reader nothing to score against. Show the arithmetic, name the alternatives, say which observation would discriminate. Answers run roughly 100 to 200 words; the build rejects anything under 80 characters as too short to score an attempt against.
 
 Three to six per article. Orientation pages test nothing and are exempt: the More Resources block and `mi-prerequisites`, which is itself a diagnostic. Placeholders state their exit criteria in the brief, under "What you should be able to do afterward", and the build rejects the frontmatter field on them.
+
+## The review deck
+
+`/review/` is spaced retrieval over the exit criteria. It defines no questions of its own: `src/_data/reviewItems.js` flattens every published article's `exitCriteria` into one list, so an article cannot drift out of the deck and there is no second copy to keep in sync.
+
+**Adding a criterion to an article adds it to the deck.** Nothing else is required.
+
+### What gets built
+
+Two files, because the answers are five times the size of the tasks and are not needed until the reader reveals one:
+
+| File | Contents | Size | Loaded |
+|---|---|---|---|
+| `/review/items.json` | id, slug, article title, block, textbook, lesson, rendered task | ~260 KB | on page load |
+| `/review/answers.json` | rendered answer per id | ~1 MB | in the background, and awaited on first reveal |
+
+### Item ids
+
+An id is `<slug>-<hash of the task text>`. The hash rather than a position means **reordering an article's criteria preserves the reader's history**, which is the edit that actually happens. Rewording a task does mint a new id, and that is the behaviour we want: a reworded question is a different question, and its old scheduling state should not carry over.
+
+The build fails on an id collision, because two questions sharing a record would corrupt scheduling silently in a reader's browser and nothing downstream would notice.
+
+### Scheduling
+
+Six boxes with expanding intervals: **1, 3, 7, 16, 35, 90 days**. *Got it* moves one box right, *Missed it* resets to the first box, and *Got there, slowly* repeats the current interval. A missed item is also re-queued a few positions later in the same session, since a single failed retrieval is the least useful kind.
+
+The queue is shuffled and then makes a pass to separate neighbours from the same article. Blocked practice reads better during a session and retains worse; the deck pays that cost deliberately.
+
+### Scope
+
+By default the deck draws from articles ticked off under **Read** in the learning plan, read from the existing `lmi:plan:v1` store — the plan's checkbox ids are shaped `l<lesson>-read-<slug>`. A reader with no plan progress gets every article instead of an empty page, and the choice can be set explicitly in the deck settings.
+
+Review state lives in `lmi:review:v1` and is independent of plan progress and notes. Resetting one does not touch the others.
 
 ## Further reading
 

@@ -6,6 +6,7 @@ import { execSync } from "node:child_process";
 import matter from "gray-matter";
 import { EleventyHtmlBasePlugin, IdAttributePlugin } from "@11ty/eleventy";
 import { scanBlocks } from "./lib/scanBlocks.js";
+import buildReviewItems from "./src/_data/reviewItems.js";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import pluginTOC from "eleventy-plugin-toc";
@@ -437,6 +438,18 @@ function validate() {
     }
   }
 
+  // 15. Review item ids must be unique. An id is a hash of the task text, so a
+  //     collision would silently merge two questions' scheduling history in a
+  //     reader's browser, and nothing downstream would report it.
+  const reviewIds = new Map();
+  for (const item of buildReviewItems()) {
+    if (reviewIds.has(item.id)) {
+      errors.push(`Review item id collision "${item.id}": ` +
+        `"${reviewIds.get(item.id).slice(0, 50)}" and "${item.task.slice(0, 50)}"`);
+    }
+    reviewIds.set(item.id, item.task);
+  }
+
   // 14. Redirects must be unique topic routes with live topic destinations.
   const redirectSources = new Set();
   for (const redirect of redirects) {
@@ -573,6 +586,27 @@ export default function(eleventyConfig) {
   eleventyConfig.addFilter("mdBlock", function (value) {
     if (value == null) return "";
     return md.render(String(value));
+  });
+
+  // The review deck is the same exit criteria the articles render, shipped as
+  // two files: a light index the page can start on, and the answers, which are
+  // five times larger and are not needed until the reader reveals one.
+  eleventyConfig.addFilter("reviewIndex", function (items) {
+    return (items || []).map(item => ({
+      id: item.id,
+      slug: item.slug,
+      title: item.title,
+      block: item.blockTitle,
+      textbook: item.textbookTitle,
+      lesson: item.lesson,
+      task: md.renderInline(String(item.task)),
+    }));
+  });
+
+  eleventyConfig.addFilter("reviewAnswers", function (items) {
+    const out = {};
+    for (const item of items || []) out[item.id] = md.render(String(item.answer));
+    return out;
   });
 
   // Add base plugin for path prefix support on GitHub Pages

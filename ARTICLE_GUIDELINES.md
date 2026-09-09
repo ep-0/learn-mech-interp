@@ -277,6 +277,8 @@ The convention is stated for the reader once, in the attention article, which is
 
 Every published article ends with a set of exit criteria in its frontmatter: tasks the reader attempts cold, each with a worked answer that stays collapsed until they have written something down. They are the article's self-test, and `CONTRIBUTING.md` covers the field's shape and the kinds of task that work.
 
+The criteria are also the site's spaced-repetition deck: `/review/` schedules every one of them at expanding intervals, so a task written here is a task a reader will meet again months later, out of context and without the surrounding article. Write it so that it still makes sense there — name the model, the method, or the result rather than relying on "this technique" or "the result above".
+
 Two points affect how you write the *article*:
 
 - **Write the criteria last, and let them audit the draft.** If a task you want to set cannot be answered from the article, either the task is out of scope or the article has a hole. Both are worth knowing before publishing.

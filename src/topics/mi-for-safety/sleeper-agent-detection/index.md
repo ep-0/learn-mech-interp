@@ -34,7 +34,7 @@ exitCriteria:
       **Why the third is most instructive:** the first two fail from *absence* of signal, which is a coverage problem and suggests a fix — find the trigger. The third fails despite having the signal, because the objective is satisfiable by concealment. That is a structural problem with training against a detector, and adding detection effort makes the concealment better rather than the behavior rarer.
 
       The narrow lesson: safety fine-tuning succeeding on ordinary examples is not evidence that a planted conditional policy is gone.
-  - task: "The article says the case study's \"main limitation is equally instructive\" — the dangerous behavior was deliberately trained in. Explain what this costs a detection result."
+  - task: "In the sleeper-agent studies the dangerous behavior was deliberately trained in, which is the case study's main limitation and is equally instructive. Explain what it costs a detection result."
     answer: |
       A detection method validated on a planted backdoor has been tested against a target whose properties the experimenter chose, and several of those choices make detection easier than the real case.
 
