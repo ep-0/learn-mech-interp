@@ -5,6 +5,16 @@ order: 6
 prerequisites:
   - title: "Training Models to Explain Their Computations"
     url: "/topics/training-self-explanation/"
+
+furtherReading:
+  - title: "Pan et al., *LatentQA: Teaching LLMs to Decode Activations Into Natural Language*"
+    url: "https://arxiv.org/abs/2412.08686"
+    note: "The full paper, including the control applications and the dataset construction."
+  - title: "Liu et al., *Visual Instruction Tuning*"
+    url: "https://arxiv.org/abs/2304.08485"
+    note: "The analogy the method is built on, worth reading directly since the architecture is copied fairly closely."
+  - title: "Karvonen et al., *Activation Oracles*"
+    note: "The generality question LatentQA raises and the oracle work answers more directly. Read them as a pair."
 ---
 
 ## Interpretation as Question-Answering

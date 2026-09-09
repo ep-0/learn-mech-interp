@@ -11,6 +11,19 @@ glossary:
     definition: "A scenario where a model behaves as if aligned during training or evaluation while harboring different objectives internally. Detecting alignment faking is a key motivation for mechanistic interpretability safety research."
   - term: "Deception Detection"
     definition: "The application of mechanistic interpretability to identify when a model is generating outputs that conflict with its internal representations, potentially indicating deceptive or unfaithful behavior."
+
+furtherReading:
+  - title: "Greenblatt et al., *Alignment Faking in Large Language Models*"
+    url: "https://arxiv.org/abs/2412.14093"
+    note: "The full paper. The reasoning traces are worth reading directly rather than in summary."
+  - title: "Goldowsky-Dill et al., *Detecting Strategic Deception Using Linear Probes*"
+    url: "https://arxiv.org/abs/2502.03407"
+    note: "The probing result with a deployment-shaped evaluation, including where it fails."
+  - title: "Park et al., *AI Deception: A Survey of Examples, Risks, and Potential Solutions*"
+    url: "https://arxiv.org/abs/2308.14752"
+    note: "The taxonomy of what 'deception' can mean, which matters because detectors are usually validated on only one kind."
+  - title: "Ward et al., *Honesty Is the Best Policy: Defining and Mitigating AI Deception*"
+    note: "A formal definition of deception in terms of beliefs and intentions, which is what a detection claim implicitly assumes."
 ---
 
 ## When Good Behavior Is Not Alignment

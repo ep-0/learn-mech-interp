@@ -13,6 +13,20 @@ glossary:
     definition: "The circuit discovered in GPT-2 Small that performs the Indirect Object Identification task, consisting of name movers, backup name movers, S-inhibition heads, induction-like heads, and duplicate token heads working together to predict the correct indirect object."
   - term: "Name Mover Head"
     definition: "An attention head in the IOI circuit that attends to the indirect object name and copies it to the final token position, directly promoting that name in the output logits. Name movers are the output stage of the IOI circuit."
+
+furtherReading:
+  - title: "Wang et al., *Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small*"
+    url: "https://arxiv.org/abs/2211.00593"
+    note: "The whole paper. It is the field's canonical worked example and repays reading in full rather than in summary."
+  - title: "Conmy et al., *Towards Automated Circuit Discovery*"
+    url: "https://arxiv.org/abs/2304.14997"
+    note: "The same circuit rediscovered automatically, which is the benchmark ACDC is validated against."
+  - title: "Merullo, Eickhoff & Pavlick, *Circuit Component Reuse Across Tasks*"
+    url: "https://arxiv.org/abs/2310.08744"
+    note: "IOI components reappearing in a different task. Evidence about generality that this article does not include."
+  - title: "Zhang & Nanda, *Towards Best Practices of Activation Patching*"
+    url: "https://arxiv.org/abs/2309.16042"
+    note: "The methodological choices in the discovery, re-examined. Useful for judging how much of the circuit is robust to them."
 ---
 
 ## The Task

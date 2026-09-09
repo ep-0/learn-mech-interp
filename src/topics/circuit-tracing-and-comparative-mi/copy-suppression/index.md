@@ -9,6 +9,17 @@ prerequisites:
 glossary:
   - term: "Copy Suppression"
     definition: "An attention head algorithm pattern where the head attends to positions where a predicted token appeared earlier in context and outputs the negative of that token's unembedding direction, suppressing the model's tendency to predict tokens it has already seen."
+
+furtherReading:
+  - title: "McDougall et al., *Copy Suppression: Comprehensively Understanding an Attention Head*"
+    url: "https://arxiv.org/abs/2310.04625"
+    note: "The full paper, including the claim to have explained most of a head's behavior and the evidence offered for it."
+  - title: "McGrath et al., *The Hydra Effect*"
+    url: "https://arxiv.org/abs/2307.15771"
+    note: "Self-repair, which copy suppression partly explains. The two papers together are more than either alone."
+  - title: "Gurnee et al., *Universal Neurons in GPT-2*"
+    url: "https://arxiv.org/abs/2401.12181"
+    note: "Prediction-suppression neurons, the MLP-side analogue of the same motif."
 ---
 
 ## A Head That Works Against Prediction

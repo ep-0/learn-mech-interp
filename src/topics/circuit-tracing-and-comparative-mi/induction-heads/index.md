@@ -16,6 +16,20 @@ glossary:
     definition: "An attention-head pattern, usually enabled by an earlier head, that supports copying: after seeing 'A B ... A', it raises the probability of 'B'. This mechanism explains some forms of pattern completion, not all in-context learning."
   - term: "Previous Token Head"
     definition: "An attention head that places substantial weight on the immediately preceding position and writes information about that token. It can supply predecessor-token information to an induction circuit."
+
+furtherReading:
+  - title: "Olsson et al., *In-Context Learning and Induction Heads*"
+    url: "https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html"
+    note: "The full argument, including all six lines of evidence and the authors' own hedging about the causal claim."
+  - title: "Elhage et al., *A Mathematical Framework*"
+    url: "https://transformer-circuits.pub/2021/framework/index.html"
+    note: "The two-layer analysis that predicted induction heads before they were named."
+  - title: "Singh et al., *What Needs to Go Right for an Induction Head?*"
+    url: "https://arxiv.org/abs/2404.07129"
+    note: "The formation dynamics in a controlled setting, which explains the phase change rather than reporting it."
+  - title: "Yin & Steinhardt, *Which Attention Heads Matter for In-Context Learning?*"
+    url: "https://arxiv.org/abs/2502.14010"
+    note: "Evidence that function-vector heads matter more than induction heads for few-shot performance. The strongest challenge to the story told here."
 ---
 
 ## What Can Simple Models Compute?

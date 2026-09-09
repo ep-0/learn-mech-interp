@@ -11,6 +11,20 @@ glossary:
     definition: "The component of an attention head formed by the product of the value (W_V) and output (W_O) weight matrices. The OV circuit determines what information is written to the residual stream when a token is attended to."
   - term: "QK Circuit"
     definition: "The component of an attention head formed by the product of the query (W_Q) and key (W_K) weight matrices. The QK circuit determines which tokens attend to which other tokens by computing attention scores."
+
+furtherReading:
+  - title: "Elhage et al., *A Mathematical Framework for Transformer Circuits*"
+    url: "https://transformer-circuits.pub/2021/framework/index.html"
+    note: "The source. Work through the zero-layer and one-layer sections with pen and paper; the tensor-product notation is the part worth the effort."
+  - title: "Millidge & Black, *The Singular Value Decompositions of Transformer Weight Matrices are Highly Interpretable*"
+    url: "https://www.alignmentforum.org/posts/mkbGjzxD8d8XqKHzA/the-singular-value-decompositions-of-transformer-weight"
+    note: "Applies the SVD directly to OV and QK matrices and reads the singular vectors in vocabulary space. The natural next experiment after this article."
+  - title: "Kamath et al., *QK Attribution*"
+    url: "https://transformer-circuits.pub/2025/qk-attribution/index.html"
+    note: "Attribution through the attention pattern itself, which the QK/OV split makes possible but this article does not pursue."
+  - title: "Dar et al., *Analyzing Transformers in Embedding Space*"
+    url: "https://arxiv.org/abs/2209.02535"
+    note: "Projecting weight matrices, not activations, into vocabulary space. A different use of the same factorization."
 ---
 
 ## The Residual Stream as a Vector Space

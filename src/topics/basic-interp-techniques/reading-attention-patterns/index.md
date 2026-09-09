@@ -7,6 +7,20 @@ prerequisites:
     url: "/topics/attention-mechanism/"
   - title: "Plotting and Visualizing Results"
     url: "/topics/plotting-and-visualizing-results/"
+
+furtherReading:
+  - title: "Jain & Wallace, *Attention Is Not Explanation* and Wiegreffe & Pinter, *Attention Is Not Not Explanation*"
+    url: "https://arxiv.org/abs/1902.10186"
+    note: "The debate that defines how much an attention pattern can support. This article warns against overreading; these two papers are the argument itself."
+  - title: "Kobayashi et al., *Attention Is Not Only a Weight: Analyzing Transformers with Vector Norms*"
+    url: "https://arxiv.org/abs/2004.10102"
+    note: "A pattern weights value vectors of very different norms, so attention weight alone misstates information flow. The single most useful correction to naive pattern reading, and this article does not cover it."
+  - title: "Elhage et al., *A Mathematical Framework*, the induction head sections"
+    url: "https://transformer-circuits.pub/2021/framework/index.html"
+    note: "What it looks like when a pattern is explained rather than described."
+  - title: "Nanda, *CircuitsVis* and the TransformerLens attention demos"
+    url: "https://github.com/TransformerLensOrg/CircuitsVis"
+    note: "The tooling. Reading patterns is a practical skill and needs a live model rather than a figure."
 ---
 
 ## Attention Pattern Visualization

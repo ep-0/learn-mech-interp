@@ -11,6 +11,20 @@ prerequisites:
 glossary:
   - term: "Cascade Classifier"
     definition: "A two-stage deployment architecture where a cheap, fast classifier (such as a linear probe) screens all traffic and only escalates uncertain or flagged cases to a more expensive classifier (such as an LLM), dramatically reducing average inference cost while maintaining accuracy."
+
+furtherReading:
+  - title: "Goldowsky-Dill et al., *Detecting Strategic Deception Using Linear Probes*"
+    url: "https://arxiv.org/abs/2502.03407"
+    note: "A deployment-shaped evaluation with operating points and honest failure reporting."
+  - title: "Guo et al., *On Calibration of Modern Neural Networks*"
+    url: "https://arxiv.org/abs/1706.04599"
+    note: "Calibration, which decides whether a probe's score can be thresholded at all. Not covered here and load-bearing for any monitor."
+  - title: "Geirhos et al., *Shortcut Learning in Deep Neural Networks*"
+    url: "https://arxiv.org/abs/2004.07780"
+    note: "Why an in-distribution probe generalizes worse than its numbers suggest, stated generally."
+  - title: "Anthropic, *Building an Effective Monitor* and the sabotage-evaluation reports"
+    url: "https://alignment.anthropic.com/"
+    note: "Deployment constraints from people running them: cost per token, latency, and what a realistic false-positive budget looks like."
 ---
 
 ## From the Lab to the Real World

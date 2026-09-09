@@ -17,6 +17,20 @@ glossary:
     definition: "The risk that an interpretability method appears to provide a correct explanation of model behavior but actually misses the true mechanism, giving researchers false confidence in their understanding of the model."
   - term: "Turn-Averaged SAE"
     definition: "A sparse autoencoder trained on the mean activation across all tokens in a conversation turn, producing turn-level features rather than one feature vector per token."
+
+furtherReading:
+  - title: "Karvonen et al., *SAEBench: A Comprehensive Benchmark for Sparse Autoencoders*"
+    url: "https://arxiv.org/abs/2503.09532"
+    note: "The benchmark in full. Its per-metric disagreements are more informative than the aggregate scores."
+  - title: "Gao et al., *Scaling and Evaluating Sparse Autoencoders*"
+    url: "https://arxiv.org/abs/2406.04093"
+    note: "TopK plus the scaling laws, and the cleanest treatment of the sparsity-fidelity frontier as an object to be measured."
+  - title: "Bussmann, Leask & Nanda, *BatchTopK Sparse Autoencoders*"
+    url: "https://arxiv.org/abs/2412.06410"
+    note: "The variant that most current work actually uses, and which this article does not cover."
+  - title: "Engels et al., *Decomposing the Dark Matter of Sparse Autoencoders*"
+    url: "https://arxiv.org/abs/2410.14670"
+    note: "What the reconstruction error consists of. A necessary complement to any frontier plot, since it says what the residual is made of."
 ---
 
 ## The L1 Problem

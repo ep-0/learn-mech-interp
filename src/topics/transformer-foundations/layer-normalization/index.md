@@ -13,6 +13,20 @@ glossary:
     definition: "A normalization technique that rescales activations within each token's representation vector to have zero mean and unit variance, then applies learned affine parameters. Applied before each sublayer in pre-norm transformers, it stabilizes training but introduces a nonlinearity that couples all residual stream dimensions."
   - term: "RMSNorm"
     definition: "A simplified variant of layer normalization that normalizes by the root mean square of activations without centering by the mean. Used in LLaMA, Gemma, and other modern architectures for its computational efficiency and comparable performance."
+
+furtherReading:
+  - title: "Xiong et al., *On Layer Normalization in the Transformer Architecture*"
+    url: "https://arxiv.org/abs/2002.04745"
+    note: "The gradient analysis behind the pre-norm versus post-norm choice, rather than the summary of its conclusion."
+  - title: "Zhang & Sennrich, *Root Mean Square Layer Normalization*"
+    url: "https://arxiv.org/abs/1910.07467"
+    note: "RMSNorm, used by most current open models, with the ablation showing which part of LayerNorm was doing the work."
+  - title: "Brody, Alon & Yahav, *On the Expressivity Role of LayerNorm in Transformers' Attention*"
+    url: "https://arxiv.org/abs/2305.02582"
+    note: "LayerNorm as a computational component rather than a training aid: it projects onto a hyperplane and scales, and that geometry has consequences this article treats only as an obstacle."
+  - title: "Anthropic, *Privileged Bases in the Transformer Residual Stream*"
+    url: "https://transformer-circuits.pub/2023/privileged-basis/index.html"
+    note: "Outlier dimensions and why the residual stream is less basis-free in practice than in theory. Directly complicates the folding trick described here."
 ---
 
 ## Why Normalize the Residual Stream?

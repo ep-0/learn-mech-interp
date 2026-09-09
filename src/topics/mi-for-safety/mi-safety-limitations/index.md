@@ -11,6 +11,20 @@ glossary:
     definition: "A controlled evaluation in which a blinded investigator receives access to a model with an implanted hidden behavior and is scored on whether the investigation discovers and correctly characterizes it."
   - term: "Tool-to-Agent Gap"
     definition: "The gap between a tool surfacing useful evidence in isolation and an investigator agent successfully using that evidence to reach the correct conclusion."
+
+furtherReading:
+  - title: "Sharkey et al., *Open Problems in Mechanistic Interpretability*"
+    url: "https://arxiv.org/abs/2501.16496"
+    note: "The field's own account of what is unsolved, written by many of the people whose results this curriculum covers."
+  - title: "Bricken et al., *Auditing Language Models for Hidden Objectives*"
+    url: "https://arxiv.org/abs/2503.10965"
+    note: "The auditing game in full. The strongest evidence yet on whether interpretability tools help a real investigation."
+  - title: "Casper et al., *Black-Box Access Is Insufficient for Rigorous AI Audits*"
+    url: "https://arxiv.org/abs/2401.14446"
+    note: "The affirmative case for internal access, which is worth reading against this article's catalogue of failures."
+  - title: "Räuker et al., *Toward Transparent AI: A Survey on Interpreting the Inner Workings of Neural Networks*"
+    url: "https://arxiv.org/abs/2207.13243"
+    note: "A broad survey that situates mechanistic interpretability among the alternatives it is often assumed to have replaced."
 ---
 
 ## From Case Studies to Assurance

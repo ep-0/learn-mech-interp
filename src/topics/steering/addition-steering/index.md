@@ -5,6 +5,20 @@ order: 1
 prerequisites:
   - title: "Contrastive Activation Addition (CAA)"
     url: "/topics/caa-method/"
+
+furtherReading:
+  - title: "Turner et al., *Steering Language Models With Activation Addition*"
+    url: "https://arxiv.org/abs/2308.10248"
+    note: "The full ActAdd paper, including the negative results and the fluency costs."
+  - title: "Tan et al., *Analysing the Generalisation and Reliability of Steering Vectors*"
+    url: "https://arxiv.org/abs/2407.12404"
+    note: "Steering vectors are far less reliable off-distribution than the demonstrations suggest. Read this before trusting any steering result, including your own."
+  - title: "Subramani, Suresh & Peters, *Extracting Latent Steering Vectors from Pretrained Language Models*"
+    url: "https://arxiv.org/abs/2205.05124"
+    note: "Steering vectors found by optimization rather than by contrast, which predates the contrastive line and is rarely cited alongside it."
+  - title: "Wu et al., *AxBench: Steering LLMs? Even Simple Baselines Outperform Sparse Autoencoders*"
+    url: "https://arxiv.org/abs/2501.17148"
+    note: "A common evaluation for steering methods, in which simple difference-in-means often wins. Useful calibration on what the sophisticated methods buy."
 ---
 
 ## From Reading to Control

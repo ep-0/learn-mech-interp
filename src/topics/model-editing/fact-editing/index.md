@@ -11,6 +11,20 @@ glossary:
     definition: "Techniques for modifying specific factual associations stored in a language model's weights without retraining, typically by making targeted rank-one updates to MLP layers identified as causally responsible for the fact."
   - term: "ROME"
     definition: "Rank-One Model Editing: a method for editing factual associations by performing a rank-one update to a specific MLP layer's weights, modifying the key-value mapping for a targeted fact while attempting to preserve other knowledge."
+
+furtherReading:
+  - title: "Meng et al., *Locating and Editing Factual Associations in GPT* (ROME)"
+    url: "https://arxiv.org/abs/2202.05262"
+    note: "The full method, including the causal tracing that motivated the edit location."
+  - title: "Hase et al., *Does Localization Inform Editing?*"
+    url: "https://arxiv.org/abs/2301.04213"
+    note: "The result that breaks the inference from tracing to editing. The most important paper in this article's story."
+  - title: "Meng et al., *Mass-Editing Memory in a Transformer* (MEMIT)"
+    url: "https://arxiv.org/abs/2210.07229"
+    note: "Scaling to thousands of edits, and where the failure modes become visible."
+  - title: "Cohen et al., *Evaluating the Ripple Effects of Knowledge Editing*"
+    url: "https://arxiv.org/abs/2307.12976"
+    note: "Edits that succeed on the target and fail on everything logically downstream. The evaluation gap this article gestures at."
 ---
 
 ## Editing Facts in Weights

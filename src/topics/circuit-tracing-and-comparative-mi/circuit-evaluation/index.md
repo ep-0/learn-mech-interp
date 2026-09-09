@@ -16,6 +16,20 @@ glossary:
     definition: "A circuit evaluation criterion measuring how well the circuit reproduces the full model's behavior when run in isolation. A faithful circuit produces similar outputs to the complete model on the target task."
   - term: "Minimality (circuit)"
     definition: "A circuit evaluation criterion measuring whether the circuit contains only components that are necessary for the task. A minimal circuit has no redundant parts whose removal would leave performance unchanged."
+
+furtherReading:
+  - title: "Chan et al., *Causal Scrubbing*"
+    url: "https://www.alignmentforum.org/posts/JvZhhzycHu2Yd57RN/causal-scrubbing-a-method-for-rigorously-testing"
+    note: "The full method. Demanding to read and the most rigorous evaluation standard proposed so far."
+  - title: "Miller, Chughtai & Saunders, *Transformer Circuit Evaluation Metrics Are Not Robust*"
+    url: "https://arxiv.org/abs/2407.08734"
+    note: "Faithfulness scores are highly sensitive to the ablation choice. Directly undercuts naive use of the three criteria, and this article does not say so."
+  - title: "Shi et al., *Hypothesis Testing the Circuit Hypothesis in LLMs*"
+    url: "https://arxiv.org/abs/2410.13032"
+    note: "Circuit claims as statistical hypotheses with explicit nulls, which is the direction evaluation is heading."
+  - title: "Mueller et al., *MIB: A Mechanistic Interpretability Benchmark*"
+    url: "https://arxiv.org/abs/2504.13151"
+    note: "A shared benchmark for circuit localization, so methods can be compared rather than each defended on its own example."
 ---
 
 ## Beyond Discovery

@@ -5,6 +5,17 @@ order: 3
 prerequisites:
   - title: "Patchscopes"
     url: "/topics/patchscopes/"
+
+furtherReading:
+  - title: "Chen et al., *SelfIE: Self-Interpretation of Embeddings*"
+    url: "https://arxiv.org/abs/2403.10949"
+    note: "The paper, including the supervised control and the reinforcement-learning application."
+  - title: "Turpin et al., *Language Models Don't Always Say What They Think*"
+    url: "https://arxiv.org/abs/2305.04388"
+    note: "Why a fluent self-interpretation is weak evidence without an intervention that the report must track."
+  - title: "Lanham et al., *Measuring Faithfulness in Chain-of-Thought Reasoning*"
+    url: "https://arxiv.org/abs/2307.13702"
+    note: "Faithfulness tests that apply directly to self-interpretation outputs, and are not run here."
 ---
 
 ## Self-Interpretation

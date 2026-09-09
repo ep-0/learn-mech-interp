@@ -9,6 +9,20 @@ prerequisites:
 glossary:
   - term: "Self-Repair"
     definition: "The phenomenon where ablating or patching a model component causes later components to compensate, partially restoring the original behavior. Self-repair means that ablation effects systematically understate component importance."
+
+furtherReading:
+  - title: "McGrath et al., *The Hydra Effect: Emergent Self-Repair in Language Model Computations*"
+    url: "https://arxiv.org/abs/2307.15771"
+    note: "The full result, including the erasure and downstream-compensation measurements."
+  - title: "Rushing & Nanda, *Explorations of Self-Repair in Language Models*"
+    url: "https://arxiv.org/abs/2402.15390"
+    note: "Self-repair traced to LayerNorm rescaling and to specific head families, which is the mechanistic account this article summarizes."
+  - title: "Wang et al., *Interpretability in the Wild*, the backup name mover sections"
+    url: "https://arxiv.org/abs/2211.00593"
+    note: "Where the phenomenon was first noticed, in a circuit that had already been carefully traced."
+  - title: "Chan et al., *Causal Scrubbing*"
+    url: "https://www.alignmentforum.org/posts/JvZhhzycHu2Yd57RN/causal-scrubbing-a-method-for-rigorously-testing"
+    note: "A methodology built to survive compensation effects, rather than mitigating them after the fact."
 ---
 
 ## The Compensation Problem

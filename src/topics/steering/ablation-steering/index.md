@@ -5,6 +5,20 @@ order: 2
 prerequisites:
   - title: "Addition Steering"
     url: "/topics/addition-steering/"
+
+furtherReading:
+  - title: "Arditi et al., *Refusal in Language Models Is Mediated by a Single Direction*"
+    url: "https://arxiv.org/abs/2406.11717"
+    note: "The clearest worked example of directional ablation, including the weight-orthogonalization variant that makes it permanent."
+  - title: "Belrose et al., *LEACE: Perfect Linear Concept Erasure in Closed Form*"
+    url: "https://arxiv.org/abs/2306.03819"
+    note: "Why naive projection is not erasure, and what a minimum-distortion guarantee actually covers. The necessary corrective to this article."
+  - title: "Ravfogel et al., *Null It Out: Guarding Protected Attributes by Iterative Nullspace Projection*"
+    url: "https://arxiv.org/abs/2004.07667"
+    note: "Iterative projection, and the discovery that removing one direction lets a probe find another. Predates and anticipates most of this discussion."
+  - title: "Elazar et al., *Amnesic Probing*"
+    url: "https://arxiv.org/abs/2006.00995"
+    note: "Ablation used to measure behavioral necessity, with a careful account of what the resulting damage does and does not show."
 ---
 
 ## The Complement to Addition

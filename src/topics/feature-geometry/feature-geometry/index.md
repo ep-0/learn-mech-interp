@@ -13,6 +13,20 @@ glossary:
     definition: "A feature that occupies more than one dimension in activation space and cannot be decomposed into independent one-dimensional features. Days of the week, for instance, form a circle in a 2D subspace where the two dimensions are coupled, not separable."
   - term: "Hierarchical Orthogonality"
     definition: "The geometric property where a parent concept's representation vector is orthogonal to the difference vector between a child concept and the parent. This ensures that manipulating the parent (e.g., 'animal') does not shift the relative probabilities among children (e.g., 'mammal' vs. 'bird')."
+
+furtherReading:
+  - title: "Park et al., *The Geometry of Categorical and Hierarchical Concepts in Large Language Models*"
+    url: "https://arxiv.org/abs/2406.01506"
+    note: "The polytope and hierarchy results derived rather than described, including the causal inner product this article assumes."
+  - title: "Engels et al., *Not All Language Model Features Are Linear*"
+    url: "https://arxiv.org/abs/2405.14860"
+    note: "The circular features, with the intervention experiments that make them more than a visualization."
+  - title: "Nanda et al., *Progress Measures for Grokking via Mechanistic Interpretability*"
+    url: "https://arxiv.org/abs/2301.05217"
+    note: "Modular arithmetic done through Fourier features, fully reverse-engineered. The best worked example of a non-direction representation, and this article only alludes to it."
+  - title: "Li et al., *Emergent World Representations* and Nanda's linear-probe follow-up"
+    url: "https://arxiv.org/abs/2210.13382"
+    note: "Othello-GPT, where the representation turned out to be linear in the right coordinates. A caution against concluding non-linearity too quickly."
 ---
 
 ## Is a Direction Enough?

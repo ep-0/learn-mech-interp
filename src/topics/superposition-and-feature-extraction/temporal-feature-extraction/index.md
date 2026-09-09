@@ -10,6 +10,16 @@ prerequisites:
 glossary:
   - term: "Temporal Feature Analysis"
     definition: "A feature-extraction objective that decomposes each representation into a context-predictable component and a residual component containing information not predicted from earlier context."
+
+furtherReading:
+  - title: "Lubana et al., *A Percolation Model of Emergence* and the priors literature it draws on"
+    note: "For the modeling assumptions behind treating features as time-independent, which is the assumption this article questions."
+  - title: "Bricken et al., *Towards Monosemanticity*, the section on token-level versus context-level features"
+    url: "https://transformer-circuits.pub/2023/monosemantic-features/index.html"
+    note: "The original discussion of features with different timescales, which the temporal work generalizes."
+  - title: "Nanda et al., *Emergent Linear Representations in World Models of Self-Supervised Sequence Models*"
+    url: "https://arxiv.org/abs/2309.00941"
+    note: "Representations that update over a sequence, which is the phenomenon a per-token dictionary struggles to express."
 ---
 
 ## A Feature Has a Timescale

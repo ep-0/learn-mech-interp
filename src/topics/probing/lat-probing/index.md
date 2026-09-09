@@ -7,6 +7,17 @@ prerequisites:
     url: "/topics/caa-method/"
   - title: "Principal Component Analysis"
     url: "/topics/principal-component-analysis/"
+
+furtherReading:
+  - title: "Zou et al., *Representation Engineering: A Top-Down Approach to AI Transparency*"
+    url: "https://arxiv.org/abs/2310.01405"
+    note: "The full RepE paper. LAT is one piece of it, and the surrounding framing explains the design choices."
+  - title: "Marks & Tegmark, *The Geometry of Truth*"
+    url: "https://arxiv.org/abs/2310.06824"
+    note: "The same population-level idea applied with more care about controls, and a useful comparison of what each procedure recovers."
+  - title: "Kirichenko et al., *Last Layer Re-Training is Sufficient for Robustness to Spurious Correlations*"
+    url: "https://arxiv.org/abs/2204.02937"
+    note: "From outside the field, and a strong warning that a linear readout can succeed for reasons unrelated to the concept you named."
 ---
 
 ## Reading Representations

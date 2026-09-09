@@ -15,6 +15,20 @@ glossary:
     definition: "Adding a behavior direction to activations during fine-tuning, then removing the intervention at deployment, with the aim of reducing how strongly the behavior is learned into the weights."
   - term: "Reinforcement Learning from Feature Rewards (RLFR)"
     definition: "Using scores read from model activations, usually through trained probes, as part of the reward for reinforcement learning."
+
+furtherReading:
+  - title: "Chen et al., *Persona Vectors*"
+    url: "https://arxiv.org/abs/2507.21509"
+    note: "Preventative steering during fine-tuning, with the data-filtering results this article summarizes."
+  - title: "Betley et al., *Emergent Misalignment*"
+    url: "https://arxiv.org/abs/2502.17424"
+    note: "The failure mode that motivates the whole approach: narrow fine-tuning producing broad misalignment."
+  - title: "Zou et al., *Circuit Breakers*"
+    url: "https://arxiv.org/abs/2406.04313"
+    note: "Representation-level objectives added to training, and the most thoroughly attacked example of the idea."
+  - title: "Casper et al., *Open Problems and Fundamental Limitations of RLHF*"
+    url: "https://arxiv.org/abs/2307.15217"
+    note: "For what interpretability-guided training is competing with, and the failure modes any training-time intervention inherits."
 ---
 
 ## From Monitoring to Changing the Update

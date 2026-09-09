@@ -12,6 +12,17 @@ glossary:
     definition: "The encoder half of an NLA. A copy of the target model that receives an activation injected in place of a token embedding and generates a natural-language explanation of it."
   - term: "Activation Reconstructor (AR)"
     definition: "The decoder half of an NLA. A truncated copy of the target model that reads an explanation and maps it back to a reconstructed activation through a learned affine head."
+
+furtherReading:
+  - title: "Bricken et al., *Towards Monosemanticity*"
+    url: "https://transformer-circuits.pub/2023/monosemantic-features/index.html"
+    note: "The sparse-dictionary bottleneck this replaces with a language bottleneck. The comparison is the point."
+  - title: "Bills et al., *Language Models Can Explain Neurons*"
+    url: "https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html"
+    note: "Explanation scored by simulated reconstruction, which is the same closed loop with a different training story."
+  - title: "Ameisen et al., *Circuit Tracing: Methods*"
+    url: "https://transformer-circuits.pub/2025/attribution-graphs/methods.html"
+    note: "For where a natural-language code would have to plug in to be useful for circuits rather than for description."
 ---
 
 ## The cost of supervision

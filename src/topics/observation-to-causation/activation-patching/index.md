@@ -14,6 +14,20 @@ glossary:
     definition: "A causal intervention method where activations from a clean run are substituted into a corrupted run (or vice versa) at specific model components, revealing which components are causally important for a behavior."
   - term: "Causal Intervention"
     definition: "Any experimental technique that actively modifies model internals (activations, weights, or attention patterns) to test causal hypotheses about how a model computes its outputs, as opposed to purely observational analysis."
+
+furtherReading:
+  - title: "Zhang & Nanda, *Towards Best Practices of Activation Patching in Language Models*"
+    url: "https://arxiv.org/abs/2309.16042"
+    note: "The methodological choices measured rather than asserted, including how much the corruption method changes the answer."
+  - title: "Heimersheim & Nanda, *How to Use and Interpret Activation Patching*"
+    url: "https://arxiv.org/abs/2404.15255"
+    note: "The practical companion. Read both before running your first patching experiment."
+  - title: "Vig et al., *Investigating Gender Bias in Language Models Using Causal Mediation Analysis*"
+    url: "https://arxiv.org/abs/2004.12265"
+    note: "The paper that brought mediation analysis into this field, and the clearest statement of which estimand a patch computes."
+  - title: "Geiger et al., *Causal Abstraction: A Theoretical Foundation for Mechanistic Interpretability*"
+    url: "https://arxiv.org/abs/2301.04709"
+    note: "The formal frame that makes patching one instance of a general method rather than a trick."
 ---
 
 ## From Observation to Causation

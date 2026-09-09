@@ -13,6 +13,20 @@ glossary:
     definition: "A simple linear classifier trained on frozen model activations to test whether specific information (such as part of speech or sentiment) is linearly accessible at a given layer, providing evidence about what representations a model has learned."
   - term: "Probing Classifier"
     definition: "A simple model (typically linear) trained on neural network activations to predict properties of the input, used as a diagnostic tool to test what information is encoded at different layers of a network."
+
+furtherReading:
+  - title: "Hewitt & Liang, *Designing and Interpreting Probes with Control Tasks*"
+    url: "https://arxiv.org/abs/1909.03368"
+    note: "Selectivity, and the argument that made control tasks standard. Short and essential."
+  - title: "Belinkov, *Probing Classifiers: Promises, Shortcomings, and Advances*"
+    url: "https://arxiv.org/abs/2102.12452"
+    note: "The survey. Read it for the taxonomy of what probing results have and have not established."
+  - title: "Voita & Titov, *Information-Theoretic Probing with Minimum Description Length*"
+    url: "https://arxiv.org/abs/2003.12298"
+    note: "Probing recast as compression, which removes the arbitrariness of choosing a probe's capacity."
+  - title: "Elazar et al., *Amnesic Probing*"
+    url: "https://arxiv.org/abs/2006.00995"
+    note: "Removing a property and measuring behavioral damage, which is the causal follow-up this article names as the missing step."
 ---
 
 ## From Predictions to Representations

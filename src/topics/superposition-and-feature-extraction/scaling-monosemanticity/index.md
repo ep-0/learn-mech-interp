@@ -11,6 +11,20 @@ glossary:
     definition: "The phenomenon where a single feature in a smaller SAE splits into multiple, more specific features when the SAE dictionary size is increased, revealing finer-grained structure in model representations."
   - term: "Feature Steering"
     definition: "A technique for controlling model behavior by artificially amplifying or suppressing specific SAE features during inference, effectively pushing model outputs toward or away from concepts those features represent."
+
+furtherReading:
+  - title: "Templeton et al., *Scaling Monosemanticity*"
+    url: "https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html"
+    note: "The full report. The feature-steering and safety-feature sections are the parts that get cited loosely and deserve reading directly."
+  - title: "Lieberum et al., *Gemma Scope: Open Sparse Autoencoders Everywhere All At Once on Gemma 2*"
+    url: "https://arxiv.org/abs/2408.05147"
+    note: "Open SAEs across every layer of a real model. The practical way to reproduce anything in this article yourself."
+  - title: "Kantamneni et al., *Are Sparse Autoencoders Useful? A Case Study in Sparse Probing*"
+    url: "https://arxiv.org/abs/2502.16681"
+    note: "SAE features compared against simple baselines on a downstream task, with results that complicate the scaling story."
+  - title: "Chanin et al., *A Is for Absorption*"
+    url: "https://arxiv.org/abs/2409.14507"
+    note: "Feature absorption, where a general feature quietly swallows a specific one. A concrete failure of the granularity account given here."
 ---
 
 ## From Toy Models to Frontier Models

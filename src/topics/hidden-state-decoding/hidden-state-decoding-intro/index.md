@@ -7,6 +7,17 @@ prerequisites:
     url: "/topics/logit-lens-and-tuned-lens/"
   - title: "Sparse Autoencoders"
     url: "/topics/sparse-autoencoders/"
+
+furtherReading:
+  - title: "Ghandeharioun et al., *Patchscopes: A Unifying Framework for Inspecting Hidden Representations*"
+    url: "https://arxiv.org/abs/2401.06102"
+    note: "The framework this article previews, and the source of the unification claim."
+  - title: "Belrose et al., *Tuned Lens*"
+    url: "https://arxiv.org/abs/2303.08112"
+    note: "The non-verbal alternative. Comparing a lens against a verbalization on the same state is the experiment that shows what language adds."
+  - title: "Turpin et al., *Language Models Don't Always Say What They Think*"
+    url: "https://arxiv.org/abs/2305.04388"
+    note: "Model-generated explanations that are systematically unfaithful. The core reason self-report methods need causal controls."
 ---
 
 ## The Interpretation Bottleneck

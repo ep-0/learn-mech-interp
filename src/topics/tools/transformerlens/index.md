@@ -16,6 +16,20 @@ glossary:
     definition: "A named location in an instrumented model where an activation can be read, cached, or replaced during a forward pass."
   - term: "Activation Cache"
     definition: "A mapping from HookPoint names to intermediate activations recorded during a model run, used for post-hoc inspection and as sources for interventions."
+
+furtherReading:
+  - title: "The TransformerLens documentation and *Main Demo* notebook"
+    url: "https://transformerlensorg.github.io/TransformerLens/"
+    note: "The library's own tour. This article has no citations; the docs are the source and should be read with a notebook open."
+  - title: "Nanda, *Concrete Steps to Get Started in Transformer Mechanistic Interpretability*"
+    url: "https://www.neelnanda.io/mechanistic-interpretability/getting-started"
+    note: "The workflow the library was built around, by its author."
+  - title: "Nanda, *Exploratory Analysis Demo*"
+    url: "https://www.neelnanda.io/mechanistic-interpretability/exploratory-analysis-demo"
+    note: "A full investigation carried out in the library, which teaches more than the API reference does."
+  - title: "The PyTorch hooks documentation"
+    url: "https://pytorch.org/docs/stable/generated/torch.nn.Module.html"
+    note: "What the library is wrapping. Knowing this is what lets you check its behavior rather than trust it."
 ---
 
 ## Why a Dedicated Library?

@@ -10,6 +10,17 @@ glossary:
     definition: "The problem of associating an entity with its context-specific attributes so that the correct pair can be retrieved later without confusing it with other entities."
   - term: "Binding ID"
     definition: "A context-specific identifier represented by corresponding entity-side and attribute-side vectors, allowing later computation to retrieve values by matching the pair."
+
+furtherReading:
+  - title: "Feng & Steinhardt, *How Do Language Models Bind Entities in Context?*"
+    url: "https://arxiv.org/abs/2310.17191"
+    note: "The binding-ID account with the causal predictions and their tests."
+  - title: "Prakash et al., *Language Models Use Lookbacks to Track Beliefs*"
+    url: "https://arxiv.org/abs/2505.14685"
+    note: "The lookback mechanism in a harder setting, including false-belief tracking."
+  - title: "Dai et al., *Representational Analysis of Binding in Language Models*"
+    url: "https://arxiv.org/abs/2409.05448"
+    note: "A competing account of the same phenomenon. Comparing the two is the best available exercise in judging mechanistic evidence."
 ---
 
 ## The Binding Problem

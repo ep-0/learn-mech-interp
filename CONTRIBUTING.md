@@ -162,6 +162,7 @@ Run `npm run build`. The build-time validator checks:
 - All `{% cite "key" %}` keys exist in `references.json`
 - The learning plan schedules every article exactly once, and its article and lesson references resolve
 - No TeX reaches the built pages unrendered
+- Every published article has `furtherReading`, and every entry has a title, a note, and an absolute URL if it has one at all
 - All prerequisite URLs point to existing articles
 - No duplicate glossary terms across articles
 - Every `/topics/<slug>/` key in `pageContexts.json` matches a live article
@@ -342,6 +343,35 @@ The build keeps the plan and the curriculum in sync:
 - every lesson has an orientation, every part has an intro, and every forward link points later
 
 So **adding an article means adding it to a lesson**, or the build fails and names the article. That is deliberate: a plan that silently omits new material is worse than no plan.
+
+## Further reading
+
+Every published article carries a `furtherReading` list in its frontmatter, rendered as a section after the body:
+
+```yaml
+furtherReading:
+  - title: "Elhage et al., *Toy Models of Superposition*"
+    url: "https://transformer-circuits.pub/2022/toy_model/index.html"
+    note: "The whole paper, including the phase diagrams and the geometry sections."
+```
+
+`url` is optional; `title` and `note` are not. The note says **what the source adds that the article does not** — a fuller derivation, a topic left out, a critique, a replication. A bare citation with no note is what this field exists to avoid, so the build rejects one.
+
+Three kinds of entry earn their place, and most articles want all three:
+
+- **The primary source**, when the article summarizes a paper that repays reading in full.
+- **A gap**, where the article does not cover something a researcher needs. Say so in the note: attention sinks are missing from the attention article, anisotropy from the embeddings article, calibration from the production-probes article.
+- **A critique**, where the strongest published objection to the article's claim lives. An article that reports a result without pointing at its best challenge is not preparing a researcher.
+
+Placeholders do not use this field; their brief already carries a "Sources to learn from" section.
+
+Links are hand-curated and can rot or be mistyped. Check them from a machine with network access:
+
+```bash
+npm run check-links
+```
+
+It reads every `furtherReading` URL, follows redirects, falls back to GET where HEAD is refused, and exits non-zero listing anything that failed. It is deliberately not part of `npm run build`, which must work offline.
 
 ## Build-time validation
 

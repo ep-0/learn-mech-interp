@@ -9,6 +9,17 @@ prerequisites:
 glossary:
   - term: "Affine Concept Editing (ACE)"
     definition: "A steering intervention that erases the component along a concept direction, re-centers at the null-behavior mean, and adds a tunable amount of the direction back. Generalizes both addition steering and directional ablation as special cases."
+
+furtherReading:
+  - title: "Marshall et al., *Refusal in LLMs Is an Affine Function*"
+    url: "https://arxiv.org/abs/2411.09003"
+    note: "The full ACE derivation and its evaluation against addition and ablation baselines."
+  - title: "Singh et al., *Representation Surgery: Theory and Practice of Affine Steering*"
+    url: "https://arxiv.org/abs/2402.09631"
+    note: "The theoretical treatment of affine interventions, including optimality claims under stated assumptions."
+  - title: "Belrose et al., *LEACE*"
+    url: "https://arxiv.org/abs/2306.03819"
+    note: "The recentering term here and LEACE's whitened projection are solving related problems; comparing them clarifies both."
 ---
 
 ## Two Tools, One Intervention

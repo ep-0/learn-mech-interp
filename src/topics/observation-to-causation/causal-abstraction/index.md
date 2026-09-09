@@ -13,6 +13,20 @@ glossary:
     definition: "A formal relationship between a high-level interpretable causal model and a low-level neural network, established by showing that interventions on aligned components produce matching behavior changes in both systems."
   - term: "Interchange Intervention Accuracy (IIA)"
     definition: "The proportion of tested interchange interventions on which the neural network's output matches the high-level causal model's prediction. It measures support for a proposed alignment on the sampled interventions."
+
+furtherReading:
+  - title: "Geiger et al., *Causal Abstraction: A Theoretical Foundation for Mechanistic Interpretability*"
+    url: "https://arxiv.org/abs/2301.04709"
+    note: "The full theory. Long, and the only place the framework is stated precisely enough to argue with."
+  - title: "Geiger et al., *Finding Alignments Between Interpretable Causal Variables and Distributed Neural Representations* (DAS)"
+    url: "https://arxiv.org/abs/2303.02536"
+    note: "The method, including why a learned rotation is needed and what it costs in falsifiability."
+  - title: "Wu et al., *Interpretability at Scale: Identifying Causal Mechanisms in Alpaca* (Boundless DAS)"
+    url: "https://arxiv.org/abs/2305.08809"
+    note: "The scaling story and the price-tagging case study this article references."
+  - title: "Makelov, Lange & Nanda, *Is This the Subspace You Are Looking For?*"
+    url: "https://arxiv.org/abs/2311.17030"
+    note: "The strongest critique: a learned subspace can pass interchange tests while encoding something other than the intended variable. Read it directly after the DAS papers."
 ---
 
 ## What Ties MI Methods Together?

@@ -11,6 +11,20 @@ prerequisites:
 glossary:
   - term: "Universality"
     definition: "The hypothesis that different neural networks trained on similar tasks converge on similar internal representations and circuits, suggesting that certain computational solutions are natural or optimal for given problems."
+
+furtherReading:
+  - title: "Gurnee et al., *Universal Neurons in GPT-2 Language Models*"
+    url: "https://arxiv.org/abs/2401.12181"
+    note: "The measurement across seeds, and the finding that only a small fraction of neurons are universal."
+  - title: "Kornblith et al., *Similarity of Neural Network Representations Revisited*"
+    url: "https://arxiv.org/abs/1905.00414"
+    note: "CKA and the invariance argument. Any universality claim depends on a choice of similarity measure, and this is where that choice is made."
+  - title: "Klabunde et al., *Similarity of Neural Network Models: A Survey of Functional and Representational Measures*"
+    url: "https://arxiv.org/abs/2305.06329"
+    note: "The full space of measures, which matters because different ones give different answers to the same universality question."
+  - title: "Huh et al., *The Platonic Representation Hypothesis*"
+    url: "https://arxiv.org/abs/2405.07987"
+    note: "The strong version of convergence across models and modalities. Read it as the ambitious claim this article's evidence has to bear on."
 ---
 
 ## The Universality Hypothesis

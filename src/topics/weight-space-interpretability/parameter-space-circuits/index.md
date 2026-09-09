@@ -13,6 +13,17 @@ glossary:
     definition: "The data-independent coupling between a query-side and a key-side parameter subcomponent, given by the dot product of their write directions scaled by the norms of their read directions. Under rotary position embeddings it depends on the query-key offset."
   - term: "Adversarial Pruning"
     definition: "Selecting a subnetwork by minimizing its size subject to reconstruction holding up under adversarially chosen ablations of the excluded nodes, rather than under no ablation or stochastic ablation. Non-adversarially pruned subgraphs are systematically too small."
+
+furtherReading:
+  - title: "Ameisen et al., *Circuit Tracing: Methods*"
+    url: "https://transformer-circuits.pub/2025/attribution-graphs/methods.html"
+    note: "The activation-space attribution graphs this article contrasts itself against, including their stated limitations."
+  - title: "Bushnaq et al., *Stochastic Parameter Decomposition*"
+    url: "https://arxiv.org/abs/2506.20790"
+    note: "The decomposition the parameter-space graphs are built on."
+  - title: "Syed, Rager & Conmy, *Attribution Patching Outperforms Automated Circuit Discovery*"
+    url: "https://arxiv.org/abs/2310.10348"
+    note: "For the adversarial-pruning comparison, and what pruning without an adversary systematically misses."
 ---
 
 ## Why Attention Resists Decomposition

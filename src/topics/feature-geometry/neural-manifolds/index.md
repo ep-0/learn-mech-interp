@@ -15,6 +15,19 @@ glossary:
     definition: "The number of independent coordinates needed to describe positions on a manifold locally, as distinct from the dimension of the activation space containing it."
   - term: "Compact Manifold Capture"
     definition: "An SAE representation in which a small, stable group of decoder features spans a manifold well, rather than different manifold regions requiring largely different feature groups."
+
+furtherReading:
+  - title: "Chung, Lee & Sompolinsky, *Classification and Geometry of General Perceptual Manifolds*"
+    url: "https://arxiv.org/abs/1710.06487"
+    note: "Manifold capacity theory from computational neuroscience, which is the mathematical backbone this line of work borrows."
+  - title: "Ansuini et al., *Intrinsic Dimension of Data Representations in Deep Neural Networks*"
+    url: "https://arxiv.org/abs/1905.12784"
+    note: "The hunchback intrinsic-dimension profile across depth, and the estimators used to get it."
+  - title: "Cohen et al., *Separability and Geometry of Object Manifolds in Deep Neural Networks* (Nature Communications, 2020)"
+    note: "Manifold geometry linked to task performance, which is the evidential standard this article's 'what counts as strong evidence' section is reaching for."
+  - title: "Wattenberg, Viégas & Johnson, *How to Use t-SNE Effectively*"
+    url: "https://distill.pub/2016/misread-tsne/"
+    note: "Before you believe any manifold picture you produce. Interactive, and quick."
 ---
 
 ## A Curve Is a Hypothesis, Not Yet an Explanation

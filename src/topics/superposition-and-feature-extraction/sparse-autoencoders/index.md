@@ -17,6 +17,19 @@ glossary:
     definition: "A set of dictionary vectors larger than the dimensionality of the space. Unlike a basis, it can represent one activation in multiple ways unless additional constraints such as sparsity make the code identifiable."
   - term: "Sparse Autoencoder (SAE)"
     definition: "A dictionary-learning model that encodes activations into a wider sparse latent vector and reconstructs them with learned decoder directions. Some latents admit useful human interpretations."
+
+furtherReading:
+  - title: "Bricken et al., *Towards Monosemanticity*"
+    url: "https://transformer-circuits.pub/2023/monosemantic-features/index.html"
+    note: "The whole report, including the dead-feature resampling and the ablation studies this article compresses."
+  - title: "Cunningham et al., *Sparse Autoencoders Find Highly Interpretable Features in Language Models*"
+    url: "https://arxiv.org/abs/2309.08600"
+    note: "The independent, concurrent result. Two groups arriving at the same method is the reason the field took it seriously."
+  - title: "Olshausen & Field, *Emergence of Simple-Cell Receptive Field Properties by Learning a Sparse Code for Natural Images* (Nature, 1996)"
+    note: "The origin of the idea, thirty years earlier. The identifiability questions the field is now rediscovering were posed here."
+  - title: "Sharkey, Braun & Millidge, *Taking Features Out of Superposition with Sparse Autoencoders*"
+    url: "https://www.alignmentforum.org/posts/z6QQJbtpkEAX3Aojj/interim-research-report-taking-features-out-of-superposition"
+    note: "The interim report that proposed applying dictionary learning here, including the toy-data validation the later papers skip."
 ---
 
 ## From Superposition to Dictionary Learning

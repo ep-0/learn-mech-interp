@@ -16,6 +16,20 @@ glossary:
     definition: "Transforming representations so a chosen label is no longer recoverable by a specified class of predictors. LEACE targets linear predictors while minimizing expected squared distortion."
   - term: "LEACE"
     definition: "Least-squares Concept Erasure: a closed-form, covariance-aware transformation that makes a target label linearly guarded under its population assumptions with minimum expected squared distortion."
+
+furtherReading:
+  - title: "Belrose et al., *LEACE*"
+    url: "https://arxiv.org/abs/2306.03819"
+    note: "The full derivation of the closed form and the concept-scrubbing experiments."
+  - title: "Ravfogel et al., *Null It Out* (INLP)"
+    url: "https://arxiv.org/abs/2004.07667"
+    note: "The iterative predecessor, and a clear illustration of why a single projection is not enough."
+  - title: "Ravfogel et al., *Linear Adversarial Concept Erasure*"
+    url: "https://arxiv.org/abs/2201.12091"
+    note: "The minimax formulation that LEACE's closed form supersedes, useful for seeing what problem was being solved."
+  - title: "Gandikota et al., *Erasing Concepts from Diffusion Models*"
+    url: "https://arxiv.org/abs/2303.07345"
+    note: "Erasure in another modality, with a different definition of success. Good for testing whether your intuitions are about erasure or about language models."
 ---
 
 ## Beyond Simple Ablation

@@ -10,6 +10,20 @@ prerequisites:
 glossary:
   - term: "Linear Representation Hypothesis"
     definition: "The hypothesis that neural networks represent concepts as linear directions in activation space, so that adding or subtracting these directions corresponds to adding or removing the associated concept."
+
+furtherReading:
+  - title: "Park, Choe & Veitch, *The Linear Representation Hypothesis and the Geometry of Large Language Models*"
+    url: "https://arxiv.org/abs/2311.03658"
+    note: "The formal statement, including the distinction between a representation being linear and a concept being a single direction."
+  - title: "Elhage et al., *Toy Models of Superposition*"
+    url: "https://transformer-circuits.pub/2022/toy_model/index.html"
+    note: "Why linear representations plus limited dimensions force interference. The two hypotheses only make sense together."
+  - title: "Engels et al., *Not All Language Model Features Are Linear*"
+    url: "https://arxiv.org/abs/2405.14860"
+    note: "The strongest counterevidence, with circular day-of-week and month features. This article mentions limitations; this paper is the limitation."
+  - title: "Smith, *The 'Strong' Feature Hypothesis Could Be Wrong*"
+    url: "https://www.alignmentforum.org/posts/tojtPCCRpKLSHBdpn/the-strong-feature-hypothesis-could-be-wrong"
+    note: "A careful argument that decomposition into features may not be the right frame at all. Read it as the position to beat."
 ---
 
 ## Features as Directions

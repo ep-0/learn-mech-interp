@@ -17,6 +17,20 @@ glossary:
     definition: "The Pareto frontier between a model's pretraining loss and the size of the circuits needed to explain its behavior. Increasing weight sparsity moves a model along the frontier; increasing total parameter count moves the frontier itself outward."
   - term: "Bridge (sparse-dense)"
     definition: "An encoder-decoder pair, trained per sublayer, that translates between a weight-sparse model's activations and those of a dense model trained alongside it, allowing an interpretable perturbation found in the sparse model to be applied to the dense one."
+
+furtherReading:
+  - title: "Gao et al., *Weight-Sparse Transformers Have Interpretable Circuits*"
+    url: "https://arxiv.org/abs/2511.13653"
+    note: "The full paper with the capability-interpretability frontier and the bridge construction."
+  - title: "Elhage et al., *Softmax Linear Units*"
+    url: "https://transformer-circuits.pub/2022/solu/index.html"
+    note: "The earlier architectural attempt at interpretability-by-construction, and an honest account of why it half-worked."
+  - title: "Frankle & Carbin, *The Lottery Ticket Hypothesis*"
+    url: "https://arxiv.org/abs/1803.03635"
+    note: "Weight sparsity from the efficiency literature, which supplies most of the training machinery."
+  - title: "Hubinger, *Chris Olah's Views on AGI Safety*"
+    url: "https://www.alignmentforum.org/posts/X2i9dQQK3gETCyqh2/chris-olah-s-views-on-agi-safety"
+    note: "The argument for building models to be interpretable rather than interpreting the ones we have. The strategic case this article's technique serves."
 ---
 
 ## Interpretability as a Training Constraint

@@ -11,6 +11,20 @@ glossary:
     definition: "An interpretability technique that decomposes a model's output logits into additive contributions from each component (attention heads and MLP layers) by projecting their residual stream writes onto the unembedding direction for a token of interest."
   - term: "MLP Layer"
     definition: "The feedforward sublayer in a transformer block, consisting of two linear projections with a nonlinearity between them. MLP layers process each token position independently and are believed to store factual knowledge and perform feature transformations."
+
+furtherReading:
+  - title: "Wang et al., *Interpretability in the Wild*"
+    url: "https://arxiv.org/abs/2211.00593"
+    note: "DLA used as one step in a full investigation, which shows how much weight it can and cannot carry."
+  - title: "nostalgebraist, *the logit lens*, and Neel Nanda's *Exploratory Analysis Demo*"
+    url: "https://www.neelnanda.io/mechanistic-interpretability/exploratory-analysis-demo"
+    note: "DLA implemented and run against a live model, with the residual-stream decomposition made concrete in code."
+  - title: "Belrose et al., *LEACE*"
+    url: "https://arxiv.org/abs/2306.03819"
+    note: "Read the geometry only. It clarifies what projecting onto a logit-difference direction does and does not remove, which bears directly on how to read a DLA number."
+  - title: "Makelov, Lange & Nanda, *Is This the Subspace You Are Looking For?*"
+    url: "https://arxiv.org/abs/2311.17030"
+    note: "Interpretability illusions from subspace-based readouts. DLA picks a direction and reads along it, which is exactly the setup this paper stress-tests."
 ---
 
 ## Additive Writes Become Logit Contributions

@@ -225,6 +225,26 @@ function validate() {
       if (!data.title) errors.push(`${topic.slug}: missing 'title' in frontmatter`);
       if (!data.description) errors.push(`${topic.slug}: missing 'description' in frontmatter`);
       if (data.order == null) errors.push(`${topic.slug}: missing 'order' in frontmatter`);
+      // Further reading is the article's "where to go deeper" list. A published
+      // article without one is a gap, and an entry without a note is a bare
+      // citation that does not say what it adds.
+      if (data.status == null) {
+        if (!Array.isArray(data.furtherReading) || data.furtherReading.length === 0) {
+          if (topic.slug !== "mi-prerequisites") {
+            errors.push(`${topic.slug}: published article has no 'furtherReading'`);
+          }
+        }
+      } else if (data.furtherReading) {
+        errors.push(`${topic.slug}: placeholders carry sources in the brief, not 'furtherReading'`);
+      }
+      for (const item of data.furtherReading || []) {
+        if (!item.title) errors.push(`${topic.slug}: a furtherReading entry has no title`);
+        if (!item.note) errors.push(`${topic.slug}: furtherReading "${item.title}" has no note saying what it adds`);
+        if (item.url && !/^https?:\/\//.test(item.url)) {
+          errors.push(`${topic.slug}: furtherReading "${item.title}" has a non-absolute url "${item.url}"`);
+        }
+      }
+
       if (data.status != null && data.status !== "placeholder") {
         errors.push(`${topic.slug}: 'status' must be "placeholder" or omitted, got "${data.status}"`);
       }

@@ -8,6 +8,17 @@ prerequisites:
 glossary:
   - term: "Depth Schedule"
     definition: "A function assigning a per-layer steering weight across all layers of a model, distributing the intervention across depth rather than concentrating it at a single layer."
+
+furtherReading:
+  - title: "Zou et al., *Representation Engineering*"
+    url: "https://arxiv.org/abs/2310.01405"
+    note: "Multi-layer control as originally proposed, before the later work on schedules."
+  - title: "Tan et al., *Analysing the Generalisation and Reliability of Steering Vectors*"
+    url: "https://arxiv.org/abs/2407.12404"
+    note: "The reliability question that distributing across layers is meant to address, measured directly."
+  - title: "Wu et al., *ReFT*"
+    url: "https://arxiv.org/abs/2404.03592"
+    note: "Learned interventions at multiple sites, which is where fixed depth schedules end up going."
 ---
 
 ## The Single-Layer Bottleneck

@@ -12,6 +12,17 @@ prerequisites:
 glossary:
   - term: "Transcoder"
     definition: "A sparse autoencoder variant applied to MLP layers that maps from MLP inputs to MLP outputs, learning interpretable features that describe what transformations the MLP performs rather than what it represents."
+
+furtherReading:
+  - title: "Dunefsky, Chlenski & Nanda, *Transcoders Find Interpretable LLM Feature Circuits*"
+    url: "https://arxiv.org/abs/2406.11944"
+    note: "The full method with the circuit analyses that motivate it."
+  - title: "Ameisen et al., *Circuit Tracing: Revealing Computational Graphs in Language Models*"
+    url: "https://transformer-circuits.pub/2025/attribution-graphs/methods.html"
+    note: "Cross-layer transcoders, which generalize the single-MLP version described here and are what current attribution graphs are built on."
+  - title: "Marks et al., *Sparse Feature Circuits*"
+    url: "https://arxiv.org/abs/2403.19647"
+    note: "The competing approach using SAEs plus linear approximations, and a fair basis for judging what transcoders add."
 ---
 
 ## The MLP Problem

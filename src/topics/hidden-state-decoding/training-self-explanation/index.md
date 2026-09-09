@@ -9,6 +9,16 @@ prerequisites:
 glossary:
   - term: "Introspection Adapter"
     definition: "A shared lightweight adapter trained across model organisms with known implanted behaviors, then used to elicit behavioral self-reports from held-out fine-tunes."
+
+furtherReading:
+  - title: "Li et al., *Training Language Models to Explain Their Own Computations*"
+    url: "https://arxiv.org/abs/2511.08579"
+    note: "The full method and the transfer results, including which explanation types survive being moved to a held-out model."
+  - title: "Bills et al., *Language Models Can Explain Neurons in Language Models*"
+    url: "https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html"
+    note: "The untrained baseline this line of work is trying to beat, with its scoring protocol."
+  - title: "Hubinger, *Chris Olah's Views on AGI Safety*"
+    note: "Optional. For the argument about why training a model to explain itself is a different kind of evidence from reading it yourself."
 ---
 
 ## Beyond Zero-Shot Interpretation

@@ -20,6 +20,20 @@ glossary:
     definition: "The attributed contribution of one attention head to an edge between two features, separating a cross-token graph edge into the heads that carried it."
   - term: "QK Attribution"
     definition: "A decomposition of a pre-softmax attention score into contributions from pairs of query-side and key-side features, plus bias and reconstruction-error terms."
+
+furtherReading:
+  - title: "Ameisen et al., *Circuit Tracing: Revealing Computational Graphs in Language Models*"
+    url: "https://transformer-circuits.pub/2025/attribution-graphs/methods.html"
+    note: "The methods paper in full, including the replacement-model construction and the error nodes this article mentions only briefly."
+  - title: "Lindsey et al., *On the Biology of a Large Language Model*"
+    url: "https://transformer-circuits.pub/2025/attribution-graphs/biology.html"
+    note: "The companion case studies. Read at least the planning and multilingual sections; they show what the method produces at its best."
+  - title: "Marks et al., *Sparse Feature Circuits*"
+    url: "https://arxiv.org/abs/2403.19647"
+    note: "The SAE-based approach, plus the SHIFT application that removes a spurious feature from a classifier."
+  - title: "Anthropic, *Open-sourcing circuit tracing tools*"
+    url: "https://www.anthropic.com/research/open-source-circuit-tracing"
+    note: "The tooling, so you can build an attribution graph yourself rather than reading someone else's."
 ---
 
 ## From Head-Level to Feature-Level Circuits
