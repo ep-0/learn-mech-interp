@@ -10,6 +10,20 @@ prerequisites:
 glossary:
   - term: "Mechanistic Interpretability"
     definition: "A subfield of AI safety research focused on reverse-engineering the internal computations of neural networks to understand how they process information and produce outputs, moving beyond behavioral analysis to study the mechanisms themselves."
+
+furtherReading:
+  - title: "Olah et al., *Zoom In: An Introduction to Circuits*"
+    url: "https://distill.pub/2020/circuits/zoom-in/"
+    note: "The founding statement of the three claims, in vision. The original is more careful about what counts as evidence than most summaries of it."
+  - title: "Sharkey et al., *Open Problems in Mechanistic Interpretability*"
+    url: "https://arxiv.org/abs/2501.16496"
+    note: "A field-wide agenda from many authors. The most efficient way to see what is unsolved rather than what is settled."
+  - title: "Saphra & Wiegreffe, *Mechanistic?*"
+    url: "https://arxiv.org/abs/2410.09087"
+    note: "The word means at least four different things, and conflating them causes arguments. Worth reading early, because this article uses the broad sense."
+  - title: "Lipton, *The Mythos of Model Interpretability*"
+    url: "https://arxiv.org/abs/1606.03490"
+    note: "Predates the field and still cuts. Read it for the discipline of saying what an interpretability claim is actually for."
 ---
 
 ## Why Study Neural Network Internals?

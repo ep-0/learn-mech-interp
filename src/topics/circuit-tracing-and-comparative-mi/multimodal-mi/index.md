@@ -9,6 +9,20 @@ prerequisites:
 glossary:
   - term: "Multimodal Interpretability"
     definition: "The application of mechanistic interpretability techniques to models that process multiple input modalities (such as vision and language), investigating how representations are shared or transformed across modalities."
+
+furtherReading:
+  - title: "Gandelsman, Efros & Steinhardt, *Interpreting CLIP's Image Representation via Text-Based Decomposition*"
+    url: "https://arxiv.org/abs/2310.05916"
+    note: "Head-level decomposition in CLIP with text labels, the clearest transfer of transformer-circuit methods to vision."
+  - title: "Palit et al., *Towards Vision-Language Mechanistic Interpretability* and Basu et al., *Understanding Information Storage in Vision-Language Models*"
+    url: "https://arxiv.org/abs/2406.04236"
+    note: "Causal tracing carried into VLMs, including where the text-model intuitions fail."
+  - title: "Olah et al., *Multimodal Neurons in Artificial Neural Networks*"
+    url: "https://distill.pub/2021/multimodal-neurons/"
+    note: "The original multimodal-neuron result, and still the most vivid demonstration of modality-independent features."
+  - title: "Toker et al., *Diffusion Lens*"
+    url: "https://arxiv.org/abs/2403.05846"
+    note: "Interpretability inside the diffusion text encoder, which is the least-covered part of this article."
 ---
 
 ## Beyond Text

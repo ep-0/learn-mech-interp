@@ -9,6 +9,20 @@ prerequisites:
 glossary:
   - term: "Persona Vector"
     definition: "A contrastive activation direction constructed to represent a named behavioral trait, using responses elicited by opposing trait-conditioned prompts."
+
+furtherReading:
+  - title: "Rimsky et al., *Steering Llama 2 via Contrastive Activation Addition*"
+    url: "https://arxiv.org/abs/2312.06681"
+    note: "The full evaluation across behaviors and layers, including the failures."
+  - title: "Chen et al., *Persona Vectors: Monitoring and Controlling Character Traits in Language Models*"
+    url: "https://arxiv.org/abs/2507.21509"
+    note: "The automated contrast-set pipeline, which is what makes CAA usable without hand-writing pairs."
+  - title: "Tan et al., *Analysing the Generalisation and Reliability of Steering Vectors*"
+    url: "https://arxiv.org/abs/2407.12404"
+    note: "Steering vectors work far less reliably out of distribution than the headline results suggest. The most important corrective to this article."
+  - title: "Im & Li, *A Unified Understanding and Evaluation of Steering Methods*"
+    url: "https://arxiv.org/abs/2502.02716"
+    note: "Contrastive, probe-derived, and optimized directions compared under one protocol."
 ---
 
 ## From Single Pairs to Robust Directions

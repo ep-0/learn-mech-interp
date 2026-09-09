@@ -23,6 +23,20 @@ glossary:
     definition: "The vector produced by applying the query weight matrix (W_Q) to a token's representation. Query vectors are compared against key vectors to compute attention scores that determine how much each position attends to others."
   - term: "Value Vector"
     definition: "The vector produced by applying the value weight matrix (W_V) to a token's representation. Value vectors carry the content information that gets written to the residual stream, weighted by the attention pattern."
+
+furtherReading:
+  - title: "Elhage et al., *A Mathematical Framework for Transformer Circuits*"
+    url: "https://transformer-circuits.pub/2021/framework/index.html"
+    note: "Attention rewritten so that the QK and OV circuits fall out of the algebra. This article's per-head presentation is the same computation in a form that hides the factorization."
+  - title: "Dao et al., *FlashAttention*"
+    url: "https://arxiv.org/abs/2205.14135"
+    note: "How attention is actually computed on hardware. Relevant because it changes what a hook can see and what an activation cache costs."
+  - title: "Xiao et al., *Efficient Streaming Language Models with Attention Sinks*"
+    url: "https://arxiv.org/abs/2309.17453"
+    note: "Attention sinks, where a large fraction of attention mass lands on the first token. A pervasive real-model phenomenon this article does not mention, and one that will confuse your first attention-pattern plots."
+  - title: "Bloem, *Transformers from Scratch*"
+    url: "https://peterbloem.nl/blog/transformers"
+    note: "A careful independent exposition. Reading a second account of attention is worth more than rereading this one."
 ---
 
 ## Why Attention?

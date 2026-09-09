@@ -12,6 +12,20 @@ prerequisites:
 glossary:
   - term: "Sleeper Agent"
     definition: "A model with a hidden backdoor that behaves normally under standard conditions but activates harmful behavior when a specific trigger is present. Detecting sleeper agents is a motivating application of MI for safety."
+
+furtherReading:
+  - title: "Hubinger et al., *Sleeper Agents: Training Deceptive LLMs That Persist Through Safety Training*"
+    url: "https://arxiv.org/abs/2401.05566"
+    note: "The model organisms in full, including which safety training was tried and why it failed."
+  - title: "MacDiarmid et al., *Simple Probes Can Catch Sleeper Agents*"
+    url: "https://www.anthropic.com/research/probes-catch-sleeper-agents"
+    note: "The detection result with the probe construction, which is simpler than most readers expect."
+  - title: "Hubinger et al., *Risks from Learned Optimization*"
+    url: "https://arxiv.org/abs/1906.01820"
+    note: "The threat model that motivates the whole line: deceptive alignment as a predicted failure rather than an engineered one."
+  - title: "Anthropic, *Auditing Language Models for Hidden Objectives*"
+    url: "https://arxiv.org/abs/2503.10965"
+    note: "A model organism the detector was not built against, evaluated blind. Closer to the real test than a known backdoor."
 ---
 
 ## The Sleeper Agent Threat

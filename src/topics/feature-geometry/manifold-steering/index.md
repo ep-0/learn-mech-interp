@@ -17,6 +17,17 @@ glossary:
     definition: "A low-dimensional structure fit to the model's natural output distributions for a task, used to describe which behavioral transitions resemble unintervened model behavior."
   - term: "Scaled Isometry"
     definition: "A correspondence between two spaces that approximately preserves distances up to one common scale factor. Here it describes similar geodesic distance relationships in activation and behavior manifolds."
+
+furtherReading:
+  - title: "Tan et al., *Analysing the Generalisation and Reliability of Steering Vectors*"
+    url: "https://arxiv.org/abs/2407.12404"
+    note: "The linear baseline's actual reliability, which is what a curved method has to beat."
+  - title: "Bronstein et al., *Geometric Deep Learning*"
+    url: "https://arxiv.org/abs/2104.13478"
+    note: "The geometry vocabulary used here, stated properly: metrics, geodesics, and why the choice of metric is a modeling decision."
+  - title: "Shao et al., *The Riemannian Geometry of Deep Generative Models*"
+    url: "https://arxiv.org/abs/1711.08014"
+    note: "Pulling a metric back through a decoder, which is the technique that makes 'the manifold's own geometry' computable."
 ---
 
 ## Straight Lines Can Take Shortcuts Through the Wrong Place

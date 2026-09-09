@@ -9,6 +9,20 @@ prerequisites:
 glossary:
   - term: "EAP-IG"
     definition: "Edge Attribution Patching with Integrated Gradients. Replaces the single gradient evaluation in EAP with an average of gradients along the interpolation path from corrupted to clean activations, fixing zero-gradient failures and improving circuit faithfulness."
+
+furtherReading:
+  - title: "Kramár, Lieberum, Shah & Nanda, *AtP*: An Efficient and Scalable Method for Localizing LLM Behaviour to Components*"
+    url: "https://arxiv.org/abs/2403.00745"
+    note: "The failure modes diagnosed and fixed, with the diagnostics that tell you when plain attribution patching is safe."
+  - title: "Hanna, Pezzelle & Belinkov, *Have Faith in Faithfulness*"
+    url: "https://arxiv.org/abs/2403.17806"
+    note: "EAP-IG, and a careful treatment of what faithfulness means for an attribution-derived circuit."
+  - title: "Miglani et al., *Investigating Saturation Effects in Integrated Gradients*"
+    url: "https://arxiv.org/abs/2010.12697"
+    note: "Saturation from the attribution literature's own perspective, which predates its rediscovery here."
+  - title: "Bilodeau et al., *Impossibility Theorems for Feature Attribution*"
+    url: "https://arxiv.org/abs/2212.11870"
+    note: "Formal limits on what any gradient-based attribution can guarantee. Sobering, and not addressed in this article."
 ---
 
 ## When Gradients Mislead

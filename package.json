@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "eleventy",
-    "start": "eleventy --serve"
+    "start": "eleventy --serve",
+    "check-links": "node scripts/check-links.mjs"
   },
   "keywords": [
     "mechanistic-interpretability",

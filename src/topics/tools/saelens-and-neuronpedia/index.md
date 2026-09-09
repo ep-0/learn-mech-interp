@@ -8,6 +8,20 @@ prerequisites:
     url: "/topics/sparse-autoencoders/"
   - title: "TransformerLens"
     url: "/topics/transformerlens/"
+
+furtherReading:
+  - title: "The SAE Lens documentation and training tutorials"
+    url: "https://jbloomaus.github.io/SAELens/"
+    note: "Training an SAE end to end, including the evaluation metrics the library reports and what they mean."
+  - title: "Lieberum et al., *Gemma Scope*"
+    url: "https://arxiv.org/abs/2408.05147"
+    note: "The open SAE suite most tutorials build on, with the training details and the coverage across layers."
+  - title: "Neuronpedia's documentation and API"
+    url: "https://www.neuronpedia.org/"
+    note: "Programmatic access, so features can be pulled into your own analysis rather than only browsed."
+  - title: "Karvonen et al., *SAEBench*"
+    url: "https://arxiv.org/abs/2503.09532"
+    note: "How to tell whether the SAE you just trained is any good, which the training tutorials do not answer."
 ---
 
 ## The SAE Workflow Gap

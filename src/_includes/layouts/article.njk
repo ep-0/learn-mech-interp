@@ -46,6 +46,21 @@ layout: layouts/base.njk
   <div class="article-content-wrapper">
     <div class="article-body" data-pagefind-body>
       {{ content | safe }}
+
+      {% if furtherReading and furtherReading.length %}
+      <section class="further-reading" aria-labelledby="further-reading-heading">
+        <h2 id="further-reading-heading">Further Reading</h2>
+        <p class="further-reading-intro">Where to go for depth this article does not have room for, and for the parts of the topic it leaves out.</p>
+        <ul class="further-reading-list">
+          {% for item in furtherReading %}
+          <li>
+            <span class="further-reading-title">{% if item.url %}<a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.title | mdInline | safe }}</a>{% else %}{{ item.title | mdInline | safe }}{% endif %}</span>
+            <span class="further-reading-note">{{ item.note | mdInline | safe }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
     </div>
 
     {% if status != "placeholder" %}

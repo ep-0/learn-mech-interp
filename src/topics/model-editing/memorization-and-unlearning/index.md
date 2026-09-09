@@ -16,6 +16,20 @@ glossary:
     definition: "The change in a model's prediction on an example caused by including that example in training, estimated by comparing training runs that include or omit it."
   - term: "Machine Unlearning"
     definition: "Modifying a trained model so that specified training data no longer influences it, while preserving behavior and capabilities unrelated to the removal target."
+
+furtherReading:
+  - title: "Carlini et al., *Quantifying Memorization Across Neural Language Models*"
+    url: "https://arxiv.org/abs/2202.07646"
+    note: "The scaling relationships in full, with the extraction methodology."
+  - title: "Nasr et al., *Scalable Extraction of Training Data from (Production) Language Models*"
+    url: "https://arxiv.org/abs/2311.17035"
+    note: "Extraction against deployed models, including the divergence attack. The strongest evidence that suppression is not removal."
+  - title: "Shi et al., *MUSE: Machine Unlearning Six-Way Evaluation*"
+    url: "https://arxiv.org/abs/2407.06460"
+    note: "A benchmark that separates the several things 'unlearning' can mean, which this article argues is the central confusion."
+  - title: "Łucki et al., *An Adversarial Perspective on Machine Unlearning for AI Safety*"
+    url: "https://arxiv.org/abs/2409.18025"
+    note: "Unlearned capabilities recovered by fine-tuning and by orthogonalization. Read it as the stress test any unlearning claim must survive."
 ---
 
 ## Removing a Passage Is Harder Than Hiding It

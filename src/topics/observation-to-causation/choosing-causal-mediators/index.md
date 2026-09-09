@@ -10,6 +10,17 @@ glossary:
     definition: "An intermediate model component or learned feature treated as a causal unit between an input and an output, such as a neuron, attention head, activation vector, or subspace."
   - term: "Selectivity"
     definition: "The extent to which an intervention changes the target phenomenon while preserving other behaviors or attributes that the proposed mediator should not control."
+
+furtherReading:
+  - title: "Mueller et al., *The Quest for the Right Mediator*"
+    url: "https://arxiv.org/abs/2408.01416"
+    note: "The survey this article condenses. Its taxonomy of mediators against research questions is worth having in full."
+  - title: "Huang et al., *RAVEL: Evaluating Interpretability Methods on Disentangling Language Model Representations*"
+    url: "https://arxiv.org/abs/2402.17700"
+    note: "A benchmark that makes 'this mediator isolates the right thing' measurable instead of argued."
+  - title: "Geiger et al., *Finding Alignments Between Interpretable Causal Variables and Distributed Neural Representations*"
+    url: "https://arxiv.org/abs/2303.02536"
+    note: "Learned subspaces as mediators, and the search procedure that finds them."
 ---
 
 ## The Unit Changes the Claim

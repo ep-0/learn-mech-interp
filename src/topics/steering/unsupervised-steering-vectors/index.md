@@ -11,6 +11,20 @@ prerequisites:
 glossary:
   - term: "MELBO"
     definition: "Mechanistically Eliciting Latent Behaviors in language mOdels. An unsupervised method that discovers steering vectors by optimizing perturbations at an early layer to maximize activation change at a later layer, requiring no labeled examples or contrast pairs."
+
+furtherReading:
+  - title: "Mack & Turner, *Mechanistically Eliciting Latent Behaviors in Language Models*"
+    url: "https://www.alignmentforum.org/posts/ioPnHKFyy4Cw2Gr2x/mechanistically-eliciting-latent-behaviors-in-language"
+    note: "The full MELBO write-up with the discovered behaviors and the hyperparameter sensitivity."
+  - title: "Subramani, Suresh & Peters, *Extracting Latent Steering Vectors from Pretrained Language Models*"
+    url: "https://arxiv.org/abs/2205.05124"
+    note: "Optimization-based extraction with a target sentence, the supervised counterpart to MELBO's objective."
+  - title: "Bricken et al., *Using Dictionary Learning Features as Classifiers*"
+    url: "https://transformer-circuits.pub/2024/features-as-classifiers/index.html"
+    note: "An alternative route to behaviors nobody specified in advance, worth comparing against optimization-based discovery."
+  - title: "Anthropic, *Auditing Language Models for Hidden Objectives*"
+    url: "https://arxiv.org/abs/2503.10965"
+    note: "Unsupervised discovery evaluated in an adversarial audit, which is the setting that makes the specification problem concrete."
 ---
 
 ## The Specification Problem

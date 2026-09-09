@@ -11,6 +11,20 @@ prerequisites:
 glossary:
   - term: "Function Vector"
     definition: "A direction in activation space that encodes an input-output function (such as 'translate English to French' or 'convert to past tense') rather than a static concept, enabling task transfer when added to unrelated prompts."
+
+furtherReading:
+  - title: "Todd et al., *Function Vectors in Large Language Models*"
+    url: "https://arxiv.org/abs/2310.15213"
+    note: "The full extraction procedure, the causal tests, and the composition experiments."
+  - title: "Hendel, Geva & Globerson, *In-Context Learning Creates Task Vectors*"
+    url: "https://arxiv.org/abs/2310.15916"
+    note: "The same phenomenon found independently with a different method. Reading both is the cheapest way to see what is robust."
+  - title: "Ilharco et al., *Editing Models with Task Arithmetic*"
+    url: "https://arxiv.org/abs/2212.04089"
+    note: "Task vectors in weight space rather than activation space. Not covered here, and the parallel is instructive."
+  - title: "Yin & Steinhardt, *Which Attention Heads Matter for In-Context Learning?*"
+    url: "https://arxiv.org/abs/2502.14010"
+    note: "Function-vector heads and induction heads compared directly, which bears on what mechanism actually drives in-context learning."
 ---
 
 ## From Engineered to Natural Directions

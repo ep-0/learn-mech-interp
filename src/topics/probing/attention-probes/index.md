@@ -9,6 +9,16 @@ prerequisites:
 glossary:
   - term: "Attention Probe"
     definition: "A probing classifier that uses a learned attention mechanism to aggregate per-token hidden states into a single representation for classification, replacing fixed pooling strategies like mean pooling or last-token selection."
+
+furtherReading:
+  - title: "Kim & Kim, *Attention-Based Probes* and the mean-pooling baselines they replace"
+    note: "Read whichever attention-probe paper the article cites alongside a simple mean-pooling baseline implemented yourself; the gap is smaller than expected on many tasks."
+  - title: "Hewitt & Liang, *Control Tasks*"
+    url: "https://arxiv.org/abs/1909.03368"
+    note: "An attention probe has more capacity than a linear one, so selectivity matters more here, not less."
+  - title: "Lindsey et al., *On the Biology of a Large Language Model*"
+    url: "https://transformer-circuits.pub/2025/attribution-graphs/biology.html"
+    note: "For the contrast: what it looks like when position-specific information is traced mechanistically rather than learned by a probe."
 ---
 
 ## The Aggregation Problem

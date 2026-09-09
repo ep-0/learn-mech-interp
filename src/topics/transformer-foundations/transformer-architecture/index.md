@@ -10,6 +10,20 @@ prerequisites:
 glossary:
   - term: "Residual Stream"
     definition: "The central communication channel in a transformer, implemented as skip connections that allow each layer's output to be added to a running sum. All attention heads and MLP layers read from and write to this shared stream."
+
+furtherReading:
+  - title: "Vaswani et al., *Attention Is All You Need*"
+    url: "https://arxiv.org/abs/1706.03762"
+    note: "The original, worth reading once for the encoder-decoder framing this article omits. Everything here is the decoder half."
+  - title: "Alexander Rush, *The Annotated Transformer*"
+    url: "https://nlp.seas.harvard.edu/annotated-transformer/"
+    note: "The paper reimplemented line by line. The fastest way to close the gap between reading the architecture and being able to write it."
+  - title: "Andrej Karpathy, *Let's build GPT: from scratch, in code, spelled out*"
+    url: "https://www.youtube.com/watch?v=kCc8FmEb1nY"
+    note: "Two hours, and it covers the training loop and data pipeline this article treats as given."
+  - title: "Elhage et al., *A Mathematical Framework for Transformer Circuits*"
+    url: "https://transformer-circuits.pub/2021/framework/index.html"
+    note: "Read the 'Transformer Overview' section now for the notation the rest of the curriculum uses. The circuit results will not land until later."
 ---
 
 ## What Does an LLM Actually Do?

@@ -13,6 +13,19 @@ glossary:
     definition: "An unsupervised probing method that identifies truth directions in activation space without labeled data, by learning a probe whose outputs on a statement and its negation are consistent (summing to one) and confident (away from 0.5)."
   - term: "Inference-Time Intervention (ITI)"
     definition: "A technique that improves model truthfulness at inference time by shifting activations along truth-correlated directions identified via probing, implementing a probe-then-steer pipeline."
+
+furtherReading:
+  - title: "Burns et al., *Discovering Latent Knowledge in Language Models Without Supervision*"
+    url: "https://arxiv.org/abs/2212.03827"
+    note: "CCS in full, including the consistency objective and the ablations."
+  - title: "Farquhar et al., *Detecting Hallucinations in Large Language Models Using Semantic Entropy* (Nature, 2024)"
+    note: "Uncertainty-based hallucination detection, a different route to the same goal, and a strong baseline any truth probe should be compared against."
+  - title: "Fry, *Do Language Models Have Beliefs?* and Levinstein & Herrmann, *Still No Lie Detector for Language Models*"
+    url: "https://arxiv.org/abs/2307.00175"
+    note: "The philosophical and empirical critiques together. The second shows CCS-style probes failing to generalize in ways the original evaluation missed."
+  - title: "Li et al., *Inference-Time Intervention*"
+    url: "https://arxiv.org/abs/2306.03341"
+    note: "The move from reading truth to steering it, with the head-selection procedure spelled out."
 ---
 
 ## Can We Extract What the Model "Knows"?

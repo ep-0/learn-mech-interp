@@ -3,6 +3,20 @@ title: "Getting Started in MI Research"
 description: "A companion to Neel Nanda’s research roadmap, connecting its advice on practice, project selection, iteration, and write-ups to this curriculum."
 order: 2
 prerequisites: []
+
+furtherReading:
+  - title: "Nanda, *How to Become a Mechanistic Interpretability Researcher*"
+    url: "https://www.neelnanda.io/mechanistic-interpretability/becoming-a-researcher"
+    note: "The roadmap this article accompanies, in full."
+  - title: "Nanda, *200 Concrete Open Problems in Mechanistic Interpretability*"
+    url: "https://www.alignmentforum.org/s/yivyHaCAmMJ3CqSyj"
+    note: "A graded problem list. Picking one and failing at it publicly is the standard entry route."
+  - title: "Sharkey et al., *Open Problems in Mechanistic Interpretability*"
+    url: "https://arxiv.org/abs/2501.16496"
+    note: "The field-level agenda, useful for choosing a problem that matters rather than one that is merely tractable."
+  - title: "Hamming, *You and Your Research*"
+    url: "https://www.cs.virginia.edu/~robins/YouAndYourResearch.html"
+    note: "Not about interpretability. About choosing important problems and working on them, which is the skill this article says is hardest to teach."
 ---
 
 ## A Roadmap from Learning to Research

@@ -16,6 +16,19 @@ glossary:
     definition: "A hyperparameter that scales logits before the softmax during text generation. Temperature below 1 sharpens the distribution (more deterministic), temperature above 1 flattens it (more random), and temperature approaching 0 recovers greedy decoding."
   - term: "Nucleus Sampling (top-p)"
     definition: "A decoding strategy that samples from the smallest set of tokens whose cumulative probability exceeds a threshold p. Unlike top-k, it adapts the number of candidate tokens to the shape of the distribution, including fewer tokens when the model is confident and more when it is uncertain."
+
+furtherReading:
+  - title: "Holtzman et al., *The Curious Case of Neural Text Degeneration*"
+    url: "https://arxiv.org/abs/1904.09751"
+    note: "Where nucleus sampling comes from, and the argument that the problem is the model's distribution rather than the search."
+  - title: "Meister et al., *Locally Typical Sampling*"
+    url: "https://arxiv.org/abs/2202.00666"
+    note: "An information-theoretic alternative that targets typical rather than high-probability continuations. Not covered here, and it reframes what decoding is for."
+  - title: "Welleck et al., *Neural Text Generation with Unlikelihood Training*"
+    url: "https://arxiv.org/abs/1908.04319"
+    note: "Degeneration attacked at training time instead. Useful for separating what the objective causes from what the decoder causes."
+  - title: "Zhang et al., *Trading Off Diversity and Quality in Natural Language Generation*"
+    note: "The quality-diversity frontier that every decoding parameter moves along, made explicit and measured."
 ---
 
 ## From Logits to Text

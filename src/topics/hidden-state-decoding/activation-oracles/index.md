@@ -8,6 +8,17 @@ prerequisites:
     url: "/topics/latentqa/"
   - title: "Distribution Shift and Held-Out Evaluation"
     url: "/topics/distribution-shift-and-evaluation/"
+
+furtherReading:
+  - title: "Pan et al., *LatentQA*"
+    url: "https://arxiv.org/abs/2412.08686"
+    note: "The specialized predecessor. The interesting comparison is what breadth of training buys over a task-specific decoder."
+  - title: "Goldowsky-Dill et al., *Detecting Strategic Deception Using Linear Probes*"
+    url: "https://arxiv.org/abs/2502.03407"
+    note: "The white-box baseline an oracle has to match, evaluated carefully."
+  - title: "Anthropic, *Auditing Language Models for Hidden Objectives*"
+    url: "https://arxiv.org/abs/2503.10965"
+    note: "The auditing-game setting, which is the strongest available test of whether a general interpreter helps in practice."
 ---
 
 ## From Specialized to General-Purpose

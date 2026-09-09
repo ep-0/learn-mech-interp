@@ -12,6 +12,19 @@ glossary:
     definition: "The practice of extracting information about a model's internal state by training classifiers on its activations, used in safety contexts to detect when a model may be reasoning about deception or harmful content."
   - term: "Safety Monitor"
     definition: "A system that uses mechanistic interpretability techniques (such as probes or feature monitors) to detect potentially dangerous model behaviors at inference time, enabling intervention before harmful outputs are produced."
+
+furtherReading:
+  - title: "Anthropic, *A Framework for Sabotage Evaluations* and the sabotage-evaluation reports"
+    url: "https://arxiv.org/abs/2410.21514"
+    note: "What monitoring has to catch, specified as a threat model rather than as an accuracy number."
+  - title: "Greenblatt et al., *AI Control: Improving Safety Despite Intentional Subversion*"
+    url: "https://arxiv.org/abs/2312.06942"
+    note: "The control framing, in which monitors are one component of a protocol that must work against an adversarial model. This article does not cover it and it changes what a monitor is for."
+  - title: "Farquhar et al., *Detecting Hallucinations Using Semantic Entropy* (Nature, 2024)"
+    note: "A strong black-box baseline that any internal-state hallucination monitor should be measured against."
+  - title: "Baker et al., *Monitoring Reasoning Models for Misbehavior*"
+    url: "https://arxiv.org/abs/2503.11926"
+    note: "Chain-of-thought monitoring, and evidence that optimizing against a monitor destroys it. Directly relevant to deploying anything here."
 ---
 
 ## Beyond Detection: Understanding and Monitoring

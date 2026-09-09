@@ -13,6 +13,20 @@ glossary:
     definition: "The practice of comparing internal representations between two related models (such as a base model and a fine-tuned version) to identify which features or circuits changed, using tools like crosscoders."
   - term: "Latent Scaling"
     definition: "A diagnostic technique for crosscoders that measures how well a supposedly model-specific latent can explain activations in both models, detecting false attributions caused by L1 sparsity artifacts."
+
+furtherReading:
+  - title: "Minder et al., *Robustly Identifying Concepts Introduced During Chat Fine-Tuning Using Crosscoders*"
+    url: "https://arxiv.org/abs/2504.02922"
+    note: "The full treatment of sparsity artifacts, latent scaling, and BatchTopK, which is most of what makes diffing trustworthy."
+  - title: "Lindsey, Templeton et al., *Sparse Crosscoders*"
+    url: "https://transformer-circuits.pub/2024/crosscoders/index.html"
+    note: "The original proposal, including the model-diffing motivation."
+  - title: "Bricken et al., *Stage-Wise Model Diffing*"
+    url: "https://transformer-circuits.pub/2024/model-diffing/index.html"
+    note: "Diffing across training stages rather than two endpoints, which answers a question this article cannot."
+  - title: "Prakash et al., *Fine-Tuning Enhances Existing Mechanisms*"
+    url: "https://arxiv.org/abs/2402.14811"
+    note: "Evidence that fine-tuning amplifies existing circuits rather than creating new ones. Directly relevant to interpreting any exclusive feature."
 ---
 
 ## The Comparison Question

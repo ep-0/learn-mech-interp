@@ -12,6 +12,19 @@ glossary:
     definition: "An interpretation of feed-forward layers where each neuron in the hidden layer has a key vector (a column of the input projection) that matches input patterns and a value vector (a row of the output projection) that promotes specific tokens or concepts in the output vocabulary."
   - term: "Knowledge Neuron"
     definition: "An MLP neuron whose activation is causally linked to the expression of a specific factual association, such that suppressing it degrades and amplifying it strengthens the model's recall of that fact."
+
+furtherReading:
+  - title: "Geva et al., *Transformer Feed-Forward Layers Are Key-Value Memories* (EMNLP 2021)"
+    note: "The full evidence for the key-value reading, including the experiments this article summarizes in a sentence."
+  - title: "Shazeer, *GLU Variants Improve Transformer*"
+    url: "https://arxiv.org/abs/2002.05202"
+    note: "Gated MLPs, which is what current models actually use. The two-matrix picture here is a generation out of date, and the gating changes how you read a neuron."
+  - title: "Elhage et al., *Softmax Linear Units*"
+    url: "https://transformer-circuits.pub/2022/solu/index.html"
+    note: "An architectural attempt to make MLP neurons interpretable, and an honest account of why it only partly worked. The best single argument that polysemanticity is not an artifact of bad analysis."
+  - title: "Nanda et al., *Fact Finding: Attempting to Reverse-Engineer Factual Recall*"
+    url: "https://www.alignmentforum.org/posts/iGuwZTHWb6DFY3sKB/fact-finding-attempting-to-reverse-engineer-factual-recall"
+    note: "A serious attempt at the factual-recall story that ends in substantial negative results. Read it against the pipeline account given here."
 ---
 
 ## The Other Half of the Transformer

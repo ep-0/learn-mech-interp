@@ -15,6 +15,20 @@ glossary:
     definition: "The property of a single neuron responding to multiple unrelated concepts. Polysemanticity is a consequence of superposition, where models encode more features than they have neurons by sharing neurons across features."
   - term: "Superposition"
     definition: "The phenomenon where neural networks represent more features than they have dimensions by encoding features as nearly orthogonal directions in activation space, allowing models to store more concepts than their parameter count would naively permit."
+
+furtherReading:
+  - title: "Elhage et al., *Toy Models of Superposition*"
+    url: "https://transformer-circuits.pub/2022/toy_model/index.html"
+    note: "The whole paper, including the phase diagrams and the geometry sections. It rewards being read with the code open."
+  - title: "Scherlis et al., *Polysemanticity and Capacity in Neural Networks*"
+    url: "https://arxiv.org/abs/2210.01892"
+    note: "Capacity as a continuous resource allocated across features, which sharpens the toy model's discrete phases."
+  - title: "Henighan et al., *Superposition, Memorization, and Double Descent*"
+    url: "https://transformer-circuits.pub/2023/toy-double-descent/index.html"
+    note: "Superposition connected to memorization and to double descent, which links the hypothesis to mainstream learning theory."
+  - title: "Vaintrob, Mendel & Hänni, *Toward A Mathematical Framework for Computation in Superposition*"
+    url: "https://www.alignmentforum.org/posts/2roZtSr5TGmLjXMnT/toward-a-mathematical-framework-for-computation-in"
+    note: "Superposition in the computation rather than only in the representation, which is the harder and less-covered half of the problem."
 ---
 
 ## The Fundamental Tension

@@ -9,6 +9,20 @@ prerequisites:
 glossary:
   - term: "Activation Difference Lens"
     definition: "A model diffing technique that interprets the average activation difference between a finetuned model and its base model on early tokens of unrelated text, using tools like Patchscope and steering to reveal information about the finetuning domain."
+
+furtherReading:
+  - title: "Betley et al., *Emergent Misalignment*"
+    url: "https://arxiv.org/abs/2502.17424"
+    note: "The phenomenon that makes training-data provenance a safety question rather than a curiosity."
+  - title: "Prakash et al., *Fine-Tuning Enhances Existing Mechanisms*"
+    url: "https://arxiv.org/abs/2402.14811"
+    note: "The mechanistic account of what fine-tuning does to circuits, which explains why traces exist."
+  - title: "Shi et al., *Detecting Pretraining Data from Large Language Models*"
+    url: "https://arxiv.org/abs/2310.16789"
+    note: "Membership inference as the black-box counterpart to activation traces, and a useful baseline."
+  - title: "Anthropic, *Auditing Language Models for Hidden Objectives*"
+    url: "https://arxiv.org/abs/2503.10965"
+    note: "Traces used inside an actual audit, with the blind-team methodology that tests whether they help."
 ---
 
 ## Can You Tell What a Model Was Trained On?

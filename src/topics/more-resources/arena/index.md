@@ -7,6 +7,17 @@ prerequisites:
     url: "/topics/pytorch-and-computation-graphs/"
   - title: "Reading and Running Research Code"
     url: "/topics/working-with-research-code/"
+
+furtherReading:
+  - title: "The ARENA curriculum"
+    url: "https://arena-chapter1-transformer-interp.streamlit.app/"
+    note: "The chapters themselves. Chapter 1 is the interpretability material; the others cover RL and evaluations."
+  - title: "Nanda, *Concrete Steps to Get Started in Transformer Mechanistic Interpretability*"
+    url: "https://www.neelnanda.io/mechanistic-interpretability/getting-started"
+    note: "The complementary reading path, which ARENA's exercises assume you are following."
+  - title: "Nanda's *200 Concrete Open Problems in Mechanistic Interpretability*"
+    url: "https://www.alignmentforum.org/s/yivyHaCAmMJ3CqSyj"
+    note: "Where to go once the exercises stop being hard. The problems are graded by difficulty and most are still open."
 ---
 
 ## What is ARENA?

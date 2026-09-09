@@ -17,6 +17,18 @@ glossary:
     definition: "The learned linear map from the final residual representation to vocabulary logits. Each vocabulary token has an output direction, and a subsequent softmax converts the logits into probabilities."
   - term: "Weight Tying"
     definition: "Sharing parameters between the input embedding matrix and the output unembedding matrix, usually by setting the unembedding to the transpose of the embedding matrix."
+
+furtherReading:
+  - title: "Jurafsky & Martin, *Speech and Language Processing* (3rd ed.), the vector semantics chapter"
+    url: "https://web.stanford.edu/~jurafsky/slp3/"
+    note: "The static word-embedding tradition this article compresses into a paragraph, including the analogy results and how they were measured."
+  - title: "Ethayarajh, *How Contextual are Contextualized Word Representations?* (EMNLP 2019)"
+    note: "Anisotropy: contextual embeddings occupy a narrow cone, which distorts every cosine similarity computed on them. This article does not mention it, and it affects most similarity claims you will read."
+  - title: "Gurnee & Tegmark, *Language Models Represent Space and Time*"
+    url: "https://arxiv.org/abs/2310.02207"
+    note: "Structure recoverable from embeddings and early layers, and a concrete example of the probing methodology applied to representation content."
+  - title: "Cancedda, *Spectral Filters, Dark Signals, and Attention Sinks*"
+    note: "The high-norm outlier dimensions of real embedding matrices, which are invisible in the idealized picture here and matter when you compute with them."
 ---
 
 ## From an Integer to a Model State

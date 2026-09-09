@@ -15,6 +15,20 @@ glossary:
     definition: "A linearized approximation of activation patching that uses gradients to estimate the causal effect of patching each component, making it computationally feasible to scan all components in a single forward and backward pass."
   - term: "Path Patching"
     definition: "A refined variant of activation patching that isolates the effect of a specific computational path between two components, controlling for all other paths. This enables precise attribution of behavior to individual connections in a circuit."
+
+furtherReading:
+  - title: "Nanda, *Attribution Patching: Activation Patching at Industrial Scale*"
+    url: "https://www.neelnanda.io/mechanistic-interpretability/attribution-patching"
+    note: "The original write-up, unusually honest about where the approximation fails."
+  - title: "Conmy et al., *Towards Automated Circuit Discovery for Mechanistic Interpretability*"
+    url: "https://arxiv.org/abs/2304.14997"
+    note: "ACDC in full, including the ablation and threshold choices that decide what circuit you get."
+  - title: "Syed, Rager & Conmy, *Attribution Patching Outperforms Automated Circuit Discovery*"
+    url: "https://arxiv.org/abs/2310.10348"
+    note: "Edge attribution patching, and the comparison that made gradient methods the default for large graphs."
+  - title: "Goldowsky-Dill et al., *Localizing Model Behavior with Path Patching*"
+    url: "https://arxiv.org/abs/2304.05969"
+    note: "Path patching stated carefully, including what a path is and is not evidence for."
 ---
 
 ## The Scalability Problem

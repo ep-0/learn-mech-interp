@@ -5,6 +5,20 @@ order: 4
 prerequisites:
   - title: "Ablation Steering"
     url: "/topics/ablation-steering/"
+
+furtherReading:
+  - title: "Zou et al., *Representation Engineering*"
+    url: "https://arxiv.org/abs/2310.01405"
+    note: "The whole paper. This article is a summary of its framing, and the experiments are where the substance is."
+  - title: "Wu et al., *ReFT: Representation Finetuning for Language Models*"
+    url: "https://arxiv.org/abs/2404.03592"
+    note: "Learned interventions on representations as a parameter-efficient alternative to fine-tuning. The natural extension of control into training."
+  - title: "Zou et al., *Improving Alignment and Robustness with Circuit Breakers*"
+    url: "https://arxiv.org/abs/2406.04313"
+    note: "Representation control deployed as a defense, and the strongest current evidence that these methods survive adversarial pressure."
+  - title: "Wu et al., *AxBench*"
+    url: "https://arxiv.org/abs/2501.17148"
+    note: "A shared evaluation across the whole control family, which this article describes qualitatively."
 ---
 
 ## The Control Framework

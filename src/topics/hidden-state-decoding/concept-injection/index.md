@@ -11,6 +11,17 @@ glossary:
     definition: "A causal test for self-report that adds an activation direction associated with a known concept while a model answers a question about its internal state."
   - term: "Grounded Self-Report"
     definition: "A description of an internal state that changes when that state is intervened on, rather than following only from the prompt, prior beliefs, or sampled output."
+
+furtherReading:
+  - title: "Lindsey, *Emergent Introspective Awareness in Large Language Models*"
+    url: "https://transformer-circuits.pub/2025/introspection/index.html"
+    note: "The full set of experiments and controls, including the failure rates that the summary understates."
+  - title: "Comsa & Shanahan, *Does It Make Sense to Speak of Introspection in Large Language Models?*"
+    url: "https://arxiv.org/abs/2506.05068"
+    note: "The conceptual critique: what would have to be true for 'introspection' to be the right word. Read it alongside the empirical result."
+  - title: "Nanda et al., *Emergent Linear Representations*"
+    url: "https://arxiv.org/abs/2309.00941"
+    note: "For calibration on what injecting a known direction does and does not demonstrate."
 ---
 
 ## From Readout to Causal Test

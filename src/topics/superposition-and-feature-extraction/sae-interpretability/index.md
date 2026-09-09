@@ -11,6 +11,20 @@ glossary:
     definition: "Methods that use language models to automatically generate and score natural language explanations of what individual neurons or features represent, reducing the need for manual inspection."
   - term: "Feature Dashboard"
     definition: "A visualization tool that displays the top-activating dataset examples, logit effects, and other statistics for individual SAE features, helping researchers assess whether a feature corresponds to an interpretable concept."
+
+furtherReading:
+  - title: "Bills et al., *Language Models Can Explain Neurons in Language Models*"
+    url: "https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html"
+    note: "Automated interpretability with the explanation-scoring protocol, which is the part most later work reuses and most summaries omit."
+  - title: "Huang et al., *Rigorously Assessing Natural Language Explanations of Neurons*"
+    url: "https://arxiv.org/abs/2309.10312"
+    note: "Automated explanations evaluated properly, with the finding that high scores do not imply the explanation predicts activations."
+  - title: "Paulo et al., *Automatically Interpreting Millions of Features in Large Language Models*"
+    url: "https://arxiv.org/abs/2410.13928"
+    note: "Scaling the pipeline, plus several scoring methods compared. The practical state of the art for dashboards at scale."
+  - title: "Anthropic, *Circuits Updates* on feature visualization and interface design"
+    url: "https://transformer-circuits.pub/"
+    note: "The dashboard is an interface, and its design choices shape what interpretations occur to you. Rarely discussed and worth attention."
 ---
 
 ## What Monosemantic Features Look Like

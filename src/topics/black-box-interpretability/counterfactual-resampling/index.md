@@ -13,6 +13,20 @@ glossary:
     definition: "A black-box technique for measuring the causal importance of individual reasoning steps: delete a step from a chain-of-thought trace, regenerate from that point many times, and measure the distributional shift in final answers via KL divergence."
   - term: "Thought Anchor"
     definition: "A reasoning step with disproportionately high counterfactual importance, meaning the model's final answer distribution changes substantially when that step is removed. Plan generation and uncertainty management steps tend to be thought anchors."
+
+furtherReading:
+  - title: "Bogdan et al., *Thought Anchors: Which LLM Reasoning Steps Matter?*"
+    url: "https://arxiv.org/abs/2506.19143"
+    note: "The full method with the attention-based and attribution-based analyses this article summarizes."
+  - title: "Lanham et al., *Measuring Faithfulness in Chain-of-Thought Reasoning*"
+    url: "https://arxiv.org/abs/2307.13702"
+    note: "The truncation and perturbation tests that predate resampling, and a good comparison for what on-policy sampling adds."
+  - title: "Turpin et al., *Language Models Don't Always Say What They Think*"
+    url: "https://arxiv.org/abs/2305.04388"
+    note: "Chain-of-thought that is systematically unfaithful to the real cause of the answer. The reason this technique exists."
+  - title: "Baker et al., *Monitoring Reasoning Models for Misbehavior*"
+    url: "https://arxiv.org/abs/2503.11926"
+    note: "Chain-of-thought monitorability as a safety property, and the pressure that degrades it."
 ---
 
 ## Which Reasoning Steps Matter?

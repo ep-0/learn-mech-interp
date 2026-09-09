@@ -7,6 +7,17 @@ prerequisites:
     url: "/topics/hidden-state-decoding-intro/"
   - title: "Activation Patching"
     url: "/topics/activation-patching/"
+
+furtherReading:
+  - title: "Ghandeharioun et al., *Patchscopes*"
+    url: "https://arxiv.org/abs/2401.06102"
+    note: "The full paper, including the cross-model and multi-hop experiments and the parameterization that unifies prior methods."
+  - title: "Hernandez et al., *Inspecting and Editing Knowledge Representations in Language Models* (REMEDI)"
+    url: "https://arxiv.org/abs/2304.00740"
+    note: "Learned readouts from hidden states, an alternative to prompt engineering that this article does not cover."
+  - title: "Chen et al., *SelfIE*"
+    url: "https://arxiv.org/abs/2403.10949"
+    note: "The concurrent method with a different injection design; the differences are instructive."
 ---
 
 ## The Framework

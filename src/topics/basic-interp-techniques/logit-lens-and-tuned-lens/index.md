@@ -12,6 +12,20 @@ glossary:
     definition: "An observational technique that applies the model's unembedding matrix to intermediate residual stream states, converting hidden representations into vocabulary-space predictions to see how the model's output evolves across layers."
   - term: "Tuned Lens"
     definition: "An improvement on the logit lens that trains a learned affine transformation at each layer (rather than reusing the final unembedding matrix), producing more accurate predictions of the model's evolving computation at intermediate layers."
+
+furtherReading:
+  - title: "Belrose et al., *Eliciting Latent Predictions from Transformers with the Tuned Lens*"
+    url: "https://arxiv.org/abs/2303.08112"
+    note: "The full method, including the prediction-trajectory analysis and the causal basis extraction this article does not reach."
+  - title: "nostalgebraist, *interpreting GPT: the logit lens*"
+    url: "https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens"
+    note: "The original post. Its caveats about which models the lens works on are more explicit than most later summaries."
+  - title: "Din et al., *Jump to Conclusions: Short-Cutting Transformers With Linear Transformations*"
+    url: "https://arxiv.org/abs/2303.09435"
+    note: "Linear shortcuts between layers, which is the tuned lens idea arrived at independently and evaluated differently."
+  - title: "Wendler et al., *Do Llamas Work in English?*"
+    url: "https://arxiv.org/abs/2402.10588"
+    note: "The lens used to make a substantive claim about a latent representational language. A good model of what the technique is for once the mechanics are understood."
 ---
 
 ## Looking Inside the Model

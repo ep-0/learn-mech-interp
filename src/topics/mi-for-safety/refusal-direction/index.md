@@ -11,6 +11,20 @@ prerequisites:
 glossary:
   - term: "Refusal Direction"
     definition: "A direction derived from activation differences between harmful and harmless prompts that causally mediates much of the tested models' refusal behavior. It is a mechanism for refusal, not a complete representation of safety or harmfulness."
+
+furtherReading:
+  - title: "Arditi et al., *Refusal in Language Models Is Mediated by a Single Direction*"
+    url: "https://arxiv.org/abs/2406.11717"
+    note: "The full paper across thirteen models, including the weight-orthogonalization jailbreak and the adversarial-suffix analysis."
+  - title: "Marshall et al., *Refusal in LLMs Is an Affine Function*"
+    url: "https://arxiv.org/abs/2411.09003"
+    note: "The direct challenge: a single direction is not quite the right object, and an affine map fits better."
+  - title: "Wollschläger et al., *The Geometry of Refusal in Large Language Models*"
+    url: "https://arxiv.org/abs/2502.17420"
+    note: "Evidence for a refusal cone rather than a single direction. Read it against the headline claim this article reports."
+  - title: "Zou et al., *Improving Alignment and Robustness with Circuit Breakers*"
+    url: "https://arxiv.org/abs/2406.04313"
+    note: "A defense built to survive exactly the attack the refusal direction enables, which is the natural response to this result."
 ---
 
 ## Where Is Refusal Encoded?

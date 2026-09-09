@@ -11,6 +11,20 @@ prerequisites:
 glossary:
   - term: "Logit Diff Amplification (LDA)"
     definition: "A technique for surfacing rare model behaviors by sampling from a distribution that amplifies the logit-level differences between two model checkpoints (e.g., before and after fine-tuning), making training-induced behavioral changes more frequent and easier to detect."
+
+furtherReading:
+  - title: "Betley et al., *Emergent Misalignment*"
+    url: "https://arxiv.org/abs/2502.17424"
+    note: "The behavior amplification is used to find, and why rare-behavior elicitation matters for safety."
+  - title: "Li et al., *Contrastive Decoding*"
+    url: "https://arxiv.org/abs/2210.15097"
+    note: "The same arithmetic used for generation quality instead of behavior elicitation. Seeing both makes the mechanism clearer."
+  - title: "Liu et al., *Tuning Language Models by Proxy*"
+    url: "https://arxiv.org/abs/2401.08565"
+    note: "Logit differences between models used to transfer tuning, a third use of the same operation."
+  - title: "Hubinger et al., *Sleeper Agents*"
+    url: "https://arxiv.org/abs/2401.05566"
+    note: "The model organisms that make rare-behavior elicitation testable at all."
 ---
 
 ## Finding Needles by Making Them Bigger

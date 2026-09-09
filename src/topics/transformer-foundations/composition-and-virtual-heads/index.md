@@ -11,6 +11,17 @@ glossary:
     definition: "The mechanism by which attention heads in different layers interact through the residual stream, where earlier heads write information that later heads read. Three types exist: Q-composition, K-composition, and V-composition."
   - term: "Virtual Attention Head"
     definition: "An emergent attention head that does not correspond to any single physical head in the model but arises from the composition of two or more heads across different layers communicating through the residual stream."
+
+furtherReading:
+  - title: "Elhage et al., *A Mathematical Framework for Transformer Circuits*"
+    url: "https://transformer-circuits.pub/2021/framework/index.html"
+    note: "The two-layer expansion in full, including the term-counting that makes 'combinatorially many virtual heads' precise."
+  - title: "Goldowsky-Dill et al., *Localizing Model Behavior with Path Patching*"
+    url: "https://arxiv.org/abs/2304.05969"
+    note: "Composition measured causally rather than by weight-norm scores. Composition scores are correlational, which this article notes but does not resolve."
+  - title: "Wang et al., *Interpretability in the Wild* (the IOI paper)"
+    url: "https://arxiv.org/abs/2211.00593"
+    note: "Composition doing real work in a real circuit. Skim it now and return after the circuit-finding block."
 ---
 
 ## Beyond One Layer

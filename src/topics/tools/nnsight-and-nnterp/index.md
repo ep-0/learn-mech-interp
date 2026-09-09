@@ -12,6 +12,17 @@ glossary:
     definition: "A portable, serializable representation of a set of model interventions in nnsight. The intervention graph decouples the experimental design from model deployment, enabling the same experiment to run locally or on remote infrastructure."
   - term: "Tracing Context"
     definition: "A Python context manager in nnsight where code is captured rather than executed immediately. Operations on model internals within a tracing context build up an intervention graph that is executed as a batch when the context exits."
+
+furtherReading:
+  - title: "Fiotto-Kaufman et al., *NNsight and NDIF: Democratizing Access to Foundation Model Internals*"
+    url: "https://arxiv.org/abs/2407.14561"
+    note: "The design rationale, including the remote-execution model that is the real motivation for the tracing abstraction."
+  - title: "The nnsight documentation and walkthrough"
+    url: "https://nnsight.net/"
+    note: "The tracing context is unusual enough that the tutorial is worth working through rather than skimming."
+  - title: "The TransformerLens documentation"
+    url: "https://transformerlensorg.github.io/TransformerLens/"
+    note: "Implement the same intervention in both. The comparison teaches which abstraction fits which question."
 ---
 
 ## The Architecture Coverage Problem

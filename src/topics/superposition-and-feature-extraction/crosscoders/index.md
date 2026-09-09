@@ -9,6 +9,20 @@ prerequisites:
 glossary:
   - term: "Crosscoder"
     definition: "A variant of sparse autoencoders trained jointly on activations from multiple models (or the same model at different training stages), learning a shared feature dictionary that enables direct comparison of representations across models."
+
+furtherReading:
+  - title: "Lindsey, Templeton et al., *Sparse Crosscoders for Cross-Layer Features and Model Diffing*"
+    url: "https://transformer-circuits.pub/2024/crosscoders/index.html"
+    note: "The originating write-up. This article has no citations at all, and this is the source for everything in it."
+  - title: "Minder et al., *Robustly Identifying Concepts Introduced During Chat Fine-Tuning Using Crosscoders*"
+    url: "https://arxiv.org/abs/2504.02922"
+    note: "The L1 sparsity artifact, latent scaling as a diagnostic, and the BatchTopK fix. Essential before trusting any crosscoder diffing result."
+  - title: "Bussmann et al., *BatchTopK Sparse Autoencoders*"
+    url: "https://arxiv.org/abs/2412.06410"
+    note: "The sparsity mechanism the corrected crosscoders rely on."
+  - title: "Gorton, *The Missing Curve Detectors of InceptionV1*"
+    url: "https://arxiv.org/abs/2407.08688"
+    note: "Cross-model feature comparison done carefully in vision, useful for calibrating what a shared feature claim requires."
 ---
 
 ## Beyond Single-Layer SAEs

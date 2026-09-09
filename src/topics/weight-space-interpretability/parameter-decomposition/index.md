@@ -15,6 +15,20 @@ glossary:
     definition: "A learned scalar in [0,1] predicting how ablatable a parameter subcomponent is on a given input at a given position. A value of 0 means the subcomponent can be scaled down freely without changing the output; 1 means it cannot be touched."
   - term: "Mechanistic Faithfulness"
     definition: "The requirement that every subset of components containing the causally important ones suffices to reproduce the network's output. Stronger than requiring that the output survives ablating all unimportant components together."
+
+furtherReading:
+  - title: "Braun et al., *Interpretability in Parameter Space: Minimizing Mechanistic Description Length with Attribution-Based Parameter Decomposition*"
+    url: "https://arxiv.org/abs/2501.14926"
+    note: "APD, the predecessor, including the objective this line of work started from."
+  - title: "Bushnaq et al., *Stochastic Parameter Decomposition*"
+    url: "https://arxiv.org/abs/2506.20790"
+    note: "The scalable successor, with the sampling scheme that replaced APD's brittle optimization."
+  - title: "Frankle & Carbin, *The Lottery Ticket Hypothesis*"
+    url: "https://arxiv.org/abs/1803.03635"
+    note: "Sparse subnetworks from the pruning literature, which asks a related question with different tools and is rarely cited here."
+  - title: "Elhage et al., *Toy Models of Superposition*"
+    url: "https://transformer-circuits.pub/2022/toy_model/index.html"
+    note: "The toy setting these methods are validated on, and the reason 'no feature splitting' is a meaningful claim."
 ---
 
 ## Everything So Far Has Decomposed Activations

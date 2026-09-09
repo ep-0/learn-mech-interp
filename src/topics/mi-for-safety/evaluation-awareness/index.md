@@ -11,6 +11,20 @@ glossary:
     definition: "A model's ability to distinguish an evaluation context from a real deployment interaction, whether or not it states that distinction explicitly or changes its behavior because of it."
   - term: "Verbalized Evaluation Awareness"
     definition: "Text in a model's reasoning or response that identifies the interaction as an evaluation, test, benchmark, or artificial scenario without being explicitly told so."
+
+furtherReading:
+  - title: "Needham et al., *Large Language Models Often Know When They Are Being Evaluated*"
+    url: "https://arxiv.org/abs/2505.23836"
+    note: "The measurement across many models and evaluation types, with the calibration analysis."
+  - title: "Abdelnabi & Salem, *Linear Control of Test Awareness Reveals Differential Compliance in Reasoning Models*"
+    url: "https://arxiv.org/abs/2505.14617"
+    note: "Awareness manipulated causally with a steering direction, which is stronger evidence than the correlational reports."
+  - title: "Perez et al., *Discovering Language Model Behaviors with Model-Written Evaluations*"
+    url: "https://arxiv.org/abs/2212.09251"
+    note: "Where many current evaluations come from, and why their surface form is so recognizable."
+  - title: "Apollo Research, *Scheming reasoning evaluations* and the in-context scheming work"
+    url: "https://arxiv.org/abs/2412.04984"
+    note: "Evaluation awareness observed in the middle of a capability evaluation, which is where it does the most damage."
 ---
 
 ## When the Test Changes the Behavior

@@ -16,6 +16,20 @@ glossary:
     definition: "The linear approximation of a function near a point, built from its first derivative (or Jacobian in higher dimensions). Formally, f(x + Δx) ≈ f(x) + J·Δx. The name refers to the first term of the Taylor expansion; higher-order corrections are ignored."
   - term: "J-Space"
     definition: "The subspace of residual-stream activations spanned by sparse non-negative combinations of J-lens vectors. Empirically, this space carries the concepts the model is 'poised to verbalize' at a given layer and position."
+
+furtherReading:
+  - title: "Elhage et al., *A Mathematical Framework for Transformer Circuits*"
+    url: "https://transformer-circuits.pub/2021/framework/index.html"
+    note: "The frozen-attention linearization that the Jacobian approach generalizes. Reading them together shows what is new here."
+  - title: "Sundararajan, Taly & Yan, *Axiomatic Attribution for Deep Networks*"
+    url: "https://arxiv.org/abs/1703.01365"
+    note: "The axioms a gradient-based attribution should satisfy, and why a single Jacobian at a point satisfies fewer of them than an integral along a path."
+  - title: "Geva et al., *Transformer Feed-Forward Layers Build Predictions by Promoting Concepts in the Vocabulary Space*"
+    url: "https://arxiv.org/abs/2203.14680"
+    note: "The vocabulary-space reading of MLP updates, which is the non-Jacobian route to the same question."
+  - title: "Ghorbani, Abid & Zou, *Interpretation of Neural Networks Is Fragile*"
+    url: "https://arxiv.org/abs/1710.10547"
+    note: "Gradient-based explanations can be moved substantially without changing the prediction. A necessary caution for any linearization method."
 ---
 
 ## Where the Logit Lens Breaks Down

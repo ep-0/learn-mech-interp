@@ -17,6 +17,18 @@ glossary:
     definition: "A positional mechanism whose effect depends directly on the offset between two tokens rather than only on their separate absolute indices."
   - term: "Rotary Position Embedding"
     definition: "A positional method that rotates pairs of query and key coordinates by position-dependent angles, making their dot product depend on relative offset."
+
+furtherReading:
+  - title: "Su et al., *RoFormer: Enhanced Transformer with Rotary Position Embedding*"
+    url: "https://arxiv.org/abs/2104.09864"
+    note: "Section 3 in full. The complex-number derivation makes the rotation structure obvious in a way the real-valued presentation here does not."
+  - title: "Press, Smith & Lewis, *Train Short, Test Long: Attention with Linear Biases* (ALiBi)"
+    url: "https://arxiv.org/abs/2108.12409"
+    note: "The extrapolation argument, and the clearest statement of what 'length generalization' asks of a position scheme."
+  - title: "Kazemnejad et al., *The Impact of Positional Encoding on Length Generalization in Transformers*"
+    note: "Includes the NoPE result: decoder-only models learn position implicitly from the causal mask. This article does not cover it, and it complicates the claim that a position scheme is required."
+  - title: "Barbero et al., *Round and Round We Go: What Makes Rotary Positional Encodings Useful?*"
+    note: "Evidence that RoPE's benefit is not the decay story usually given. Read it as a caution against the standard intuition."
 ---
 
 ## Why Attention Needs Position
