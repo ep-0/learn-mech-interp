@@ -63,6 +63,7 @@ If any of these is still out of reach, the article is not finished.
 - The PyTorch tutorials: 'Learn the Basics' and the autograd mechanics notes — Start here. Then read the hooks documentation specifically.
 - Karpathy, 'Let's build GPT', the PyTorch portions — Model code written in front of you, which is the fastest way to internalize the module tree.
 - TransformerLens documentation, the 'Main Demo' and hook-points reference — The library this curriculum uses, and its naming scheme for activation sites.
+- Build a hook you will actually use: cache one layer's activations on a forward pass, then write a second hook that replaces them, and confirm the output changes — This is activation patching in miniature, and every causal method later in this curriculum is a variation on those twenty lines.
 - nnsight documentation, the tracing tutorial — The alternative execution model, worth seeing early so the two do not blur together.
 
 ## Where the curriculum uses it

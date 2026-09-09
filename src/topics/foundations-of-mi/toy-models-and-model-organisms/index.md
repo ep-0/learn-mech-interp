@@ -66,7 +66,8 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Elhage et al., *Toy Models of Superposition* (transformer-circuits.pub, 2022) — The exemplar. Read it for the methodology as much as for the result.
+- Elhage et al., *Toy Models of Superposition* (transformer-circuits.pub, 2022) — Start here. The exemplar. Read it for the methodology as much as for the result.
 - Li et al., *Emergent World Representations* (arXiv:2210.13382) with Nanda's linear-probe follow-up — A toy result, a challenge to it, and a revision. The whole exchange is a short course in how these claims get tested.
 - Hubinger et al., *Sleeper Agents* (arXiv:2401.05566) — Model organisms constructed for safety research, and an honest account of what a trained-in property can establish.
+- Reproduce it: the Toy Models of Superposition experiments run in a notebook in minutes, and the paper's accompanying Colab is the fastest route in — Vary the sparsity yourself and watch the pentagon appear. A toy model is the rare thing in this field you can finish in an afternoon.
 - Betley et al., *Emergent Misalignment* (arXiv:2502.17424) — An organism nobody designed, which is why it carries different evidential weight.

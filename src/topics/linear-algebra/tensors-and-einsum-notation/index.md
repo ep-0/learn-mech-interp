@@ -52,8 +52,9 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Tim Rocktäschel, 'Einsum is All You Need' — The standard short introduction to `einsum`, with worked examples.
+- Tim Rocktäschel, 'Einsum is All You Need' — Start here. The standard short introduction to `einsum`, with worked examples.
 - Alexander Rush, 'Tensor Considered Harmful' and the `einops` documentation — The argument for named axes, plus the library most interpretability code now uses.
+- The `einops` tutorial notebooks, parts 1-2 — Free and runnable. Work them rather than reading them: shape errors are learned by making them, and this is the cheapest place to make them.
 - The PyTorch broadcasting semantics documentation — Short, exact, and worth reading once rather than inferring from behavior.
 - Neel Nanda's TransformerLens documentation, the section on activation and weight shapes — The specific conventions you will be reading and writing against.
 

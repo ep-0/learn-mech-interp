@@ -50,7 +50,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Pearl, Glymour & Jewell, *Causal Inference in Statistics: A Primer*, chapters 1-3 — The shortest rigorous introduction. Work the exercises; they are the point.
+- Pearl, Glymour & Jewell, *Causal Inference in Statistics: A Primer*, chapters 1-3 — Start here. The shortest rigorous introduction. Work the exercises; they are the point.
 - Brady Neal, *Introduction to Causal Inference* — A free lecture course with an accompanying book draft. Use it if graphs and interventions land better from someone talking through them than from a page.
 - Peters, Janzing & Schölkopf, *Elements of Causal Inference*, chapters 1-3 and 6 — More formal, and freely available from MIT Press.
 - Pearl, *The Book of Why* — For the conceptual arguments, especially the ladder of causation. Read it alongside, not instead of, the technical text.

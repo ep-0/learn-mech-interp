@@ -50,8 +50,9 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- 3Blue1Brown, *Essence of Linear Algebra*, chapter 13 (change of basis) — The clearest available explanation of $B^{-1} A B$.
+- 3Blue1Brown, *Essence of Linear Algebra*, chapter 13 (change of basis) — Start here. The clearest available explanation of $B^{-1} A B$.
 - Axler, *Linear Algebra Done Right*, sections on matrices of linear maps and invertibility — For the treatment that keeps the map and its matrix distinct throughout.
+- MIT OCW 18.06SC, the change-of-basis and similarity problem sets — Free, with solutions. Convert a vector and a matrix by hand several times; the direction of $B^{-1}AB$ will not stick otherwise.
 - Elhage et al., 'A Mathematical Framework for Transformer Circuits', the discussion of privileged bases — The source of the privileged-basis vocabulary as this field uses it.
 - Chris Olah, 'Distributed Representations: Composition and Superposition' and the Distill circuits thread — Background on why the choice of basis is the central question in feature interpretation.
 

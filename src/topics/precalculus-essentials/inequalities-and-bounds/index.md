@@ -58,7 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Serge Lang, *Basic Mathematics*, the inequalities sections — Careful and short.
+- Serge Lang, *Basic Mathematics*, the inequalities sections — Start here. Careful and short.
 - Paul's Online Math Notes, 'Solving Inequalities' and 'Absolute Value Equations and Inequalities' — Free, exercise-driven, exactly the right scope.
 - Steele, *The Cauchy-Schwarz Master Class*, chapter 1 — Optional and delightful. Read it if you want inequalities to feel like a subject rather than a chore.
 - Khan Academy, Algebra 2: inequalities and absolute value — For drilling if the manipulation rules are rusty.

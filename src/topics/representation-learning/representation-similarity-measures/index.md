@@ -56,9 +56,10 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Kornblith et al., 'Similarity of Neural Network Representations Revisited' (arXiv:1905.00414) — CKA, and the argument about which invariances a similarity measure should have.
+- Kornblith et al., 'Similarity of Neural Network Representations Revisited' (arXiv:1905.00414) — Start here. CKA, and the argument about which invariances a similarity measure should have.
 - Raghu et al., 'SVCCA' (arXiv:1706.05806) — The CCA-based approach and its motivation.
 - Davari et al., 'Reliability of CKA as a Similarity Measure' (arXiv:2210.16156) — The critique. Read it alongside the Kornblith paper, not after.
+- Compute it: take two models, or one model at two checkpoints, and compute CKA between matched layers yourself — Then repeat under a random rotation of one representation. The invariance CKA has and SVCCA lacks is the whole argument, and it takes ten minutes to see.
 - Bansal, Nakkiran & Barak, 'Revisiting Model Stitching' (arXiv:2106.07682) — The functional alternative to representational similarity.
 
 ## Where the curriculum uses it

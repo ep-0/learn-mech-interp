@@ -55,8 +55,9 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- 3Blue1Brown, *Essence of Linear Algebra*, chapters 1-3 — The geometric picture of vectors, span, and linear combinations. Watch this first even if the algebra is familiar.
+- 3Blue1Brown, *Essence of Linear Algebra*, chapters 1-3 — Start here. The geometric picture of vectors, span, and linear combinations. Watch this first even if the algebra is familiar.
 - Gilbert Strang, *Introduction to Linear Algebra*, chapters 1-3 (or MIT OCW 18.06, lectures 1-9) — The computational treatment, with column space and null space developed carefully.
+- MIT OCW 18.06SC, Unit I problem sets — Free, with full solutions. Span and independence are not learned by reading; do these until deciding whether a set is independent is mechanical.
 - Sheldon Axler, *Linear Algebra Done Right*, chapters 1-2 — The basis-free treatment. Read this for why a vector space is defined the way it is, not for computation.
 - Goodfellow, Bengio & Courville, *Deep Learning*, section 2.1-2.4 — The same material compressed into ML notation, which is the notation the rest of this curriculum uses.
 

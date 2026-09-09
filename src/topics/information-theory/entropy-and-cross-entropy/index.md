@@ -55,7 +55,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- MacKay, *Information Theory, Inference, and Learning Algorithms*, chapters 1-2 and 4 — The best introduction to entropy that exists, and freely available. Do the exercises.
+- MacKay, *Information Theory, Inference, and Learning Algorithms*, chapters 1-2 and 4 — Start here. The best introduction to entropy that exists, and freely available. Do the exercises. MacKay's Cambridge lectures on the same material are also free and are the better entry: he died in 2016 and they remain the clearest teaching of this subject by anyone.
 - Cover & Thomas, *Elements of Information Theory*, chapter 2 — The rigorous reference for every identity you will need.
 - Chris Olah, 'Visual Information Theory' (colah.github.io) — The pictures that make cross-entropy and KL feel geometric rather than symbolic.
 - Jurafsky & Martin, *Speech and Language Processing* (3rd ed. draft), the perplexity section of the n-gram chapter — Perplexity as the NLP field defines and misuses it. Freely available.

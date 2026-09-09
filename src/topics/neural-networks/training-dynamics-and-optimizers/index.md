@@ -58,7 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Goodfellow et al., *Deep Learning*, chapter 8 — Optimization for deep models, including initialization and the algorithms.
+- Goodfellow et al., *Deep Learning*, chapter 8 — Start here. Optimization for deep models, including initialization and the algorithms.
 - Kingma & Ba, 'Adam' (arXiv:1412.6980) and Loshchilov & Hutter, 'Decoupled Weight Decay Regularization' (arXiv:1711.05101) — The two papers. Short, and worth reading in the original.
 - Godbole, Dahl, Gilmer, Shallue & Nado, *Deep Learning Tuning Playbook* — Free. What to tune, in what order, how many seeds to run, and how to tell a real improvement from noise. The closest thing the field has to a manual for running experiments.
 - Karpathy, 'Let's build GPT' and 'Let's reproduce GPT-2 (124M)' — Training as it is actually done, including the schedule and stability tricks.

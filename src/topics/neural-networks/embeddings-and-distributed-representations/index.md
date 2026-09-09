@@ -55,8 +55,9 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Mikolov et al., 'Efficient Estimation of Word Representations in Vector Space' (arXiv:1301.3781) — The original word2vec paper.
+- Mikolov et al., 'Efficient Estimation of Word Representations in Vector Space' (arXiv:1301.3781) — Start here. The original word2vec paper.
 - Jurafsky & Martin, *Speech and Language Processing* (3rd ed. draft), the vector semantics and embeddings chapter — The best textbook treatment, and freely available.
+- Train them yourself: fit word2vec or GloVe on a small corpus, then check whether the analogy arithmetic actually works on your own vectors — The famous king-man+woman result is much weaker and more dataset-dependent than its fame suggests, and finding that out first-hand is the point.
 - Nissim, van Noord & van der Goot, 'Fair Is Better than Sensational: Man Is to Doctor as Woman Is to Doctor' (arXiv:1905.09866) — The methodological critique of the analogy results.
 - Ethayarajh, 'How Contextual are Contextualized Word Representations?' (EMNLP 2019) — Anisotropy, and why similarity measurements on contextual embeddings need care.
 

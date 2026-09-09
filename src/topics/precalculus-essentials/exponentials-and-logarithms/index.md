@@ -64,7 +64,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Axler, *Precalculus: A Prelude to Calculus*, chapters 3-4 — Exponentials and logarithms, including a genuinely good motivation for $e$.
+- Axler, *Precalculus: A Prelude to Calculus*, chapters 3-4 — Start here. Exponentials and logarithms, including a genuinely good motivation for $e$.
 - Khan Academy, Algebra 2 and Precalculus: logarithms — Free, with the drills. Do them; the log rules must be reflexive.
 - 3Blue1Brown, 'What's so special about Euler's number e?' — Fifteen minutes on why $e$ is the base that makes calculus simple.
 - Simmons, *Precalculus Mathematics in a Nutshell* — The compressed treatment, for checking you have the essentials rather than the trivia.

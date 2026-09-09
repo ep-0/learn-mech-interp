@@ -56,7 +56,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Quiñonero-Candela et al., *Dataset Shift in Machine Learning*, chapters 1-3 — The taxonomy, stated carefully.
+- Quiñonero-Candela et al., *Dataset Shift in Machine Learning*, chapters 1-3 — Start here. The taxonomy, stated carefully.
 - Geirhos et al., 'Shortcut Learning in Deep Neural Networks' (arXiv:2004.07780) — The clearest account of why models learn the wrong thing and how evaluations miss it.
 - Koh et al., 'WILDS: A Benchmark of in-the-Wild Distribution Shifts' (arXiv:2012.07421) — Read the introduction for the range of shifts that occur in practice.
 - Hubinger et al., 'Sleeper Agents' (arXiv:2401.05566), and the probe-based follow-ups — A concrete case where the held-out-behavior distinction decides what the result means.

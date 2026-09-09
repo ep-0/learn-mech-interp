@@ -64,8 +64,9 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- The official NumPy 'Absolute Beginners' guide, then 'NumPy Fundamentals' — Free, current, and the fastest path to competence. Do the examples in a notebook rather than reading them.
+- The official NumPy 'Absolute Beginners' guide, then 'NumPy Fundamentals' — Start here. Free, current, and the fastest path to competence. Do the examples in a notebook rather than reading them.
 - Jake VanderPlas, *Python Data Science Handbook*, chapter 2 — Free online. The best written treatment of indexing, broadcasting, and vectorization.
+- Nicolas Rougier, '100 NumPy exercises' — Free, with solutions, and by the author of the book above. Work through them; broadcasting and fancy indexing are procedural skills and this is the standard drill for them.
 - Nicolas Rougier, *From Python to NumPy* — Free. Read it for the shift from loop-thinking to array-thinking, which is the actual skill.
 - The NumPy broadcasting documentation — Two pages. Read them exactly rather than inferring the rules from behavior.
 

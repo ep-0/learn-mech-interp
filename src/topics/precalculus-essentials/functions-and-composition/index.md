@@ -64,7 +64,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Sheldon Axler, *Precalculus: A Prelude to Calculus*, chapters 1-2 — Functions and transformations, written by someone unusually careful about definitions.
+- Sheldon Axler, *Precalculus: A Prelude to Calculus*, chapters 1-2 — Start here. Functions and transformations, written by someone unusually careful about definitions.
 - Khan Academy, Precalculus: 'Composite and inverse functions' — Free, with exercises. Do them until composition is automatic.
 - George Simmons, *Precalculus Mathematics in a Nutshell* — The whole book is 119 pages and covers only what calculus needs, which is the same editorial stance as this block.
 - OpenStax, *Precalculus*, chapters 1 and 3 — Free and thorough. Use as a reference rather than reading front to back.

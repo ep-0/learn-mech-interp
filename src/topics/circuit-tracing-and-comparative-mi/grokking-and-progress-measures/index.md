@@ -66,7 +66,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Nanda et al., *Progress Measures for Grokking via Mechanistic Interpretability* (arXiv:2301.05217) — The paper. Work through the Fourier analysis with the notebook open; it is the single best exercise in the curriculum.
+- Nanda et al., *Progress Measures for Grokking via Mechanistic Interpretability* (arXiv:2301.05217) — Start here. The paper. Work through the Fourier analysis with the notebook open; it is the single best exercise in the curriculum.
 - Power et al., *Grokking: Generalization Beyond Overfitting on Small Algorithmic Datasets* (arXiv:2201.02177) — The original observation, before anyone knew what caused it.
 - Chughtai, Chan & Nanda, *A Toy Model of Universality* (arXiv:2302.03025) — The same approach on group composition, and a test of whether different seeds find the same algorithm.
 - Schaeffer, Miranda & Koyejo, *Are Emergent Abilities of Large Language Models a Mirage?* (arXiv:2304.15004) — The metric argument at scale. Read it directly after the progress-measure sections; it is the same point made about frontier models.

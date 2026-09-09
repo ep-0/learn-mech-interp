@@ -65,9 +65,10 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Horace He, 'Making Deep Learning Go Brrrr From First Principles' — The clearest explanation of where time actually goes on a GPU: compute, memory bandwidth, or overhead.
+- Horace He, 'Making Deep Learning Go Brrrr From First Principles' — Start here. The clearest explanation of where time actually goes on a GPU: compute, memory bandwidth, or overhead.
 - The PyTorch documentation on CUDA semantics and on automatic mixed precision — The mechanics: devices, transfers, memory caching, and what autocast changes.
 - David Goldberg, 'What Every Computer Scientist Should Know About Floating-Point Arithmetic' (1991), the first two sections — Rounding and cancellation, explained once and permanently.
+- Profile something: run a small model under `torch.profiler`, then halve the batch size and change the dtype, and predict each effect on memory and wall time before you measure it — Where your predictions are wrong is exactly where your model of the hardware is wrong.
 - Kalamkar et al., 'A Study of BFLOAT16 for Deep Learning Training' — Why the format exists and what the tradeoff against float16 actually is.
 
 ## Where the curriculum uses it

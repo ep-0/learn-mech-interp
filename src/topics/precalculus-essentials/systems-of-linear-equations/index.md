@@ -58,7 +58,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Gilbert Strang, *Introduction to Linear Algebra*, chapter 2 (or MIT OCW 18.06, lectures 1-3) — Elimination done by the person who has taught it best, and it leads directly into the next block.
+- Gilbert Strang, *Introduction to Linear Algebra*, chapter 2 (or MIT OCW 18.06, lectures 1-3) — Start here. Elimination done by the person who has taught it best, and it leads directly into the next block.
 - Lang, *Basic Mathematics*, the linear equations chapter — The precalculus-level treatment, if Strang moves too fast.
 - Khan Academy, 'Systems of equations' — Free drills for the mechanics.
 - OpenStax, *Precalculus*, chapter 9 — Reference for the augmented-matrix bookkeeping.

@@ -64,7 +64,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Simmons, *Precalculus Mathematics in a Nutshell*, the trigonometry section — Roughly forty pages covering what calculus needs and nothing else. The best fit for this article's scope.
+- Simmons, *Precalculus Mathematics in a Nutshell*, the trigonometry section — Start here. Roughly forty pages covering what calculus needs and nothing else. The best fit for this article's scope.
 - Axler, *Precalculus: A Prelude to Calculus*, chapters 5-6 — The unit-circle development, carefully done.
 - Khan Academy, 'Trigonometry' and the unit circle unit — Free, with the drills that make the standard values automatic.
 - Su et al., 'RoFormer: Enhanced Transformer with Rotary Position Embedding' (arXiv:2104.09864), section 3.2 — Read ahead just far enough to see the rotation formulas appear verbatim. It makes the trigonometry feel purposeful.

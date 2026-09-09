@@ -64,7 +64,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Simmons, *Precalculus Mathematics in a Nutshell*, the geometry and analytic geometry sections — Exactly the narrow selection this article needs.
+- Simmons, *Precalculus Mathematics in a Nutshell*, the geometry and analytic geometry sections — Start here. Exactly the narrow selection this article needs.
 - Lang, *Basic Mathematics*, the coordinate geometry chapters — Distance, lines, and the algebra-geometry correspondence, carefully.
 - Khan Academy, 'Analytic geometry' — Free, with exercises on distance and line equations.
 - 3Blue1Brown, *Essence of Linear Algebra*, chapter 1 — Watch ahead: it shows where this material is going once points become vectors.

@@ -58,9 +58,10 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Olshausen & Field, 'Emergence of simple-cell receptive field properties by learning a sparse code for natural images' (Nature, 1996) — The founding paper. Short, and the argument still reads well.
+- Olshausen & Field, 'Emergence of simple-cell receptive field properties by learning a sparse code for natural images' (Nature, 1996) — Start here. The founding paper. Short, and the argument still reads well.
 - Elad, *Sparse and Redundant Representations*, chapters 1-3 and 12 — The textbook. Coherence, recovery guarantees, and dictionary learning.
 - Mairal, Bach, Ponce & Sapiro, 'Online Dictionary Learning for Sparse Coding' (ICML 2009) — The algorithm that made dictionary learning practical at scale.
+- Train a small dictionary: generate synthetic data as sparse combinations of known atoms, then recover them, and see how recovery degrades as the dictionary is overcomplete — The ground truth is available here and nowhere else, which makes it the only place you can check what a dictionary learner does when it is wrong.
 - Bricken et al., 'Towards Monosemanticity' and Templeton et al., 'Scaling Monosemanticity' — Read the feature-splitting discussions against the identifiability theory above.
 
 ## Where the curriculum uses it

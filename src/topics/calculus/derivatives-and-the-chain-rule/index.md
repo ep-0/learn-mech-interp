@@ -54,7 +54,7 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- 3Blue1Brown, *Essence of Calculus*, chapters 1-4 — The derivative as a local linear approximation, presented in the framing this article should adopt.
+- 3Blue1Brown, *Essence of Calculus*, chapters 1-4 — Start here. The derivative as a local linear approximation, presented in the framing this article should adopt.
 - MIT OCW 18.01SC, *Single Variable Calculus*, units 1-2 — The full refresher if it has been a long time. Skip the applications sections.
 - Paul's Online Math Notes, derivatives section — For drilling the rules until they are automatic again. There is no substitute for doing the exercises.
 - Goodfellow et al., *Deep Learning*, section 6.5.1-6.5.2 — The chain rule stated the way the backpropagation literature states it, which is where you are heading.

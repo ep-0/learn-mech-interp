@@ -57,7 +57,8 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Blitzstein & Hwang, *Introduction to Probability*, chapters 1-5 (or Harvard Stat 110 lectures, freely available) — The best first course. The lectures are worth watching even if you read the book.
+- Blitzstein & Hwang, *Introduction to Probability*, chapters 1-5 (or Harvard Stat 110 lectures, freely available) — Start here. The best first course. The lectures are worth watching even if you read the book.
+- Harvard Stat 110, the lecture videos and the Strategic Practice problem sets — Free, with full solutions. Blitzstein lecturing is worth watching even where you have read the chapter, and the practice sets are the drilling this material needs.
 - Wasserman, *All of Statistics*, chapters 1-3 — Terse and complete. Use it as the reference once Blitzstein has built the intuition.
 - Murphy, *Probabilistic Machine Learning: An Introduction*, chapter 2 — The same material with ML notation and examples throughout. Freely available.
 - Goodfellow et al., *Deep Learning*, chapter 3 — A compressed version, useful for checking that you can read the notation the field writes in.

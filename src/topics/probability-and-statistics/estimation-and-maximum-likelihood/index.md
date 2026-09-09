@@ -58,8 +58,9 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Wasserman, *All of Statistics*, chapters 6-9 — Estimation, MLE, and its asymptotics, stated compactly and correctly.
+- Wasserman, *All of Statistics*, chapters 6-9 — Start here. Estimation, MLE, and its asymptotics, stated compactly and correctly.
 - Murphy, *Probabilistic Machine Learning: An Introduction*, chapter 4 — The same material with the ML framing and the KL connection made explicit. Freely available.
+- Wasserman, *All of Statistics*, the chapter 6-9 exercises — Derive a few estimators end to end and check their bias and variance by hand. The asymptotic statements mean very little until you have done this once.
 - MacKay, *Information Theory, Inference, and Learning Algorithms*, chapters 2-3 and 22 — MacKay is unusually good on what likelihood is and is not. Freely available.
 - Goodfellow et al., *Deep Learning*, sections 5.4-5.5 — MLE as the foundation of the training objectives you will be interpreting.
 

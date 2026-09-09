@@ -54,8 +54,9 @@ If any of these is still out of reach, the article is not finished.
 
 ## Sources to learn from
 
-- Blum, Hopcroft & Kannan, *Foundations of Data Science*, chapter 2 — The best single treatment of high-dimensional geometry for this purpose. Freely available.
+- Blum, Hopcroft & Kannan, *Foundations of Data Science*, chapter 2 — Start here. The best single treatment of high-dimensional geometry for this purpose. Freely available.
 - Roman Vershynin, *High-Dimensional Probability*, chapters 3 and 5 — Concentration done rigorously. Harder, and worth it if you want the proofs. Freely available.
+- Blum, Hopcroft & Kannan, *Foundations of Data Science*, the chapter 2 exercises — Free. The concentration results are counterintuitive enough that reading them is not the same as believing them; the exercises are what convert one into the other.
 - Elhage et al., 'Toy Models of Superposition' (transformer-circuits.pub, 2022) — Read the geometry sections. This is where the counting argument is used to make an empirical claim.
 - Sanjoy Dasgupta & Anupam Gupta, 'An elementary proof of a theorem of Johnson and Lindenstrauss' — Four pages, and it makes the lemma concrete rather than cited.
 
